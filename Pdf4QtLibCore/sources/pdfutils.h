@@ -411,8 +411,12 @@ public:
     QString version;
     QString license;
     QString url;
+    QString licenseFile;    ///< File name of the license text in the licenses directory (empty, if not distributed)
 
     static std::vector<PDFDependentLibraryInfo> getLibraryInfo();
+
+    /// Returns the directory with the license texts distributed with the application
+    static QString getLicensesDirectory();
 };
 
 /// Union-find algorithm, which uses path compression optimization. It can run in time

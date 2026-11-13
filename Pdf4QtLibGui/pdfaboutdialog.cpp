@@ -60,6 +60,14 @@ PDFAboutDialog::PDFAboutDialog(QWidget* parent) :
     // License texts distributed with the application, one entry per row of the table
     // (empty, when the text is not distributed)
     std::vector<QString> licenseFiles(infos.size());
+    const QString licensesDirectory = pdf::PDFDependentLibraryInfo::getLicensesDirectory();
+    for (size_t i = 0; i < infos.size(); ++i)
+    {
+        if (!infos[i].licenseFile.isEmpty())
+        {
+            licenseFiles[i] = licensesDirectory + QStringLiteral("/") + infos[i].licenseFile;
+        }
+    }
 
 #ifdef PDF4QT_OCR_TESSERACT
     {

@@ -186,6 +186,13 @@ else()
     set(PDF4QT_INSTALL_OCR_DIR ${PDF4QT_INSTALL_BIN_DIR}/ocr)
 endif()
 
+# License texts of inkpage and of the third-party libraries, shown by the About dialog
+if(PDF4QT_LINUX)
+    set(INKPAGE_INSTALL_LICENSES_DIR ${PDF4QT_INSTALL_SHARE_DIR}/inkpage/licenses)
+else()
+    set(INKPAGE_INSTALL_LICENSES_DIR ${PDF4QT_INSTALL_BIN_DIR}/licenses)
+endif()
+
 # Relative paths are used by the config
 cmake_path(RELATIVE_PATH PDF4QT_PLUGINS_DIR
            BASE_DIRECTORY "${PDF4QT_INSTALL_BIN_DIR}"
@@ -196,7 +203,22 @@ cmake_path(RELATIVE_PATH PDF4QT_INSTALL_TRANS_DIR
 cmake_path(RELATIVE_PATH PDF4QT_INSTALL_OCR_DIR
            BASE_DIRECTORY "${PDF4QT_INSTALL_BIN_DIR}"
            OUTPUT_VARIABLE PDF4QT_OCR_DATA_RELATIVE_PATH)
+cmake_path(RELATIVE_PATH INKPAGE_INSTALL_LICENSES_DIR
+           BASE_DIRECTORY "${PDF4QT_INSTALL_BIN_DIR}"
+           OUTPUT_VARIABLE INKPAGE_LICENSES_RELATIVE_PATH)
 configure_file(config.h.cmake config.h)
+
+# The license texts are copied into the build tree (so the application can be run
+# from the build directory) and installed from there
+set(INKPAGE_LICENSES_BUILD_DIR ${CMAKE_BINARY_DIR}/${INKPAGE_INSTALL_LICENSES_DIR})
+configure_file(LICENSE ${INKPAGE_LICENSES_BUILD_DIR}/inkpage_LICENSE.txt COPYONLY)
+configure_file(PDF4QT_LICENSE ${INKPAGE_LICENSES_BUILD_DIR}/PDF4QT_LICENSE.txt COPYONLY)
+file(GLOB INKPAGE_3RDPARTY_LICENSES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty_licenses/*)
+foreach(INKPAGE_LICENSE_FILE IN LISTS INKPAGE_3RDPARTY_LICENSES)
+    get_filename_component(INKPAGE_LICENSE_NAME ${INKPAGE_LICENSE_FILE} NAME)
+    configure_file(${INKPAGE_LICENSE_FILE} ${INKPAGE_LICENSES_BUILD_DIR}/${INKPAGE_LICENSE_NAME} COPYONLY)
+endforeach()
+install(DIRECTORY ${INKPAGE_LICENSES_BUILD_DIR}/ DESTINATION ${INKPAGE_INSTALL_LICENSES_DIR})
 
 add_subdirectory(Pdf4QtLibCore)
 

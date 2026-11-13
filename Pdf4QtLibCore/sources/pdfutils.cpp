@@ -23,10 +23,13 @@
 #include "pdfutils.h"
 #include "pdfexception.h"
 #include "pdfblpainter.h"
+#include "config.h"
 
 #include <QtGlobal>
 #include <QtMath>
 #include <QMutex>
+#include <QDir>
+#include <QCoreApplication>
 #include "pdfdbgheap.h"
 
 #include <jpeglib.h>
@@ -297,6 +300,7 @@ std::vector<PDFDependentLibraryInfo> PDFDependentLibraryInfo::getLibraryInfo()
     qtInfo.license = tr("LGPLv3");
     qtInfo.version = QT_VERSION_STR;
     qtInfo.url = tr("https://www.qt.io/");
+    qtInfo.licenseFile = QStringLiteral("Qt_LGPL-3.0.txt");
     result.emplace_back(qMove(qtInfo));
 
     // libjpeg-turbo
@@ -304,6 +308,7 @@ std::vector<PDFDependentLibraryInfo> PDFDependentLibraryInfo::getLibraryInfo()
     libjpegInfo.library = tr("libjpeg-turbo");
     libjpegInfo.license = tr("permissive + ack.");
     libjpegInfo.url = tr("https://libjpeg-turbo.org/");
+    libjpegInfo.licenseFile = QStringLiteral("libjpeg_README.txt");
     libjpegInfo.version = INFO_EXPAND_AND_STRINGIFY(LIBJPEG_TURBO_VERSION);
     result.emplace_back(qMove(libjpegInfo));
 
@@ -320,6 +325,7 @@ std::vector<PDFDependentLibraryInfo> PDFDependentLibraryInfo::getLibraryInfo()
     freetypeInfo.license = tr("GPLv2+ (FTL/GPL dual license)");
     freetypeInfo.version = tr("%1.%2.%3").arg(ftMajor).arg(ftMinor).arg(ftPatch);
     freetypeInfo.url = tr("https://www.freetype.org/index.html");
+    freetypeInfo.licenseFile = QStringLiteral("freetype_FTL.TXT");
     result.emplace_back(qMove(freetypeInfo));
 
     // OpenJPEG
@@ -328,6 +334,7 @@ std::vector<PDFDependentLibraryInfo> PDFDependentLibraryInfo::getLibraryInfo()
     openjpegInfo.license = tr("2-clause BSD license");
     openjpegInfo.version = opj_version();
     openjpegInfo.url = tr("https://www.openjpeg.org/");
+    openjpegInfo.licenseFile = QStringLiteral("OpenJPEG_LICENSE.txt");
     result.emplace_back(qMove(openjpegInfo));
 
     // OpenSSL
@@ -336,6 +343,7 @@ std::vector<PDFDependentLibraryInfo> PDFDependentLibraryInfo::getLibraryInfo()
     opensslInfo.license = tr("Apache 2.0");
     opensslInfo.version = OPENSSL_VERSION_TEXT;
     opensslInfo.url = tr("https://www.openssl.org/");
+    opensslInfo.licenseFile = QStringLiteral("OpenSSL_license.txt");
     result.emplace_back(qMove(opensslInfo));
 
     // LittleCMS 2.x
@@ -346,6 +354,7 @@ std::vector<PDFDependentLibraryInfo> PDFDependentLibraryInfo::getLibraryInfo()
     lcms2Info.license = tr("MIT license");
     lcms2Info.version = tr("%1.%2").arg(lcmsMajor).arg(lcmsMinor);;
     lcms2Info.url = tr("http://www.littlecms.com/");
+    lcms2Info.licenseFile = QStringLiteral("LittleCMS_COPYING.txt");
     result.emplace_back(qMove(lcms2Info));
 
     // zlib
@@ -354,6 +363,7 @@ std::vector<PDFDependentLibraryInfo> PDFDependentLibraryInfo::getLibraryInfo()
     zlibInfo.license = tr("zlib specific");
     zlibInfo.version = ZLIB_VERSION;
     zlibInfo.url = tr("https://zlib.net/");
+    zlibInfo.licenseFile = QStringLiteral("zlib_README.txt");
     result.emplace_back(qMove(zlibInfo));
 
     // blend2d
@@ -366,7 +376,16 @@ std::vector<PDFDependentLibraryInfo> PDFDependentLibraryInfo::getLibraryInfo()
     blend2dInfo.license = tr("zlib specific");
     blend2dInfo.version = QString("%1.%2.%3").arg(blend2dMajor).arg(blend2dMinor).arg(blend2dPatch);
     blend2dInfo.url = tr("https://blend2d.com/");
+    blend2dInfo.licenseFile = QStringLiteral("Blend2D_LICENSE.md");
     result.emplace_back(qMove(blend2dInfo));
+
+    // AsmJit (embedded in Blend2D)
+    PDFDependentLibraryInfo asmjitInfo;
+    asmjitInfo.library = tr("AsmJit (used by Blend2D)");
+    asmjitInfo.license = tr("zlib specific");
+    asmjitInfo.url = tr("https://asmjit.com/");
+    asmjitInfo.licenseFile = QStringLiteral("AsmJit_LICENSE.md");
+    result.emplace_back(qMove(asmjitInfo));
 
     // Clipper2
     PDFDependentLibraryInfo clipper2Info;
@@ -374,6 +393,7 @@ std::vector<PDFDependentLibraryInfo> PDFDependentLibraryInfo::getLibraryInfo()
     clipper2Info.license = tr("Boost Software License 1.0");
     clipper2Info.version = QString::fromLatin1(CLIPPER2_VERSION);
     clipper2Info.url = tr("https://github.com/AngusJohnson/Clipper2");
+    clipper2Info.licenseFile = QStringLiteral("Clipper2_LICENSE.txt");
     result.emplace_back(qMove(clipper2Info));
 
 #ifdef TBB_VERSION_STRING
@@ -383,10 +403,16 @@ std::vector<PDFDependentLibraryInfo> PDFDependentLibraryInfo::getLibraryInfo()
     tbbInfo.license = tr("Apache 2.0");
     tbbInfo.version = QString::fromLatin1(TBB_VERSION_STRING);
     tbbInfo.url = tr("https://github.com/uxlfoundation/oneTBB");
+    tbbInfo.licenseFile = QStringLiteral("oneTBB_LICENSE.txt");
     result.emplace_back(qMove(tbbInfo));
 #endif
 
     return result;
+}
+
+QString PDFDependentLibraryInfo::getLicensesDirectory()
+{
+    return QDir(QCoreApplication::applicationDirPath() + QStringLiteral("/") + QString::fromLatin1(INKPAGE_LICENSES_RELATIVE_PATH)).absolutePath();
 }
 
 void PDFClosedIntervalSet::addInterval(PDFInteger low, PDFInteger high)

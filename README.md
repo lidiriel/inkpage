@@ -68,7 +68,8 @@ a GPL header.
 
 This software also uses several third-party libraries, and users must comply
 with the licenses of those third-party components. Their license texts are in
-the `3rdparty_licenses` folder. All of them can be used in a GPLv3 program.
+the `3rdparty_licenses` folder; they are installed with inkpage in
+`share/inkpage/licenses` and can be opened from the About dialog. All of them can be used in a GPLv3 program.
 FreeType is dual-licensed under the FreeType License (FTL) or the GNU GPL
 version 2 or later; inkpage uses it under the terms of the GPL.
 
