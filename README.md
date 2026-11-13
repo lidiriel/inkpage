@@ -40,6 +40,11 @@ This software is based in part on the work of the Independent JPEG Group.
 Portions of this software are copyright © 2019 The FreeType
 Project (www.freetype.org). All rights reserved.
 
+The inkpage icon is "Widget Layout Page Paper Office" by efeaco, from the
+Duotone Interface Icons collection on SVG Repo
+(https://www.svgrepo.com/svg/381941/widget-layout-page-paper-office),
+licensed under the Creative Commons Attribution License.
+
 ## 3. LEGAL ISSUES
 
 inkpage is free software: you can redistribute it and/or modify it under the
