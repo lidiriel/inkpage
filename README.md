@@ -22,6 +22,8 @@ goal of a lighter editor for Linux only:
   LaunchPad, PdfTool, the JBIG2 viewer, the example generator and the
   Windows packaging (Wix installer) were removed.
 - The text-to-speech player (Qt TextToSpeech) was removed.
+- The Dimensions and Output Preview plugins were removed; the Audio Book,
+  Redact and Soft Proofing plugins are kept in the sources but not built.
 - The build uses the distribution packages instead of vcpkg.
 - New features: a page management toolbar (blank pages, duplicate, delete,
   move, page backgrounds) and toolbars that can be moved from the top to the
@@ -136,32 +138,53 @@ Install the development packages (Debian names):
         liblcms2-dev libopenjp2-7-dev libtbb-dev libssl-dev \
         libfreetype-dev libjpeg-dev libpng-dev zlib1g-dev
 
-Blend2D and Clipper2 are not packaged by Debian. Build them from source and
-install them into a local prefix, for example `$HOME/inkpage-deps`:
+Blend2D and Clipper2 are not packaged by Debian. Their sources are on
+GitHub; inkpage is tested with these versions (the ones used by PDF4QT
+1.7.0.0):
+
+| Library                    | Repository                                | Commit    |
+| -------------------------- | ----------------------------------------- | --------- |
+| AsmJit (needed by Blend2D) | https://github.com/asmjit/asmjit          | `c878602` |
+| Blend2D                    | https://github.com/blend2d/blend2d        | `6dbc2ce` |
+| Clipper2                   | https://github.com/AngusJohnson/Clipper2  | `21ebba0` |
+
+The script `scripts/build-deps.sh` clones them at these commits, builds
+them and installs them into `<DEPS_DIR>/install` (`DEPS_DIR` defaults to
+`../deps`, next to the inkpage repository). It needs `git`, `cmake` and
+`ninja`:
+
+    DEPS=$HOME/inkpage-deps
+    scripts/build-deps.sh $DEPS
+
+To build them by hand instead:
 
     DEPS=$HOME/inkpage-deps
     git clone https://github.com/asmjit/asmjit
+    git -C asmjit checkout c87860217e43e2a06060fcaae5b468f6a55b9963
     git clone https://github.com/blend2d/blend2d
+    git -C blend2d checkout 6dbc2cefbc996379e07104e34519a440b49b15d7
     git clone https://github.com/AngusJohnson/Clipper2
+    git -C Clipper2 checkout 21ebba05db8894f0c7217ad35ea518080f324946
 
     cmake -S blend2d -B build-blend2d -G Ninja -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_INSTALL_PREFIX=$DEPS -DBLEND2D_STATIC=OFF \
+          -DCMAKE_INSTALL_PREFIX=$DEPS/install -DBLEND2D_STATIC=OFF \
           -DASMJIT_DIR=$PWD/asmjit
     cmake --build build-blend2d && cmake --install build-blend2d
 
     cmake -S Clipper2/CPP -B build-clipper2 -G Ninja -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_INSTALL_PREFIX=$DEPS -DBUILD_SHARED_LIBS=ON \
+          -DCMAKE_INSTALL_PREFIX=$DEPS/install -DBUILD_SHARED_LIBS=ON \
           -DCLIPPER2_EXAMPLES=OFF -DCLIPPER2_TESTS=OFF -DCLIPPER2_UTILS=ON
     cmake --build build-clipper2 && cmake --install build-clipper2
 
-inkpage is tested with asmjit `c878602`, Blend2D `6dbc2ce` and Clipper2
-`21ebba0` (the versions used by PDF4QT 1.7.0.0).
+The sources (`src/`) and build trees (`build/`) are only needed to build the
+libraries and can be deleted. inkpage needs `$DEPS/install` to build, and at
+run time, since the libraries are loaded from `$DEPS/install/lib`.
 
 ### Building inkpage
 
     cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_PREFIX_PATH=$DEPS \
-          -DCMAKE_BUILD_RPATH=$DEPS/lib \
+          -DCMAKE_PREFIX_PATH=$DEPS/install \
+          -DCMAKE_BUILD_RPATH=$DEPS/install/lib \
           -DPDF4QT_ENABLE_OCR=OFF
     cmake --build build
 
@@ -177,6 +200,7 @@ The application is `build/bin/inkpage`, the plugins are in
 | `PDF4QT_BUILD_TESTS`         | Build the unit tests, ON by default                      |
 | `PDF4QT_ENABLE_OCR`          | Build the OCR feature (Tesseract), set it to OFF for now |
 | `INKPAGE_BUILD_DEV_TOOLS`    | Build the developer tools (CodeGenerator), OFF by default|
+| `INKPAGE_BUILD_DISABLED_PLUGINS` | Build the deactivated plugins (AudioBook, Redact, SoftProofing), OFF by default |
 
 ## 7. DISCLAIMER
 
