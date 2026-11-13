@@ -1,0 +1,258 @@
+CURRENT:
+
+V: 1.7.0.0 8.11.2026
+ - Issue #431: Blend2D is crashing on some cropped images
+ - Issue #430: Text layout optimization
+ - Issue #417: Allow Digital Signature support with visible signatures
+ - Issue #427: Bitonal scans lose thin strokes: precompiled page images are downsampled bilinearly instead of area-averaged
+ - Issue #425: Update bitonal document feature
+ - Issue #424: Improved measurement functionality.
+ - Issue #422: Feature Request: Streamline Outline Creation.
+ - Issue #420: [follow-up] also allow changing default border color when redacting rectangles
+ - Issue #419: [idea] invert redaction rectangles as well in dark mode
+ - Issue #416: [enhancement request] Optimize Images: allow global defaults to be run for multiple/all
+ - Issue #415: PDF is presented as completely blank
+ - Issue #413: Editor: embedded images (signatures) flipped vertically after editing page content
+ - Issue #412: Change default Note author name (and please do not use the system name)
+ - Issue #411: Edit mode UX issues
+ - Issue #410: All text is inverted after exiting edit mode
+ - Issue #409: [idea] choose color of Redact Rectangle
+ - Issue #408: [idea] Make XYZ shortcut refer to outline item when selected
+ - Issue #398: Enhancing Speech Support: Locale Addons and System Voice Detection
+ - Issue #397: No Audio Output When Using Text-to-Speech
+ - Issue #395: [idea] white crosshair easier to see in dark mode
+ - Issue #393: Text in some PDFs is displayed incorrectly
+ - Issue #392: Checkboxes not working
+ - Issue #391: View options to fit page are not working on windows
+ - Issue #337: Text removed from page when adding image with editor
+ - Issue #332: Some suggestions and problem requests for PDF editors
+ - Issue #328: PDF viewer display error visible only at some zoom levels
+ - Issue #327: Does not handle forms correctly
+ - Issue #299: PDF element display error
+ - Issue #278: PDF4QT Diff
+ - Issue #258: feat: Insert page number
+ - Issue #252: select elements (annotations)
+ - Issue #238: Pdf Editor: "Edit page content" makes image disappear
+ - Issue #231: PDF4Qt Diff does not open files on Linux
+ - Issue #223: Page corrupted
+ - Issue #211: Text is inverted on edit
+ - Issue #204: Editor corrupts some vector graphics
+ - Issue #203: Editor seems to forget location of text after editing it
+ - Issue #196: Not able to edit PDF files.
+ - Issue #188: Timestamp feature request
+ - Issue #169: Option to render text as text when using Qpainter backend
+ - Issue #85: Add OCR
+
+V: 1.6.0.0 14.6.2026
+ - Issue #389: Adding hyperlink to _internal_ object in PDF
+ - Issue #388: Update windows color management systém
+ - Issue #385: PDFTextLayoutGenerator::isContentKindSuppressed(ContentKind kind) is missing ContentKind::Form
+ - Issue #384: In the "Optimize Images" dialog, the info on the final image resolution and final dpi does not update
+ - Issue #383: UX improvements for PDF4QT PageMaster tool (v1.5.3.1) (ex. DocPage Organizer)
+ - Issue #382: [feature request] Startup Settings
+ - Issue #381: Separated apps for double-click viewer in Linux
+ - Issue #380: Ability to run app with custom settings directory - executable parameter with path
+ - Issue #379: Advanced Find - Wildcard Mode
+ - Issue #378: Advanced Find - Should start searching if Enter key is pressed
+ - Issue #376: Deleting a note jumps to Outline
+ - Issue #375: Not enough maximum compiled page cache
+ - Issue #373: Ctrl/Shift keyboard selection for Outline
+ - Issue #372: Option to not color images
+ - Issue #370: Extracting pages within a range
+ - Issue #369: Keeping redact box on
+ - Issue #368: side to side scrolling
+ - Issue #357: [feature request] bulk delete/add/edit of page labels
+ - Issue #356: Compatibility issues - font problems
+ - Issue #354: Color blend mode for highlights
+ - Issue #352: Icon size of the sidebar
+ - Issue #349: Add inherit zoom to bookmark zoom options
+ - Issue #338: Editor toolbox higher than editor window
+ - Issue #334: Impossible to set french language
+ - Issue #326: Checkboxes don't render in PDF4QT
+ - Issue #324: [regression] Menu text not rendered with correct color
+ - Issue #321: Select text in Viewer
+ - Issue #291: Support for editing XMP metadata or exporting to PDF/UA format
+ - Issue #282: editor outline view: always zooms to around 50%
+ - Issue #256: PDF4QT cannot show some specific fonts correctly
+ - Issue #253: undo/redo doesn't work in "edit page content" mode
+ - Issue #250: snapping
+ - Issue #242: Full screen
+ - Issue #234: setting font , font size and area of text annotations
+ - Issue #230: I got some garbled characters when I open pdf with pdf4qt
+ - Issue #225: PDF4QT cannot open PDF files with embedded files
+ - Issue #224: Suggestion - option to remove invisible text
+ - Issue #194: Change page size
+ - Issue #160: Color | Custom (green/black) does not work
+ - Issue #136: smooth scrolling of document with mouse middle wheel - flywheel
+ - Issue #92: Add image compression to PDF DocPage Organizer
+ - Issue #18: Performance optimization - OutputPreview Renderer
+ 
+V: 1.5.3.1 22.1.2026
+ - Windows installer fix
+
+V: 1.5.3.0 18.1.2026 - removed
+ - Issue #341: Embed AppImage update information 
+ - Issue #339: (zh_TW)Traditional Chinese Translation File 
+ - Issue #333: ijg-libjpeg obsoleted in vcpkg 
+ - Issue #329: How to remove "External links"
+ - Issue #269: Nested Bookmarks loses children when moving. 
+ - Issue #179: Signature: Adding .jpg or .png image crashes PDF4QT
+ - Issue #146: Incorrect fonts displayed on Linux
+ - Issue #144: Text notes - drag and drop annotations
+
+V: 1.5.2.0 20.9.2025
+ - Issue #313: Remove history UX improvement
+ - Issue #310: Docpage organiser uses PDF title rather than filename
+ - Issue #306: Unable to delete the recent files history. 
+ - Issue #303: Add Dockerfile for Simplified PDF4QT Setup with Qt 6.9.1 and All Dependencies
+ - Issue #301: Russian Language file
+ - Issue #296: Redaction annotation support in PdfTool 
+ - Issue #295: Request: Make page layout choice persist between files
+ - Issue #279: qt_add_translations uses options only in qt 6.9
+ - Issue #284: Scaling dimensions [Enhancements, Features] 
+ - Issue #281: install API headers for reuse by other applications ?
+ - Issue #251: Let user lock direction of lines/polylines when pressing keybinding (e.g. shift)
+
+V: 1.5.1.0 27.4.2025
+ - Issue #271: Change of the license to MIT
+ - Issue #257: Force light mode (or dark mode) 
+ - Issue #255: PDF4QT Page Master invert selection does not work
+ - Issue #254: Unit Settings default window size too small
+ - Issue #248: update version and year in Help > About page
+ - Issue #247: option to hide cross when adding annotations
+
+V: 1.5.0.0 9.3.2025
+ - Issue #244: PageMaster: united one document after remove pages leads to lose the outline
+ - Issue #236: Highligting - Allow color selection and intensity [Enhancement]
+ - Issue #229: Can't add picture to PDF
+ - Issue #228: [feature] reverse pages order 
+ - Issue #222: UnitTests fails several tests
+ - Issue #207: Zoom to Cursor (Zoom Anchoring) 
+ - Issue #206: Name of the executable / command
+ - Issue #205: Editor cannot create white, whitesmoke or transparent annotations
+ - Issue #202: Certain raster content not rendered
+ - Issue #200: Icons under dark theme on Arch/KDE is broken 
+ - Issue #185: Latest git fails to build in linux
+ - Issue #165: Insert > Inline Text latency issues on Flatpak and Appimage packages 
+ - Issue #161: Can it be possible to trust a certificate like in acrobat?
+
+SPONSORSHIP:
+ Big thanks to pjhfggij and all others for sponsorship!
+
+V: 1.4.0.0 4.7.2024
+ - Issue #190: PageMaster crash + black bubbles instead of bubbles with correct color
+ - Issue #184: Form field font size too large
+ - Issue #183: Option to ignore PDF security settings
+ - Issue #182: PDF4QT Document Diff command line cmd line arguments ignored
+ - Issue #181: where is the dark mode?
+ - Issue #180: PDF4QT editor and options windows higher than desktop
+ - Issue #174: Support for Linux seems to be very limited
+ - Issue #173: errors loading file Echoplex.pdf
+ - Issue #172: access keys are missing from most menu items/action text strings
+ - Issue #168: When opening a PDF file or merging some PDF files, stamp will disappear.
+ - Issue #166: Adding images to PDF? 
+ - Issue #164: Taskbar icon not shown in linux mint.
+ - Issue #163: Unable to render probably valid PDF
+ - Issue #161: Can it be possible to trust a certificate like in acrobat? 
+ - Issue #159: Offer 4 AppImage one for each App [enhancement] 
+ - Issue #123: Alternative software rendering backend (Blend2D)
+ - Issue #42: Is REAL pdf text editing planned ?
+ - Issue #26: Add pictures in PDF files 
+
+V: 1.3.7 10.1.2024
+ - Issue #142: Cannot reach the top
+ - Issue #141: Save button in toolbar
+ - Issue #140: New bookmarks created empty?
+ - Issue #139: Changing page layout reset the current page
+ - Issue #137: Redaction - Cannot convert '#000000' to color value
+ - Issue #134: Add search bar for actions
+ - Issue #133: Rectangle selector when choosing the page of the PDF 
+ - Issue #129: Cannot compile with lcms 2.16
+ - Issue #128: Create list of markup annotations 
+ - Issue #126: Remove <QtCore> include from main headers
+ - Issue #119: Improve search bar 2 (the revenge) 
+ - Issue #118: Adding CMAKE options for minimal builds
+ - Issue #116: Improve search bar (rembember searched text, allow scroll and zoom)
+ - Issue #115: Redesign of sidebar widget, new icons
+ - Issue #113: Color | Custom (green/black) partially works in scanned PDF (1.3.6)
+ - Issue #112: smooth scrolling
+ - Issue #104: pdf_3d branch and license
+ - Issue #102: Does this software use Qt's PDF tool? Or based on Poppler or muPDF? 
+ - Issue #99: Icons for dark mode
+ - Issue #55: System certificates store - not found
+ - Issue #54: Bookmarks for pages
+
+V: 1.3.6 24.11.2023
+ - Issue #110: PDF4QT Viewer Lite : Arbitrary Code can execute when using Send by Email
+ - Issue #109: No text, font. Parts missing
+ - Issue #108: Add accessibility options in pdf reader
+ - Issue #107: Create document with converted bitonic images
+ - Issue #106: Warning - Hardware acceleration is not supported on this device
+ - Issue #103: Bookmark sidebar greyed out if a bookmark is not already present
+ - Issue #100: Highlight rectangle
+ - Issue #97: Add drag and drop capability to DocPage Organizer, Context menu + layout items on window size changed
+ - Issue #94: New directory structure
+ - Issue #83: Is it possible to specify a default font for a pdf when the font is not load or recognize?
+ - Issue #76: Outline editing
+ - Issue #58: PDF Doc with rotated type3 fonts
+
+V: 1.3.5 3.8.2023
+ - Issue #65: Text2Speech doesn't work on Linux
+ - Issue #72: Cannot select text
+ - Issue #82: Hot reload function
+ - Issue #80: Optimizer is slow on large PDF files
+ - Issue #77: Document read error
+ - Issue #78: Error decompressing stream
+
+V: 1.3.4 3.8.2023
+ - Issue #75: Redesign of sidebar widget
+ - Issue #74: Highlighting text opens the sidebar every time
+ - Issue #73: Minor GUI issues
+ - Issue #71: Pages are "mirrored"
+ - Issue #69: Dashed Line not rendered as expected
+ - Issue #68: Add alternative VCPKG file with dependency on Qt
+ - Issue #59: Fix character font encoding - do not use (1, 0) Mac Roman table if (3, 1) unicode table is present (according to spec)
+ - Issue #50: Some types of pdf don't open as expected and some doesnt open. 
+
+V: 1.3.3 22.4.2023
+ - Issue #49: Document read error
+ - Issue #46: Program does not launch/freezes on Windows 10/Windows Server 2022 (x64)
+ - Issue #48: Page not displayed correctly
+ - Issue #45: Blank page in DocPage Organizer
+ - Issue #43: Save question
+ - Issue #40: Sanitization of documents
+
+V: 1.3.2   1.2.2023
+ - Issue #39: Code signed installation
+
+V: 1.3.1 28.12.2022
+ - Issue #34: Reset option
+ - Issue #35: Window state is not remembered for viewers
+
+V: 1.3.0 25.12.2022
+ - Issue #21: Table selection tool
+ - Issue #22: Solve compilation warnings
+ - Issue #24: Text selection and table selection algorithm improvement
+ - Issue #25: Move Qt 6.4, change build system to CMake and VCPKG
+ - Issue #28: Add multiple PDF files at once for merging
+ - Issue #33: ToUnicode for simple fonts not used 
+ - Issue #32: I need a new stable release.
+
+V: 1.2.1 30.6.2022
+ - Issue #17: Public key security handler
+ - Issue #19: Remove dependency on MS Visual Studio Redistributable Packages
+
+V: 1.2.0 5.6.2022
+ - Issue #10: Performance optimization
+ - Issue #14: Incorrect text drawing for vertical writing systems
+ - Issue #15: .msi installer
+ - static XFA support (readonly, simple XFA only)
+ - electronically/digitally sign documents
+
+V: 1.1.0, 19.12.2021
+ - DocDiff application (compare similar PDF documents)
+ - Linux support
+ - new icon set
+
+V: 1.0.0 Beta, 19.9.2021
+ - initial beta release for non-production testing

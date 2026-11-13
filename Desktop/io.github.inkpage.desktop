@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=inkpage
+GenericName=PDF Editor
+Comment=Edit PDF files: annotations, pages, signatures
+Exec=inkpage %f
+Icon=io.github.inkpage
+Terminal=false
+Categories=Office;Viewer;
+MimeType=application/pdf;
+StartupWMClass=inkpage

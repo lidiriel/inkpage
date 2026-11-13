@@ -1,0 +1,260 @@
+// MIT License
+//
+// Copyright (c) 2018-2026 Jakub Melka and Contributors
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+#ifndef PDFIMAGECONVERSION_H
+#define PDFIMAGECONVERSION_H
+
+#include "pdfglobal.h"
+#include "pdfoperationcontrol.h"
+
+#include <QImage>
+
+#include <array>
+#include <cstdint>
+#include <optional>
+#include <vector>
+
+namespace pdf
+{
+
+/// This class facilitates various image conversions,
+/// including transforming colored images into monochromatic (or bitonal) formats.
+class PDF4QTLIBCORESHARED_EXPORT PDFImageConversion
+{
+public:
+    PDFImageConversion();
+
+    enum class ConversionMethod
+    {
+        Automatic,  ///< The threshold is determined automatically using an algorithm.
+        Manual,     ///< The threshold is manually provided by the user.
+        Adaptive,   ///< Adaptive local thresholding.
+        Dither      ///< Error diffusion dither.
+    };
+
+    /// Specifies, how the alpha channel of the source image is treated
+    /// during the conversion to the bitonal format.
+    enum class AlphaMode
+    {
+        Ignore,     ///< Alpha channel is ignored, color samples are thresholded as they are.
+        Composite   ///< Transparent pixels are composited onto the white background before
+                    ///< the conversion, so they enter the threshold calculation as a blank
+                    ///< paper instead of their meaningless color samples, and they are
+                    ///< always converted to the white color. The transparency itself is not
+                    ///< lost - it can be obtained as a bitonal mask using the function
+                    ///< \p getConvertedAlphaMask.
+    };
+
+    /// Sets the image to be converted using the specified conversion method.
+    /// This operation resets any previously converted image and the automatic threshold,
+    /// thereby erasing all prior image data.
+    /// \param image The image to be set for conversion.
+    void setImage(QImage image);
+
+    /// Sets the method for image conversion. Multiple methods are available
+    /// for selection, including adaptive thresholding and dithering. If the
+    /// manual method is chosen, an appropriate threshold must also be set by
+    /// the user.
+    /// \param method The conversion method to be used.
+    void setConversionMethod(ConversionMethod method);
+
+    /// Sets the manual threshold value. When a non-manual (e.g., automatic) conversion
+    /// method is in use, this function will retain the manual threshold settings,
+    /// but the conversion will utilize an automatically calculated threshold for the image.
+    /// The manually set threshold is preserved and not overwritten. Therefore, if the
+    /// manual conversion method is later selected, the previously established manual
+    /// threshold will be applied.
+    /// \param threshold The manual threshold value to be set.
+    void setThreshold(int threshold);
+
+    /// Sets the operation control, which is polled while the image is being converted,
+    /// so a conversion of a large image can be interrupted. When the operation is
+    /// cancelled, the function convert() returns false and no converted image is
+    /// produced. The control is not owned by this object and it must outlive it.
+    /// \param operationControl Operation control (can be nullptr)
+    void setOperationControl(const PDFOperationControl* operationControl);
+
+    /// Sets the mode, in which the alpha channel of the source image is treated.
+    /// Images, which do not have an alpha channel, are not affected by this setting.
+    /// \param alphaMode Alpha mode to be set.
+    void setAlphaMode(AlphaMode alphaMode);
+
+    /// Returns the mode, in which the alpha channel of the source image is treated.
+    AlphaMode getAlphaMode() const { return m_alphaMode; }
+
+    /// This method converts the image into a bitonal (monochromatic) format. If
+    /// the automatic threshold calculation is enabled, it executes Otsu's 1D algorithm
+    /// to determine the threshold. When the manual conversion method is selected,
+    /// the automatic threshold calculation is bypassed, and the predefined manual threshold
+    /// value is utilized instead. Adaptive and dithered conversions use their respective
+    /// algorithms and may ignore the global threshold. This method returns true if the
+    /// conversion is successful, and false otherwise. The alpha channel of the source
+    /// image is handled according to the selected alpha mode. \sa setAlphaMode
+    bool convert();
+
+    /// Returns the threshold used in image conversion. If the automatic conversion method is
+    /// selected, this function should be called only after executing the convert() method;
+    /// otherwise, it may return invalid data. The automatic threshold calculation is
+    /// performed within the convert() method.
+    /// \returns The threshold value used in image conversion.
+    int getThreshold() const;
+
+    /// Returns the converted image. This method should only be called after
+    /// the convert() method has been executed, and additionally, only if the
+    /// convert() method returns true. If these conditions are not met, the result
+    /// is undefined.
+    QImage getConvertedImage() const;
+
+    /// Returns the transparency of the source image as a bitonal mask, in which
+    /// a set sample means an opaque pixel and a cleared sample means a transparent
+    /// pixel. A null image is returned, when the source image is fully opaque, or
+    /// when the alpha mode is set to \p AlphaMode::Ignore. This method should be
+    /// called only after a successful call of the convert() method. The mask can be
+    /// used as a soft mask of the converted image, so the transparency of the source
+    /// image is not lost during the conversion.
+    QImage getConvertedAlphaMask() const;
+
+    /// Returns true, if the converted image has a transparency mask.
+    /// \sa getConvertedAlphaMask
+    bool hasConvertedAlphaMask() const { return !m_convertedAlphaMask.isNull(); }
+
+    /// Returns the transparency of the image as a bitonal mask, in which a set sample
+    /// means an opaque pixel and a cleared sample means a transparent pixel. A null
+    /// image is returned, when the image is fully opaque, or when it has no alpha
+    /// channel at all. The mask uses the same opacity threshold as the conversion
+    /// itself, so it can be used as a soft mask of an image, which replaces the source
+    /// one without being converted by any of the conversion methods (for example by
+    /// a solid black or white fill). An empty optional is returned, when the mask
+    /// cannot be created (it cannot be allocated) - that is a failure, which must
+    /// not be confused with the legitimate result "no mask is needed".
+    /// \sa getConvertedAlphaMask
+    /// \param image Source image
+    static std::optional<QImage> createAlphaMask(const QImage& image);
+
+    /// Creates a bitonal image of the given size, whose samples are all black.
+    /// Returns a null image, if the image cannot be allocated - the callers must
+    /// not write into the image without checking it, because a null image has no
+    /// scan lines.
+    /// \param size Size of the image
+    static QImage createBitonalImage(QSize size);
+
+    /// Returns the image composited onto the white background, so the transparent
+    /// pixels become white. The result has the format QImage::Format_RGB32.
+    /// \param image Source image
+    static QImage compositeOntoWhite(const QImage& image);
+
+    /// Calculates the threshold of Otsu's method from the histogram of the gray image.
+    /// The pixels, whose value is less than or equal to the threshold, form the dark
+    /// class. Unlike the automatic conversion, the threshold is calculated directly
+    /// from the samples of the image, without the lightness buffers of the conversion.
+    /// \param grayImage Image in the format QImage::Format_Grayscale8
+    static int calculateOtsuThreshold(const QImage& grayImage);
+
+private:
+    /// Decomposes the source image (with the transparent pixels composited onto the
+    /// white background) into the lightness buffer, the grayscale buffer and the
+    /// opacity buffer. All conversion algorithms then work with these buffers instead
+    /// of the source image.
+    void prepareSourceImage();
+
+    int calculateOtsu1DThreshold() const;
+
+    /// Estimates the lightness of the paper of the image, i.e. the lightness of its
+    /// brightest significant population. A high percentile is used instead of the
+    /// maximum, so a handful of stray bright pixels - a specular highlight, a hole
+    /// in the paper, a scanning artifact - cannot decide the result.
+    /// \param histogram Histogram of the lightness of the image
+    /// \param pixelCount Number of the pixels of the image
+    static int calculatePaperWhiteLightness(const std::array<uint64_t, 256>& histogram, size_t pixelCount);
+
+    QImage convertThresholded(int threshold) const;
+    QImage convertAdaptive() const;
+    QImage convertDithered(int threshold) const;
+
+    /// Returns true, if the conversion has been cancelled by the operation control
+    bool isCancelled() const { return PDFOperationControl::isOperationCancelled(m_operationControl); }
+
+    /// Returns true, if the pixel at a given index is treated as a transparent one
+    bool isTransparent(size_t index) const { return !m_opacity.empty() && m_opacity[index] < OPACITY_THRESHOLD; }
+
+    /// Creates a black bitonal image of the size of the source image
+    QImage createBitonalImage() const;
+
+    /// Sets the sample of the bitonal image to the white color. Samples of
+    /// the image created by \p createBitonalImage are black by default.
+    static void setWhiteSample(QImage& image, int x, int y);
+
+    static constexpr int DEFAULT_THRESHOLD = 128;
+    static constexpr int ADAPTIVE_WINDOW_RADIUS = 8;
+    static constexpr int ADAPTIVE_OFFSET = 8;
+    static constexpr int OPACITY_THRESHOLD = 128;
+
+    /// Percentile of the lightness histogram, which the lightness of the paper is
+    /// estimated from. \sa calculatePaperWhiteLightness
+    static constexpr int PAPER_WHITE_PERCENTILE = 95;
+
+    /// Lightness of the ink expressed as a percentage of the lightness of the paper.
+    /// Print, toner and ink are far darker than this, while the texture of the paper,
+    /// the gradient of the illumination and the show-through of the reverse side stay
+    /// well above it.
+    static constexpr int INK_LIGHTNESS_PERCENTAGE = 75;
+
+    /// A gap between the two populations indicates distinct ink and paper, even
+    /// when the ink is gray. Paper texture has a continuous lightness histogram.
+    static constexpr int MAXIMUM_PAPER_LIGHTNESS_GAP = 16;
+
+    /// The paper of an image must be at least this bright, before the image is
+    /// treated as a scanned page. A darker image is a picture, not a document, and
+    /// the assumption "dark pixels are the ink on a bright paper" does not hold
+    /// for it.
+    static constexpr int MINIMUM_PAPER_WHITE = 128;
+
+    QImage m_image;
+    QImage m_convertedImage;
+    QImage m_convertedAlphaMask;
+    const PDFOperationControl* m_operationControl = nullptr;
+    ConversionMethod m_conversionMethod = ConversionMethod::Automatic;
+    AlphaMode m_alphaMode = AlphaMode::Composite;
+    int m_automaticThreshold = DEFAULT_THRESHOLD;
+    int m_manualThreshold = DEFAULT_THRESHOLD;
+
+    int m_width = 0;
+    int m_height = 0;
+
+    /// Lightness (HSL color model) of the source image pixels, transparent pixels
+    /// are composited onto the white background (when the alpha mode is
+    /// \p AlphaMode::Composite). It is used by the global thresholding.
+    std::vector<unsigned char> m_lightness;
+
+    /// Grayscale (luminance) values of the same pixels. Adaptive thresholding and
+    /// dithering historically operate on the grayscale representation of the image,
+    /// not on the lightness, so both representations are kept.
+    std::vector<unsigned char> m_gray;
+
+    /// Alpha channel of the source image. This buffer is empty, when the source
+    /// image is fully opaque, or when the alpha channel is being ignored.
+    std::vector<unsigned char> m_opacity;
+};
+
+}   // namespace pdf
+
+#endif // PDFIMAGECONVERSION_H

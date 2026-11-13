@@ -1,0 +1,89 @@
+// MIT License
+//
+// Copyright (c) 2018-2026 Jakub Melka and Contributors
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+#ifndef SIGNDIALOG_H
+#define SIGNDIALOG_H
+
+#include "pdfcertificatemanager.h"
+
+#include <QDialog>
+
+namespace Ui
+{
+class SignDialog;
+}
+
+namespace pdfplugin
+{
+
+class SignDialog : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit SignDialog(QWidget* parent, bool isSceneEmpty);
+    virtual ~SignDialog() override;
+
+    virtual void accept() override;
+
+    enum SignMethod
+    {
+        SignDigitally,
+        SignDigitallyInvisible
+    };
+
+    enum SignatureType
+    {
+        /// Digital signature of the document
+        SignatureOnly,
+
+        /// Digital signature of the document, the time of the signing is
+        /// attested by a timestamp authority
+        SignatureWithTimestamp,
+
+        /// Document timestamp, which attests, that the document existed at
+        /// the time of the timestamp, without signing it
+        TimestampOnly
+    };
+
+    SignMethod getSignMethod() const;
+    SignatureType getSignatureType() const;
+    QString getPassword() const;
+    QString getReasonText() const;
+    QString getContactInfoText() const;
+    QString getTimestampUrl() const;
+    const pdf::PDFCertificateEntry* getCertificate() const;
+
+private:
+    /// Enables only the settings, which are used by the selected signature type
+    void updateUi();
+
+    void loadSettings();
+    void saveSettings();
+
+    Ui::SignDialog* ui;
+    pdf::PDFCertificateEntries m_certificates;
+};
+
+}   // namespace pdfplugin
+
+#endif // SIGNDIALOG_H

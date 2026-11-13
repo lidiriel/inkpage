@@ -1,0 +1,1979 @@
+// MIT License
+//
+// Copyright (c) 2018-2026 Jakub Melka and Contributors
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+#include "pdfsidebarwidget.h"
+#include "ui_pdfsidebarwidget.h"
+
+#include "pdfviewersettings.h"
+
+#include "pdfwidgetutils.h"
+#include "pdfdrawwidget.h"
+#include "pdfwidgettool.h"
+
+#include "pdfdocument.h"
+#include "pdfitemmodels.h"
+#include "pdfexception.h"
+#include "pdfsignaturehandler.h"
+#include "pdfdrawspacecontroller.h"
+#include "pdfdocumentbuilder.h"
+#include "pdfwidgetutils.h"
+#include "pdfbookmarkui.h"
+#include "pdfwidgetannotation.h"
+
+#include <QMenu>
+#include <QAction>
+#include <QFileDialog>
+#include <QStandardPaths>
+#include <QDesktopServices>
+#include <QMessageBox>
+#include <QPainter>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QDialog>
+#include <QComboBox>
+#include <QPushButton>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QStandardItemModel>
+#include <QSortFilterProxyModel>
+#include <QUrl>
+#include <QUuid>
+#include <cmath>
+#include <functional>
+#include <limits>
+
+#include "pdfdbgheap.h"
+
+namespace pdfviewer
+{
+
+PDFSidebarWidget::PDFSidebarWidget(pdf::PDFDrawWidgetProxy* proxy,
+                                   pdf::PDFCertificateStore* certificateStore,
+                                   PDFBookmarkManager* bookmarkManager,
+                                   PDFViewerSettings* settings,
+                                   bool editableOutline,
+                                   QWidget* parent) :
+    QWidget(parent),
+    ui(new Ui::PDFSidebarWidget),
+    m_proxy(proxy),
+    m_certificateStore(certificateStore),
+    m_bookmarkManager(bookmarkManager),
+    m_settings(settings),
+    m_outlineTreeModel(nullptr),
+    m_outlineSortProxyTreeModel(nullptr),
+    m_thumbnailsModel(nullptr),
+    m_optionalContentTreeModel(nullptr),
+    m_bookmarkItemModel(nullptr),
+    m_notesTreeModel(nullptr),
+    m_notesSortProxyTreeModel(nullptr),
+    m_document(nullptr),
+    m_optionalContentActivity(nullptr),
+    m_attachmentsTreeModel(nullptr)
+{
+    ui->setupUi(this);
+
+    // Outline
+    QIcon outlineIcon(":/resources/outline.svg");
+    m_outlineTreeModel = new pdf::PDFOutlineTreeItemModel(qMove(outlineIcon), editableOutline, this);
+    m_outlineSortProxyTreeModel = new QSortFilterProxyModel(this);
+    m_outlineSortProxyTreeModel->setFilterKeyColumn(0);
+    m_outlineSortProxyTreeModel->setFilterRole(Qt::DisplayRole);
+    m_outlineSortProxyTreeModel->setAutoAcceptChildRows(false);
+    m_outlineSortProxyTreeModel->setRecursiveFilteringEnabled(true);
+    m_outlineSortProxyTreeModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    m_outlineSortProxyTreeModel->setSourceModel(m_outlineTreeModel);
+    ui->outlineTreeView->setModel(m_outlineSortProxyTreeModel);
+    ui->outlineTreeView->header()->hide();
+    connect(ui->outlineSearchLineEdit, &QLineEdit::editingFinished, this, &PDFSidebarWidget::onOutlineSearchText);
+    connect(ui->outlineSearchLineEdit, &QLineEdit::textChanged, this, &PDFSidebarWidget::onOutlineSearchText);
+
+    if (editableOutline)
+    {
+        ui->outlineTreeView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+        ui->outlineTreeView->setSelectionBehavior(QAbstractItemView::SelectRows);
+        ui->outlineTreeView->setDragEnabled(true);
+        ui->outlineTreeView->setAcceptDrops(true);
+        ui->outlineTreeView->setDropIndicatorShown(true);
+        ui->outlineTreeView->setDragDropMode(QAbstractItemView::InternalMove);
+        ui->outlineTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(ui->outlineTreeView, &QTreeView::customContextMenuRequested, this, &PDFSidebarWidget::onOutlineTreeViewContextMenuRequested);
+        connect(m_outlineTreeModel, &pdf::PDFOutlineTreeItemModel::dataChanged, this, &PDFSidebarWidget::onOutlineItemsChanged);
+        connect(m_outlineTreeModel, &pdf::PDFOutlineTreeItemModel::rowsInserted, this, &PDFSidebarWidget::onOutlineItemsChanged);
+        connect(m_outlineTreeModel, &pdf::PDFOutlineTreeItemModel::rowsRemoved, this, &PDFSidebarWidget::onOutlineItemsChanged);
+        connect(m_outlineTreeModel, &pdf::PDFOutlineTreeItemModel::rowsMoved, this, &PDFSidebarWidget::onOutlineItemsChanged);
+
+        createOutlineActions();
+        connect(ui->outlineTreeView->selectionModel(), &QItemSelectionModel::currentChanged, this, &PDFSidebarWidget::updateOutlineActions);
+        connect(ui->outlineTreeView->itemDelegate(), &QAbstractItemDelegate::closeEditor, this, &PDFSidebarWidget::onOutlineItemEditorClosed);
+        connect(m_outlineTreeModel, &pdf::PDFOutlineTreeItemModel::modelAboutToBeReset, this, &PDFSidebarWidget::onOutlineModelAboutToBeReset);
+        updateOutlineActions();
+    }
+
+    connect(ui->outlineTreeView, &QTreeView::clicked, this, &PDFSidebarWidget::onOutlineItemClicked);
+
+    // Thumbnails
+    m_thumbnailsModel = new pdf::PDFThumbnailsItemModel(proxy, this);
+    int thumbnailsMargin = ui->thumbnailsListView->style()->pixelMetric(QStyle::PM_FocusFrameHMargin, nullptr, ui->thumbnailsListView) + 1;
+    int thumbnailsFontSize = QFontMetrics(ui->thumbnailsListView->font()).lineSpacing();
+    m_thumbnailsModel->setExtraItemSizeHint(2 * thumbnailsMargin, thumbnailsMargin + thumbnailsFontSize);
+    ui->thumbnailsListView->setModel(m_thumbnailsModel);
+    connect(ui->thumbnailsSizeSlider, &QSlider::valueChanged, this, &PDFSidebarWidget::onThumbnailsSizeChanged);
+    connect(ui->thumbnailsListView, &QListView::clicked, this, &PDFSidebarWidget::onThumbnailClicked);
+    onThumbnailsSizeChanged(ui->thumbnailsSizeSlider->value());
+
+    // Optional content
+    ui->optionalContentTreeView->header()->hide();
+    m_optionalContentTreeModel = new pdf::PDFOptionalContentTreeItemModel(this);
+    ui->optionalContentTreeView->setModel(m_optionalContentTreeModel);
+
+    // Attachments
+    ui->attachmentsTreeView->header()->hide();
+    m_attachmentsTreeModel = new pdf::PDFAttachmentsTreeItemModel(this);
+    ui->attachmentsTreeView->setModel(m_attachmentsTreeModel);
+    ui->attachmentsTreeView->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->attachmentsTreeView->setSelectionBehavior(QAbstractItemView::SelectItems);
+    ui->attachmentsTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->attachmentsTreeView, &QTreeView::doubleClicked, this, &PDFSidebarWidget::onAttachmentDoubleClicked);
+    connect(ui->attachmentsTreeView, &QTreeView::customContextMenuRequested, this, &PDFSidebarWidget::onAttachmentCustomContextMenuRequested);
+
+    // Bookmarks
+    m_bookmarkItemModel = new PDFBookmarkItemModel(bookmarkManager, this);
+    ui->bookmarksView->setModel(m_bookmarkItemModel);
+    ui->bookmarksView->setItemDelegate(new PDFBookmarkItemDelegate(bookmarkManager, this));
+    connect(m_bookmarkManager, &PDFBookmarkManager::bookmarkActivated, this, &PDFSidebarWidget::onBookmarkActivated);
+    connect(ui->bookmarksView->selectionModel(), &QItemSelectionModel::currentChanged, this, &PDFSidebarWidget::onBookmarsCurrentIndexChanged);
+    connect(ui->bookmarksView, &QListView::clicked, this, &PDFSidebarWidget::onBookmarkClicked);
+
+    // Notes
+    m_notesTreeModel = new QStandardItemModel(this);
+    m_notesSortProxyTreeModel = new QSortFilterProxyModel(this);
+    m_notesSortProxyTreeModel->setFilterKeyColumn(0);
+    m_notesSortProxyTreeModel->setFilterRole(Qt::DisplayRole);
+    m_notesSortProxyTreeModel->setAutoAcceptChildRows(false);
+    m_notesSortProxyTreeModel->setRecursiveFilteringEnabled(true);
+    m_notesSortProxyTreeModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    m_notesSortProxyTreeModel->setSourceModel(m_notesTreeModel);
+    ui->notesTreeView->setModel(m_notesSortProxyTreeModel);
+    ui->notesTreeView->header()->hide();
+    connect(ui->notesSearchLineEdit, &QLineEdit::editingFinished, this, &PDFSidebarWidget::onNotesSearchText);
+    connect(ui->notesSearchLineEdit, &QLineEdit::textChanged, this, &PDFSidebarWidget::onNotesSearchText);
+    connect(ui->notesTreeView, &QTreeView::clicked, this, &PDFSidebarWidget::onNotesItemClicked);
+
+    // Selection of the notes is synchronized with the selection of the annotations on the pages
+    ui->notesTreeView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    connect(ui->notesTreeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &PDFSidebarWidget::onNotesSelectionChanged);
+    connect(ui->notesTreeView, &QTreeView::customContextMenuRequested, this, &PDFSidebarWidget::onNotesTreeViewContextMenuRequested);
+
+    m_pageInfo[Invalid] = { nullptr, ui->emptyPage };
+    m_pageInfo[OptionalContent] = { ui->optionalContentButton, ui->optionalContentPage };
+    m_pageInfo[Outline] = { ui->outlineButton, ui->outlinePage };
+    m_pageInfo[Thumbnails] = { ui->thumbnailsButton, ui->thumbnailsPage };
+    m_pageInfo[Attachments] = { ui->attachmentsButton, ui->attachmentsPage };
+    m_pageInfo[Signatures] = { ui->signaturesButton, ui->signaturesPage };
+    m_pageInfo[Bookmarks] = { ui->bookmarksButton, ui->bookmarksPage };
+    m_pageInfo[Notes] = { ui->notesButton, ui->notesPage };
+
+    for (const auto& pageInfo : m_pageInfo)
+    {
+        if (pageInfo.second.button)
+        {
+            connect(pageInfo.second.button, &QToolButton::clicked, this, &PDFSidebarWidget::onPageButtonClicked);
+        }
+    }
+
+    ui->signatureTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->signatureTreeWidget, &QTreeWidget::customContextMenuRequested, this, &PDFSidebarWidget::onSignatureCustomContextMenuRequested);
+
+    if (pdf::PDFWidgetUtils::isDarkTheme())
+    {
+        for (QToolButton* pushButton : findChildren<QToolButton*>())
+        {
+            QIcon icon = pushButton->icon();
+            QSize iconSize = pushButton->iconSize();
+            QIcon iconDark = pdf::PDFWidgetUtils::convertIconForDarkTheme(icon, iconSize, pushButton->devicePixelRatioF());
+            pushButton->setIcon(iconDark);
+        }
+    }
+
+    selectPage(Invalid);
+    updateButtons();
+    updatePageButtonIconSize();
+    connect(m_settings, &PDFViewerSettings::settingsChanged, this, &PDFSidebarWidget::updatePageButtonIconSize);
+}
+
+PDFSidebarWidget::~PDFSidebarWidget()
+{
+    delete ui;
+}
+
+void PDFSidebarWidget::setDocument(const pdf::PDFModifiedDocument& document, const std::vector<pdf::PDFSignatureVerificationResult>& signatures)
+{
+    m_document = document;
+    m_optionalContentActivity = document.getOptionalContentActivity();
+    m_signatures = signatures;
+
+    // Update outline
+    m_outlineTreeModel->setDocument(document);
+    updateOutlineActions();
+
+    // Thumbnails
+    m_thumbnailsModel->setDocument(document);
+
+    // Update optional content
+    m_optionalContentTreeModel->setDocument(document);
+    m_optionalContentTreeModel->setActivity(m_optionalContentActivity);
+    ui->optionalContentTreeView->expandAll();
+
+    // Update attachments
+    m_attachmentsTreeModel->setDocument(document);
+    ui->attachmentsTreeView->expandAll();
+    ui->attachmentsTreeView->resizeColumnToContents(0);
+
+    Page preferred = Invalid;
+    if (m_document)
+    {
+        const pdf::PageMode pageMode = m_document->getCatalog()->getPageMode();
+        switch (pageMode)
+        {
+            case pdf::PageMode::UseOutlines:
+                preferred = Outline;
+                break;
+
+            case pdf::PageMode::UseThumbnails:
+                preferred = Thumbnails;
+                break;
+
+            case pdf::PageMode::UseOptionalContent:
+                preferred = OptionalContent;
+                break;
+
+            case pdf::PageMode::UseAttachments:
+                preferred = Attachments;
+                break;
+
+            case pdf::PageMode::Fullscreen:
+            {
+                pdf::PDFViewerPreferences::NonFullScreenPageMode nonFullscreenPageMode = m_document->getCatalog()->getViewerPreferences()->getNonFullScreenPageMode();
+                switch (nonFullscreenPageMode)
+                {
+                    case pdf::PDFViewerPreferences::NonFullScreenPageMode::UseOutline:
+                        preferred = Outline;
+                        break;
+
+                    case pdf::PDFViewerPreferences::NonFullScreenPageMode::UseThumbnails:
+                        preferred = Thumbnails;
+                        break;
+
+                    case pdf::PDFViewerPreferences::NonFullScreenPageMode::UseOptionalContent:
+                        preferred = OptionalContent;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                break;
+            }
+
+            default:
+                break;
+        }
+    }
+
+    if (!document.hasReset() && preferred == Invalid && m_currentPage != Invalid && !isEmpty(m_currentPage))
+    {
+        preferred = m_currentPage;
+    }
+
+    // Update GUI
+    updateGUI(preferred);
+    updateButtons();
+    updateSignatures(signatures);
+
+    if (document.hasReset() || document.hasFlag(pdf::PDFModifiedDocument::Annotation))
+    {
+        updateNotes();
+    }
+}
+
+bool PDFSidebarWidget::isEmpty() const
+{
+    for (int i = _BEGIN; i < _END; ++i)
+    {
+        if (!isEmpty(static_cast<Page>(i)))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool PDFSidebarWidget::isEmpty(Page page) const
+{
+    switch (page)
+    {
+        case Invalid:
+            return true;
+
+        case Outline:
+            return m_outlineTreeModel->isEmpty() && (!m_document || !m_outlineTreeModel->isEditable());
+
+        case Thumbnails:
+            return m_thumbnailsModel->isEmpty();
+
+        case OptionalContent:
+            return m_optionalContentTreeModel->isEmpty();
+
+        case Attachments:
+            return m_attachmentsTreeModel->isEmpty();
+
+        case Bookmarks:
+            return !m_document || !m_bookmarkManager;
+
+        case Signatures:
+            return m_signatures.empty();
+
+        case Notes:
+            return !m_document || !m_proxy->getAnnotationManager()->hasAnyPageAnnotation();
+
+        default:
+            Q_ASSERT(false);
+            break;
+    }
+
+    return true;
+}
+
+void PDFSidebarWidget::selectPage(Page page)
+{
+    m_currentPage = page;
+
+    // Switch state of the buttons and select the page
+    for (const auto& pageInfo : m_pageInfo)
+    {
+        QToolButton* pushButton = pageInfo.second.button;
+        if (pushButton)
+        {
+            pushButton->setChecked(pageInfo.first == page);
+
+            QFont font = pushButton->font();
+            font.setBold(pageInfo.first == page);
+            pushButton->setFont(font);
+        }
+
+        if (pageInfo.first == page)
+        {
+            ui->stackedWidget->setCurrentWidget(pageInfo.second.page);
+        }
+    }
+}
+
+std::vector<PDFSidebarWidget::Page> PDFSidebarWidget::getValidPages() const
+{
+    std::vector<PDFSidebarWidget::Page> result;
+    result.reserve(_END - _BEGIN + 1);
+
+    for (int i = _BEGIN; i < _END; ++i)
+    {
+        if (!isEmpty(static_cast<Page>(i)))
+        {
+            result.push_back(static_cast<Page>(i));
+        }
+    }
+
+    return result;
+}
+
+void PDFSidebarWidget::setCurrentPages(const std::vector<pdf::PDFInteger>& currentPages)
+{
+    if (!currentPages.empty() && ui->synchronizeThumbnailsButton->isChecked())
+    {
+        QModelIndex index = m_thumbnailsModel->index(currentPages.front(), 0, QModelIndex());
+        if (index.isValid())
+        {
+            ui->thumbnailsListView->scrollTo(index, QListView::EnsureVisible);
+
+            // Try to examine, if we have to switch the current index
+            QModelIndex currentIndex = ui->thumbnailsListView->currentIndex();
+            if (currentIndex.isValid())
+            {
+                const pdf::PDFInteger currentPageIndex = m_thumbnailsModel->getPageIndex(currentIndex);
+                Q_ASSERT(std::is_sorted(currentPages.cbegin(), currentPages.cend()));
+                if (std::binary_search(currentPages.cbegin(), currentPages.cend(), currentPageIndex))
+                {
+                    return;
+                }
+            }
+            ui->thumbnailsListView->setCurrentIndex(index);
+        }
+    }
+}
+
+void PDFSidebarWidget::updateGUI(Page preferredPage)
+{
+    if (preferredPage != Invalid && !isEmpty(preferredPage))
+    {
+        selectPage(preferredPage);
+    }
+    else
+    {
+        // Select first nonempty page
+        std::vector<Page> validPages = getValidPages();
+        if (!validPages.empty())
+        {
+            selectPage(validPages.front());
+        }
+        else
+        {
+            selectPage(Invalid);
+        }
+    }
+}
+
+void PDFSidebarWidget::updateButtons()
+{
+    for (const auto& pageInfo : m_pageInfo)
+    {
+        if (pageInfo.second.button)
+        {
+            pageInfo.second.button->setEnabled(!isEmpty(pageInfo.first));
+        }
+    }
+}
+
+void PDFSidebarWidget::updatePageButtonIconSize()
+{
+    const QSize baseIconSize(64, 64);
+    const int baseButtonWidth = 96;
+
+    qreal scale = 1.0;
+    switch (m_settings->getSettings().m_sidebarButtonIconSize)
+    {
+        case PDFViewerSettings::SidebarButtonIconSizeSmall:
+            scale = 0.4;
+            break;
+
+        case PDFViewerSettings::SidebarButtonIconSizeMedium:
+            scale = 0.7;
+            break;
+
+        case PDFViewerSettings::SidebarButtonIconSizeLarge:
+            scale = 1.0;
+            break;
+
+        case PDFViewerSettings::SidebarButtonIconSizeVeryLarge:
+            scale = 1.25;
+            break;
+
+        default:
+            break;
+    }
+
+    const bool showText = m_settings->getSettings().m_sidebarButtonIconSize >= PDFViewerSettings::SidebarButtonIconSizeLarge;
+    const Qt::ToolButtonStyle buttonStyle = showText ? Qt::ToolButtonTextUnderIcon : Qt::ToolButtonIconOnly;
+
+    QSize iconSize(qRound(baseIconSize.width() * scale),
+                   qRound(baseIconSize.height() * scale));
+    iconSize.setWidth(qMax(8, iconSize.width()));
+    iconSize.setHeight(qMax(8, iconSize.height()));
+    const int buttonWidth = qMax(8, qRound(baseButtonWidth * scale));
+
+    ui->scrollArea->setWidgetResizable(true);
+    ui->scrollArea->setFixedWidth(buttonWidth);
+    ui->scrollAreaWidgetContents->setFixedWidth(buttonWidth);
+
+    ui->scrollArea->updateGeometry();
+    ui->scrollAreaWidgetContents->updateGeometry();
+
+    for (const auto& pageInfo : m_pageInfo)
+    {
+        if (pageInfo.second.button)
+        {
+            pageInfo.second.button->setIconSize(iconSize);
+            pageInfo.second.button->setFixedWidth(buttonWidth);
+            pageInfo.second.button->setToolButtonStyle(buttonStyle);
+        }
+    }
+}
+
+void PDFSidebarWidget::updateSignatures(const std::vector<pdf::PDFSignatureVerificationResult>& signatures)
+{
+    ui->signatureTreeWidget->setUpdatesEnabled(false);
+    ui->signatureTreeWidget->clear();
+
+    m_certificateInfos.clear();
+
+    QIcon okIcon(":/resources/result-ok.svg");
+    QIcon errorIcon(":/resources/result-error.svg");
+    QIcon warningIcon(":/resources/result-warning.svg");
+    QIcon infoIcon(":/resources/result-information.svg");
+
+    if (m_settings->getSettings().m_signatureTreatWarningsAsErrors)
+    {
+        warningIcon = errorIcon;
+    }
+
+    for (const pdf::PDFSignatureVerificationResult& signature : signatures)
+    {
+        const pdf::PDFCertificateInfos& certificateInfos = signature.getCertificateInfos();
+        const pdf::PDFCertificateInfo* certificateInfo = !certificateInfos.empty() ? &certificateInfos.front() : nullptr;
+
+        QString templateString;
+        switch (signature.getType())
+        {
+            case pdf::PDFSignature::Type::Sig:
+                templateString = tr("Signature - %1");
+                break;
+
+            case pdf::PDFSignature::Type::DocTimeStamp:
+                templateString = tr("Timestamp - %1");
+                break;
+
+            case pdf::PDFSignature::Type::Invalid:
+                continue;
+
+            default:
+                Q_ASSERT(false);
+                break;
+        }
+
+        QString text = templateString.arg(certificateInfo ? certificateInfo->getName(pdf::PDFCertificateInfo::CommonName) : tr("Unknown"));
+        QTreeWidgetItem* rootItem = new QTreeWidgetItem(QStringList(text));
+
+        if (signature.hasError())
+        {
+            rootItem->setIcon(0, errorIcon);
+        }
+        else if (signature.hasWarning())
+        {
+            rootItem->setIcon(0, warningIcon);
+        }
+        else
+        {
+            rootItem->setIcon(0, okIcon);
+        }
+
+        if (signature.isCertificateValid())
+        {
+            QTreeWidgetItem* certificateItem = new QTreeWidgetItem(rootItem, QStringList(tr("Certificate is valid.")));
+            certificateItem->setIcon(0, okIcon);
+        }
+
+        if (signature.isSignatureValid())
+        {
+            QTreeWidgetItem* signatureItem = new QTreeWidgetItem(rootItem, QStringList(tr("Signature is valid.")));
+            signatureItem->setIcon(0, okIcon);
+        }
+
+        for (const QString& error : signature.getErrors())
+        {
+            QTreeWidgetItem* item = new QTreeWidgetItem(rootItem, QStringList(error));
+            item->setIcon(0, errorIcon);
+        }
+
+        for (const QString& error : signature.getWarnings())
+        {
+            QTreeWidgetItem* item = new QTreeWidgetItem(rootItem, QStringList(error));
+            item->setIcon(0, warningIcon);
+        }
+
+        QString hashAlgorithms = signature.getHashAlgorithms().join(", ");
+        if (!hashAlgorithms.isEmpty())
+        {
+            QTreeWidgetItem* item = new QTreeWidgetItem(rootItem, QStringList(tr("Hash algorithm: %1").arg(hashAlgorithms.toUpper())));
+            item->setIcon(0, infoIcon);
+        }
+
+        QDateTime signingDate = signature.getSignatureDate();
+        if (signingDate.isValid())
+        {
+            QTreeWidgetItem* item = new QTreeWidgetItem(rootItem, QStringList(QString("Signing date/time: %2").arg(QLocale::system().toString(signingDate, QLocale::ShortFormat))));
+            item->setIcon(0, infoIcon);
+        }
+
+        QDateTime timestampDate = signature.getTimestampDate();
+        if (timestampDate.isValid())
+        {
+            QTreeWidgetItem* item = new QTreeWidgetItem(rootItem, QStringList(QString("Timestamp: %2").arg(QLocale::system().toString(timestampDate, QLocale::ShortFormat))));
+            item->setIcon(0, infoIcon);
+        }
+
+        if (certificateInfo)
+        {
+            QTreeWidgetItem* certChainRoot = new QTreeWidgetItem(rootItem, QStringList(tr("Certificate validation chain")));
+            certChainRoot->setIcon(0, infoIcon);
+            for (const pdf::PDFCertificateInfo& currentCertificateInfo : certificateInfos)
+            {
+                QTreeWidgetItem* certRoot = new QTreeWidgetItem(certChainRoot, QStringList(currentCertificateInfo.getName(pdf::PDFCertificateInfo::CommonName)));
+                certRoot->setIcon(0, infoIcon);
+
+                pdf::PDFCertificateInfo::KeyUsageFlags keyUsageFlags = currentCertificateInfo.getKeyUsage();
+                m_certificateInfos.push_back(currentCertificateInfo);
+                certRoot->setData(0, Qt::UserRole, QVariant(static_cast<qint64>(m_certificateInfos.size() - 1)));
+
+                auto addName = [certRoot, &currentCertificateInfo, &infoIcon](pdf::PDFCertificateInfo::NameEntry nameEntry, QString caption)
+                {
+                    QString text = currentCertificateInfo.getName(nameEntry);
+                    if (!text.isEmpty())
+                    {
+                        QTreeWidgetItem* item = new QTreeWidgetItem(certRoot, QStringList(QString("%1: %2").arg(caption, text)));
+                        item->setIcon(0, infoIcon);
+                    }
+                };
+
+                QString publicKeyMethod;
+                switch (currentCertificateInfo.getPublicKey())
+                {
+                    case pdf::PDFCertificateInfo::KeyRSA:
+                        publicKeyMethod = tr("Protected by RSA method, %1-bit key").arg(currentCertificateInfo.getKeySize());
+                        break;
+
+                    case pdf::PDFCertificateInfo::KeyDSA:
+                        publicKeyMethod = tr("Protected by DSA method, %1-bit key").arg(currentCertificateInfo.getKeySize());
+                        break;
+
+                    case pdf::PDFCertificateInfo::KeyEC:
+                        publicKeyMethod = tr("Protected by EC method, %1-bit key").arg(currentCertificateInfo.getKeySize());
+                        break;
+
+                    case pdf::PDFCertificateInfo::KeyDH:
+                        publicKeyMethod = tr("Protected by DH method, %1-bit key").arg(currentCertificateInfo.getKeySize());
+                        break;
+
+                    case pdf::PDFCertificateInfo::KeyUnknown:
+                        publicKeyMethod = tr("Unknown protection method, %1-bit key").arg(currentCertificateInfo.getKeySize());
+                        break;
+
+                    default:
+                        Q_ASSERT(false);
+                        break;
+                }
+
+                addName(pdf::PDFCertificateInfo::CountryName, tr("Country"));
+                addName(pdf::PDFCertificateInfo::OrganizationName, tr("Organization"));
+                addName(pdf::PDFCertificateInfo::OrganizationalUnitName, tr("Org. unit"));
+                addName(pdf::PDFCertificateInfo::DistinguishedName, tr("Name"));
+                addName(pdf::PDFCertificateInfo::StateOrProvinceName, tr("State"));
+                addName(pdf::PDFCertificateInfo::SerialNumber, tr("Serial number"));
+                addName(pdf::PDFCertificateInfo::LocalityName, tr("Locality"));
+                addName(pdf::PDFCertificateInfo::Title, tr("Title"));
+                addName(pdf::PDFCertificateInfo::Surname, tr("Surname"));
+                addName(pdf::PDFCertificateInfo::GivenName, tr("Forename"));
+                addName(pdf::PDFCertificateInfo::Initials, tr("Initials"));
+                addName(pdf::PDFCertificateInfo::Pseudonym, tr("Pseudonym"));
+                addName(pdf::PDFCertificateInfo::GenerationalQualifier, tr("Qualifier"));
+                addName(pdf::PDFCertificateInfo::Email, tr("Email"));
+
+                QTreeWidgetItem* publicKeyItem = new QTreeWidgetItem(certRoot, QStringList(publicKeyMethod));
+                publicKeyItem->setIcon(0, infoIcon);
+
+                QDateTime notValidBefore = currentCertificateInfo.getNotValidBefore().toLocalTime();
+                QDateTime notValidAfter = currentCertificateInfo.getNotValidAfter().toLocalTime();
+
+                if (notValidBefore.isValid())
+                {
+                    QTreeWidgetItem* item = new QTreeWidgetItem(certRoot, QStringList(QString("Valid from: %2").arg(QLocale::system().toString(notValidBefore, QLocale::ShortFormat))));
+                    item->setIcon(0, infoIcon);
+                }
+
+                if (notValidAfter.isValid())
+                {
+                    QTreeWidgetItem* item = new QTreeWidgetItem(certRoot, QStringList(QString("Valid to: %2").arg(QLocale::system().toString(notValidAfter, QLocale::ShortFormat))));
+                    item->setIcon(0, infoIcon);
+                }
+
+                QStringList keyUsages;
+                if (keyUsageFlags.testFlag(pdf::PDFCertificateInfo::KeyUsageDigitalSignature))
+                {
+                    keyUsages << tr("Digital signatures");
+                }
+                if (keyUsageFlags.testFlag(pdf::PDFCertificateInfo::KeyUsageNonRepudiation))
+                {
+                    keyUsages << tr("Non-repudiation");
+                }
+                if (keyUsageFlags.testFlag(pdf::PDFCertificateInfo::KeyUsageKeyEncipherment))
+                {
+                    keyUsages << tr("Key encipherement");
+                }
+                if (keyUsageFlags.testFlag(pdf::PDFCertificateInfo::KeyUsageDataEncipherment))
+                {
+                    keyUsages << tr("Application data encipherement");
+                }
+                if (keyUsageFlags.testFlag(pdf::PDFCertificateInfo::KeyUsageAgreement))
+                {
+                    keyUsages << tr("Key agreement");
+                }
+                if (keyUsageFlags.testFlag(pdf::PDFCertificateInfo::KeyUsageCertSign))
+                {
+                    keyUsages << tr("Verify signatures on certificates");
+                }
+                if (keyUsageFlags.testFlag(pdf::PDFCertificateInfo::KeyUsageCrlSign))
+                {
+                    keyUsages << tr("Verify signatures on revocation information");
+                }
+                if (keyUsageFlags.testFlag(pdf::PDFCertificateInfo::KeyUsageEncipherOnly))
+                {
+                    keyUsages << tr("Encipher data during key agreement");
+                }
+                if (keyUsageFlags.testFlag(pdf::PDFCertificateInfo::KeyUsageDecipherOnly))
+                {
+                    keyUsages << tr("Decipher data during key agreement");
+                }
+                if (keyUsageFlags.testFlag(pdf::PDFCertificateInfo::KeyUsageExtended_TIMESTAMP))
+                {
+                    keyUsages << tr("Trusted timestamping");
+                }
+
+                if (!keyUsages.isEmpty())
+                {
+                    QTreeWidgetItem* keyUsageRoot = new QTreeWidgetItem(certRoot, QStringList(tr("Key usages")));
+                    keyUsageRoot->setIcon(0, infoIcon);
+
+                    for (const QString& keyUsage : keyUsages)
+                    {
+                        QTreeWidgetItem* keyUsageItem = new QTreeWidgetItem(keyUsageRoot, QStringList(keyUsage));
+                        keyUsageItem->setIcon(0, infoIcon);
+                    }
+                }
+            }
+        }
+
+        ui->signatureTreeWidget->addTopLevelItem(rootItem);
+    }
+
+    ui->signatureTreeWidget->expandToDepth(1);
+    ui->signatureTreeWidget->setUpdatesEnabled(true);
+}
+
+void PDFSidebarWidget::updateNotes()
+{
+    const bool updatesEnabled = ui->notesTreeView->updatesEnabled();
+    ui->notesTreeView->setUpdatesEnabled(false);
+
+    // The list is rebuilt, which clears its selection - it must not clear the selection of the annotations
+    m_notesSelectionChangeInProgress = true;
+
+    m_notesTreeModel->clear();
+    m_markupAnnotations.clear();
+
+    if (m_document)
+    {
+        QIcon bubbleIcon(":/resources/bubble.svg");
+        QIcon pageIcon(":/resources/page.svg");
+        QIcon userIcon(":/resources/user.svg");
+
+        pdf::PDFAnnotationManager annotationManager(m_proxy->getFontCache(),
+                                                    m_proxy->getIccProfileCache(),
+                                                    m_proxy->getCMSManager(),
+                                                    m_optionalContentActivity,
+                                                    pdf::PDFMeshQualitySettings(),
+                                                    m_proxy->getFeatures(),
+                                                    pdf::PDFAnnotationManager::Target::View,
+                                                    nullptr);
+        annotationManager.setDocument(pdf::PDFModifiedDocument(const_cast<pdf::PDFDocument*>(m_document), m_optionalContentActivity));
+
+        pdf::PDFInteger pageCount = m_document->getCatalog()->getPageCount();
+        for (pdf::PDFInteger pageIndex = 0; pageIndex < pageCount; ++pageIndex)
+        {
+            const pdf::PDFAnnotationManager::PageAnnotations& pageAnnotations = annotationManager.getPageAnnotations(pageIndex);
+
+            if (pageAnnotations.isEmpty())
+            {
+                continue;
+            }
+
+            std::map<QString, std::vector<const pdf::PDFMarkupAnnotation*>> annotations;
+
+            for (const pdf::PDFAnnotationManager::PageAnnotation& pageAnnotation : pageAnnotations.annotations)
+            {
+                if (!pageAnnotation.annotation || !pageAnnotation.annotation->asMarkupAnnotation())
+                {
+                    continue;
+                }
+
+                const pdf::PDFMarkupAnnotation* markupAnnotation = pageAnnotation.annotation->asMarkupAnnotation();
+
+                QString user = markupAnnotation->getWindowTitle();
+
+                if (user.isEmpty())
+                {
+                    user = tr("User");
+                }
+
+                annotations[user].push_back(markupAnnotation);
+            }
+
+            if (!annotations.empty())
+            {
+                QStandardItem* pageItem = new QStandardItem(pageIcon, tr("Page %1").arg(pageIndex + 1));
+                pageItem->setFlags(Qt::ItemIsEnabled);
+
+                for (const auto& annotationItem : annotations)
+                {
+                    QStandardItem* userItem = new QStandardItem(userIcon, annotationItem.first);
+                    userItem->setFlags(Qt::ItemIsEnabled);
+                    pageItem->appendRow(userItem);
+
+                    for (const pdf::PDFMarkupAnnotation* markupAnnotation : annotationItem.second)
+                    {
+                        QStandardItem* annotationTreeItem = new QStandardItem(bubbleIcon, markupAnnotation->getGUICaption());
+                        annotationTreeItem->setData(int(m_markupAnnotations.size()), Qt::UserRole);
+                        annotationTreeItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+                        userItem->appendRow(annotationTreeItem);
+                        m_markupAnnotations.push_back(std::make_pair(markupAnnotation->getSelfReference(), pageIndex));
+                    }
+                }
+
+                m_notesTreeModel->appendRow(pageItem);
+            }
+        }
+    }
+
+    ui->notesTreeView->setUpdatesEnabled(updatesEnabled);
+    ui->notesTreeView->expandAll();
+    m_notesSelectionChangeInProgress = false;
+
+    // The annotation manager is created later, than the sidebar, so the connection is made here
+    if (pdf::PDFWidgetAnnotationManager* annotationManager = m_proxy->getAnnotationManager())
+    {
+        connect(annotationManager, &pdf::PDFWidgetAnnotationManager::selectionChanged, this, &PDFSidebarWidget::onAnnotationSelectionChanged, Qt::UniqueConnection);
+        onAnnotationSelectionChanged();
+    }
+}
+
+void PDFSidebarWidget::onOutlineSearchText()
+{
+    QString text = ui->outlineSearchLineEdit->text();
+    const bool isWildcard = text.contains(QChar('*')) || text.contains(QChar('?'));
+
+    if (isWildcard)
+    {
+        m_outlineSortProxyTreeModel->setFilterWildcard(text);
+    }
+    else
+    {
+        m_outlineSortProxyTreeModel->setFilterFixedString(text);
+    }
+}
+
+void PDFSidebarWidget::onNotesSearchText()
+{
+    QString text = ui->notesSearchLineEdit->text();
+    const bool isWildcard = text.contains(QChar('*')) || text.contains(QChar('?'));
+
+    if (isWildcard)
+    {
+        m_notesSortProxyTreeModel->setFilterWildcard(text);
+    }
+    else
+    {
+        m_notesSortProxyTreeModel->setFilterFixedString(text);
+    }
+}
+
+void PDFSidebarWidget::onPageButtonClicked()
+{
+    QObject* pushButton = sender();
+
+    for (const auto& pageInfo : m_pageInfo)
+    {
+        if (pageInfo.second.button == pushButton)
+        {
+            Q_ASSERT(!isEmpty(pageInfo.first));
+            selectPage(pageInfo.first);
+            break;
+        }
+    }
+}
+
+void PDFSidebarWidget::onOutlineItemClicked(const QModelIndex& index)
+{
+    QModelIndex sourceIndex = m_outlineSortProxyTreeModel->mapToSource(index);
+    if (const pdf::PDFAction* action = m_outlineTreeModel->getAction(sourceIndex))
+    {
+        Q_EMIT actionTriggered(action);
+    }
+}
+
+void PDFSidebarWidget::onThumbnailsSizeChanged(int size)
+{
+    const int thumbnailsSize = pdf::PDFWidgetUtils::getPixelSize(this, size * 10.0);
+    Q_ASSERT(thumbnailsSize > 0);
+    m_thumbnailsModel->setThumbnailsSize(thumbnailsSize);
+}
+
+void PDFSidebarWidget::onAttachmentDoubleClicked(const QModelIndex& index)
+{
+    openAttachment(m_attachmentsTreeModel->getFileSpecification(index));
+}
+
+void PDFSidebarWidget::onAttachmentCustomContextMenuRequested(const QPoint& pos)
+{
+    if (const pdf::PDFFileSpecification* fileSpecification = m_attachmentsTreeModel->getFileSpecification(ui->attachmentsTreeView->indexAt(pos)))
+    {
+        QMenu menu(this);
+        QAction* openAction = new QAction(QApplication::style()->standardIcon(QStyle::SP_DialogOpenButton, nullptr, ui->attachmentsTreeView), tr("Open Attachment"), &menu);
+        QAction* saveAction = new QAction(QApplication::style()->standardIcon(QStyle::SP_DialogSaveButton, nullptr, ui->attachmentsTreeView), tr("Save to File..."), &menu);
+
+        auto onOpenTriggered = [this, fileSpecification]()
+        {
+            openAttachment(fileSpecification);
+        };
+        connect(openAction, &QAction::triggered, this, onOpenTriggered);
+
+        auto onSaveTriggered = [this, fileSpecification]()
+        {
+            const pdf::PDFEmbeddedFile* platformFile = fileSpecification->getPlatformFile();
+            if (platformFile && platformFile->isValid())
+            {
+                QString defaultFileName = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QDir::separator() + fileSpecification->getPlatformFileName();
+                QString saveFileName = QFileDialog::getSaveFileName(this, tr("Save attachment"), defaultFileName);
+                if (!saveFileName.isEmpty())
+                {
+                    saveAttachmentToFile(fileSpecification, saveFileName);
+                }
+            }
+            else
+            {
+                QMessageBox::critical(this, tr("Error"), tr("Failed to save attachment to file. Attachment is corrupted."));
+            }
+        };
+        connect(saveAction, &QAction::triggered, this, onSaveTriggered);
+
+        menu.addAction(openAction);
+        menu.addAction(saveAction);
+        menu.exec(ui->attachmentsTreeView->viewport()->mapToGlobal(pos));
+    }
+}
+
+bool PDFSidebarWidget::saveAttachmentToFile(const pdf::PDFFileSpecification* fileSpecification, const QString& fileName)
+{
+    const pdf::PDFEmbeddedFile* platformFile = fileSpecification ? fileSpecification->getPlatformFile() : nullptr;
+    if (!platformFile || !platformFile->isValid())
+    {
+        QMessageBox::critical(this, tr("Error"), tr("Failed to save attachment to file. Attachment is corrupted."));
+        return false;
+    }
+
+    try
+    {
+        QByteArray decodedStreamData = m_document->getDecodedStream(platformFile->getStream());
+
+        QFile file(fileName);
+        if (file.open(QFile::WriteOnly | QFile::Truncate))
+        {
+            file.write(decodedStreamData);
+            file.close();
+            return true;
+        }
+
+        QMessageBox::critical(this, tr("Error"), tr("Failed to save attachment to file. %1").arg(file.errorString()));
+    }
+    catch (const pdf::PDFException &e)
+    {
+        QMessageBox::critical(this, tr("Error"), tr("Failed to save attachment to file. %1").arg(e.getMessage()));
+    }
+
+    return false;
+}
+
+void PDFSidebarWidget::openAttachment(const pdf::PDFFileSpecification* fileSpecification)
+{
+    if (!fileSpecification)
+    {
+        return;
+    }
+
+    if (!m_settings->getSettings().m_allowLaunchApplications)
+    {
+        QMessageBox::warning(this, tr("Open Attachment"), tr("Opening attachments is disabled by application launch security settings."));
+        return;
+    }
+
+    QString fileName = QFileInfo(fileSpecification->getPlatformFileName()).fileName();
+    if (fileName.isEmpty())
+    {
+        fileName = tr("attachment");
+    }
+
+    const QString message = tr("Would you like to open attachment '%1' using the associated application?").arg(fileName);
+    if (QMessageBox::question(this, tr("Open Attachment"), message) != QMessageBox::Yes)
+    {
+        return;
+    }
+
+    QString tempPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
+    if (tempPath.isEmpty())
+    {
+        tempPath = QDir::tempPath();
+    }
+
+    const QString attachmentDirectoryName = QString("%1/PDF4QT/Attachments/%2").arg(tempPath, QUuid::createUuid().toString(QUuid::Id128));
+    QDir attachmentDirectory;
+    if (!attachmentDirectory.mkpath(attachmentDirectoryName))
+    {
+        QMessageBox::critical(this, tr("Open Attachment"), tr("Failed to create temporary directory for attachment."));
+        return;
+    }
+
+    attachmentDirectory.setPath(attachmentDirectoryName);
+    const QString attachmentFileName = attachmentDirectory.filePath(fileName);
+    if (!saveAttachmentToFile(fileSpecification, attachmentFileName))
+    {
+        return;
+    }
+
+    if (!QDesktopServices::openUrl(QUrl::fromLocalFile(attachmentFileName)))
+    {
+        QMessageBox::warning(this, tr("Open Attachment"), tr("Opening attachment '%1' failed.").arg(fileName));
+    }
+}
+
+void PDFSidebarWidget::onThumbnailClicked(const QModelIndex& index)
+{
+    if (index.isValid())
+    {
+        m_proxy->goToPage(m_thumbnailsModel->getPageIndex(index));
+    }
+}
+
+void PDFSidebarWidget::onSignatureCustomContextMenuRequested(const QPoint& pos)
+{
+    if (QTreeWidgetItem* item = ui->signatureTreeWidget->itemAt(pos))
+    {
+        QVariant itemData = item->data(0, Qt::UserRole);
+        if (itemData.isValid())
+        {
+            const pdf::PDFCertificateInfo& info = m_certificateInfos.at(itemData.toInt());
+            if (!m_certificateStore->contains(info))
+            {
+                QMenu menu;
+                QAction* action = menu.addAction(tr("Add to trusted certificates"));
+
+                auto addCertificate = [this, info]()
+                {
+                    if (QMessageBox::question(this, tr("Add to Trusted Certificate Store"), tr("Are you sure want to add '%1' to the trusted certificate store?").arg(info.getName(pdf::PDFCertificateInfo::CommonName))) == QMessageBox::Yes)
+                    {
+                        if (!m_certificateStore->add(pdf::PDFCertificateEntry::EntryType::User, info))
+                        {
+                            QMessageBox::critical(this, tr("Trusted Certificate Store Error"), tr("Failed to add certificate to the trusted certificate store."));
+                        }
+                    }
+                };
+                connect(action, &QAction::triggered, this, addCertificate);
+
+                menu.exec(ui->signatureTreeWidget->viewport()->mapToGlobal(pos));
+            }
+        }
+    }
+}
+
+namespace sidebarwidget
+{
+// Must match the same literal used in PDFViewerSettingsDialog::getActionShortcutDisplayText,
+// which reads this property to prefix these actions' names in the Settings shortcuts table
+// (they otherwise keep their plain text, e.g. "XYZ", in the outline context menu).
+constexpr const char* OUTLINE_ACTION_CATEGORY_PROPERTY = "pdf4qtActionCategory";
+}   // namespace sidebarwidget
+
+using namespace sidebarwidget;
+
+void PDFSidebarWidget::createOutlineActions()
+{
+    auto createAction = [this](const QString& objectName, const QString& text, void (PDFSidebarWidget::* slot)())
+    {
+        QAction* action = new QAction(text, this);
+        action->setObjectName(objectName);
+        action->setProperty(OUTLINE_ACTION_CATEGORY_PROPERTY, tr("Outline"));
+        action->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+        ui->outlineTreeView->addAction(action);
+        connect(action, &QAction::triggered, this, slot);
+        m_outlineActions.push_back(action);
+        return action;
+    };
+
+    m_outlineActionFollow = createAction("actionOutlineFollow", tr("Follow"), &PDFSidebarWidget::onOutlineActionFollow);
+    // Object name differs from the old one ("actionOutlineInsert"), because
+    // shortcuts are persisted by the object name - the old, shortcut-less
+    // action would restore an empty shortcut from the existing settings
+    m_outlineActionInsert = createAction("actionOutlineNewItem", tr("New Outline Item"), &PDFSidebarWidget::onOutlineActionInsert);
+    m_outlineActionDelete = createAction("actionOutlineDelete", tr("Delete"), &PDFSidebarWidget::onOutlineActionDelete);
+    m_outlineActionRename = createAction("actionOutlineRename", tr("Rename"), &PDFSidebarWidget::onOutlineActionRename);
+
+    // New item action is also placed into the main window's menu, so it must be
+    // triggerable while the document is being read, i.e. when the outline tree
+    // doesn't have the focus, or the whole sidebar is even hidden.
+    m_outlineActionInsert->setIcon(QIcon(":/resources/outline.svg"));
+    m_outlineActionInsert->setShortcut(QKeySequence("Ctrl+B"));
+    m_outlineActionInsert->setShortcutContext(Qt::WindowShortcut);
+    m_outlineActionInsert->setToolTip(tr("Create a new outline item pointing to the current page and start editing its title."));
+
+    m_outlineActionMoveUp = createAction("actionOutlineMoveUp", tr("Move Up"), &PDFSidebarWidget::onOutlineActionMoveUp);
+    m_outlineActionMoveUp->setShortcut(QKeySequence("Alt+Up"));
+    m_outlineActionMoveDown = createAction("actionOutlineMoveDown", tr("Move Down"), &PDFSidebarWidget::onOutlineActionMoveDown);
+    m_outlineActionMoveDown->setShortcut(QKeySequence("Alt+Down"));
+    m_outlineActionMoveLeft = createAction("actionOutlineMoveLeft", tr("Move Left"), &PDFSidebarWidget::onOutlineActionMoveLeft);
+    m_outlineActionMoveLeft->setShortcut(QKeySequence("Alt+Left"));
+    m_outlineActionMoveLeft->setToolTip(tr("Move the item one level up in the outline hierarchy."));
+    m_outlineActionMoveRight = createAction("actionOutlineMoveRight", tr("Move Right"), &PDFSidebarWidget::onOutlineActionMoveRight);
+    m_outlineActionMoveRight->setShortcut(QKeySequence("Alt+Right"));
+    m_outlineActionMoveRight->setToolTip(tr("Make the item a child of the preceding item."));
+
+    m_outlineActionFontBold = createAction("actionOutlineFontBold", tr("Font Bold"), &PDFSidebarWidget::onOutlineActionFontBold);
+    m_outlineActionFontBold->setCheckable(true);
+    m_outlineActionFontItalic = createAction("actionOutlineFontItalic", tr("Font Italic"), &PDFSidebarWidget::onOutlineActionFontItalic);
+    m_outlineActionFontItalic->setCheckable(true);
+
+    auto createSetTargetByTypeAction = [this, &createAction](const QString& objectName, const QString& text, pdf::DestinationType destinationType)
+    {
+        QAction* action = createAction(objectName, text, &PDFSidebarWidget::onOutlineActionSetTargetByType);
+        action->setData(int(destinationType));
+        return action;
+    };
+
+    m_outlineActionSetTargetNamedDestination = createAction("actionOutlineSetTargetNamedDestination", tr("Named Destination"), &PDFSidebarWidget::onOutlineActionSetTargetNamedDestination);
+    m_outlineActionSetTargetFitPage = createSetTargetByTypeAction("actionOutlineSetTargetFitPage", tr("Fit Page"), pdf::DestinationType::Fit);
+    m_outlineActionSetTargetFitPageHorizontally = createSetTargetByTypeAction("actionOutlineSetTargetFitPageHorizontally", tr("Fit Page Horizontally"), pdf::DestinationType::FitH);
+    m_outlineActionSetTargetFitPageVertically = createSetTargetByTypeAction("actionOutlineSetTargetFitPageVertically", tr("Fit Page Vertically"), pdf::DestinationType::FitV);
+    m_outlineActionSetTargetFitRectangle = createSetTargetByTypeAction("actionOutlineSetTargetFitRectangle", tr("Fit Rectangle"), pdf::DestinationType::FitR);
+    m_outlineActionSetTargetFitBoundingBox = createSetTargetByTypeAction("actionOutlineSetTargetFitBoundingBox", tr("Fit Bounding Box"), pdf::DestinationType::FitB);
+    m_outlineActionSetTargetFitBoundingBoxHorizontally = createSetTargetByTypeAction("actionOutlineSetTargetFitBoundingBoxHorizontally", tr("Fit Bounding Box Horizontally"), pdf::DestinationType::FitBH);
+    m_outlineActionSetTargetFitBoundingBoxVertically = createSetTargetByTypeAction("actionOutlineSetTargetFitBoundingBoxVertically", tr("Fit Bounding Box Vertically"), pdf::DestinationType::FitBV);
+    m_outlineActionSetTargetXYZ = createSetTargetByTypeAction("actionOutlineSetTargetXYZ", tr("XYZ"), pdf::DestinationType::XYZ);
+
+    m_outlineSetTargetActions = { m_outlineActionSetTargetNamedDestination,
+                                   m_outlineActionSetTargetFitPage,
+                                   m_outlineActionSetTargetFitPageHorizontally,
+                                   m_outlineActionSetTargetFitPageVertically,
+                                   m_outlineActionSetTargetFitRectangle,
+                                   m_outlineActionSetTargetFitBoundingBox,
+                                   m_outlineActionSetTargetFitBoundingBoxHorizontally,
+                                   m_outlineActionSetTargetFitBoundingBoxVertically,
+                                   m_outlineActionSetTargetXYZ };
+
+    m_outlineActionInheritZoom = createAction("actionOutlineInheritZoom", tr("Inherit Zoom"), &PDFSidebarWidget::onOutlineActionInheritZoom);
+    m_outlineActionInheritZoomForAllChapters = createAction("actionOutlineInheritZoomForAllChapters", tr("Inherit Zoom for All Chapters"), &PDFSidebarWidget::onOutlineActionInheritZoomForAllChapters);
+}
+
+std::vector<QAction*> PDFSidebarWidget::getOutlineActions() const
+{
+    return m_outlineActions;
+}
+
+QModelIndex PDFSidebarWidget::getCurrentOutlineSourceIndex() const
+{
+    return m_outlineSortProxyTreeModel->mapToSource(ui->outlineTreeView->currentIndex());
+}
+
+int PDFSidebarWidget::countInheritableZoomLinks() const
+{
+    int count = 0;
+
+    std::function<void(const QModelIndex&)> visitItems = [this, &count, &visitItems](const QModelIndex& parentIndex)
+    {
+        const int itemCount = m_outlineTreeModel->rowCount(parentIndex);
+        for (int row = 0; row < itemCount; ++row)
+        {
+            const QModelIndex itemIndex = m_outlineTreeModel->index(row, 0, parentIndex);
+            const pdf::PDFAction* action = m_outlineTreeModel->getAction(itemIndex);
+            const pdf::PDFActionGoTo* goToAction = dynamic_cast<const pdf::PDFActionGoTo*>(action);
+
+            if (goToAction)
+            {
+                const pdf::PDFDestination destination = goToAction->getDestination();
+                if (destination.getDestinationType() == pdf::DestinationType::XYZ &&
+                    !std::isnan(destination.getZoom()))
+                {
+                    ++count;
+                }
+            }
+
+            visitItems(itemIndex);
+        }
+    };
+
+    visitItems(QModelIndex());
+    return count;
+}
+
+void PDFSidebarWidget::updateOutlineActions()
+{
+    if (m_outlineActions.empty())
+    {
+        return;
+    }
+
+    const QModelIndex sourceIndex = getCurrentOutlineSourceIndex();
+    const bool isValid = sourceIndex.isValid();
+
+    const pdf::PDFOutlineItem* outlineItem = isValid ? m_outlineTreeModel->getOutlineItem(sourceIndex) : nullptr;
+    const pdf::PDFActionGoTo* currentGoToAction = isValid ? dynamic_cast<const pdf::PDFActionGoTo*>(m_outlineTreeModel->getAction(sourceIndex)) : nullptr;
+    const bool canInheritZoom = currentGoToAction && currentGoToAction->getDestination().getDestinationType() == pdf::DestinationType::XYZ;
+
+    m_outlineActionFollow->setEnabled(isValid);
+    m_outlineActionDelete->setEnabled(isValid);
+    m_outlineActionRename->setEnabled(isValid);
+
+    m_outlineActionInsert->setEnabled(m_document != nullptr);
+    m_outlineActionMoveUp->setEnabled(isValid && sourceIndex.row() > 0);
+    m_outlineActionMoveDown->setEnabled(isValid && sourceIndex.row() + 1 < m_outlineTreeModel->rowCount(sourceIndex.parent()));
+    m_outlineActionMoveLeft->setEnabled(isValid && sourceIndex.parent().isValid());
+    m_outlineActionMoveRight->setEnabled(isValid && sourceIndex.row() > 0);
+
+    m_outlineActionFontBold->setEnabled(isValid);
+    m_outlineActionFontBold->setChecked(outlineItem && outlineItem->isFontBold());
+    m_outlineActionFontItalic->setEnabled(isValid);
+    m_outlineActionFontItalic->setChecked(outlineItem && outlineItem->isFontItalics());
+
+    for (QAction* setTargetAction : m_outlineSetTargetActions)
+    {
+        setTargetAction->setEnabled(isValid);
+    }
+
+    m_outlineActionInheritZoom->setEnabled(canInheritZoom);
+    m_outlineActionInheritZoomForAllChapters->setEnabled(countInheritableZoomLinks() > 0);
+}
+
+void PDFSidebarWidget::onOutlineActionFollow()
+{
+    onOutlineItemClicked(ui->outlineTreeView->currentIndex());
+}
+
+void PDFSidebarWidget::onOutlineActionInsert()
+{
+    insertOutlineItem();
+}
+
+QString PDFSidebarWidget::getSelectedTextAsOutlineItemTitle(const std::vector<pdf::PDFInteger>& pageIndices) const
+{
+    QString text;
+
+    if (pageIndices.empty())
+    {
+        return text;
+    }
+
+    if (pdf::PDFWidget* widget = m_proxy->getWidget())
+    {
+        if (pdf::PDFToolManager* toolManager = widget->getToolManager())
+        {
+            if (pdf::PDFSelectTextTool* selectTextTool = toolManager->getSelectTextTool())
+            {
+                text = selectTextTool->getSelectedText(pageIndices);
+            }
+        }
+    }
+
+    // Title is a single line text - collapse the white space and limit the length,
+    // so a large text selection doesn't produce an unusable outline item
+    text = text.simplified();
+
+    constexpr int MAXIMUM_TITLE_LENGTH = 128;
+    if (text.length() > MAXIMUM_TITLE_LENGTH)
+    {
+        text = text.left(MAXIMUM_TITLE_LENGTH).trimmed() + QChar(0x2026);
+    }
+
+    return text;
+}
+
+void PDFSidebarWidget::insertOutlineItem()
+{
+    if (!m_document || !m_outlineTreeModel->isEditable())
+    {
+        return;
+    }
+
+    // Naming of a previously created item must be finished first, so changes of
+    // the two items are not mixed together. Moving the focus to the tree view
+    // closes the editor (which is handled in onOutlineItemEditorClosed), the
+    // explicit call then handles the case, when the editor can't be closed this
+    // way - for example when the sidebar has been hidden meanwhile.
+    if (m_newOutlineItemIndex.isValid())
+    {
+        ui->outlineTreeView->setFocus();
+        finishOutlineItemCreation(QAbstractItemDelegate::NoHint);
+    }
+
+    // New item's title is edited in place, so the sidebar must be visible.
+    // Sidebar itself is owned by the main window, so we must ask for it.
+    Q_EMIT sidebarVisibilityRequested();
+
+    // Filtered outline would hide the new item and the user couldn't name it
+    clearOutlineFilter();
+
+    QPersistentModelIndex proxyInsertIndex;
+
+    {
+        // Changes of the outline are not propagated to the document while the
+        // item is being created - they are committed at once, when the user
+        // finishes the naming, so an item, which the user doesn't want, doesn't
+        // modify the document and doesn't create undo steps
+        pdf::PDFTemporaryValueChange<bool> guard(&m_isOutlineItemBeingCreated, true);
+
+        // New item is inserted after the current one, at the same level. Sibling
+        // in the source model is used, because the proxy model can be filtered.
+        const QModelIndex currentSourceIndex = getCurrentOutlineSourceIndex();
+        const QModelIndex sourceParent = currentSourceIndex.isValid() ? currentSourceIndex.parent() : QModelIndex();
+        const int row = currentSourceIndex.isValid() ? currentSourceIndex.row() + 1 : m_outlineTreeModel->rowCount(QModelIndex());
+
+        if (!m_outlineTreeModel->insertRow(row, sourceParent))
+        {
+            return;
+        }
+
+        const QModelIndex sourceInsertIndex = m_outlineTreeModel->index(row, 0, sourceParent);
+        if (sourceInsertIndex.isValid())
+        {
+            std::vector<pdf::PDFInteger> pages = m_proxy->getWidget()->getDrawWidget()->getCurrentPages();
+            if (!pages.empty())
+            {
+                pdf::PDFDestination destination;
+                destination.setDestinationType(pdf::DestinationType::Fit);
+                destination.setPageIndex(pages.front());
+                destination.setPageReference(m_document->getCatalog()->getPage(pages.front())->getPageReference());
+                destination.setZoom(m_proxy->getZoom());
+                m_outlineTreeModel->setDestination(sourceInsertIndex, destination);
+            }
+
+            // Text selected on the bookmarked page is usually the heading itself
+            const QString title = getSelectedTextAsOutlineItemTitle(pages);
+            if (!title.isEmpty())
+            {
+                m_outlineTreeModel->setData(sourceInsertIndex, title, Qt::EditRole);
+            }
+
+            proxyInsertIndex = m_outlineSortProxyTreeModel->mapFromSource(sourceInsertIndex);
+        }
+    }
+
+    if (proxyInsertIndex.isValid())
+    {
+        selectPage(Outline);
+
+        // Setting the current index can close an editor of another item, which
+        // can remove that item, so a persistent index is used here
+        ui->outlineTreeView->setCurrentIndex(proxyInsertIndex);
+        ui->outlineTreeView->scrollTo(proxyInsertIndex);
+        ui->outlineTreeView->setFocus();
+        ui->outlineTreeView->edit(proxyInsertIndex);
+
+        // Item is removed again, when its naming is cancelled - track it only,
+        // when the editor has really been opened
+        if (ui->outlineTreeView->isPersistentEditorOpen(proxyInsertIndex))
+        {
+            m_newOutlineItemIndex = proxyInsertIndex;
+        }
+    }
+
+    // Item, which the user can't name, because no editor has been opened,
+    // is committed to the document right away
+    commitOutlineChanges();
+
+    updateOutlineActions();
+}
+
+void PDFSidebarWidget::onOutlineItemEditorClosed(QWidget* editor, QAbstractItemDelegate::EndEditHint hint)
+{
+    Q_UNUSED(editor);
+
+    finishOutlineItemCreation(hint);
+}
+
+void PDFSidebarWidget::finishOutlineItemCreation(QAbstractItemDelegate::EndEditHint hint)
+{
+    const QPersistentModelIndex newItemIndex = m_newOutlineItemIndex;
+    m_newOutlineItemIndex = QPersistentModelIndex();
+
+    if (!newItemIndex.isValid())
+    {
+        // Some other item has been edited, or the created item doesn't exist
+        // anymore, because the document has been reloaded meanwhile
+        commitOutlineChanges();
+        return;
+    }
+
+    // Item has just been created by the user - if the naming has been cancelled,
+    // or no title has been given, then remove the item again, so an accidentally
+    // triggered action leaves no trace in the document
+    const bool isCancelled = hint == QAbstractItemDelegate::RevertModelCache;
+    const bool isTitleEmpty = newItemIndex.data(Qt::DisplayRole).toString().trimmed().isEmpty();
+
+    if (isCancelled || isTitleEmpty)
+    {
+        // Creation of the item has not been propagated to the document at all,
+        // so removing the item restores the original state and nothing needs to
+        // be committed - document is neither modified, nor marked as unsaved
+        {
+            pdf::PDFTemporaryValueChange<bool> guard(&m_isOutlineItemBeingCreated, true);
+            ui->outlineTreeView->model()->removeRow(newItemIndex.row(), newItemIndex.parent());
+        }
+
+        m_isOutlineChangeDeferred = false;
+    }
+    else
+    {
+        commitOutlineChanges();
+    }
+
+    updateOutlineActions();
+}
+
+void PDFSidebarWidget::onOutlineModelAboutToBeReset()
+{
+    // Whole outline is being rebuilt - an item, which is being created, doesn't
+    // exist anymore and its deferred changes can't be committed to the document
+    m_newOutlineItemIndex = QPersistentModelIndex();
+    m_isOutlineChangeDeferred = false;
+}
+
+void PDFSidebarWidget::commitOutlineChanges()
+{
+    if (m_isOutlineChangeDeferred)
+    {
+        m_isOutlineChangeDeferred = false;
+        onOutlineItemsChanged();
+    }
+}
+
+void PDFSidebarWidget::clearOutlineFilter()
+{
+    if (!ui->outlineSearchLineEdit->text().isEmpty())
+    {
+        ui->outlineSearchLineEdit->clear();
+    }
+}
+
+void PDFSidebarWidget::moveOutlineItem(const QModelIndex& destinationSourceParent, int destinationRow)
+{
+    const QPersistentModelIndex sourceIndex(getCurrentOutlineSourceIndex());
+    if (!sourceIndex.isValid())
+    {
+        return;
+    }
+
+    // Items are moved in the source model, so a filtered outline would move the
+    // item over its hidden siblings and the user would see no change at all
+    clearOutlineFilter();
+
+    if (m_outlineTreeModel->moveRow(sourceIndex.parent(), sourceIndex.row(), destinationSourceParent, destinationRow))
+    {
+        // Item can be moved into a collapsed parent - scrolling to it expands it
+        const QModelIndex proxyIndex = m_outlineSortProxyTreeModel->mapFromSource(sourceIndex);
+        if (proxyIndex.isValid())
+        {
+            ui->outlineTreeView->setCurrentIndex(proxyIndex);
+            ui->outlineTreeView->scrollTo(proxyIndex);
+        }
+
+        updateOutlineActions();
+    }
+}
+
+void PDFSidebarWidget::onOutlineActionMoveUp()
+{
+    const QModelIndex sourceIndex = getCurrentOutlineSourceIndex();
+    if (sourceIndex.isValid() && sourceIndex.row() > 0)
+    {
+        moveOutlineItem(sourceIndex.parent(), sourceIndex.row() - 1);
+    }
+}
+
+void PDFSidebarWidget::onOutlineActionMoveDown()
+{
+    const QModelIndex sourceIndex = getCurrentOutlineSourceIndex();
+    if (sourceIndex.isValid() && sourceIndex.row() + 1 < m_outlineTreeModel->rowCount(sourceIndex.parent()))
+    {
+        // Destination row is interpreted in the model before the item is removed
+        // from its old place, so the item itself must be skipped
+        moveOutlineItem(sourceIndex.parent(), sourceIndex.row() + 2);
+    }
+}
+
+void PDFSidebarWidget::onOutlineActionMoveLeft()
+{
+    const QModelIndex sourceIndex = getCurrentOutlineSourceIndex();
+    const QModelIndex parentIndex = sourceIndex.parent();
+
+    if (sourceIndex.isValid() && parentIndex.isValid())
+    {
+        // Item becomes the next sibling of its parent
+        moveOutlineItem(parentIndex.parent(), parentIndex.row() + 1);
+    }
+}
+
+void PDFSidebarWidget::onOutlineActionMoveRight()
+{
+    const QModelIndex sourceIndex = getCurrentOutlineSourceIndex();
+
+    if (sourceIndex.isValid() && sourceIndex.row() > 0)
+    {
+        // Item becomes the last child of its preceding sibling
+        const QModelIndex newParentIndex = sourceIndex.sibling(sourceIndex.row() - 1, 0);
+        moveOutlineItem(newParentIndex, m_outlineTreeModel->rowCount(newParentIndex));
+    }
+}
+
+void PDFSidebarWidget::onOutlineActionDelete()
+{
+    const QModelIndex proxyIndex = ui->outlineTreeView->currentIndex();
+    if (!proxyIndex.isValid())
+    {
+        return;
+    }
+
+    ui->outlineTreeView->model()->removeRow(proxyIndex.row(), proxyIndex.parent());
+}
+
+void PDFSidebarWidget::onOutlineActionRename()
+{
+    const QModelIndex proxyIndex = ui->outlineTreeView->currentIndex();
+    if (!proxyIndex.isValid())
+    {
+        return;
+    }
+
+    ui->outlineTreeView->edit(proxyIndex);
+}
+
+void PDFSidebarWidget::onOutlineActionFontBold()
+{
+    const QModelIndex sourceIndex = getCurrentOutlineSourceIndex();
+    if (!sourceIndex.isValid())
+    {
+        return;
+    }
+
+    const pdf::PDFOutlineItem* outlineItem = m_outlineTreeModel->getOutlineItem(sourceIndex);
+    m_outlineTreeModel->setFontBold(sourceIndex, !(outlineItem && outlineItem->isFontBold()));
+}
+
+void PDFSidebarWidget::onOutlineActionFontItalic()
+{
+    const QModelIndex sourceIndex = getCurrentOutlineSourceIndex();
+    if (!sourceIndex.isValid())
+    {
+        return;
+    }
+
+    const pdf::PDFOutlineItem* outlineItem = m_outlineTreeModel->getOutlineItem(sourceIndex);
+    m_outlineTreeModel->setFontItalics(sourceIndex, !(outlineItem && outlineItem->isFontItalics()));
+}
+
+void PDFSidebarWidget::onOutlineActionSetTargetNamedDestination()
+{
+    const QModelIndex sourceIndex = getCurrentOutlineSourceIndex();
+    if (!sourceIndex.isValid())
+    {
+        return;
+    }
+
+    class SelectNamedDestinationDialog : public QDialog
+    {
+    public:
+        explicit SelectNamedDestinationDialog(const QStringList& items, QWidget* parent)
+            : QDialog(parent)
+        {
+            setWindowTitle(tr("Select Named Destination"));
+            setMinimumWidth(pdf::PDFWidgetUtils::scaleDPI_x(this, 150));
+
+            QVBoxLayout* layout = new QVBoxLayout(this);
+
+            m_comboBox = new QComboBox(this);
+            m_comboBox->addItems(items);
+            m_comboBox->setEditable(false);
+            layout->addWidget(m_comboBox);
+
+            QHBoxLayout* buttonsLayout = new QHBoxLayout();
+            QPushButton* okButton = new QPushButton(tr("OK"), this);
+            QPushButton* cancelButton = new QPushButton(tr("Cancel"), this);
+
+            buttonsLayout->addWidget(okButton);
+            buttonsLayout->addWidget(cancelButton);
+
+            layout->addLayout(buttonsLayout);
+
+            connect(okButton, &QPushButton::clicked, this, &QDialog::accept);
+            connect(cancelButton, &QPushButton::clicked, this, &QDialog::reject);
+        }
+
+        QString selectedText() const
+        {
+            return m_comboBox->currentText();
+        }
+
+    private:
+        QComboBox* m_comboBox;
+    };
+
+    QStringList items;
+    for (const auto& namedDestination : m_document->getCatalog()->getNamedDestinations())
+    {
+        items << QString::fromLatin1(namedDestination.first);
+    }
+
+    SelectNamedDestinationDialog dialog(items, m_proxy->getWidget());
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        m_outlineTreeModel->setDestination(sourceIndex, pdf::PDFDestination::createNamed(dialog.selectedText().toLatin1()));
+    }
+}
+
+void PDFSidebarWidget::onOutlineActionSetTargetByType()
+{
+    QAction* action = qobject_cast<QAction*>(sender());
+    const QModelIndex sourceIndex = getCurrentOutlineSourceIndex();
+    if (!action || !sourceIndex.isValid())
+    {
+        return;
+    }
+
+    const pdf::DestinationType destinationType = static_cast<pdf::DestinationType>(action->data().toInt());
+    pdf::PDFToolManager* toolManager = m_proxy->getWidget()->getToolManager();
+
+    if (destinationType == pdf::DestinationType::FitR || destinationType == pdf::DestinationType::XYZ)
+    {
+        auto pickRectangle = [this, sourceIndex, destinationType](pdf::PDFInteger pageIndex, QRectF rect)
+        {
+            pdf::PDFDestination destination;
+            destination.setDestinationType(destinationType);
+            destination.setPageIndex(pageIndex);
+            destination.setPageReference(m_document->getCatalog()->getPage(pageIndex)->getPageReference());
+            destination.setLeft(rect.left());
+            destination.setRight(rect.right());
+            destination.setTop(rect.bottom());
+            destination.setBottom(rect.top());
+            destination.setZoom(m_proxy->getZoom());
+            m_outlineTreeModel->setDestination(sourceIndex, destination);
+        };
+
+        toolManager->pickRectangle(pickRectangle);
+    }
+    else
+    {
+        auto pickPage = [this, sourceIndex, destinationType](pdf::PDFInteger pageIndex)
+        {
+            pdf::PDFDestination destination;
+            destination.setDestinationType(destinationType);
+            destination.setPageIndex(pageIndex);
+            destination.setPageReference(m_document->getCatalog()->getPage(pageIndex)->getPageReference());
+            destination.setZoom(m_proxy->getZoom());
+            m_outlineTreeModel->setDestination(sourceIndex, destination);
+        };
+
+        toolManager->pickPage(pickPage);
+    }
+}
+
+void PDFSidebarWidget::onOutlineActionInheritZoom()
+{
+    const QModelIndex sourceIndex = getCurrentOutlineSourceIndex();
+    if (!sourceIndex.isValid())
+    {
+        return;
+    }
+
+    const pdf::PDFAction* action = m_outlineTreeModel->getAction(sourceIndex);
+    const pdf::PDFActionGoTo* goToAction = dynamic_cast<const pdf::PDFActionGoTo*>(action);
+    if (!goToAction)
+    {
+        return;
+    }
+
+    pdf::PDFDestination destination = goToAction->getDestination();
+    if (destination.getDestinationType() != pdf::DestinationType::XYZ)
+    {
+        return;
+    }
+
+    destination.setZoom(std::numeric_limits<pdf::PDFReal>::quiet_NaN());
+    m_outlineTreeModel->setDestination(sourceIndex, destination);
+}
+
+void PDFSidebarWidget::onOutlineActionInheritZoomForAllChapters()
+{
+    const int linksToFix = countInheritableZoomLinks();
+    if (linksToFix <= 0)
+    {
+        return;
+    }
+
+    const QMessageBox::StandardButton result = QMessageBox::warning(this,
+                                                                    tr("Inherit Zoom for All Chapters"),
+                                                                    tr("%1 link(s) will be fixed to inherit zoom.\n\nDo you want to perform this action?").arg(linksToFix),
+                                                                    QMessageBox::Yes | QMessageBox::No,
+                                                                    QMessageBox::No);
+    if (result != QMessageBox::Yes)
+    {
+        return;
+    }
+
+    std::function<void(const QModelIndex&)> visitItems = [this, &visitItems](const QModelIndex& parentIndex)
+    {
+        const int itemCount = m_outlineTreeModel->rowCount(parentIndex);
+        for (int row = 0; row < itemCount; ++row)
+        {
+            const QModelIndex itemIndex = m_outlineTreeModel->index(row, 0, parentIndex);
+            const pdf::PDFAction* action = m_outlineTreeModel->getAction(itemIndex);
+            const pdf::PDFActionGoTo* goToAction = dynamic_cast<const pdf::PDFActionGoTo*>(action);
+
+            if (goToAction)
+            {
+                pdf::PDFDestination destination = goToAction->getDestination();
+                if (destination.getDestinationType() == pdf::DestinationType::XYZ &&
+                    !std::isnan(destination.getZoom()))
+                {
+                    destination.setZoom(std::numeric_limits<pdf::PDFReal>::quiet_NaN());
+                    m_outlineTreeModel->setDestination(itemIndex, destination);
+                }
+            }
+
+            visitItems(itemIndex);
+        }
+    };
+
+    visitItems(QModelIndex());
+}
+
+void PDFSidebarWidget::onOutlineTreeViewContextMenuRequested(const QPoint& pos)
+{
+    QModelIndex proxyIndex = ui->outlineTreeView->indexAt(pos);
+    if (proxyIndex.isValid())
+    {
+        ui->outlineTreeView->setCurrentIndex(proxyIndex);
+    }
+    updateOutlineActions();
+
+    QMenu contextMenu;
+
+    contextMenu.addAction(m_outlineActionFollow);
+    contextMenu.addSeparator();
+
+    contextMenu.addAction(m_outlineActionDelete);
+    contextMenu.addAction(m_outlineActionInsert);
+    contextMenu.addAction(m_outlineActionRename);
+
+    contextMenu.addSeparator();
+
+    contextMenu.addAction(m_outlineActionMoveUp);
+    contextMenu.addAction(m_outlineActionMoveDown);
+    contextMenu.addAction(m_outlineActionMoveLeft);
+    contextMenu.addAction(m_outlineActionMoveRight);
+
+    contextMenu.addSeparator();
+
+    contextMenu.addAction(m_outlineActionFontBold);
+    contextMenu.addAction(m_outlineActionFontItalic);
+
+    QMenu* submenu = new QMenu(tr("Set Target"), &contextMenu);
+    QAction* targetAction = contextMenu.addMenu(submenu);
+    targetAction->setEnabled(proxyIndex.isValid());
+
+    submenu->addAction(m_outlineActionSetTargetNamedDestination);
+    submenu->addAction(m_outlineActionSetTargetFitPage);
+    submenu->addAction(m_outlineActionSetTargetFitPageHorizontally);
+    submenu->addAction(m_outlineActionSetTargetFitPageVertically);
+    submenu->addAction(m_outlineActionSetTargetFitRectangle);
+    submenu->addAction(m_outlineActionSetTargetFitBoundingBox);
+    submenu->addAction(m_outlineActionSetTargetFitBoundingBoxHorizontally);
+    submenu->addAction(m_outlineActionSetTargetFitBoundingBoxVertically);
+    submenu->addAction(m_outlineActionSetTargetXYZ);
+    submenu->addSeparator();
+    submenu->addAction(m_outlineActionInheritZoom);
+    submenu->addAction(m_outlineActionInheritZoomForAllChapters);
+
+    contextMenu.exec(ui->outlineTreeView->mapToGlobal(pos));
+}
+
+void PDFSidebarWidget::onNotesTreeViewContextMenuRequested(const QPoint& pos)
+{
+    QModelIndex index = ui->notesTreeView->indexAt(pos);
+
+    if (index.isValid())
+    {
+        QVariant userData = index.data(Qt::UserRole);
+        if (userData.isValid())
+        {
+            const int annotationIndex = userData.toInt();
+
+            if (annotationIndex >= 0 && annotationIndex < m_markupAnnotations.size())
+            {
+                const auto& annotationItem = m_markupAnnotations[annotationIndex];
+                QPoint globalPos = ui->notesTreeView->viewport()->mapToGlobal(pos);
+
+                pdf::PDFObjectReference annotationReference = annotationItem.first;
+                pdf::PDFObjectReference pageReference = m_document->getCatalog()->getPage(annotationItem.second)->getPageReference();
+
+                m_proxy->goToPage(annotationItem.second);
+                m_proxy->getAnnotationManager()->showAnnotationMenu(annotationReference, pageReference, globalPos);
+            }
+        }
+    }
+}
+
+void PDFSidebarWidget::onOutlineItemsChanged()
+{
+    if (m_isOutlineItemBeingCreated || m_newOutlineItemIndex.isValid())
+    {
+        // New item is being created and named by the user - changes are
+        // committed to the document at once, when the naming is finished
+        // (see finishOutlineItemCreation)
+        m_isOutlineChangeDeferred = true;
+        return;
+    }
+
+    if (m_document)
+    {
+        pdf::PDFDocumentBuilder builder(m_document);
+        builder.setOutline(m_outlineTreeModel->getRootOutlineItem());
+
+        pdf::PDFDocumentPointer pointer(new pdf::PDFDocument(builder.build()));
+        pdf::PDFModifiedDocument document(qMove(pointer), m_optionalContentActivity, pdf::PDFModifiedDocument::None);
+        Q_EMIT documentModified(qMove(document));
+    }
+}
+
+void PDFSidebarWidget::onBookmarkActivated(int index, PDFBookmarkManager::Bookmark bookmark)
+{
+    Q_UNUSED(bookmark);
+
+    if (m_bookmarkChangeInProgress)
+    {
+        return;
+    }
+
+    pdf::PDFTemporaryValueChange<bool> guard(&m_bookmarkChangeInProgress, true);
+    QModelIndex currentIndex = m_bookmarkItemModel->index(index, 0, QModelIndex());
+    ui->bookmarksView->selectionModel()->select(currentIndex, QItemSelectionModel::SelectCurrent);
+    ui->bookmarksView->setCurrentIndex(currentIndex);
+}
+
+void PDFSidebarWidget::onBookmarsCurrentIndexChanged(const QModelIndex& current, const QModelIndex& previous)
+{
+    Q_UNUSED(previous);
+
+    if (m_bookmarkChangeInProgress)
+    {
+        return;
+    }
+
+    pdf::PDFTemporaryValueChange<bool> guard(&m_bookmarkChangeInProgress, true);
+    m_bookmarkManager->goToBookmark(current.row(), false);
+}
+
+void PDFSidebarWidget::onBookmarkClicked(const QModelIndex& index)
+{
+    if (m_bookmarkChangeInProgress)
+    {
+        return;
+    }
+
+    if (index == ui->bookmarksView->currentIndex())
+    {
+        pdf::PDFTemporaryValueChange<bool> guard(&m_bookmarkChangeInProgress, true);
+        m_bookmarkManager->goToCurrentBookmark();
+    }
+}
+
+void PDFSidebarWidget::onNotesSelectionChanged()
+{
+    pdf::PDFWidgetAnnotationManager* annotationManager = m_proxy->getAnnotationManager();
+    if (m_notesSelectionChangeInProgress || !annotationManager)
+    {
+        return;
+    }
+
+    // Jakub Melka: notes selected in the list are selected on the pages. Annotations, which
+    // cannot be selected on the pages (hidden annotations, replies), are skipped by the manager.
+    std::vector<pdf::PDFObjectReference> annotations;
+    for (const QModelIndex& index : ui->notesTreeView->selectionModel()->selectedIndexes())
+    {
+        const QVariant userData = index.data(Qt::UserRole);
+        const int i = userData.isValid() ? userData.toInt() : -1;
+        if (i >= 0 && i < int(m_markupAnnotations.size()))
+        {
+            annotations.push_back(m_markupAnnotations[i].first);
+        }
+    }
+
+    pdf::PDFTemporaryValueChange<bool> guard(&m_notesSelectionChangeInProgress, true);
+    annotationManager->setSelectedAnnotations(annotations);
+}
+
+void PDFSidebarWidget::onAnnotationSelectionChanged()
+{
+    pdf::PDFWidgetAnnotationManager* annotationManager = m_proxy->getAnnotationManager();
+    if (m_notesSelectionChangeInProgress || !annotationManager)
+    {
+        return;
+    }
+
+    // Annotations selected on the pages are selected in the list of the notes
+    pdf::PDFTemporaryValueChange<bool> guard(&m_notesSelectionChangeInProgress, true);
+
+    QItemSelection selection;
+    for (int pageRow = 0; pageRow < m_notesTreeModel->rowCount(); ++pageRow)
+    {
+        const QStandardItem* pageItem = m_notesTreeModel->item(pageRow);
+        for (int userRow = 0; userRow < pageItem->rowCount(); ++userRow)
+        {
+            const QStandardItem* userItem = pageItem->child(userRow);
+            for (int annotationRow = 0; annotationRow < userItem->rowCount(); ++annotationRow)
+            {
+                const QStandardItem* annotationItem = userItem->child(annotationRow);
+                const int i = annotationItem->data(Qt::UserRole).toInt();
+                if (i >= 0 && i < int(m_markupAnnotations.size()) && annotationManager->isAnnotationSelected(m_markupAnnotations[i].first))
+                {
+                    const QModelIndex index = m_notesSortProxyTreeModel->mapFromSource(annotationItem->index());
+                    if (index.isValid())
+                    {
+                        selection.select(index, index);
+                    }
+                }
+            }
+        }
+    }
+
+    ui->notesTreeView->selectionModel()->select(selection, QItemSelectionModel::ClearAndSelect);
+    if (!selection.isEmpty())
+    {
+        ui->notesTreeView->scrollTo(selection.indexes().front());
+    }
+}
+
+void PDFSidebarWidget::onNotesItemClicked(const QModelIndex& index)
+{
+    QVariant userData = index.data(Qt::UserRole);
+    if (userData.isValid())
+    {
+        int i = userData.toInt();
+        if (i >= 0 && i < m_markupAnnotations.size())
+        {
+            pdf::PDFInteger pageIndex = m_markupAnnotations[i].second;
+            m_proxy->goToPage(pageIndex);
+        }
+    }
+}
+
+}   // namespace pdfviewer
