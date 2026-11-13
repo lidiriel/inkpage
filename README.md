@@ -1,45 +1,82 @@
-[![CI](https://github.com/JakubMelka/PDF4QT/actions/workflows/ci.yml/badge.svg)](https://github.com/JakubMelka/PDF4QT/actions/workflows/ci.yml)
+# inkpage
 
-# PDF4QT
+**inkpage** is a simple PDF editor for Linux, built with Qt 6. It is a fork of
+[PDF4QT](https://github.com/JakubMelka/PDF4QT) by Jakub Melka.
 
-**(c) Jakub Melka 2018-2026**
+Copyright (C) 2026 Ludovic Mercier. Based on PDF4QT, copyright (c) 2018-2026
+Jakub Melka and Contributors.
 
-**Mgr.Jakub.Melka@gmail.com**
+inkpage is free software, released under the GNU General Public License
+version 3 or later. It is provided without any warranty of any kind.
 
-**https://jakubmelka.github.io/**
+## 1. HISTORY OF THE FORK
 
-This software is consisting of PDF rendering library, and several
-applications, such as advanced document viewer, command line tool,
-and document page manipulator application. Software is implementing PDF
-functionality based on PDF Reference 2.0. It is written and maintained
-by Jakub Melka.
+PDF4QT is a complete PDF suite: a rendering library and several applications
+(viewer, editor, page manipulator, document comparison, command line tool),
+for Windows and Linux.
 
-*Software works on Microsoft Windows / Linux.*
+inkpage started in November 2026 from the PDF4QT 1.7.0.0 release, with the
+goal of a lighter editor for Linux only:
 
-Software is provided without any warranty of any kind.
+- Only the editor application is kept. The viewer, PageMaster, Diff,
+  LaunchPad, PdfTool, the JBIG2 viewer, the example generator and the
+  Windows packaging (Wix installer) were removed.
+- The text-to-speech player (Qt TextToSpeech) was removed.
+- The build uses the distribution packages instead of vcpkg.
+- New features: a page management toolbar (blank pages, duplicate, delete,
+  move, page backgrounds) and toolbars that can be moved from the top to the
+  right side of the window.
 
-Should you find this software beneficial, your support would be greatly appreciated [:heart: Sponsor](https://github.com/sponsors/JakubMelka)!
+The PDF engine, the page widget and the plugins come from PDF4QT. Their
+source folders keep the upstream names (`Pdf4QtLibCore`, `Pdf4QtLibWidgets`,
+`Pdf4QtLibGui`, ...) so that upstream fixes can be merged more easily. The
+original PDF4QT README and release notes are kept in `PDF4QT_README.md` and
+`PDF4QT_RELEASES.txt`.
 
-## 1. ACKNOWLEDGEMENTS
+## 2. ACKNOWLEDGEMENTS
 
 This software is based in part on the work of the Independent JPEG Group.
 
 Portions of this software are copyright © 2019 The FreeType
 Project (www.freetype.org). All rights reserved.
 
-## 2. LEGAL ISSUES
+## 3. LEGAL ISSUES
 
-This software was originally licensed under the GNU Lesser General Public License version 3 (LGPLv3).
-As of April 27, 2025, the project has been relicensed under the MIT License by the original author.
-The change to the MIT License was made to provide greater freedom and flexibility for both open-source and commercial use, reduce legal complexity, and encourage broader adoption and contribution.
+inkpage is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version. See the `LICENSE` file.
 
-Please see the attached LICENSE.txt file for details.
+Copyright (C) 2026 Ludovic Mercier.
 
-This software also uses several third-party libraries, and users must comply with the licenses of those third-party components.
+inkpage is derived from PDF4QT 1.7.0.0, copyright (c) 2018-2026 Jakub Melka
+and Contributors. PDF4QT was originally licensed under the GNU Lesser General
+Public License version 3 (LGPLv3) and has been relicensed under the MIT
+License by its original author since April 27, 2025. The MIT License allows
+the PDF4QT code to be used in a GPL program, on condition that its copyright
+and permission notice are kept: they are in the `PDF4QT_LICENSE` file, and in
+the header of the source files that come from PDF4QT. These files remain
+available under the MIT License as well; the files written for inkpage carry
+a GPL header.
 
-## 3. FEATURES
+This software also uses several third-party libraries, and users must comply
+with the licenses of those third-party components. Their license texts are in
+the `3rdparty_licenses` folder. All of them can be used in a GPLv3 program.
+FreeType is dual-licensed under the FreeType License (FTL) or the GNU GPL
+version 2 or later; inkpage uses it under the terms of the GPL.
 
-Software have following features (the list is not complete):
+## 4. FEATURES
+
+New in inkpage:
+
+- [x] page management toolbar and menu: add a blank page after the current
+      page, insert a blank page before it, duplicate, delete, move up/down
+- [x] page backgrounds (plain, ruled) for the current page or all pages,
+      drawn under the page content
+- [x] toolbars on the top or on the right side of the window
+      (View > Toolbar Position)
+
+From PDF4QT (the list is not complete):
 
 - [x] multithreading support
 - [x] encryption
@@ -49,162 +86,96 @@ Software have following features (the list is not complete):
 - [x] signature validation
 - [x] annotations
 - [x] form filling
-- [x] text to speech capability
 - [x] editation
 - [x] file attachments
 - [x] optimalization (compressing documents)
-- [x] command line tool
-- [x] audio book conversion
 - [x] internal structure inspector
-- [x] compare documents
 - [x] static XFA support (readonly, simple XFA only)
 - [x] electronically/digitally sign documents
 - [x] public key security encryption
-- [x] OCR - text recognition of scanned documents with a searchable invisible text layer (Tesseract)
+- [ ] OCR - text recognition of scanned documents (Tesseract), not built yet
 
-## 4. THIRD PARTY LIBRARIES
+## 5. THIRD PARTY LIBRARIES
 
 Several third-party libraries are used.
 
-1. libjpeg, see https://www.ijg.org/
-2. FreeType, see https://www.freetype.org/index.html, FTL license used
-3. OpenJPEG, implementing Jpeg2000, see https://www.openjpeg.org/, 2-clause MIT license
-4. Qt, https://www.qt.io/, LGPL license used
-5. OpenSSL, https://www.openssl.org/, Apache 2.0 license
-6. LittleCMS, http://www.littlecms.com/
-7. zlib, https://zlib.net/
-8. Blend2D, https://blend2d.com/
-9. Tesseract OCR, https://github.com/tesseract-ocr/tesseract, Apache 2.0 license (optional, see `PDF4QT_ENABLE_OCR`)
-10. Leptonica, http://www.leptonica.org/, BSD 2-clause license (dependency of Tesseract)
-11. Tesseract language models (tessdata_fast / tessdata_best), https://github.com/tesseract-ocr/tessdata_fast, Apache 2.0 license
+1. Qt 6, https://www.qt.io/, LGPL license used
+2. libjpeg, see https://www.ijg.org/, IJG license
+3. libpng, http://www.libpng.org/, libpng license (PNG Reference Library License)
+4. FreeType, see https://www.freetype.org/index.html, GPLv2+ option of its FTL/GPL dual license
+5. OpenJPEG, implementing Jpeg2000, see https://www.openjpeg.org/, 2-clause BSD license
+6. OpenSSL, https://www.openssl.org/, Apache 2.0 license
+7. LittleCMS, http://www.littlecms.com/, MIT license
+8. zlib, https://zlib.net/, zlib license
+9. oneTBB, https://github.com/uxlfoundation/oneTBB, Apache 2.0 license
+10. Blend2D, https://blend2d.com/, zlib license (with AsmJit, https://asmjit.com/, zlib license)
+11. Clipper2, https://github.com/AngusJohnson/Clipper2, Boost Software License 1.0
 
-## 5. CONTRIBUTIONS
+Optional, for the OCR feature (`PDF4QT_ENABLE_OCR`, currently off):
 
-Contributions are welcome!
+12. Tesseract OCR, https://github.com/tesseract-ocr/tesseract, Apache 2.0 license
+13. Leptonica, http://www.leptonica.org/, BSD 2-clause license (dependency of Tesseract)
+14. Tesseract language models (tessdata_fast / tessdata_best), https://github.com/tesseract-ocr/tessdata_fast, Apache 2.0 license
 
-Since the project is now licensed under the MIT License, contributions can be freely submitted without the need to sign a Contributor License Agreement (CLA).
-However, all contributions must be made under the terms of the MIT License to ensure license consistency across the project.
+## 6. COMPILING
 
-You are encouraged to contribute by testing, offering feedback, providing advice, or submitting code improvements.
+inkpage is built on Linux with CMake, a C++20 compiler and the packages of
+the distribution. It is developed on Debian 13 (GCC 14, Qt 6.8.2).
 
-## 6. INSTALLING
+### Dependencies
 
-### Windows
+Install the development packages (Debian names):
 
-The [Release page](https://github.com/JakubMelka/PDF4QT/releases) lists binaries for Windows, both with and without an installer.
+    sudo apt install build-essential cmake ninja-build git \
+        qt6-base-dev qt6-svg-dev qt6-tools-dev qt6-l10n-tools \
+        liblcms2-dev libopenjp2-7-dev libtbb-dev libssl-dev \
+        libfreetype-dev libjpeg-dev libpng-dev zlib1g-dev
 
-### Arch Linux
+Blend2D and Clipper2 are not packaged by Debian. Build them from source and
+install them into a local prefix, for example `$HOME/inkpage-deps`:
 
-A [pdf4qt-git](https://aur.archlinux.org/packages/pdf4qt-git) package is available in the AUR.
+    DEPS=$HOME/inkpage-deps
+    git clone https://github.com/asmjit/asmjit
+    git clone https://github.com/blend2d/blend2d
+    git clone https://github.com/AngusJohnson/Clipper2
 
-### Linux - Flatpak/AppImage
+    cmake -S blend2d -B build-blend2d -G Ninja -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_INSTALL_PREFIX=$DEPS -DBLEND2D_STATIC=OFF \
+          -DASMJIT_DIR=$PWD/asmjit
+    cmake --build build-blend2d && cmake --install build-blend2d
 
-For other Linux distributions, there are two options available. A Flatpak package can be accessed at [Flathub](https://flathub.org/apps/io.github.JakubMelka.Pdf4qt).
-Alternatively, an AppImage is available in the Releases section. The AppImage format is designed to work on nearly all Linux systems.
-Historically, a .deb package was also offered, but it has been discontinued due to compatibility issues with some Linux distributions.
-The executable names are: Pdf4QtEditor, Pdf4QtDiff, Pdf4QtLaunchPad, Pdf4QtPageMaster, Pdf4QtViewer, and PdfTool.
+    cmake -S Clipper2/CPP -B build-clipper2 -G Ninja -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_INSTALL_PREFIX=$DEPS -DBUILD_SHARED_LIBS=ON \
+          -DCLIPPER2_EXAMPLES=OFF -DCLIPPER2_TESTS=OFF -DCLIPPER2_UTILS=ON
+    cmake --build build-clipper2 && cmake --install build-clipper2
 
-## 7. COMPILING
+inkpage is tested with asmjit `c878602`, Blend2D `6dbc2ce` and Clipper2
+`21ebba0` (the versions used by PDF4QT 1.7.0.0).
 
-This software can be compiled on both Windows and Linux. A compiler supporting the C++20 standard is needed.
+### Building inkpage
 
-On Windows, you can use Visual Studio 2022 or MinGW.
+    cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_PREFIX_PATH=$DEPS \
+          -DCMAKE_BUILD_RPATH=$DEPS/lib \
+          -DPDF4QT_ENABLE_OCR=OFF
+    cmake --build build
 
-On Linux, a GCC version >= 8 should work, altough we tested it with GCC 11.
+The application is `build/bin/inkpage`, the plugins are in
+`build/lib/inkpage`. Run the unit tests with `ctest --test-dir build`.
 
-### Compiling from sources
+### CMake options
 
-1. Install [vcpkg](https://vcpkg.io/en/getting-started.html)
+|                  Option      |     Description                                          |
+| ---------------------------- | -------------------------------------------------------- |
+| `CMAKE_BUILD_TYPE`           | Release or Debug                                         |
+| `CMAKE_PREFIX_PATH`          | Prefix where Blend2D and Clipper2 are installed          |
+| `PDF4QT_BUILD_TESTS`         | Build the unit tests, ON by default                      |
+| `PDF4QT_ENABLE_OCR`          | Build the OCR feature (Tesseract), set it to OFF for now |
+| `INKPAGE_BUILD_DEV_TOOLS`    | Build the developer tools (CodeGenerator), OFF by default|
 
-        git clone https://github.com/Microsoft/vcpkg.git
-        ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
-        VCPKG_ROOT=$(pwd)/vcpkg
+## 7. DISCLAIMER
 
-    Check that vcpkg path is correct: `$VCPKG_ROOT/vcpkg --version`.
-
-2. Build PDF4QT
-
-    2.1 Clone repo
-
-        git clone https://github.com/JakubMelka/PDF4QT
-        cd PDF4QT
-
-    2.2 Configure
-
-        cmake -B build -S . -DPDF4QT_INSTALL_QT_DEPENDENCIES=0 -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake -DCMAKE_INSTALL_PREFIX='/' -DCMAKE_BUILD_TYPE=Release
-
-   (One user reported success with `-DCMAKE_INSTALL_PREFIX=''` instead, as otherwise all there paths were prepended with `/usr` (causing `/usr/usr...`
-
-    For a debug build, append `-DCMAKE_BUILD_TYPE=Debug`.
-
-    It is recommended to set the VCPKG_OVERLAY_PORTS variable to 'PDF4QT/vcpkg/overlays' to prevent crashes due to the incompatible LIBPNG library on some Linux systems.
-
-    2.3 Build
-
-        cmake --build build
-
-    Use the [`-j` switch](https://cmake.org/cmake/help/latest/manual/cmake.1.html#cmdoption-cmake-build-j) to build multiple files in parallel.
-
-    2.4 Install
-
-        sudo cmake --install build
-
-    To uninstall, run `sudo xargs rm < ./build/install_manifest.txt`.
-
-### Using Qt Creator (both Windows/Linux)
-1. Download Qt 6.9 or higher, and VCPKG package manager (https://vcpkg.io/en/index.html)
-2. Open Qt Creator and configure the project
-3. Build
- 
-### CMAKE Compilation Options
-
-Several important compilation options are available and should be set before building. On Windows,
-CMake can prepare a Wix project to create a *.msi installer package.
-
-|                  Option                | Platform |     Description                                          |
-| ------------------------------------   | ---------|--------------------------------------------------------- |
-| `PDF4QT_INSTALL_MSVC_REDISTRIBUTABLE`  | Windows  |Includes MSVC redistributable in installation             |
-| `PDF4QT_INSTALL_PREPARE_WIX_INSTALLER` | Windows  |Prepare .msi installator using Wix installer              |
-| `PDF4QT_INSTALL_DEPENDENCIES`          | Any      |Install dependent libraries into installation directory   |
-| `PDF4QT_INSTALL_QT_DEPENDENCIES`       | Any      |Install Qt dependent libraries into installation directory|
-| `VCPKG_OVERLAY_PORTS`                  | Linux    |Set it to prevent crashes with incompatible libpng library|
-| `PDF4QT_ENABLE_OCR`                    | Any      |Build the OCR feature (Tesseract engine), ON by default   |
- 
-Following important variables should be set or checked before any attempt to compile this project:
-
-|                  Variable              | Platform |     Description                                          |
-| ------------------------------------   | ---------|--------------------------------------------------------- |
-| `PDF4QT_QT_ROOT`                       | Any      |Qt installation directory                                 |
-| `QT_CREATOR_SKIP_VCPKG_SETUP`          | Any      |Enable or disable automatic vcpkg setup                   |
-| `CMAKE_PROJECT_INCLUDE_BEFORE`         | Any      |Should be set to package manager auto setup               |
-| `CMAKE_TOOLCHAIN_FILE`                 | Any      |Should be set to toolchain                                |
-| `CMAKE_BUILD_TYPE`                     | Any      |Can be Release (default) or Debug                         |
-
-#### Sample setup on Windows
-
-Following set of variables gives sample setup for MS Windows. It is minimal initial configuration
-to be able to built Debug build on MS Windows.
-
-| Key                             | Value                                                        |
-| ------------------------------- | -------------------------------------------------------------|
-| `CMAKE_BUILD_TYPE`              | Debug                                                        |
-| `CMAKE_CXX_COMPILER`            | %{Compiler:Executable:Cxx}                                   |
-| `CMAKE_C_COMPILER`              | %{Compiler:Executable:C}                                     |
-| `CMAKE_GENERATOR`               | Ninja                                                        |
-| `CMAKE_PREFIX_PATH`             | %{Qt:QT_INSTALL_PREFIX}                                      |
-| `CMAKE_PROJECT_INCLUDE_BEFORE`  | %{IDE:ResourcePath}/package-manager/auto-setup.cmake         |
-| `CMAKE_TOOLCHAIN_FILE`          | %{Qt:QT_INSTALL_PREFIX}/lib/cmake/Qt6/qt.toolchain.cmake     |
-| `PDF4QT_QT_ROOT`                | C:/Programming/Qt/6.4.0/msvc2019_64                          |
-| `QT_QMAKE_EXECUTABLE`           | %{Qt:qmakeExecutable}                                        |
-
-
-### Tested Compilers - Windows
- - Visual Studio 2022 (Microsoft Visual C++ Compiler 17.1)
- - MinGW 11.2.0
- 
-### Tested Compilers - Linux
- - GCC 13.1.1
-
-## 8. DISCLAIMER
-
-I wrote this project in my free time. I hope you will find it useful!
+inkpage is a personal project built on the work of Jakub Melka, who wrote
+PDF4QT in his free time. Bugs in inkpage should be reported to inkpage, not
+to the PDF4QT project. If you find PDF4QT useful, consider supporting its
+author: [:heart: Sponsor](https://github.com/sponsors/JakubMelka).
