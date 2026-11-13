@@ -114,6 +114,10 @@ private:
 
     void updateDeveloperMenu();
 
+    /// Creates the actions organizing the pages (blank pages, duplication, removal,
+    /// reordering, backgrounds), the Pages menu and the Pages toolbar
+    void initializePageActions();
+
     /// Creates the actions, which place the toolbars at the top or at the right side
     void initializeToolBarPositionActions();
 

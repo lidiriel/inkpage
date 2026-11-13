@@ -25,6 +25,7 @@
 #include "pdfannotation.h"
 #include "pdfform.h"
 #include "pdfdocumentwriter.h"
+#include "pdfpageorganizer.h"
 #include "pdfadvancedtools.h"
 #include "pdfdrawspacecontroller.h"
 #include "pdfwidgetutils.h"
@@ -60,6 +61,8 @@
 #include "pdfactioncombobox.h"
 #include "pdffullscreenwidget.h"
 #include "pdfpagegeometry.h"
+
+#include <numeric>
 
 #include <QMenu>
 #include <QPrinter>
@@ -573,6 +576,48 @@ void PDFProgramController::initialize(Features features,
     if (QAction* action = m_actionManager->getAction(PDFActionManager::CreateBitonalDocument))
     {
         connect(action, &QAction::triggered, this, &PDFProgramController::onActionCreateBitonalDocumentTriggered);
+    }
+
+    // Organization of the pages
+    const std::array<std::pair<PDFActionManager::Action, std::function<void()>>, 10> pageActions =
+    {{
+        { PDFActionManager::PageAddBlank, [this]() { performPageOperation(&pdf::PDFPageOrganizer::addBlankPage, 1); } },
+        { PDFActionManager::PageInsertBlank, [this]() { performPageOperation(&pdf::PDFPageOrganizer::insertBlankPage, 0); } },
+        { PDFActionManager::PageDuplicate, [this]() { performPageOperation(&pdf::PDFPageOrganizer::duplicatePage, 1); } },
+        { PDFActionManager::PageRemove, [this]() { performPageOperation(&pdf::PDFPageOrganizer::removePage, 0); } },
+        { PDFActionManager::PageMoveUp, [this]()
+            {
+                auto operation = [](pdf::PDFDocument* document, pdf::PDFInteger pageIndex, pdf::PDFModifiedDocument::ModificationFlags* flags) -> pdf::PDFOperationResult
+                {
+                    // The first page stays where it is
+                    return pageIndex > 0 ? pdf::PDFPageOrganizer::movePage(document, pageIndex, pageIndex - 1, flags) : pdf::PDFOperationResult(true);
+                };
+                performPageOperation(operation, -1);
+            }
+        },
+        { PDFActionManager::PageMoveDown, [this]()
+            {
+                auto operation = [](pdf::PDFDocument* document, pdf::PDFInteger pageIndex, pdf::PDFModifiedDocument::ModificationFlags* flags) -> pdf::PDFOperationResult
+                {
+                    // The last page stays where it is
+                    const pdf::PDFInteger pageCount = static_cast<pdf::PDFInteger>(document->getCatalog()->getPageCount());
+                    return pageIndex + 1 < pageCount ? pdf::PDFPageOrganizer::movePage(document, pageIndex, pageIndex + 1, flags) : pdf::PDFOperationResult(true);
+                };
+                performPageOperation(operation, 1);
+            }
+        },
+        { PDFActionManager::PageBackgroundPlain, [this]() { setPageBackground(false, false); } },
+        { PDFActionManager::PageBackgroundRuled, [this]() { setPageBackground(false, true); } },
+        { PDFActionManager::PageBackgroundPlainAllPages, [this]() { setPageBackground(true, false); } },
+        { PDFActionManager::PageBackgroundRuledAllPages, [this]() { setPageBackground(true, true); } },
+    }};
+
+    for (const auto& pageAction : pageActions)
+    {
+        if (QAction* action = m_actionManager->getAction(pageAction.first))
+        {
+            connect(action, &QAction::triggered, this, pageAction.second);
+        }
     }
     if (QAction* action = m_actionManager->getAction(PDFActionManager::RecognizeText))
     {
@@ -1642,6 +1687,56 @@ void PDFProgramController::onActionPageGeometryTriggered()
     }
 }
 
+void PDFProgramController::performPageOperation(const PageOperation& operation, pdf::PDFInteger pageOffset)
+{
+    if (!m_pdfDocument || m_pdfDocument->getCatalog()->getPageCount() == 0)
+    {
+        return;
+    }
+
+    const std::vector<pdf::PDFInteger> currentPages = m_pdfWidget->getDrawWidget()->getCurrentPages();
+    const pdf::PDFInteger pageIndex = currentPages.empty() ? 0 : currentPages.front();
+
+    pdf::PDFDocument updatedDocument = *m_pdfDocument;
+    pdf::PDFModifiedDocument::ModificationFlags flags;
+    const pdf::PDFOperationResult result = operation(&updatedDocument, pageIndex, &flags);
+    if (!result)
+    {
+        QMessageBox::critical(m_mainWindow, tr("Error"), result.getErrorMessage());
+        return;
+    }
+
+    if (updatedDocument != *m_pdfDocument)
+    {
+        const pdf::PDFInteger pageCount = static_cast<pdf::PDFInteger>(updatedDocument.getCatalog()->getPageCount());
+        pdf::PDFDocumentPointer pointer(new pdf::PDFDocument(std::move(updatedDocument)));
+        onDocumentModified(pdf::PDFModifiedDocument(std::move(pointer), m_optionalContentActivity, flags));
+        m_pdfWidget->getDrawWidgetProxy()->goToPage(qBound<pdf::PDFInteger>(0, pageIndex + pageOffset, pageCount - 1));
+    }
+}
+
+void PDFProgramController::setPageBackground(bool allPages, bool ruled)
+{
+    const pdf::PDFPageOrganizer::Background background = ruled ? pdf::PDFPageOrganizer::Background::Ruled : pdf::PDFPageOrganizer::Background::Plain;
+    auto operation = [allPages, background](pdf::PDFDocument* document, pdf::PDFInteger pageIndex, pdf::PDFModifiedDocument::ModificationFlags* flags)
+    {
+        std::vector<pdf::PDFInteger> pageIndices;
+        if (allPages)
+        {
+            pageIndices.resize(document->getCatalog()->getPageCount());
+            std::iota(pageIndices.begin(), pageIndices.end(), 0);
+        }
+        else
+        {
+            pageIndices.push_back(pageIndex);
+        }
+
+        return pdf::PDFPageOrganizer::setBackground(document, pageIndices, background, flags);
+    };
+
+    performPageOperation(operation, 0);
+}
+
 void PDFProgramController::onActionRecognizeTextTriggered()
 {
     if (!m_pdfDocument || m_pdfDocument->getCatalog()->getPageCount() == 0)
@@ -2072,6 +2167,17 @@ void PDFProgramController::updateActionsAvailability()
     m_actionManager->setEnabled(PDFActionManager::Sanitize, hasValidDocument);
     m_actionManager->setEnabled(PDFActionManager::RemoveExternalLinks, hasValidDocument);
     m_actionManager->setEnabled(PDFActionManager::PageGeometry, hasValidDocument && canModify);
+
+    // Organization of the pages changes the page tree (assembly) or the content of the pages
+    const bool canOrganizePages = hasValidDocument && canModify && m_pdfDocument->getCatalog()->getPageCount() > 0;
+    for (PDFActionManager::Action action : { PDFActionManager::PageAddBlank, PDFActionManager::PageInsertBlank, PDFActionManager::PageDuplicate,
+                                             PDFActionManager::PageMoveUp, PDFActionManager::PageMoveDown,
+                                             PDFActionManager::PageBackgroundPlain, PDFActionManager::PageBackgroundRuled,
+                                             PDFActionManager::PageBackgroundPlainAllPages, PDFActionManager::PageBackgroundRuledAllPages })
+    {
+        m_actionManager->setEnabled(action, canOrganizePages);
+    }
+    m_actionManager->setEnabled(PDFActionManager::PageRemove, canOrganizePages && m_pdfDocument->getCatalog()->getPageCount() > 1);
     m_actionManager->setEnabled(PDFActionManager::CreateBitonalDocument, hasValidDocument);
 
     // OCR is available for a document with at least one page; the permissions are
@@ -2710,8 +2816,6 @@ void PDFProgramController::loadPlugins()
     };
     std::sort(m_loadedPlugins.begin(), m_loadedPlugins.end(), comparator);
 
-    bool isPluginToolBarBreakNeeded = true;
-
     for (const auto& plugin : m_loadedPlugins)
     {
         plugin.second->setDataExchangeInterface(this);
@@ -2728,17 +2832,10 @@ void PDFProgramController::loadPlugins()
             // toolbar at all, and offer all the actions in its menu only.
             if (!toolbarActions.empty())
             {
-                if (isPluginToolBarBreakNeeded)
-                {
-                    // Toolbars of the plugins are placed in their own row, so they do not
-                    // push the toolbar of the application out of the window. Qt does not
-                    // wrap the toolbars by itself, a new row is created only by a toolbar
-                    // break. The user can rearrange the toolbars, the arrangement is then
-                    // restored from the window state.
-                    m_mainWindow->addToolBarBreak();
-                    isPluginToolBarBreakNeeded = false;
-                }
-
+                // Toolbars of the plugins follow the Pages toolbar in the second row, so they
+                // do not push the standard toolbar out of the window (Qt does not wrap the
+                // toolbars by itself, the Pages toolbar is placed after a toolbar break). The
+                // user can rearrange the toolbars, the arrangement is restored from the window state.
                 toolBar = m_mainWindow->addToolBar(plugin.first.name);
                 toolBar->setObjectName(QString("Plugin_Toolbar_%1").arg(plugin.first.name));
                 m_mainWindowInterface->adjustToolbar(toolBar);

@@ -51,6 +51,13 @@
         <file>resources/plugins.svg</file>
         <file>resources/hyperlink.svg</file>
         <file>resources/insert-page-numbers.svg</file>
+        <file>resources/page-add.svg</file>
+        <file>resources/page-insert.svg</file>
+        <file>resources/page-duplicate.svg</file>
+        <file>resources/page-remove.svg</file>
+        <file>resources/page-move-up.svg</file>
+        <file>resources/page-move-down.svg</file>
+        <file>resources/page-background.svg</file>
         <file>resources/highlight.svg</file>
         <file>resources/squiggly.svg</file>
         <file>resources/strikeout.svg</file>

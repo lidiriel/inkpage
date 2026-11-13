@@ -38,6 +38,7 @@
 #include <QFileSystemWatcher>
 
 #include <array>
+#include <functional>
 
 class QMainWindow;
 class QComboBox;
@@ -211,6 +212,16 @@ public:
         BookmarkExport,
         BookmarkImport,
         BookmarkGenerateAutomatically,
+        PageAddBlank,
+        PageInsertBlank,
+        PageDuplicate,
+        PageRemove,
+        PageMoveUp,
+        PageMoveDown,
+        PageBackgroundPlain,
+        PageBackgroundRuled,
+        PageBackgroundPlainAllPages,
+        PageBackgroundRuledAllPages,
         LastAction
     };
 
@@ -382,6 +393,17 @@ private:
     void onActionSanitizeTriggered();
     void onActionRemoveExternalLinksTriggered();
     void onActionPageGeometryTriggered();
+
+    /// Operation over the document and the current page (the first visible page)
+    using PageOperation = std::function<pdf::PDFOperationResult(pdf::PDFDocument*, pdf::PDFInteger, pdf::PDFModifiedDocument::ModificationFlags*)>;
+
+    /// Performs the page operation with the current page, the modified document is set
+    /// (with undo/redo step) and the view goes to the page shifted by \p pageOffset from
+    /// the current page (clamped to the pages of the modified document).
+    void performPageOperation(const PageOperation& operation, pdf::PDFInteger pageOffset);
+
+    /// Sets the background of the current page or of all pages
+    void setPageBackground(bool allPages, bool ruled);
     void onActionCreateBitonalDocumentTriggered();
     void onActionRecognizeTextTriggered();
     void onActionPrepareScannedPagesTriggered();

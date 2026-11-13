@@ -308,6 +308,16 @@ if(NOT PDF4QT_BUILD_ONLY_CORE_LIBRARY)
     set_tests_properties(UnitTestsToolBarPosition PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 endif()
 
+add_executable(UnitTestsPageOrganizer tst_pageorganizertest.cpp)
+target_link_libraries(UnitTestsPageOrganizer PRIVATE Pdf4QtLibCore Qt6::Core Qt6::Gui Qt6::Test)
+set_target_properties(UnitTestsPageOrganizer PROPERTIES
+    WIN32_EXECUTABLE OFF
+    MACOSX_BUNDLE OFF
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PDF4QT_INSTALL_BIN_DIR}
+)
+add_test(UnitTestsPageOrganizer "${CMAKE_BINARY_DIR}/${PDF4QT_INSTALL_BIN_DIR}/UnitTestsPageOrganizer")
+set_tests_properties(UnitTestsPageOrganizer PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+
 add_executable(UnitTestsSignatureBuilder tst_signaturebuildertest.cpp)
 target_link_libraries(UnitTestsSignatureBuilder PRIVATE Pdf4QtLibCore Qt6::Core Qt6::Gui Qt6::Test)
 set_target_properties(UnitTestsSignatureBuilder PROPERTIES

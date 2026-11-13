@@ -304,6 +304,8 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     ui->mainToolBar->addWidget(insertStickyNoteButton);
     ui->mainToolBar->addSeparator();
 
+    initializePageActions();
+
     m_programController->initialize(PDFProgramController::AllFeatures, this, this, m_actionManager, m_progress);
     setCentralWidget(m_programController->getPdfWidget());
     setFocusProxy(m_programController->getPdfWidget());
@@ -563,6 +565,73 @@ void PDFEditorMainWindow::adjustToolbar(QToolBar* toolbar)
 {
     QSize iconSize = pdf::PDFWidgetUtils::scaleDPI(this, QSize(24, 24));
     toolbar->setIconSize(iconSize);
+}
+
+void PDFEditorMainWindow::initializePageActions()
+{
+    auto createAction = [this](PDFActionManager::Action type, QString text, QString toolTip, QString iconName, QString objectName)
+    {
+        QAction* action = new QAction(QIcon(QString(":/resources/%1.svg").arg(iconName)), text, this);
+        action->setToolTip(toolTip);
+        action->setStatusTip(toolTip);
+        action->setObjectName(objectName);
+        m_actionManager->setAction(type, action);
+        return action;
+    };
+
+    QAction* addAction = createAction(PDFActionManager::PageAddBlank, tr("&Add Blank Page After"), tr("Add a blank page after the current page, with the same size and background"), "page-add", "actionPageAddBlank");
+    QAction* insertAction = createAction(PDFActionManager::PageInsertBlank, tr("&Insert Blank Page Before"), tr("Insert a blank page before the current page, with the same size and background"), "page-insert", "actionPageInsertBlank");
+    QAction* duplicateAction = createAction(PDFActionManager::PageDuplicate, tr("&Duplicate Page"), tr("Insert a copy of the current page after it, including its annotations"), "page-duplicate", "actionPageDuplicate");
+    QAction* removeAction = createAction(PDFActionManager::PageRemove, tr("D&elete Page"), tr("Delete the current page"), "page-remove", "actionPageRemove");
+    QAction* moveUpAction = createAction(PDFActionManager::PageMoveUp, tr("Move Page &Up"), tr("Move the current page before the previous page"), "page-move-up", "actionPageMoveUp");
+    QAction* moveDownAction = createAction(PDFActionManager::PageMoveDown, tr("Move Page Do&wn"), tr("Move the current page after the next page"), "page-move-down", "actionPageMoveDown");
+
+    QMenu* backgroundMenu = new QMenu(tr("&Background"), this);
+    backgroundMenu->addAction(createAction(PDFActionManager::PageBackgroundPlain, tr("&Plain (Current Page)"), tr("Remove the background of the current page"), "page", "actionPageBackgroundPlain"));
+    backgroundMenu->addAction(createAction(PDFActionManager::PageBackgroundRuled, tr("&Ruled (Current Page)"), tr("Set a ruled background on the current page"), "page-background", "actionPageBackgroundRuled"));
+    backgroundMenu->addSeparator();
+    backgroundMenu->addAction(createAction(PDFActionManager::PageBackgroundPlainAllPages, tr("P&lain (All Pages)"), tr("Remove the background of all pages"), "page", "actionPageBackgroundPlainAllPages"));
+    backgroundMenu->addAction(createAction(PDFActionManager::PageBackgroundRuledAllPages, tr("R&uled (All Pages)"), tr("Set a ruled background on all pages"), "page-background", "actionPageBackgroundRuledAllPages"));
+
+    QAction* backgroundAction = backgroundMenu->menuAction();
+    backgroundAction->setIcon(QIcon(":/resources/page-background.svg"));
+    backgroundAction->setToolTip(tr("Background of the page"));
+    backgroundAction->setObjectName("actionPageBackground");
+    m_actionManager->addAdditionalAction(backgroundAction);
+
+    QMenu* pagesMenu = new QMenu(tr("&Pages"), this);
+    pagesMenu->setObjectName("menuPages");
+    pagesMenu->addAction(addAction);
+    pagesMenu->addAction(insertAction);
+    pagesMenu->addAction(duplicateAction);
+    pagesMenu->addAction(removeAction);
+    pagesMenu->addSeparator();
+    pagesMenu->addAction(moveUpAction);
+    pagesMenu->addAction(moveDownAction);
+    pagesMenu->addSeparator();
+    pagesMenu->addMenu(backgroundMenu);
+    menuBar()->insertMenu(ui->menuTools->menuAction(), pagesMenu);
+
+    // The toolbar starts the second row, the toolbars of the plugins follow it
+    QToolBar* pagesToolBar = new QToolBar(tr("Pages"), this);
+    pagesToolBar->setObjectName("PagesToolBar");
+    adjustToolbar(pagesToolBar);
+    pagesToolBar->addAction(addAction);
+    pagesToolBar->addAction(insertAction);
+    pagesToolBar->addAction(duplicateAction);
+    pagesToolBar->addAction(removeAction);
+    pagesToolBar->addSeparator();
+    pagesToolBar->addAction(moveUpAction);
+    pagesToolBar->addAction(moveDownAction);
+    pagesToolBar->addSeparator();
+    pagesToolBar->addAction(backgroundAction);
+    if (QToolButton* backgroundButton = qobject_cast<QToolButton*>(pagesToolBar->widgetForAction(backgroundAction)))
+    {
+        backgroundButton->setPopupMode(QToolButton::InstantPopup);
+    }
+
+    addToolBarBreak(Qt::TopToolBarArea);
+    addToolBar(Qt::TopToolBarArea, pagesToolBar);
 }
 
 void PDFEditorMainWindow::initializeToolBarPositionActions()
