@@ -70,6 +70,9 @@
 #include <QtConcurrent/QtConcurrent>
 #include <QToolButton>
 #include <QActionGroup>
+#include <QToolBar>
+
+#include <algorithm>
 
 #include "pdfdbgheap.h"
 
@@ -92,6 +95,9 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     m_pageNumberSpinBox(nullptr),
     m_pageNumberLabel(nullptr),
     m_pageZoomSpinBox(nullptr),
+    m_toolBarPositionMenu(nullptr),
+    m_toolBarsTopAction(nullptr),
+    m_toolBarsRightAction(nullptr),
     m_isLoadingUI(false),
     m_progress(new pdf::PDFProgress(this)),
     m_progressTaskbarIndicator(new PDFWinTaskBarProgress(this)),
@@ -345,6 +351,8 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     m_sidebarDockWidget->toggleViewAction()->setObjectName("actionSidebar");
     m_actionManager->addAdditionalAction(m_sidebarDockWidget->toggleViewAction());
 
+    initializeToolBarPositionActions();
+
     connect(m_progress, &pdf::PDFProgress::progressStarted, this, &PDFEditorMainWindow::onProgressStarted);
     connect(m_progress, &pdf::PDFProgress::progressStep, this, &PDFEditorMainWindow::onProgressStep);
     connect(m_progress, &pdf::PDFProgress::progressFinished, this, &PDFEditorMainWindow::onProgressFinished);
@@ -555,6 +563,74 @@ void PDFEditorMainWindow::adjustToolbar(QToolBar* toolbar)
 {
     QSize iconSize = pdf::PDFWidgetUtils::scaleDPI(this, QSize(24, 24));
     toolbar->setIconSize(iconSize);
+}
+
+void PDFEditorMainWindow::initializeToolBarPositionActions()
+{
+    m_toolBarPositionMenu = new QMenu(tr("&Toolbar Position"), this);
+
+    m_toolBarsTopAction = m_toolBarPositionMenu->addAction(tr("&Top"));
+    m_toolBarsTopAction->setObjectName("actionToolBarsTop");
+    m_toolBarsTopAction->setCheckable(true);
+
+    m_toolBarsRightAction = m_toolBarPositionMenu->addAction(tr("&Right"));
+    m_toolBarsRightAction->setObjectName("actionToolBarsRight");
+    m_toolBarsRightAction->setCheckable(true);
+
+    // Toolbars can be dragged also into another area (or left floating),
+    // then none of the actions is checked.
+    QActionGroup* actionGroup = new QActionGroup(this);
+    actionGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::ExclusiveOptional);
+    actionGroup->addAction(m_toolBarsTopAction);
+    actionGroup->addAction(m_toolBarsRightAction);
+
+    connect(m_toolBarsTopAction, &QAction::triggered, this, [this]() { setToolBarsArea(Qt::TopToolBarArea); });
+    connect(m_toolBarsRightAction, &QAction::triggered, this, [this]() { setToolBarsArea(Qt::RightToolBarArea); });
+    connect(m_toolBarPositionMenu, &QMenu::aboutToShow, this, &PDFEditorMainWindow::updateToolBarPositionActions);
+
+    m_actionManager->addAdditionalAction(m_toolBarsTopAction);
+    m_actionManager->addAdditionalAction(m_toolBarsRightAction);
+
+    ui->menuView->addMenu(m_toolBarPositionMenu);
+}
+
+void PDFEditorMainWindow::updateToolBarPositionActions()
+{
+    const Qt::ToolBarArea area = ui->mainToolBar->isFloating() ? Qt::NoToolBarArea : toolBarArea(ui->mainToolBar);
+    m_toolBarsTopAction->setChecked(area == Qt::TopToolBarArea);
+    m_toolBarsRightAction->setChecked(area == Qt::RightToolBarArea);
+}
+
+void PDFEditorMainWindow::setToolBarsArea(Qt::ToolBarArea area)
+{
+    // The standard toolbar is created first, the toolbars of the plugins follow
+    // in the order in which the plugins were loaded
+    const QList<QToolBar*> toolBars = findChildren<QToolBar*>(Qt::FindDirectChildrenOnly);
+
+    // Toolbars already placed in the area keep the arrangement made by the user
+    const bool isAlreadyInArea = std::all_of(toolBars.cbegin(), toolBars.cend(), [this, area](QToolBar* toolBar) { return !toolBar->isFloating() && toolBarArea(toolBar) == area; });
+    if (!isAlreadyInArea)
+    {
+        pdf::PDFWidgetUtils::moveToolBars(this, toolBars, area);
+    }
+
+    updateToolBarPositionActions();
+}
+
+QMenu* PDFEditorMainWindow::createPopupMenu()
+{
+    // The context menu of the toolbars and of the dock widgets
+    QMenu* menu = QMainWindow::createPopupMenu();
+
+    if (menu && m_toolBarPositionMenu)
+    {
+        updateToolBarPositionActions();
+        menu->addSeparator();
+        menu->addAction(m_toolBarsTopAction);
+        menu->addAction(m_toolBarsRightAction);
+    }
+
+    return menu;
 }
 
 pdf::PDFTextSelection PDFEditorMainWindow::getSelectedText() const

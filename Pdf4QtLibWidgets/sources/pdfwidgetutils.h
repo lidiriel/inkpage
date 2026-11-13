@@ -27,7 +27,11 @@
 #include "pdfglobal.h"
 
 #include <QIcon>
+#include <QList>
 #include <QWidget>
+
+class QToolBar;
+class QMainWindow;
 
 namespace pdf
 {
@@ -103,6 +107,15 @@ public:
     /// Checks menu accessibility for the specified menu.
     /// \param menu The menu to be checked for accessibility.
     static void checkMenuAccessibility(QMenu* menu);
+
+    /// Moves the toolbars into the toolbar area of the main window. The toolbars
+    /// are placed in the order of the list, the breaks before the toolbars are kept
+    /// (a break starts a new row in the top/bottom area and a new column in the
+    /// left/right area). Floating toolbars are docked.
+    /// \param mainWindow Main window, which owns the toolbars
+    /// \param toolBars Toolbars to be moved, in the order of their placement
+    /// \param area Target toolbar area
+    static void moveToolBars(QMainWindow* mainWindow, const QList<QToolBar*>& toolBars, Qt::ToolBarArea area);
 };
 
 } // namespace pdf

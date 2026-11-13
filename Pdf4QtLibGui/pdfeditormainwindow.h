@@ -90,6 +90,11 @@ public:
     virtual void setDocument(const pdf::PDFModifiedDocument& document) override;
     virtual void adjustToolbar(QToolBar* toolbar) override final;
     virtual pdf::PDFTextSelection getSelectedText() const override;
+    virtual QMenu* createPopupMenu() override;
+
+    /// Moves all toolbars of the main window (the standard toolbar and the toolbars
+    /// of the plugins) into the toolbar area, their order and rows/columns are kept
+    void setToolBarsArea(Qt::ToolBarArea area);
 
 protected:
     virtual void dragEnterEvent(QDragEnterEvent* event) override;
@@ -109,6 +114,12 @@ private:
 
     void updateDeveloperMenu();
 
+    /// Creates the actions, which place the toolbars at the top or at the right side
+    void initializeToolBarPositionActions();
+
+    /// Checks the toolbar position action corresponding to the area of the standard toolbar
+    void updateToolBarPositionActions();
+
     QIcon createStickyNoteIcon(QString key) const;
 
     Ui::PDFEditorMainWindow* ui;
@@ -122,6 +133,9 @@ private:
     QSpinBox* m_pageNumberSpinBox;
     QLabel* m_pageNumberLabel;
     QDoubleSpinBox* m_pageZoomSpinBox;
+    QMenu* m_toolBarPositionMenu;
+    QAction* m_toolBarsTopAction;
+    QAction* m_toolBarsRightAction;
     bool m_isLoadingUI;
     pdf::PDFProgress* m_progress;
     PDFWinTaskBarProgress* m_progressTaskbarIndicator;

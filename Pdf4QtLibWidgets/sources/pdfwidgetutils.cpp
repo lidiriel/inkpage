@@ -25,12 +25,15 @@
 
 #include <map>
 #include <set>
+#include <vector>
 #include <optional>
 
 #include <QMenu>
 #include <QAction>
 #include <QDialog>
 #include <QLayout>
+#include <QToolBar>
+#include <QMainWindow>
 #include <QPainter>
 #include <QPixmap>
 #include <QGroupBox>
@@ -381,6 +384,35 @@ void PDFWidgetUtils::checkMenuAccessibility(QMenu* menu)
     if (!errors.isEmpty())
     {
         QMessageBox::warning(nullptr, "Accesibility Check", errors.join("<br>"));
+    }
+}
+
+void PDFWidgetUtils::moveToolBars(QMainWindow* mainWindow, const QList<QToolBar*>& toolBars, Qt::ToolBarArea area)
+{
+    // Breaks are bound to the toolbar following them, they must be removed before
+    // the toolbar is moved, otherwise they stay in the old area.
+    std::vector<bool> breaks;
+    breaks.reserve(toolBars.size());
+    for (QToolBar* toolBar : toolBars)
+    {
+        const bool hasBreak = mainWindow->toolBarBreak(toolBar);
+        breaks.push_back(hasBreak);
+
+        if (hasBreak)
+        {
+            mainWindow->removeToolBarBreak(toolBar);
+        }
+    }
+
+    for (qsizetype i = 0; i < toolBars.size(); ++i)
+    {
+        // A break before the first toolbar has no meaning
+        if (i > 0 && breaks[i])
+        {
+            mainWindow->addToolBarBreak(area);
+        }
+
+        mainWindow->addToolBar(area, toolBars[i]);
     }
 }
 
