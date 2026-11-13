@@ -35,6 +35,11 @@
 #include <openjpeg.h>
 #include <openssl/opensslv.h>
 #include <zlib.h>
+#include <clipper2/clipper.version.h>
+
+#if __has_include(<oneapi/tbb/version.h>)
+#include <oneapi/tbb/version.h>
+#endif
 
 #ifdef Q_OS_WIN
 #define WIN32_LEAN_AND_MEAN
@@ -312,7 +317,7 @@ std::vector<PDFDependentLibraryInfo> PDFDependentLibraryInfo::getLibraryInfo()
     FT_Done_FreeType(ftLibrary);
     PDFDependentLibraryInfo freetypeInfo;
     freetypeInfo.library = tr("FreeType");
-    freetypeInfo.license = tr("FTL");
+    freetypeInfo.license = tr("GPLv2+ (FTL/GPL dual license)");
     freetypeInfo.version = tr("%1.%2.%3").arg(ftMajor).arg(ftMinor).arg(ftPatch);
     freetypeInfo.url = tr("https://www.freetype.org/index.html");
     result.emplace_back(qMove(freetypeInfo));
@@ -320,7 +325,7 @@ std::vector<PDFDependentLibraryInfo> PDFDependentLibraryInfo::getLibraryInfo()
     // OpenJPEG
     PDFDependentLibraryInfo openjpegInfo;
     openjpegInfo.library = tr("OpenJPEG");
-    openjpegInfo.license = tr("2-clause MIT license");
+    openjpegInfo.license = tr("2-clause BSD license");
     openjpegInfo.version = opj_version();
     openjpegInfo.url = tr("https://www.openjpeg.org/");
     result.emplace_back(qMove(openjpegInfo));
@@ -338,7 +343,7 @@ std::vector<PDFDependentLibraryInfo> PDFDependentLibraryInfo::getLibraryInfo()
     const int lcmsMinor = (LCMS_VERSION % 1000) / 10;
     PDFDependentLibraryInfo lcms2Info;
     lcms2Info.library = tr("LittleCMS");
-    lcms2Info.license = tr("2-clause MIT license");
+    lcms2Info.license = tr("MIT license");
     lcms2Info.version = tr("%1.%2").arg(lcmsMajor).arg(lcmsMinor);;
     lcms2Info.url = tr("http://www.littlecms.com/");
     result.emplace_back(qMove(lcms2Info));
@@ -362,6 +367,24 @@ std::vector<PDFDependentLibraryInfo> PDFDependentLibraryInfo::getLibraryInfo()
     blend2dInfo.version = QString("%1.%2.%3").arg(blend2dMajor).arg(blend2dMinor).arg(blend2dPatch);
     blend2dInfo.url = tr("https://blend2d.com/");
     result.emplace_back(qMove(blend2dInfo));
+
+    // Clipper2
+    PDFDependentLibraryInfo clipper2Info;
+    clipper2Info.library = tr("Clipper2");
+    clipper2Info.license = tr("Boost Software License 1.0");
+    clipper2Info.version = QString::fromLatin1(CLIPPER2_VERSION);
+    clipper2Info.url = tr("https://github.com/AngusJohnson/Clipper2");
+    result.emplace_back(qMove(clipper2Info));
+
+#ifdef TBB_VERSION_STRING
+    // oneTBB
+    PDFDependentLibraryInfo tbbInfo;
+    tbbInfo.library = tr("oneTBB");
+    tbbInfo.license = tr("Apache 2.0");
+    tbbInfo.version = QString::fromLatin1(TBB_VERSION_STRING);
+    tbbInfo.url = tr("https://github.com/uxlfoundation/oneTBB");
+    result.emplace_back(qMove(tbbInfo));
+#endif
 
     return result;
 }

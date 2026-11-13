@@ -43,6 +43,7 @@ endif()
 
 option(PDF4QT_BUILD_ONLY_CORE_LIBRARY "Build only core library" OFF)
 option(INKPAGE_BUILD_DEV_TOOLS "Build the developer tools (CodeGenerator)" OFF)
+option(INKPAGE_BUILD_DISABLED_PLUGINS "Build the deactivated plugins (AudioBook, Redact, SoftProofing)" OFF)
 option(PDF4QT_BUILD_TESTS "Build UnitTests" ON)
 option(PDF4QT_ENABLE_COVERAGE "Instrument the code for the source based code coverage of clang (llvm-cov)" OFF)
 option(PDF4QT_ENABLE_OCR "Build the OCR support with the Tesseract engine (requires Tesseract and Leptonica)" ON)

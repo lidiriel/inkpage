@@ -20,12 +20,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_subdirectory(AudioBookPlugin)
-add_subdirectory(DimensionsPlugin)
 add_subdirectory(ObjectInspectorPlugin)
-add_subdirectory(OutputPreviewPlugin)
-add_subdirectory(RedactPlugin)
 add_subdirectory(SignaturePlugin)
-add_subdirectory(SoftProofingPlugin)
 add_subdirectory(EditorPlugin)
 add_subdirectory(ScannerPlugin)
+
+# Plugins kept in the sources but not built by default
+if(INKPAGE_BUILD_DISABLED_PLUGINS)
+    add_subdirectory(AudioBookPlugin)
+    add_subdirectory(RedactPlugin)
+    add_subdirectory(SoftProofingPlugin)
+endif()

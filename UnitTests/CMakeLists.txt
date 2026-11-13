@@ -221,24 +221,6 @@ set_target_properties(UnitTestsPathBoolean PROPERTIES
 )
 add_test(UnitTestsPathBoolean  "${CMAKE_BINARY_DIR}/${PDF4QT_INSTALL_BIN_DIR}/UnitTestsPathBoolean")
 
-add_executable(UnitTestsDimensions
-	tst_dimensionstest.cpp
-	../Pdf4QtEditorPlugins/DimensionsPlugin/dimensionsettings.cpp
-	../Pdf4QtEditorPlugins/DimensionsPlugin/dimensionunits.cpp
-)
-
-target_include_directories(UnitTestsDimensions PRIVATE ${CMAKE_SOURCE_DIR}/Pdf4QtEditorPlugins/DimensionsPlugin)
-
-target_link_libraries(UnitTestsDimensions PRIVATE Pdf4QtLibCore Qt6::Core Qt6::Gui Qt6::Test)
-
-set_target_properties(UnitTestsDimensions PROPERTIES
-    WIN32_EXECUTABLE OFF
-    MACOSX_BUNDLE OFF
-    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PDF4QT_INSTALL_LIB_DIR}
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PDF4QT_INSTALL_BIN_DIR}
-)
-add_test(UnitTestsDimensions  "${CMAKE_BINARY_DIR}/${PDF4QT_INSTALL_BIN_DIR}/UnitTestsDimensions")
-
 add_executable(UnitTestsFormFieldFormat
 	tst_formfieldformattest.cpp
 )
