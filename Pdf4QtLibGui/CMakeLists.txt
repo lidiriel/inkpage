@@ -23,6 +23,8 @@
 add_library(Pdf4QtLibGui SHARED
     pdfaboutdialog.cpp
     pdfaboutdialog.h
+    pdfannotationstyletoolbar.cpp
+    pdfannotationstyletoolbar.h
     pdfadvancedfindwidget.cpp
     pdfadvancedfindwidget.h
     pdfdocumentpropertiesdialog.cpp

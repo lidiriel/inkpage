@@ -21,17 +21,8 @@
 // SOFTWARE.
 
 #include "pdfannotationstyle.h"
-#include "pdfwidgetutils.h"
 
-#include <QCheckBox>
-#include <QColorDialog>
 #include <QCoreApplication>
-#include <QDoubleSpinBox>
-#include <QFormLayout>
-#include <QGuiApplication>
-#include <QPainter>
-#include <QScreen>
-#include <QPushButton>
 #include <QSettings>
 
 #include "pdfdbgheap.h"
@@ -86,216 +77,50 @@ void PDFAnnotationStyleSettings::setStyle(const QString& styleId, const PDFAnnot
     settings.endGroup();
 }
 
-PDFAnnotationStyleWidget::PDFAnnotationStyleWidget(QWidget* parent, StyleItems items, const PDFAnnotationStyle& style) :
-    BaseClass(parent, Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowTitleHint),
-    m_items(items),
-    m_style(style),
-    m_strokeColorButton(nullptr),
-    m_fillColorButton(nullptr),
-    m_fillEnabledCheckBox(nullptr),
-    m_penWidthEdit(nullptr)
-{
-    setWindowTitle(tr("Annotation Style"));
-
-    QFormLayout* layout = new QFormLayout(this);
-
-    if (m_items.testFlag(StrokeColor))
-    {
-        m_strokeColorButton = new QPushButton(this);
-        m_strokeColorButton->setAutoDefault(false);
-        connect(m_strokeColorButton, &QPushButton::clicked, this, &PDFAnnotationStyleWidget::onStrokeColorButtonClicked);
-        layout->addRow(tr("Color"), m_strokeColorButton);
-    }
-
-    if (m_items.testFlag(FillColor))
-    {
-        m_fillEnabledCheckBox = new QCheckBox(tr("Fill"), this);
-        m_fillEnabledCheckBox->setChecked(m_style.fillColor.isValid());
-        connect(m_fillEnabledCheckBox, &QCheckBox::toggled, this, &PDFAnnotationStyleWidget::onFillEnabledToggled);
-
-        m_fillColorButton = new QPushButton(this);
-        m_fillColorButton->setAutoDefault(false);
-        m_fillColorButton->setEnabled(m_style.fillColor.isValid());
-        connect(m_fillColorButton, &QPushButton::clicked, this, &PDFAnnotationStyleWidget::onFillColorButtonClicked);
-
-        layout->addRow(m_fillEnabledCheckBox, m_fillColorButton);
-    }
-
-    if (m_items.testFlag(PenWidth))
-    {
-        m_penWidthEdit = new QDoubleSpinBox(this);
-        m_penWidthEdit->setRange(0.0, 100.0);
-        m_penWidthEdit->setSingleStep(0.5);
-        m_penWidthEdit->setDecimals(1);
-        m_penWidthEdit->setValue(m_style.penWidth);
-        connect(m_penWidthEdit, &QDoubleSpinBox::valueChanged, this, &PDFAnnotationStyleWidget::onPenWidthChanged);
-        layout->addRow(tr("Pen width"), m_penWidthEdit);
-    }
-
-    updateColorButtons();
-    adjustSize();
-}
-
-PDFAnnotationStyleWidget::~PDFAnnotationStyleWidget()
+PDFAnnotationStyleHub::PDFAnnotationStyleHub() :
+    BaseClass(nullptr)
 {
 
 }
 
-void PDFAnnotationStyleWidget::showStyleWindow()
+PDFAnnotationStyleHub* PDFAnnotationStyleHub::getInstance()
 {
-    QSettings settings = createSettings();
-    settings.beginGroup("AnnotationStyles");
-    const QPoint position = settings.value("windowPosition").toPoint();
-    settings.endGroup();
-
-    // Jakub Melka: the remembered position can be outside of the available screens
-    // (for example when the user disconnects a monitor), in that case we must fall
-    // back to the default position - otherwise the window would be invisible.
-    bool isPositionUsable = false;
-    if (!position.isNull())
-    {
-        for (const QScreen* screen : QGuiApplication::screens())
-        {
-            if (screen->availableGeometry().contains(position))
-            {
-                isPositionUsable = true;
-                break;
-            }
-        }
-    }
-
-    if (isPositionUsable)
-    {
-        move(position);
-    }
-    else if (QWidget* parent = parentWidget())
-    {
-        // Default position is the top right corner of the draw widget, so that
-        // the window doesn't cover the beginning of the text on the page.
-        const int offset = PDFWidgetUtils::scaleDPI_x(this, 16);
-        move(parent->mapToGlobal(QPoint(qMax(0, parent->width() - sizeHint().width() - offset), offset)));
-    }
-
-    show();
+    static PDFAnnotationStyleHub hub;
+    return &hub;
 }
 
-void PDFAnnotationStyleWidget::closeStyleWindow()
+void PDFAnnotationStyleHub::setActiveManager(PDFAnnotationStyleManager* manager)
 {
-    QSettings settings = createSettings();
-    settings.beginGroup("AnnotationStyles");
-    settings.setValue("windowPosition", pos());
-    settings.endGroup();
-
-    hide();
-
-    // Jakub Melka: this function is called from the deactivation of a tool, which
-    // can happen while an event is being delivered (for example when the user
-    // clicks on the action of another tool). Deleting the widget directly could
-    // destroy an object, which is still being used by the event delivery, so
-    // the deletion is deferred to the event loop.
-    disconnect();
-    deleteLater();
-}
-
-void PDFAnnotationStyleWidget::onStrokeColorButtonClicked()
-{
-    QColor color = selectColor(m_style.strokeColor, tr("Select Color"));
-    if (color.isValid() && color != m_style.strokeColor)
+    if (m_activeManager != manager)
     {
-        m_style.strokeColor = color;
-        updateColorButtons();
-        Q_EMIT styleChanged(m_style);
+        m_activeManager = manager;
+        Q_EMIT activeStyleChanged();
     }
 }
 
-void PDFAnnotationStyleWidget::onFillColorButtonClicked()
+void PDFAnnotationStyleHub::notifyStyleChanged(PDFAnnotationStyleManager* manager)
 {
-    QColor color = selectColor(m_style.fillColor.isValid() ? m_style.fillColor : m_style.strokeColor, tr("Select Fill Color"));
-    if (color.isValid() && color != m_style.fillColor)
+    if (manager && m_activeManager == manager)
     {
-        m_style.fillColor = color;
-        updateColorButtons();
-        Q_EMIT styleChanged(m_style);
+        Q_EMIT activeStyleChanged();
     }
-}
-
-void PDFAnnotationStyleWidget::onFillEnabledToggled(bool checked)
-{
-    if (m_fillColorButton)
-    {
-        m_fillColorButton->setEnabled(checked);
-    }
-
-    if (checked)
-    {
-        if (!m_style.fillColor.isValid())
-        {
-            m_style.fillColor = m_style.strokeColor;
-        }
-    }
-    else
-    {
-        m_style.fillColor = QColor();
-    }
-
-    updateColorButtons();
-    Q_EMIT styleChanged(m_style);
-}
-
-void PDFAnnotationStyleWidget::onPenWidthChanged(double value)
-{
-    if (!qFuzzyCompare(m_style.penWidth, value))
-    {
-        m_style.penWidth = value;
-        Q_EMIT styleChanged(m_style);
-    }
-}
-
-void PDFAnnotationStyleWidget::updateColorButton(QPushButton* button, QColor color)
-{
-    if (!button)
-    {
-        return;
-    }
-
-    if (!color.isValid())
-    {
-        button->setIcon(QIcon());
-        button->setText(tr("None"));
-        return;
-    }
-
-    const int size = PDFWidgetUtils::scaleDPI_x(button, 16);
-    QPixmap pixmap(size, size);
-    pixmap.fill(Qt::transparent);
-
-    QPainter painter(&pixmap);
-    painter.setPen(QPen(button->palette().color(QPalette::WindowText)));
-    painter.setBrush(QBrush(color));
-    painter.drawRect(0, 0, size - 1, size - 1);
-    painter.end();
-
-    button->setIcon(QIcon(pixmap));
-    button->setText(color.name(QColor::HexRgb));
-}
-
-void PDFAnnotationStyleWidget::updateColorButtons()
-{
-    updateColorButton(m_strokeColorButton, m_style.strokeColor);
-    updateColorButton(m_fillColorButton, m_style.fillColor);
 }
 
 PDFAnnotationStyleManager::PDFAnnotationStyleManager(QObject* parent,
-                                                     PDFAnnotationStyleWidget::StyleItems items,
+                                                     StyleItems items,
                                                      PDFAnnotationStyle defaultStyle,
                                                      QString styleId) :
     BaseClass(parent),
     m_items(items),
     m_defaultStyle(std::move(defaultStyle)),
-    m_styleId(std::move(styleId)),
-    m_styleWidget(nullptr)
+    m_styleId(std::move(styleId))
 {
     m_style = PDFAnnotationStyleSettings::getStyle(m_styleId, m_defaultStyle);
+}
+
+PDFAnnotationStyleManager::~PDFAnnotationStyleManager()
+{
+    deactivateStyle();
 }
 
 void PDFAnnotationStyleManager::setStyle(PDFAnnotationStyle style)
@@ -307,9 +132,9 @@ void PDFAnnotationStyleManager::setStyle(PDFAnnotationStyle style)
 
     m_style = std::move(style);
     PDFAnnotationStyleSettings::setStyle(m_styleId, m_style);
-    recreateStyleWindow();
 
     Q_EMIT styleChanged(m_style);
+    PDFAnnotationStyleHub::getInstance()->notifyStyleChanged(this);
 }
 
 void PDFAnnotationStyleManager::setStyleId(QString styleId, PDFAnnotationStyle defaultStyle)
@@ -322,21 +147,9 @@ void PDFAnnotationStyleManager::setStyleId(QString styleId, PDFAnnotationStyle d
     m_styleId = std::move(styleId);
     m_defaultStyle = std::move(defaultStyle);
     m_style = PDFAnnotationStyleSettings::getStyle(m_styleId, m_defaultStyle);
-    recreateStyleWindow();
 
     Q_EMIT styleChanged(m_style);
-}
-
-void PDFAnnotationStyleManager::recreateStyleWindow()
-{
-    if (m_styleWidget)
-    {
-        // Style window shows the old style - recreate it, so the user sees
-        // the style, which will be really used.
-        QWidget* parentWidget = m_styleWidget->parentWidget();
-        closeStyleWindow();
-        showStyleWindow(parentWidget);
-    }
+    PDFAnnotationStyleHub::getInstance()->notifyStyleChanged(this);
 }
 
 void PDFAnnotationStyleManager::reloadStyle()
@@ -346,59 +159,31 @@ void PDFAnnotationStyleManager::reloadStyle()
     if (m_style != style)
     {
         m_style = std::move(style);
-        recreateStyleWindow();
         Q_EMIT styleChanged(m_style);
+        PDFAnnotationStyleHub::getInstance()->notifyStyleChanged(this);
     }
 }
 
-void PDFAnnotationStyleManager::showStyleWindow(QWidget* parentWidget)
+void PDFAnnotationStyleManager::activateStyle()
 {
-    if (m_styleWidget)
-    {
-        return;
-    }
-
     // Jakub Melka: style can be changed by another tool, which shares the same
-    // style id, so it must be reloaded before the window is created from it.
+    // style id, so it must be reloaded before it is shown in the toolbar.
     reloadStyle();
-
-    m_styleWidget = new PDFAnnotationStyleWidget(parentWidget, m_items, m_style);
-    connect(m_styleWidget, &PDFAnnotationStyleWidget::styleChanged, this, &PDFAnnotationStyleManager::onStyleChanged);
-    m_styleWidget->showStyleWindow();
+    PDFAnnotationStyleHub::getInstance()->setActiveManager(this);
 }
 
-void PDFAnnotationStyleManager::closeStyleWindow()
+void PDFAnnotationStyleManager::deactivateStyle()
 {
-    if (m_styleWidget)
+    PDFAnnotationStyleHub* hub = PDFAnnotationStyleHub::getInstance();
+    if (hub->getActiveManager() == this)
     {
-        m_styleWidget->closeStyleWindow();
-        m_styleWidget = nullptr;
+        hub->setActiveManager(nullptr);
     }
 }
 
-void PDFAnnotationStyleManager::onStyleChanged(const PDFAnnotationStyle& style)
+bool PDFAnnotationStyleManager::isStyleActive() const
 {
-    if (m_style != style)
-    {
-        m_style = style;
-        PDFAnnotationStyleSettings::setStyle(m_styleId, m_style);
-        Q_EMIT styleChanged(m_style);
-    }
-}
-
-QColor PDFAnnotationStyleWidget::selectColor(QColor initialColor, const QString& title)
-{
-    QColorDialog dialog(initialColor.isValid() ? initialColor : QColor(Qt::red), this);
-    dialog.setWindowTitle(title);
-    dialog.setOption(QColorDialog::ShowAlphaChannel, false);
-    dialog.setOption(QColorDialog::DontUseNativeDialog, true);
-
-    if (dialog.exec() == QDialog::Accepted)
-    {
-        return dialog.selectedColor();
-    }
-
-    return QColor();
+    return PDFAnnotationStyleHub::getInstance()->getActiveManager() == this;
 }
 
 }   // namespace pdf

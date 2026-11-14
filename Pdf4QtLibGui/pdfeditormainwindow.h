@@ -70,6 +70,7 @@ namespace pdfviewer
 {
 class PDFSidebarWidget;
 class PDFAdvancedFindWidget;
+class PDFAnnotationStyleToolBar;
 
 class PDF4QTLIBGUILIBSHARED_EXPORT PDFEditorMainWindow : public QMainWindow, public IMainWindow
 {
@@ -137,6 +138,7 @@ private:
 
     PDFSidebarWidget* m_sidebarWidget;
     QMenu* m_pagesMenu;
+    PDFAnnotationStyleToolBar* m_styleToolBar;
     QDockWidget* m_sidebarDockWidget;
     PDFAdvancedFindWidget* m_advancedFindWidget;
     QDockWidget* m_advancedFindDockWidget;

@@ -202,6 +202,18 @@ Pdf4QtLibGui/resources/quit.svg
 
 Xournal++
 ---------
+Pdf4QtLibGui/resources/style-fill.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-fill.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtLibGui/resources/style-width-fine.svg
+    from: Xournal++, ui/iconsColor-light/hicolor/scalable/actions/xopp-thickness-fine.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtLibGui/resources/style-width-medium.svg
+    from: Xournal++, ui/iconsColor-light/hicolor/scalable/actions/xopp-thickness-medium.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtLibGui/resources/style-width-thick.svg
+    from: Xournal++, ui/iconsColor-light/hicolor/scalable/actions/xopp-thickness-thick.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
 Pdf4QtEditorPlugins/EditorPlugin/clear.svg
     from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-tool-eraser.svg
     license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)

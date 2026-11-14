@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #include "pdfeditormainwindow.h"
+#include "pdfannotationstyletoolbar.h"
 #include "ui_pdfeditormainwindow.h"
 
 #include "pdfaboutdialog.h"
@@ -89,6 +90,7 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     m_programController(new PDFProgramController(this)),
     m_sidebarWidget(nullptr),
     m_pagesMenu(nullptr),
+    m_styleToolBar(nullptr),
     m_sidebarDockWidget(nullptr),
     m_advancedFindWidget(nullptr),
     m_advancedFindDockWidget(nullptr),
@@ -303,6 +305,8 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     m_programController->initialize(PDFProgramController::AllFeatures, this, this, m_actionManager, m_progress);
     setCentralWidget(m_programController->getPdfWidget());
     setFocusProxy(m_programController->getPdfWidget());
+
+    m_styleToolBar->setAnnotationManager(m_programController->getPdfWidget()->getDrawWidgetProxy()->getAnnotationManager());
 
     m_sidebarWidget = new PDFSidebarWidget(m_programController->getPdfWidget()->getDrawWidgetProxy(), m_programController->getCertificateStore(), m_programController->getBookmarkManager(), m_programController->getSettings(), true, this);
     m_sidebarDockWidget = new QDockWidget(tr("&Sidebar"), this);
@@ -645,6 +649,11 @@ void PDFEditorMainWindow::initializePageActions()
 
     addToolBarBreak(Qt::TopToolBarArea);
     addToolBar(Qt::TopToolBarArea, pagesToolBar);
+
+    // Style of the annotations (colors, fill, pen width), it follows the Pages toolbar
+    m_styleToolBar = new PDFAnnotationStyleToolBar(this);
+    adjustToolbar(m_styleToolBar);
+    addToolBar(Qt::TopToolBarArea, m_styleToolBar);
 }
 
 void PDFEditorMainWindow::initializeHiddenActions()

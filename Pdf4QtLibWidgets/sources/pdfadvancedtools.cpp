@@ -554,7 +554,7 @@ PDFCreateLineTypeTool::PDFCreateLineTypeTool(PDFDrawWidgetProxy* proxy, PDFToolM
     m_pickTool->setDrawSelectionRectangle(false);
 
     m_styleManager = new PDFAnnotationStyleManager(this,
-                                                   PDFAnnotationStyleWidget::StrokeColor | PDFAnnotationStyleWidget::FillColor | PDFAnnotationStyleWidget::PenWidth,
+                                                   PDFAnnotationStyleManager::StrokeColor | PDFAnnotationStyleManager::FillColor | PDFAnnotationStyleManager::PenWidth,
                                                    getDefaultShapeStyle(),
                                                    PDFAnnotationStyleSettings::STYLE_SHAPE);
     connect(m_styleManager, &PDFAnnotationStyleManager::styleChanged, this, &PDFCreateLineTypeTool::onStyleChanged);
@@ -569,11 +569,11 @@ void PDFCreateLineTypeTool::setActiveImpl(bool active)
     if (active)
     {
         Q_EMIT messageDisplayRequest(tr("Use key 'C' to show/hide large cross. Use key 'O' to switch on/off orthogonal mode."), 25000);
-        m_styleManager->showStyleWindow(getProxy()->getWidget());
+        m_styleManager->activateStyle();
     }
     else
     {
-        m_styleManager->closeStyleWindow();
+        m_styleManager->deactivateStyle();
     }
 }
 
@@ -989,7 +989,7 @@ PDFCreateEllipseTool::PDFCreateEllipseTool(PDFDrawWidgetProxy* proxy, PDFToolMan
     connect(m_pickTool, &PDFPickTool::rectanglePicked, this, &PDFCreateEllipseTool::onRectanglePicked);
 
     m_styleManager = new PDFAnnotationStyleManager(this,
-                                                   PDFAnnotationStyleWidget::StrokeColor | PDFAnnotationStyleWidget::FillColor | PDFAnnotationStyleWidget::PenWidth,
+                                                   PDFAnnotationStyleManager::StrokeColor | PDFAnnotationStyleManager::FillColor | PDFAnnotationStyleManager::PenWidth,
                                                    getDefaultShapeStyle(),
                                                    PDFAnnotationStyleSettings::STYLE_SHAPE);
     connect(m_styleManager, &PDFAnnotationStyleManager::styleChanged, this, &PDFCreateEllipseTool::onStyleChanged);
@@ -1003,11 +1003,11 @@ void PDFCreateEllipseTool::setActiveImpl(bool active)
 
     if (active)
     {
-        m_styleManager->showStyleWindow(getProxy()->getWidget());
+        m_styleManager->activateStyle();
     }
     else
     {
-        m_styleManager->closeStyleWindow();
+        m_styleManager->deactivateStyle();
     }
 }
 
@@ -1146,7 +1146,7 @@ PDFCreateFreehandCurveTool::PDFCreateFreehandCurveTool(PDFDrawWidgetProxy* proxy
     defaultStyle.penWidth = 1.0;
 
     m_styleManager = new PDFAnnotationStyleManager(this,
-                                                   PDFAnnotationStyleWidget::StrokeColor | PDFAnnotationStyleWidget::PenWidth,
+                                                   PDFAnnotationStyleManager::StrokeColor | PDFAnnotationStyleManager::PenWidth,
                                                    defaultStyle,
                                                    PDFAnnotationStyleSettings::STYLE_FREEHAND);
     connect(m_styleManager, &PDFAnnotationStyleManager::styleChanged, this, [this]() { Q_EMIT getProxy()->repaintNeeded(); });
@@ -1158,11 +1158,11 @@ void PDFCreateFreehandCurveTool::setActiveImpl(bool active)
 
     if (active)
     {
-        m_styleManager->showStyleWindow(getProxy()->getWidget());
+        m_styleManager->activateStyle();
     }
     else
     {
-        m_styleManager->closeStyleWindow();
+        m_styleManager->deactivateStyle();
     }
 }
 
@@ -1442,7 +1442,7 @@ PDFCreateHighlightTextTool::PDFCreateHighlightTextTool(PDFDrawWidgetProxy* proxy
     defaultStyle.strokeColor = getDefaultColor();
     defaultStyle.fillColor = QColor();
 
-    m_styleManager = new PDFAnnotationStyleManager(this, PDFAnnotationStyleWidget::StrokeColor, defaultStyle, getStyleId());
+    m_styleManager = new PDFAnnotationStyleManager(this, PDFAnnotationStyleManager::StrokeColor, defaultStyle, getStyleId());
     connect(m_styleManager, &PDFAnnotationStyleManager::styleChanged, this, &PDFCreateHighlightTextTool::onStyleChanged);
     m_color = m_styleManager->getStyle().strokeColor;
 
@@ -1616,13 +1616,13 @@ void PDFCreateHighlightTextTool::setActiveImpl(bool active)
         // Just clear the text selection
         setSelection(PDFTextSelection());
 
-        m_styleManager->closeStyleWindow();
+        m_styleManager->deactivateStyle();
     }
     else
     {
         // Layouts are cached on demand. Annotating a page must not start
         // indexing every page of a potentially large document.
-        m_styleManager->showStyleWindow(getProxy()->getWidget());
+        m_styleManager->activateStyle();
     }
 }
 
@@ -1749,7 +1749,7 @@ PDFCreateRedactRectangleTool::PDFCreateRedactRectangleTool(PDFDrawWidgetProxy* p
     defaultStyle.strokeColor = m_color;
     defaultStyle.fillColor = QColor();
 
-    m_styleManager = new PDFAnnotationStyleManager(this, PDFAnnotationStyleWidget::StrokeColor, defaultStyle, PDFAnnotationStyleSettings::STYLE_REDACT);
+    m_styleManager = new PDFAnnotationStyleManager(this, PDFAnnotationStyleManager::StrokeColor, defaultStyle, PDFAnnotationStyleSettings::STYLE_REDACT);
     connect(m_styleManager, &PDFAnnotationStyleManager::styleChanged, this, &PDFCreateRedactRectangleTool::onStyleChanged);
 
     updateActions();
@@ -1792,13 +1792,13 @@ void PDFCreateRedactRectangleTool::setActiveImpl(bool active)
 
     if (!active)
     {
-        m_styleManager->closeStyleWindow();
+        m_styleManager->deactivateStyle();
     }
     else
     {
         // Jakub Melka: the style window is shown first, because showing it reloads
         // the style, which can be changed by the other redaction tool meanwhile.
-        m_styleManager->showStyleWindow(getProxy()->getWidget());
+        m_styleManager->activateStyle();
         m_color = m_styleManager->getStyle().strokeColor;
         m_pickTool->setSelectionRectangleColor(m_color, true);
     }
@@ -2262,7 +2262,7 @@ PDFCreateRedactTextTool::PDFCreateRedactTextTool(PDFDrawWidgetProxy* proxy, PDFT
 
     // Jakub Melka: both redaction tools share the same style, so the user doesn't
     // have to set the redaction color twice.
-    m_styleManager = new PDFAnnotationStyleManager(this, PDFAnnotationStyleWidget::StrokeColor, defaultStyle, PDFAnnotationStyleSettings::STYLE_REDACT);
+    m_styleManager = new PDFAnnotationStyleManager(this, PDFAnnotationStyleManager::StrokeColor, defaultStyle, PDFAnnotationStyleSettings::STYLE_REDACT);
     connect(m_styleManager, &PDFAnnotationStyleManager::styleChanged, this, &PDFCreateRedactTextTool::onStyleChanged);
 
     updateActions();
@@ -2406,12 +2406,12 @@ void PDFCreateRedactTextTool::setActiveImpl(bool active)
         // Just clear the text selection
         setSelection(PDFTextSelection());
 
-        m_styleManager->closeStyleWindow();
+        m_styleManager->deactivateStyle();
     }
     else
     {
         // Layouts are cached on demand, just as for text highlighting.
-        m_styleManager->showStyleWindow(getProxy()->getWidget());
+        m_styleManager->activateStyle();
         m_color = m_styleManager->getStyle().strokeColor;
     }
 }

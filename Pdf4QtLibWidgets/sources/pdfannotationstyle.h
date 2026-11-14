@@ -28,12 +28,7 @@
 
 #include <QColor>
 #include <QPointer>
-#include <QWidget>
 
-class QLabel;
-class QCheckBox;
-class QPushButton;
-class QDoubleSpinBox;
 
 namespace pdf
 {
@@ -84,20 +79,56 @@ public:
     static void setStyle(const QString& styleId, const PDFAnnotationStyle& style);
 };
 
-/// Modeless tool window, which allows the user to select the style of the created
-/// annotations. It is shared by all annotation tools - each tool declares, which
-/// style items it actually uses, so the user gets the same way of setting the
-/// annotation style regardless of the used tool.
-///
-/// The window intentionally has no close button - it is shown when an annotation
-/// tool is activated and it is closed when the tool is deactivated. If the user
-/// could close it, there would be no way of showing it again.
-class PDF4QTLIBWIDGETSSHARED_EXPORT PDFAnnotationStyleWidget : public QWidget
+/// Manages the annotation style of a single tool - it loads and stores the style
+/// in the application settings and it shows the style window while the tool is
+/// active. All annotation tools use this class, so the way of setting the style
+/// of a created annotation is the same for all of them.
+class PDFAnnotationStyleManager;
+
+/// Central point of the annotation styles. The annotation tool, which is active,
+/// registers its style manager here, so the style toolbar of the application can
+/// display and change the style of the active tool. There is one hub per application.
+class PDF4QTLIBWIDGETSSHARED_EXPORT PDFAnnotationStyleHub : public QObject
 {
     Q_OBJECT
 
 private:
-    using BaseClass = QWidget;
+    using BaseClass = QObject;
+
+    explicit PDFAnnotationStyleHub();
+
+public:
+    /// Returns the hub of the application
+    static PDFAnnotationStyleHub* getInstance();
+
+    /// Returns the style manager of the active annotation tool, or nullptr,
+    /// if no annotation tool is active.
+    PDFAnnotationStyleManager* getActiveManager() const { return m_activeManager; }
+
+signals:
+    /// Emitted, when the active style manager changes, or when its style changes
+    void activeStyleChanged();
+
+private:
+    friend class PDFAnnotationStyleManager;
+
+    void setActiveManager(PDFAnnotationStyleManager* manager);
+    void notifyStyleChanged(PDFAnnotationStyleManager* manager);
+
+    QPointer<PDFAnnotationStyleManager> m_activeManager;
+};
+
+/// Manages the annotation style of a single tool - it loads and stores the style
+/// in the application settings, and it registers the style in the style hub while
+/// the tool is active, so the style toolbar edits the style of the active tool. All
+/// annotation tools use this class, so the way of setting the style of a created
+/// annotation is the same for all of them.
+class PDF4QTLIBWIDGETSSHARED_EXPORT PDFAnnotationStyleManager : public QObject
+{
+    Q_OBJECT
+
+private:
+    using BaseClass = QObject;
 
 public:
     enum StyleItem
@@ -108,80 +139,21 @@ public:
     };
     Q_DECLARE_FLAGS(StyleItems, StyleItem)
 
-    /// Creates the style window.
-    /// \param parent Parent widget (the draw widget)
-    /// \param items Style items, which are edited by this window
-    /// \param style Initial style
-    explicit PDFAnnotationStyleWidget(QWidget* parent, StyleItems items, const PDFAnnotationStyle& style);
-    virtual ~PDFAnnotationStyleWidget() override;
-
-    const PDFAnnotationStyle& getStyle() const { return m_style; }
-
-    /// Shows the window at the position, which the user used the last time.
-    /// If the window was not moved yet, a default position is used, which
-    /// doesn't cover the content of the page.
-    void showStyleWindow();
-
-    /// Hides the window, remembers its position and schedules the window
-    /// for deletion. It is not safe to delete the window directly - this
-    /// function is usually called from the handling of an event of a widget,
-    /// which can still be used after this function returns.
-    void closeStyleWindow();
-
-signals:
-    void styleChanged(const pdf::PDFAnnotationStyle& style);
-
-private:
-    void onStrokeColorButtonClicked();
-    void onFillColorButtonClicked();
-    void onFillEnabledToggled(bool checked);
-    void onPenWidthChanged(double value);
-
-    void updateColorButton(QPushButton* button, QColor color);
-    void updateColorButtons();
-
-    QColor selectColor(QColor initialColor, const QString& title);
-
-    StyleItems m_items;
-    PDFAnnotationStyle m_style;
-
-    QPushButton* m_strokeColorButton;
-    QPushButton* m_fillColorButton;
-    QCheckBox* m_fillEnabledCheckBox;
-    QDoubleSpinBox* m_penWidthEdit;
-};
-
-// Jakub Melka: operators must be declared inside the namespace, not at the global
-// scope. Namespace 'pdf' declares its own operator| (for the OCState enumeration),
-// which hides all operators declared at the global scope from the unqualified name
-// lookup performed inside this namespace. If the operators were declared globally,
-// combining the flags in any code inside namespace 'pdf' would silently fall back
-// to the built-in integer operator and would not compile.
-Q_DECLARE_OPERATORS_FOR_FLAGS(PDFAnnotationStyleWidget::StyleItems)
-
-/// Manages the annotation style of a single tool - it loads and stores the style
-/// in the application settings and it shows the style window while the tool is
-/// active. All annotation tools use this class, so the way of setting the style
-/// of a created annotation is the same for all of them.
-class PDF4QTLIBWIDGETSSHARED_EXPORT PDFAnnotationStyleManager : public QObject
-{
-    Q_OBJECT
-
-private:
-    using BaseClass = QObject;
-
-public:
     /// Creates the style manager.
     /// \param parent Parent object (the tool)
     /// \param items Style items, which are used by the tool
     /// \param defaultStyle Style used, when nothing is stored in the settings yet
     /// \param styleId Identifier of the persisted style
     explicit PDFAnnotationStyleManager(QObject* parent,
-                                       PDFAnnotationStyleWidget::StyleItems items,
+                                       StyleItems items,
                                        PDFAnnotationStyle defaultStyle,
                                        QString styleId);
+    virtual ~PDFAnnotationStyleManager() override;
 
     const PDFAnnotationStyle& getStyle() const { return m_style; }
+
+    /// Returns the style items, which are used by the tool
+    StyleItems getItems() const { return m_items; }
 
     /// Sets the style and stores it in the application settings.
     /// \param style New style
@@ -202,30 +174,34 @@ public:
     /// that outdated style back over the choice made by the user in another tool.
     void reloadStyle();
 
-    /// Shows the style window. Call this when the tool is activated. The style is
-    /// reloaded from the settings first, so a style shared with another tool is
-    /// up to date.
-    /// \param parentWidget Parent widget of the style window
-    void showStyleWindow(QWidget* parentWidget);
+    /// Makes the style the active style of the style hub (the style toolbar edits it).
+    /// Call this when the tool is activated. The style is reloaded from the settings
+    /// first, so a style shared with another tool is up to date.
+    void activateStyle();
 
-    /// Closes the style window. Call this when the tool is deactivated.
-    void closeStyleWindow();
+    /// Removes the style from the style hub. Call this when the tool is deactivated.
+    void deactivateStyle();
+
+    /// Returns true, if the style is the active style of the style hub
+    bool isStyleActive() const;
 
 signals:
     void styleChanged(const pdf::PDFAnnotationStyle& style);
 
 private:
-    void onStyleChanged(const PDFAnnotationStyle& style);
-
-    /// Recreates the style window (if it is shown), so it displays the current style
-    void recreateStyleWindow();
-
-    PDFAnnotationStyleWidget::StyleItems m_items;
+    StyleItems m_items;
     PDFAnnotationStyle m_defaultStyle;
     QString m_styleId;
     PDFAnnotationStyle m_style;
-    QPointer<PDFAnnotationStyleWidget> m_styleWidget;
 };
+
+// Jakub Melka: operators must be declared inside the namespace, not at the global
+// scope. Namespace 'pdf' declares its own operator| (for the OCState enumeration),
+// which hides all operators declared at the global scope from the unqualified name
+// lookup performed inside this namespace. If the operators were declared globally,
+// combining the flags in any code inside namespace 'pdf' would silently fall back
+// to the built-in integer operator and would not compile.
+Q_DECLARE_OPERATORS_FOR_FLAGS(PDFAnnotationStyleManager::StyleItems)
 
 }   // namespace pdf
 
