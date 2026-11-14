@@ -46,6 +46,7 @@ private slots:
     void statusBarVisibilityIsRemembered();
     void zoomIsInStatusBar();
     void navigationToolBar();
+    void stickyNoteIsInInsertToolBar();
 
 private:
     static QSettings settings();
@@ -151,6 +152,26 @@ void EditorMainWindowTest::navigationToolBar()
     QVERIFY(!window.toolBarBreak(navigationToolBar));
     QVERIFY(window.toolBarBreak(pagesToolBar));
     QVERIFY(!mainToolBar->actions().contains(window.findChild<QAction*>("actionGoToNextPage")));
+}
+
+void EditorMainWindowTest::stickyNoteIsInInsertToolBar()
+{
+    PDFEditorMainWindow window;
+    QToolBar* insertToolBar = window.findChild<QToolBar*>("InsertToolBar");
+    QVERIFY(insertToolBar);
+
+    // Inline text, Image, then the sticky note button
+    const QList<QAction*> actions = insertToolBar->actions();
+    QVERIFY(actions.size() > 3);
+    QCOMPARE(actions[0]->objectName(), QString("actionInlineText"));
+    QCOMPARE(actions[1]->objectName(), QString("actionCreateImage"));
+    QToolButton* stickyNoteButton = qobject_cast<QToolButton*>(insertToolBar->widgetForAction(actions[2]));
+    QVERIFY(stickyNoteButton);
+    QCOMPARE(stickyNoteButton->objectName(), QString("insertStickyNoteButton"));
+    QVERIFY(stickyNoteButton->defaultAction()->objectName().startsWith("actionStickyNote"));
+
+    QToolBar* mainToolBar = window.findChild<QToolBar*>("mainToolBar");
+    QVERIFY(!mainToolBar->findChild<QToolButton*>("insertStickyNoteButton"));
 }
 
 QTEST_MAIN(EditorMainWindowTest)

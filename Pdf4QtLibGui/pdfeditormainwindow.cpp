@@ -295,11 +295,6 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     ui->mainToolBar->addAction(ui->actionExtractImage);
     ui->mainToolBar->addSeparator();
 
-    // Special tools
-    QToolButton* insertStickyNoteButton = m_actionManager->createToolButtonForActionGroup(PDFActionManager::CreateStickyNoteGroup, ui->mainToolBar);
-    ui->mainToolBar->addWidget(insertStickyNoteButton);
-    ui->mainToolBar->addSeparator();
-
     initializePageActions();
 
     m_programController->initialize(PDFProgramController::AllFeatures, this, this, m_actionManager, m_progress);
@@ -667,6 +662,11 @@ QToolBar* PDFEditorMainWindow::createInsertToolBar()
     adjustToolbar(insertToolBar);
     insertToolBar->addAction(ui->actionInlineText);
     insertToolBar->addAction(ui->actionCreateImage);
+    if (QToolButton* insertStickyNoteButton = m_actionManager->createToolButtonForActionGroup(PDFActionManager::CreateStickyNoteGroup, insertToolBar))
+    {
+        insertStickyNoteButton->setObjectName("insertStickyNoteButton");
+        insertToolBar->addWidget(insertStickyNoteButton);
+    }
     insertToolBar->addSeparator();
     insertToolBar->addAction(ui->actionCreateStraightLine);
     insertToolBar->addAction(ui->actionCreatePolyline);
