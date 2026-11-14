@@ -126,6 +126,13 @@ private:
     /// Creates the actions, which place the toolbars at the top or at the right side
     void initializeToolBarPositionActions();
 
+    /// Creates the action View > Status Bar, which shows or hides the status bar
+    /// (the choice is stored in the settings)
+    void initializeStatusBarAction();
+
+    /// Settings key of the visibility of the status bar
+    static constexpr const char* STATUS_BAR_VISIBLE_KEY = "statusBarVisible";
+
     /// Hides the entries, which are not offered by inkpage. The actions and their
     /// code are kept, they are only removed from the menus, toolbars and quick search.
     void initializeHiddenActions();

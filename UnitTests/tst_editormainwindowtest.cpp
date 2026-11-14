@@ -1,0 +1,99 @@
+// inkpage - a simple PDF editor for Linux
+// Copyright (C) 2026 Ludovic Mercier
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+#include "pdfeditormainwindow.h"
+
+#include <QtTest>
+#include <QAction>
+#include <QSettings>
+#include <QStatusBar>
+#include <QTemporaryDir>
+
+using namespace pdfviewer;
+
+/// Tests of the main window of inkpage: its menus, toolbars and status bar
+class EditorMainWindowTest : public QObject
+{
+    Q_OBJECT
+
+public:
+    static void initMain()
+    {
+        if (!qEnvironmentVariableIsSet("QT_QPA_PLATFORM"))
+        {
+            qputenv("QT_QPA_PLATFORM", "offscreen");
+        }
+    }
+
+private slots:
+    void initTestCase();
+    void statusBarVisibilityIsRemembered();
+
+private:
+    static QSettings settings();
+
+    QTemporaryDir m_settingsDirectory;
+};
+
+QSettings EditorMainWindowTest::settings()
+{
+    return QSettings(QSettings::IniFormat, QSettings::UserScope, QCoreApplication::organizationName(), QCoreApplication::applicationName());
+}
+
+void EditorMainWindowTest::initTestCase()
+{
+    // Separate settings, the settings of the user are not touched
+    QVERIFY(m_settingsDirectory.isValid());
+    QCoreApplication::setOrganizationName("inkpage-unittests");
+    QCoreApplication::setApplicationName("UnitTestsEditorMainWindow");
+    QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, m_settingsDirectory.path());
+
+    // No plugin is loaded: a plugin is a single instance in the process, it supports
+    // only one main window (the tests create several windows)
+    QSettings pluginSettings = settings();
+    pluginSettings.setValue("Plugins/EnabledPlugins", QStringList());
+}
+
+void EditorMainWindowTest::statusBarVisibilityIsRemembered()
+{
+    {
+        PDFEditorMainWindow window;
+        QAction* action = window.findChild<QAction*>("actionStatusBar");
+        QVERIFY(action);
+        QVERIFY(action->isCheckable());
+        QVERIFY(action->isChecked());
+        QVERIFY(!window.statusBar()->isHidden());
+
+        action->trigger();
+        QVERIFY(window.statusBar()->isHidden());
+        QCOMPARE(settings().value("statusBarVisible").toBool(), false);
+    }
+
+    // A new window starts with the status bar hidden
+    {
+        PDFEditorMainWindow window;
+        QAction* action = window.findChild<QAction*>("actionStatusBar");
+        QVERIFY(!action->isChecked());
+        QVERIFY(window.statusBar()->isHidden());
+        action->trigger();
+        QVERIFY(!window.statusBar()->isHidden());
+    }
+    QCOMPARE(settings().value("statusBarVisible").toBool(), true);
+}
+
+QTEST_MAIN(EditorMainWindowTest)
+
+#include "tst_editormainwindowtest.moc"

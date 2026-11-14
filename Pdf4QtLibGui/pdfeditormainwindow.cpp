@@ -71,6 +71,8 @@
 #include <QToolButton>
 #include <QActionGroup>
 #include <QToolBar>
+#include <QSettings>
+#include <QStatusBar>
 
 #include <algorithm>
 
@@ -358,6 +360,7 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     m_sidebarDockWidget->toggleViewAction()->setObjectName("actionSidebar");
     m_actionManager->addAdditionalAction(m_sidebarDockWidget->toggleViewAction());
 
+    initializeStatusBarAction();
     initializeToolBarPositionActions();
     initializeHiddenActions();
 
@@ -700,6 +703,30 @@ void PDFEditorMainWindow::initializeHiddenActions()
     {
         action->setVisible(false);
     }
+}
+
+void PDFEditorMainWindow::initializeStatusBarAction()
+{
+    // The visibility of the status bar is not a part of the window state
+    // (QMainWindow::saveState), it is stored separately
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QCoreApplication::organizationName(), QCoreApplication::applicationName());
+    const bool isVisible = settings.value(STATUS_BAR_VISIBLE_KEY, true).toBool();
+    statusBar()->setVisible(isVisible);
+
+    QAction* action = new QAction(tr("Status &Bar"), this);
+    action->setObjectName("actionStatusBar");
+    action->setCheckable(true);
+    action->setChecked(isVisible);
+    action->setToolTip(tr("Show or hide the status bar"));
+    connect(action, &QAction::toggled, this, [this](bool checked)
+    {
+        statusBar()->setVisible(checked);
+        QSettings settings(QSettings::IniFormat, QSettings::UserScope, QCoreApplication::organizationName(), QCoreApplication::applicationName());
+        settings.setValue(STATUS_BAR_VISIBLE_KEY, checked);
+    });
+
+    ui->menuView->addAction(action);
+    m_actionManager->addAdditionalAction(action);
 }
 
 void PDFEditorMainWindow::initializeToolBarPositionActions()

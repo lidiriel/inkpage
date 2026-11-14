@@ -289,6 +289,16 @@ if(NOT PDF4QT_BUILD_ONLY_CORE_LIBRARY)
     add_test(UnitTestsToolBarPosition "${CMAKE_BINARY_DIR}/${PDF4QT_INSTALL_BIN_DIR}/UnitTestsToolBarPosition")
     set_tests_properties(UnitTestsToolBarPosition PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 
+    add_executable(UnitTestsEditorMainWindow tst_editormainwindowtest.cpp)
+    target_link_libraries(UnitTestsEditorMainWindow PRIVATE Pdf4QtLibGui Pdf4QtLibWidgets Pdf4QtLibCore Qt6::Widgets Qt6::Test)
+    set_target_properties(UnitTestsEditorMainWindow PROPERTIES
+        WIN32_EXECUTABLE OFF
+        MACOSX_BUNDLE OFF
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PDF4QT_INSTALL_BIN_DIR}
+    )
+    add_test(UnitTestsEditorMainWindow "${CMAKE_BINARY_DIR}/${PDF4QT_INSTALL_BIN_DIR}/UnitTestsEditorMainWindow")
+    set_tests_properties(UnitTestsEditorMainWindow PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+
     add_executable(UnitTestsAnnotationStyleToolBar tst_annotationstyletoolbartest.cpp)
     target_link_libraries(UnitTestsAnnotationStyleToolBar PRIVATE Pdf4QtLibGui Pdf4QtLibWidgets Pdf4QtLibCore Qt6::Widgets Qt6::Test)
     set_target_properties(UnitTestsAnnotationStyleToolBar PROPERTIES
