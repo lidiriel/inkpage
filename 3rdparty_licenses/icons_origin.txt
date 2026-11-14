@@ -259,3 +259,6 @@ Pdf4QtLibGui/resources/select-text.svg
 Pdf4QtLibGui/resources/undo.svg
     from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-edit-undo.svg
     license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtLibGui/resources/annot-highlighter.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-tool-highlighter.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)

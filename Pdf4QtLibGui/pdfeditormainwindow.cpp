@@ -175,6 +175,7 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     m_actionManager->setAction(PDFActionManager::CreatePolygon, ui->actionCreatePolygon);
     m_actionManager->setAction(PDFActionManager::CreateEllipse, ui->actionCreateEllipse);
     m_actionManager->setAction(PDFActionManager::CreateFreehandCurve, ui->actionCreateFreehandCurve);
+    m_actionManager->setAction(PDFActionManager::CreateHighlighter, ui->actionCreateHighlighter);
     m_actionManager->setAction(PDFActionManager::DeleteAnnotation, ui->actionDeleteAnnotation);
     m_actionManager->setAction(PDFActionManager::RenderOptionAntialiasing, ui->actionRenderOptionAntialiasing);
     m_actionManager->setAction(PDFActionManager::RenderOptionTextAntialiasing, ui->actionRenderOptionTextAntialiasing);
@@ -675,6 +676,7 @@ QToolBar* PDFEditorMainWindow::createInsertToolBar()
     insertToolBar->addAction(ui->actionCreateEllipse);
     insertToolBar->addSeparator();
     insertToolBar->addAction(ui->actionCreateFreehandCurve);
+    insertToolBar->addAction(ui->actionCreateHighlighter);
     return insertToolBar;
 }
 

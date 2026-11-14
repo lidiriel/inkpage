@@ -1199,6 +1199,11 @@ void PDFProgramController::initializeToolManager()
         pdf::PDFCreateFreehandCurveTool* createFreehandCurveTool = new pdf::PDFCreateFreehandCurveTool(m_pdfWidget->getDrawWidgetProxy(), m_toolManager, action, this);
         m_toolManager->addTool(createFreehandCurveTool);
     }
+    if (QAction* action = m_actionManager->getAction(PDFActionManager::CreateHighlighter))
+    {
+        pdf::PDFCreateFreehandCurveTool* createHighlighterTool = new pdf::PDFCreateFreehandCurveTool(m_pdfWidget->getDrawWidgetProxy(), m_toolManager, action, this, pdf::PDFCreateFreehandCurveTool::Type::Highlighter);
+        m_toolManager->addTool(createHighlighterTool);
+    }
     if (QActionGroup* stampGroup = m_actionManager->getActionGroup(PDFActionManager::CreateStampGroup))
     {
         pdf::PDFCreateStampTool* createStampTool = new pdf::PDFCreateStampTool(m_pdfWidget->getDrawWidgetProxy(), m_toolManager, stampGroup, this);

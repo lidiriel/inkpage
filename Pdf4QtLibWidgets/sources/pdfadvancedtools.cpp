@@ -1209,26 +1209,48 @@ void PDFCreateEllipseTool::onRectanglePicked(PDFInteger pageIndex, QRectF pageRe
     setActive(false);
 }
 
-PDFCreateFreehandCurveTool::PDFCreateFreehandCurveTool(PDFDrawWidgetProxy* proxy, PDFToolManager* toolManager, QAction* action, QObject* parent) :
+PDFCreateFreehandCurveTool::PDFCreateFreehandCurveTool(PDFDrawWidgetProxy* proxy, PDFToolManager* toolManager, QAction* action, QObject* parent, Type type) :
     BaseClass(proxy, action, parent),
+    m_type(type),
     m_toolManager(toolManager),
     m_styleManager(nullptr),
     m_pageIndex(-1)
 {
+    const bool isHighlighter = m_type == Type::Highlighter;
+
+    // inkpage: the highlighter has its own style - yellow, medium width of the highlighter
     PDFAnnotationStyle defaultStyle;
-    defaultStyle.strokeColor = Qt::red;
+    defaultStyle.strokeColor = isHighlighter ? QColor(255, 255, 0) : QColor(Qt::red);
     defaultStyle.fillColor = QColor();
-    defaultStyle.penWidth = 1.0;
+    defaultStyle.penWidth = isHighlighter ? 2.0 * HIGHLIGHTER_PEN_WIDTH_SCALE : 1.0;
 
     m_styleManager = new PDFAnnotationStyleManager(this,
                                                    PDFAnnotationStyleManager::StrokeColor | PDFAnnotationStyleManager::PenWidth,
                                                    defaultStyle,
-                                                   PDFAnnotationStyleSettings::STYLE_FREEHAND);
-    connect(m_styleManager, &PDFAnnotationStyleManager::styleChanged, this, [this](const PDFAnnotationStyle& style)
+                                                   isHighlighter ? PDFAnnotationStyleSettings::STYLE_HIGHLIGHTER : PDFAnnotationStyleSettings::STYLE_FREEHAND);
+    if (isHighlighter)
     {
-        setCursor(PDFAnnotationCursors::createPenCursor(style.strokeColor, style.penWidth));
+        m_styleManager->setPenWidthScale(HIGHLIGHTER_PEN_WIDTH_SCALE);
+    }
+
+    connect(m_styleManager, &PDFAnnotationStyleManager::styleChanged, this, [this](const PDFAnnotationStyle&)
+    {
+        updateCursor();
         Q_EMIT getProxy()->repaintNeeded();
     });
+}
+
+void PDFCreateFreehandCurveTool::updateCursor()
+{
+    const PDFAnnotationStyle& style = m_styleManager->getStyle();
+    if (m_type == Type::Highlighter)
+    {
+        setCursor(PDFAnnotationCursors::createHighlighterCursor(style.strokeColor));
+    }
+    else
+    {
+        setCursor(PDFAnnotationCursors::createPenCursor(style.strokeColor, style.penWidth));
+    }
 }
 
 void PDFCreateFreehandCurveTool::setActiveImpl(bool active)
@@ -1238,8 +1260,7 @@ void PDFCreateFreehandCurveTool::setActiveImpl(bool active)
     if (active)
     {
         m_styleManager->activateStyle();
-        const PDFAnnotationStyle& style = m_styleManager->getStyle();
-        setCursor(PDFAnnotationCursors::createPenCursor(style.strokeColor, style.penWidth));
+        updateCursor();
     }
     else
     {
@@ -1271,9 +1292,28 @@ void PDFCreateFreehandCurveTool::drawPage(QPainter* painter,
     const PDFAnnotationStyle& style = m_styleManager->getStyle();
     QPen pen = annotationConvertor.convert(QPen(style.strokeColor), false, false);
     pen.setWidthF(style.penWidth);
-    painter->setPen(qMove(pen));
     painter->setRenderHint(QPainter::Antialiasing);
 
+    if (m_type == Type::Highlighter)
+    {
+        // The stroke is drawn as one path, so the translucent segments do not overlap
+        QColor color = pen.color();
+        color.setAlphaF(HIGHLIGHTER_OPACITY);
+        pen.setColor(color);
+        painter->setPen(qMove(pen));
+        painter->setBrush(Qt::NoBrush);
+        painter->setCompositionMode(QPainter::CompositionMode_Multiply);
+
+        QPainterPath path(m_pickedPoints.front());
+        for (size_t i = 1; i < m_pickedPoints.size(); ++i)
+        {
+            path.lineTo(m_pickedPoints[i]);
+        }
+        painter->drawPath(path);
+        return;
+    }
+
+    painter->setPen(qMove(pen));
     for (size_t i = 1; i < m_pickedPoints.size(); ++i)
     {
         painter->drawLine(m_pickedPoints[i - 1], m_pickedPoints[i]);
@@ -1323,26 +1363,13 @@ void PDFCreateFreehandCurveTool::mouseReleaseEvent(QWidget* widget, QMouseEvent*
 
             if (m_pickedPoints.size() >= 3)
             {
-                PDFDocumentModifier modifier(getDocument());
+                createAnnotation();
 
-                QPolygonF polygon;
-                for (const QPointF& point : m_pickedPoints)
+                // inkpage: the highlighter stays active, so several lines can be highlighted
+                if (m_type != Type::Highlighter)
                 {
-                    polygon << point;
+                    setActive(false);
                 }
-
-                QString author = PDFAuthorSettings::getAuthorName();
-                PDFObjectReference page = getDocument()->getCatalog()->getPage(m_pageIndex)->getPageReference();
-                const PDFAnnotationStyle& style = m_styleManager->getStyle();
-                modifier.getBuilder()->createAnnotationPolyline(page, polygon, style.penWidth, Qt::black, style.strokeColor, author, QString(), QString(), AnnotationLineEnding::None, AnnotationLineEnding::None);
-                modifier.markAnnotationsChanged();
-
-                if (modifier.finalize())
-                {
-                    Q_EMIT m_toolManager->documentModified(PDFModifiedDocument(modifier.getDocument(), nullptr, modifier.getFlags()));
-                }
-
-                setActive(false);
             }
         }
 
@@ -1393,6 +1420,43 @@ void PDFCreateFreehandCurveTool::setStrokeColor(const QColor& strokeColor)
     PDFAnnotationStyle style = m_styleManager->getStyle();
     style.strokeColor = strokeColor;
     m_styleManager->setStyle(style);
+}
+
+void PDFCreateFreehandCurveTool::createAnnotation()
+{
+    PDFDocumentModifier modifier(getDocument());
+
+    QPolygonF polygon;
+    for (const QPointF& point : m_pickedPoints)
+    {
+        polygon << point;
+    }
+
+    QString author = PDFAuthorSettings::getAuthorName();
+    PDFObjectReference page = getDocument()->getCatalog()->getPage(m_pageIndex)->getPageReference();
+    const PDFAnnotationStyle& style = m_styleManager->getStyle();
+    PDFDocumentBuilder* builder = modifier.getBuilder();
+
+    if (m_type == Type::Highlighter)
+    {
+        // An ink annotation is drawn as one path (a polyline is drawn segment by segment,
+        // the translucent segments would be darker where they overlap). The multiply
+        // blend mode keeps the text below the stroke black, like a highlighter pen.
+        PDFObjectReference annotation = builder->createAnnotationInk(page, polygon, style.penWidth, style.strokeColor, author, QString(), QString());
+        builder->setAnnotationOpacity(annotation, HIGHLIGHTER_OPACITY);
+        builder->setAnnotationBlendMode(annotation, BlendMode::Multiply);
+        builder->updateAnnotationAppearanceStreams(annotation);
+    }
+    else
+    {
+        builder->createAnnotationPolyline(page, polygon, style.penWidth, Qt::black, style.strokeColor, author, QString(), QString(), AnnotationLineEnding::None, AnnotationLineEnding::None);
+    }
+    modifier.markAnnotationsChanged();
+
+    if (modifier.finalize())
+    {
+        Q_EMIT m_toolManager->documentModified(PDFModifiedDocument(modifier.getDocument(), nullptr, modifier.getFlags()));
+    }
 }
 
 void PDFCreateFreehandCurveTool::resetTool()

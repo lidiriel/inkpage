@@ -289,7 +289,19 @@ private:
     using BaseClass = PDFCreateAnnotationTool;
 
 public:
-    explicit PDFCreateFreehandCurveTool(PDFDrawWidgetProxy* proxy, PDFToolManager* toolManager, QAction* action, QObject* parent);
+    enum class Type
+    {
+        Pen,        ///< Freehand curve (polyline annotation)
+        Highlighter ///< Wide translucent stroke (ink annotation, multiply blend mode), like the highlighter of Xournal++
+    };
+
+    /// Opacity of the strokes of the highlighter
+    static constexpr PDFReal HIGHLIGHTER_OPACITY = 0.5;
+
+    /// Factor of the predefined pen widths of the style toolbar for the highlighter
+    static constexpr PDFReal HIGHLIGHTER_PEN_WIDTH_SCALE = 5.0;
+
+    explicit PDFCreateFreehandCurveTool(PDFDrawWidgetProxy* proxy, PDFToolManager* toolManager, QAction* action, QObject* parent, Type type = Type::Pen);
 
     virtual void drawPage(QPainter* painter, PDFInteger pageIndex,
                           const PDFPrecompiledPage* compiledPage,
@@ -312,7 +324,12 @@ public:
 
 private:
     void resetTool();
+    void updateCursor();
 
+    /// Creates the annotation from the picked points
+    void createAnnotation();
+
+    Type m_type;
     PDFToolManager* m_toolManager;
     PDFAnnotationStyleManager* m_styleManager;
     PDFInteger m_pageIndex;

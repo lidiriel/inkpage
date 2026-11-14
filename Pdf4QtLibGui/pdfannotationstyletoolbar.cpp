@@ -85,7 +85,7 @@ PDFAnnotationStyleToolBar::PDFAnnotationStyleToolBar(QWidget* parent) :
         action->setToolTip(tr("Pen width: %1 (%2 pt)").arg(widthNames[i]).arg(penWidth));
         m_widthGroup->addAction(action);
         addAction(action);
-        connect(action, &QAction::triggered, this, [this, penWidth]() { applyPenWidth(penWidth); });
+        connect(action, &QAction::triggered, this, [this, penWidth]() { applyPenWidth(penWidth * getPenWidthScale()); });
         m_widthActions[i] = action;
     }
 
@@ -120,6 +120,12 @@ std::array<QColor, PDFAnnotationStyleToolBar::COLOR_COUNT> PDFAnnotationStyleToo
     // Palette of Xournal (xournalpp/palettes/xournal.gpl)
     return { QColor(0, 0, 0), QColor(0, 128, 0), QColor(0, 192, 255), QColor(0, 255, 0), QColor(51, 51, 204), QColor(128, 128, 128),
              QColor(255, 0, 0), QColor(255, 0, 255), QColor(255, 128, 0), QColor(255, 255, 0), QColor(255, 255, 255) };
+}
+
+pdf::PDFReal PDFAnnotationStyleToolBar::getPenWidthScale()
+{
+    const pdf::PDFAnnotationStyleManager* manager = pdf::PDFAnnotationStyleHub::getInstance()->getActiveManager();
+    return manager ? manager->getPenWidthScale() : 1.0;
 }
 
 QColor PDFAnnotationStyleToolBar::getFillColor(const QColor& strokeColor)
@@ -207,10 +213,15 @@ void PDFAnnotationStyleToolBar::updateActions()
     m_fillAction->setEnabled(canSetFill);
     m_fillAction->setChecked(canSetFill && style.fillColor.isValid());
 
+    // The widths of the active tool can be a multiple of the predefined widths (highlighter)
+    const std::array<QString, PEN_WIDTHS.size()> widthNames = { tr("Fine"), tr("Medium"), tr("Thick") };
+    const pdf::PDFReal penWidthScale = getPenWidthScale();
     for (size_t i = 0; i < PEN_WIDTHS.size(); ++i)
     {
+        const pdf::PDFReal penWidth = PEN_WIDTHS[i] * penWidthScale;
         m_widthActions[i]->setEnabled(canSetWidth);
-        m_widthActions[i]->setChecked(manager && canSetWidth && qFuzzyCompare(style.penWidth, PEN_WIDTHS[i]));
+        m_widthActions[i]->setChecked(manager && canSetWidth && qFuzzyCompare(style.penWidth, penWidth));
+        m_widthActions[i]->setToolTip(tr("Pen width: %1 (%2 pt)").arg(widthNames[i]).arg(penWidth));
     }
 }
 

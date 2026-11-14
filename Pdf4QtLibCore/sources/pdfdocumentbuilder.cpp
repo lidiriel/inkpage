@@ -1772,6 +1772,15 @@ void PDFDocumentBuilder::updateAnnotationAppearanceStreams(PDFObjectReference an
         formFactory.endDictionary();
 
         mergeTo(formReference, formFactory.takeObject());
+
+        // inkpage: the blend mode of the annotation (for example Multiply of the highlighter)
+        // is written into the appearance stream, the painter used to draw it ignores it
+        const BlendMode blendMode = annotation->getBlendMode();
+        if (blendMode != BlendMode::Normal && blendMode != BlendMode::Compatible && blendMode != BlendMode::Invalid)
+        {
+            formReference = createBlendModeAppearanceStream(formReference, parameters.boundingRectangle, blendMode);
+        }
+
         appearanceStreams[key] = formReference;
     }
 
@@ -2862,6 +2871,68 @@ bool PDFDocumentModifier::finalize()
     }
 
     return false;
+}
+
+PDFObjectReference PDFDocumentBuilder::createBlendModeAppearanceStream(PDFObjectReference formReference, QRectF boundingBox, BlendMode blendMode)
+{
+    PDFObjectFactory factory;
+    factory.beginDictionary();
+    factory.beginDictionaryItem("Type");
+    factory << WrapName("XObject");
+    factory.endDictionaryItem();
+    factory.beginDictionaryItem("Subtype");
+    factory << WrapName("Form");
+    factory.endDictionaryItem();
+    factory.beginDictionaryItem("BBox");
+    factory << boundingBox;
+    factory.endDictionaryItem();
+    factory.beginDictionaryItem("Resources");
+    factory.beginDictionary();
+    factory.beginDictionaryItem("ExtGState");
+    factory.beginDictionary();
+    factory.beginDictionaryItem("GS0");
+    factory.beginDictionary();
+    factory.beginDictionaryItem("Type");
+    factory << WrapName("ExtGState");
+    factory.endDictionaryItem();
+    factory.beginDictionaryItem("BM");
+    factory << WrapName(getBlendModeNameForAppearance(blendMode));
+    factory.endDictionaryItem();
+    factory.endDictionary();
+    factory.endDictionaryItem();
+    factory.endDictionary();
+    factory.endDictionaryItem();
+    factory.beginDictionaryItem("XObject");
+    factory.beginDictionary();
+    factory.beginDictionaryItem("Fm0");
+    factory << formReference;
+    factory.endDictionaryItem();
+    factory.endDictionary();
+    factory.endDictionaryItem();
+    factory.endDictionary();
+    factory.endDictionaryItem();
+    factory.endDictionary();
+
+    PDFObject formDictionaryObject = factory.takeObject();
+    const PDFDictionary* formDictionary = formDictionaryObject.getDictionary();
+    Q_ASSERT(formDictionary);
+
+    QByteArray content("q\n/GS0 gs\n/Fm0 Do\nQ\n");
+    return addObject(PDFObject::createStream(PDFStream(PDFDictionaryBuilder(*formDictionary), qMove(content))));
+}
+
+void PDFDocumentBuilder::setAnnotationBlendMode(PDFObjectReference annotation,
+                                                BlendMode blendMode)
+{
+    PDFObjectFactory objectBuilder;
+
+    objectBuilder.beginDictionary();
+    objectBuilder.beginDictionaryItem("BM");
+    objectBuilder << WrapName(PDFBlendModeInfo::getBlendModeName(blendMode).toLatin1());
+    objectBuilder.endDictionaryItem();
+    objectBuilder.endDictionary();
+    PDFObject annotationObject = objectBuilder.takeObject();
+    mergeTo(annotation, annotationObject);
 }
 
 /* START GENERATED CODE */

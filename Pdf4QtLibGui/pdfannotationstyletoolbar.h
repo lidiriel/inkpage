@@ -67,6 +67,9 @@ public:
     /// Returns the fill colour used for the given stroke colour (a lighter tint)
     static QColor getFillColor(const QColor& strokeColor);
 
+    /// Returns the factor of the predefined pen widths of the active tool (1 without active tool)
+    static pdf::PDFReal getPenWidthScale();
+
     /// Applies the colour to the style of the active tool, or to the selected annotations
     void applyColor(const QColor& color);
 

@@ -131,6 +131,7 @@ private slots:
     void pastedTextBecomesInlineText();
     void imageAnnotationKeepsItsAppearance();
     void pastedImageBecomesImageAnnotation();
+    void highlighterCreatesTranslucentInk();
     void colorOfInlineTextChangesItsText();
     void attachedFileIsReplaced();
     void pointSnapsToOtherAnnotation();
@@ -2787,6 +2788,97 @@ void AnnotationSelectionTest::imageAnnotationKeepsItsAppearance()
     fixture.annotations.setSelectedAnnotationsColor(Qt::blue);
     QCOMPARE(fixture.modificationCount, 1);
     QCOMPARE(fixture.entry(stamp, "AP"), appearance);
+}
+
+void AnnotationSelectionTest::highlighterCreatesTranslucentInk()
+{
+    // A black square below a part of the stroke
+    PDFDocumentBuilder builder;
+    const PDFObjectReference page = builder.appendPage(QRectF(0, 0, 200, 200));
+    builder.createAnnotationSquare(page, QRectF(20, 80, 60, 40), 0.0, Qt::black, Qt::black, "Title", QString(), QString());
+    SelectionFixture fixture(builder.build());
+    QObject::connect(&fixture.tools, &PDFToolManager::documentModified, &fixture.tools, [&fixture](PDFModifiedDocument modified)
+    {
+        fixture.document = modified;
+        fixture.apply(PDFModifiedDocument(fixture.document, nullptr, modified.getFlags()));
+    });
+
+    QAction action;
+    action.setCheckable(true);
+    PDFCreateFreehandCurveTool tool(fixture.widget.getDrawWidgetProxy(), &fixture.tools, &action, nullptr, PDFCreateFreehandCurveTool::Type::Highlighter);
+    tool.setDocument(PDFModifiedDocument(fixture.document, nullptr));
+    tool.setActive(true);
+
+    // The tool is not owned by the tool manager, it gets the modified document here (as in the application)
+    QObject::connect(&fixture.tools, &PDFToolManager::documentModified, &tool, [&fixture, &tool](PDFModifiedDocument modified)
+    {
+        tool.setDocument(PDFModifiedDocument(fixture.document, nullptr, modified.getFlags()));
+    });
+
+    // Yellow, medium width of the highlighter (the predefined medium width multiplied by its scale)
+    QCOMPARE(tool.getStrokeColor(), QColor(255, 255, 0));
+    QCOMPARE(tool.getPenWidth(), 2.0 * PDFCreateFreehandCurveTool::HIGHLIGHTER_PEN_WIDTH_SCALE);
+
+    auto drawStroke = [&](PDFReal y)
+    {
+        const QPoint start = fixture.device(QPointF(10, y));
+        QMouseEvent press(QEvent::MouseButtonPress, start, fixture.widget.mapToGlobal(start), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+        tool.mousePressEvent(&fixture.widget, &press);
+        for (PDFReal x = 20; x < 150; x += 10)
+        {
+            const QPoint point = fixture.device(QPointF(x, y));
+            QMouseEvent move(QEvent::MouseMove, point, fixture.widget.mapToGlobal(point), Qt::NoButton, Qt::LeftButton, Qt::NoModifier);
+            tool.mouseMoveEvent(&fixture.widget, &move);
+        }
+        const QPoint end = fixture.device(QPointF(150, y));
+        QMouseEvent release(QEvent::MouseButtonRelease, end, fixture.widget.mapToGlobal(end), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+        tool.mouseReleaseEvent(&fixture.widget, &release);
+    };
+
+    drawStroke(100);
+    QCOMPARE(fixture.pageAnnotations().size(), size_t(2));
+
+    // Translucent ink annotation, multiply blend mode
+    const PDFObjectReference ink = fixture.pageAnnotations().back();
+    const PDFAnnotationPtr parsedAnnotation = PDFAnnotation::parse(&fixture.document->getStorage(), ink);
+    QCOMPARE(parsedAnnotation->getType(), AnnotationType::Ink);
+    QCOMPARE(parsedAnnotation->getStrokeOpacity(), PDFCreateFreehandCurveTool::HIGHLIGHTER_OPACITY);
+    QCOMPARE(parsedAnnotation->getBlendMode(), BlendMode::Multiply);
+    QVERIFY(!fixture.entry(ink, "AP").isNull());
+
+    // The highlighter stays active, the next stroke creates another annotation
+    QVERIFY(tool.isActive());
+    drawStroke(160);
+    QCOMPARE(fixture.pageAnnotations().size(), size_t(3));
+
+    // Rendered: light yellow on the white page, the black square stays black
+    QImage image(200, 200, QImage::Format_RGB32);
+    image.fill(Qt::white);
+    {
+        PDFCMSManager cms(nullptr);
+        PDFFontCache fontCache(32, 32);
+        PDFOptionalContentActivity activity(fixture.document.data(), OCUsage::View, nullptr);
+        const PDFModifiedDocument modified(fixture.document.data(), &activity);
+        fontCache.setDocument(modified);
+        PDFAnnotationManager renderer(&fontCache, nullptr, &cms, &activity, PDFMeshQualitySettings(), PDFRenderer::getDefaultFeatures(), PDFAnnotationManager::Target::View, nullptr);
+        renderer.setDocument(modified);
+
+        QPainter painter(&image);
+        PDFTextLayoutGetter getter(nullptr, 0);
+        QList<PDFRenderError> errors;
+        const QTransform transform = PDFRenderer::createPagePointToDevicePointMatrix(fixture.document->getCatalog()->getPage(0), QRectF(0, 0, 200, 200));
+        renderer.drawPage(&painter, 0, nullptr, getter, transform, PDFColorConvertor(), errors);
+        QVERIFY(errors.isEmpty());
+    }
+
+    // Page y = 100 is the image row 100 (the page is 200 points high)
+    const QColor onWhite = image.pixelColor(120, 100);
+    QVERIFY2(onWhite.red() > 240 && onWhite.green() > 240 && onWhite.blue() > 100 && onWhite.blue() < 160, qPrintable(onWhite.name()));
+    const QColor onBlack = image.pixelColor(50, 100);
+    QVERIFY2(onBlack.red() < 20 && onBlack.green() < 20 && onBlack.blue() < 20, qPrintable(onBlack.name()));
+    QCOMPARE(image.pixelColor(120, 140), QColor(Qt::white));
+
+    tool.setActive(false);
 }
 
 void AnnotationSelectionTest::pastedImageBecomesImageAnnotation()

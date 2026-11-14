@@ -36,6 +36,7 @@ private slots:
     void fillAndPenWidth();
     void itemsOfTheToolEnableActions();
     void deactivatedToolDisablesActions();
+    void penWidthsFollowScaleOfTheTool();
     void pointersShowTheColor();
 
 private:
@@ -167,6 +168,28 @@ void AnnotationStyleToolBarTest::deactivatedToolDisablesActions()
     // The destroyed manager is removed from the hub
     QVERIFY(!PDFAnnotationStyleHub::getInstance()->getActiveManager());
     QVERIFY(!action(toolBar, "actionStyleColor0")->isEnabled());
+}
+
+void AnnotationStyleToolBarTest::penWidthsFollowScaleOfTheTool()
+{
+    PDFAnnotationStyleToolBar toolBar(nullptr);
+
+    // Highlighter: the predefined widths are multiplied by the scale of the tool
+    PDFAnnotationStyle style = defaultStyle();
+    style.penWidth = 10.0;
+    PDFAnnotationStyleManager manager(nullptr, PDFAnnotationStyleManager::StrokeColor | PDFAnnotationStyleManager::PenWidth, style, STYLE_ID);
+    manager.setPenWidthScale(5.0);
+    manager.activateStyle();
+    QVERIFY(action(toolBar, "actionStyleWidth1")->isChecked());
+    QVERIFY(action(toolBar, "actionStyleWidth2")->toolTip().contains("20"));
+
+    action(toolBar, "actionStyleWidth2")->trigger();
+    QCOMPARE(manager.getStyle().penWidth, PDFAnnotationStyleToolBar::PEN_WIDTHS[2] * 5.0);
+    QVERIFY(action(toolBar, "actionStyleWidth2")->isChecked());
+    manager.deactivateStyle();
+
+    // Without an active tool, the widths are the predefined widths
+    QVERIFY(action(toolBar, "actionStyleWidth2")->toolTip().contains(QString::number(PDFAnnotationStyleToolBar::PEN_WIDTHS[2])));
 }
 
 void AnnotationStyleToolBarTest::pointersShowTheColor()

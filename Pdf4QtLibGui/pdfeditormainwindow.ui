@@ -226,6 +226,7 @@
     <addaction name="actionCreatePolygon"/>
     <addaction name="actionCreateEllipse"/>
     <addaction name="actionCreateFreehandCurve"/>
+    <addaction name="actionCreateHighlighter"/>
     <addaction name="menuStamp"/>
     <addaction name="menuTextHighlight"/>
     <addaction name="separator"/>
@@ -1019,6 +1020,21 @@
    </property>
    <property name="text">
     <string>&amp;Freehand Curve</string>
+   </property>
+  </action>
+  <action name="actionCreateHighlighter">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="pdf4qtlibgui.qrc">
+     <normaloff>:/resources/annot-highlighter.svg</normaloff>:/resources/annot-highlighter.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Hi&amp;ghlighter</string>
+   </property>
+   <property name="toolTip">
+    <string>Highlighter - draw a wide translucent line by hand, the text below it stays readable</string>
    </property>
   </action>
   <action name="actionDeleteAnnotation">

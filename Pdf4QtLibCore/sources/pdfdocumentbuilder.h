@@ -1665,6 +1665,13 @@ public:
 /* END GENERATED CODE */
 
 public:
+    /// Sets the blend mode of annotation's graphics (entry BM, for example
+    /// Multiply for a highlighter, so the text below the ink stays black).
+    /// \param annotation Annotation
+    /// \param blendMode Blend mode
+    void setAnnotationBlendMode(PDFObjectReference annotation,
+                                BlendMode blendMode);
+
     /// Creates signature dictionary of a digital signature, the type of the
     /// created dictionary is Sig. Use the overload with the type to create
     /// a dictionary of a document timestamp.
@@ -1703,6 +1710,14 @@ private:
     /// Returns true, if the annotation is a stamp with a name, which is not a standard stamp
     /// name, and with an appearance stream - its appearance must not be regenerated
     bool hasCustomStampAppearance(PDFObjectReference annotationReference) const;
+
+    /// Creates a form, which draws the appearance stream \p formReference with the blend
+    /// mode. The entry BM of an annotation (PDF 2.0) is ignored by many viewers, the blend
+    /// mode set in the appearance stream (ExtGState) is used by all of them.
+    /// \param formReference Appearance stream (form XObject)
+    /// \param boundingBox Bounding box of the appearance stream
+    /// \param blendMode Blend mode
+    PDFObjectReference createBlendModeAppearanceStream(PDFObjectReference formReference, QRectF boundingBox, BlendMode blendMode);
     bool updateHighlightAnnotationAppearanceStream(PDFObjectReference annotationReference,
                                                    const PDFHighlightAnnotation* annotation);
     QRectF resizeFreeTextRectangleToContents(QRectF rectangle,

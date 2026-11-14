@@ -67,6 +67,7 @@ public:
     static constexpr QLatin1String STYLE_REDACT = QLatin1String("Redact");
     static constexpr QLatin1String STYLE_SHAPE = QLatin1String("Shape");
     static constexpr QLatin1String STYLE_FREEHAND = QLatin1String("Freehand");
+    static constexpr QLatin1String STYLE_HIGHLIGHTER = QLatin1String("Highlighter");
 
     /// Returns the style stored for the given style id. If no style has been
     /// stored yet, then \p defaultStyle is returned.
@@ -177,6 +178,15 @@ public:
     /// Returns the style items, which are used by the tool
     StyleItems getItems() const { return m_items; }
 
+    /// Returns the factor of the predefined pen widths of the style toolbar. A tool
+    /// drawing wide strokes (highlighter) uses larger widths than the other tools,
+    /// so its fine / medium / thick widths are the predefined widths multiplied by it.
+    PDFReal getPenWidthScale() const { return m_penWidthScale; }
+
+    /// Sets the factor of the predefined pen widths (see getPenWidthScale)
+    /// \param penWidthScale Factor of the predefined pen widths
+    void setPenWidthScale(PDFReal penWidthScale) { m_penWidthScale = penWidthScale; }
+
     /// Sets the style and stores it in the application settings.
     /// \param style New style
     void setStyle(PDFAnnotationStyle style);
@@ -215,6 +225,7 @@ private:
     PDFAnnotationStyle m_defaultStyle;
     QString m_styleId;
     PDFAnnotationStyle m_style;
+    PDFReal m_penWidthScale = 1.0;
 };
 
 // Jakub Melka: operators must be declared inside the namespace, not at the global
