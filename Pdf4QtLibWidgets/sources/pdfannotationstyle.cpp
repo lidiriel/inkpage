@@ -24,6 +24,8 @@
 
 #include <QCoreApplication>
 #include <QSettings>
+#include <QPainter>
+#include <QPixmap>
 
 #include "pdfdbgheap.h"
 
@@ -75,6 +77,66 @@ void PDFAnnotationStyleSettings::setStyle(const QString& styleId, const PDFAnnot
     settings.setValue("penWidth", style.penWidth);
     settings.endGroup();
     settings.endGroup();
+}
+
+QCursor PDFAnnotationCursors::createPenCursor(QColor color, PDFReal penWidth)
+{
+    const int size = 32;
+    const qreal diameter = qBound(5.0, 3.0 + 2.0 * penWidth, 22.0);
+    const QColor outline = color.lightness() < 160 ? QColor(Qt::white) : QColor(60, 60, 60);
+
+    QPixmap pixmap(size, size);
+    pixmap.fill(Qt::transparent);
+    QPainter painter(&pixmap);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setPen(QPen(outline, 1.5));
+    painter.setBrush(color);
+    painter.drawEllipse(QPointF(size / 2.0, size / 2.0), diameter / 2.0, diameter / 2.0);
+    painter.end();
+
+    return QCursor(pixmap, size / 2, size / 2);
+}
+
+QCursor PDFAnnotationCursors::createHighlighterCursor(QColor color)
+{
+    const int size = 32;
+    QColor fill = color;
+    fill.setAlpha(170);
+
+    QPixmap pixmap(size, size);
+    pixmap.fill(Qt::transparent);
+    QPainter painter(&pixmap);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setPen(QPen(color.darker(160), 1.0));
+    painter.setBrush(fill);
+    painter.drawRect(QRectF(size / 2.0 - 4.0, size / 2.0 - 10.0, 8.0, 20.0));
+    painter.end();
+
+    return QCursor(pixmap, size / 2, size / 2);
+}
+
+QCursor PDFAnnotationCursors::createCrossCursor(QColor color)
+{
+    const int size = 32;
+    const QPointF center(size / 2.0, size / 2.0);
+    const qreal arm = 9.0;
+    const QColor outline = color.lightness() < 160 ? QColor(Qt::white) : QColor(60, 60, 60);
+
+    QPixmap pixmap(size, size);
+    pixmap.fill(Qt::transparent);
+    QPainter painter(&pixmap);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    // Outline first, so the cross is visible on both light and dark content
+    for (const QPen& pen : { QPen(outline, 4.0, Qt::SolidLine, Qt::RoundCap), QPen(color, 2.0, Qt::SolidLine, Qt::RoundCap) })
+    {
+        painter.setPen(pen);
+        painter.drawLine(center - QPointF(arm, 0.0), center + QPointF(arm, 0.0));
+        painter.drawLine(center - QPointF(0.0, arm), center + QPointF(0.0, arm));
+    }
+    painter.end();
+
+    return QCursor(pixmap, size / 2, size / 2);
 }
 
 PDFAnnotationStyleHub::PDFAnnotationStyleHub() :

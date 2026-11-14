@@ -444,6 +444,12 @@ public:
 
     void makeLastPointOrthogonal();
 
+    /// Uses the given mouse pointer instead of the large cross drawn over the page
+    /// (points and rectangles mode). The picked (snapped) point is still marked by
+    /// a small cross; key 'C' shows the large cross again.
+    /// \param cursor Mouse pointer
+    void setPointerCursor(const QCursor& cursor);
+
 signals:
     void pointPicked(pdf::PDFInteger pageIndex, QPointF pagePoint);
     void rectanglePicked(pdf::PDFInteger pageIndex, QRectF pageRectangle);

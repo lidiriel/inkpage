@@ -1586,6 +1586,12 @@ void PDFPickTool::keyPressEvent(QWidget* widget, QKeyEvent* event)
     BaseClass::keyPressEvent(widget, event);
 }
 
+void PDFPickTool::setPointerCursor(const QCursor& cursor)
+{
+    setCursor(cursor);
+    m_hideLargeCross = true;
+}
+
 QPointF PDFPickTool::getSnappedPoint() const
 {
     return m_snapper.getSnappedPoint();

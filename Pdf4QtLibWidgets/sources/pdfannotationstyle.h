@@ -27,6 +27,7 @@
 #include "pdfglobal.h"
 
 #include <QColor>
+#include <QCursor>
 #include <QPointer>
 
 
@@ -84,6 +85,27 @@ public:
 /// active. All annotation tools use this class, so the way of setting the style
 /// of a created annotation is the same for all of them.
 class PDFAnnotationStyleManager;
+
+/// Mouse pointers of the annotation tools, they show the tool and its style
+/// (like Xournal++): the color of the annotation, which will be created.
+class PDF4QTLIBWIDGETSSHARED_EXPORT PDFAnnotationCursors
+{
+public:
+    PDFAnnotationCursors() = delete;
+
+    /// Pen (freehand drawing): a dot in the color of the pen, its size follows the pen width
+    /// \param color Color of the pen
+    /// \param penWidth Width of the pen (points)
+    static QCursor createPenCursor(QColor color, PDFReal penWidth);
+
+    /// Highlighter: a block in the color of the highlight
+    /// \param color Color of the highlight
+    static QCursor createHighlighterCursor(QColor color);
+
+    /// Shapes: a small cross in the color of the shape
+    /// \param color Color of the shape
+    static QCursor createCrossCursor(QColor color);
+};
 
 /// Central point of the annotation styles. The annotation tool, which is active,
 /// registers its style manager here, so the style toolbar of the application can

@@ -413,6 +413,7 @@ PDFCreateFreeTextTool::PDFCreateFreeTextTool(PDFDrawWidgetProxy* proxy, PDFToolM
     m_pickTool->setSnapToAnnotations(true);
     addTool(m_pickTool);
     connect(m_pickTool, &PDFPickTool::rectanglePicked, this, &PDFCreateFreeTextTool::onRectanglePicked);
+    m_pickTool->setPointerCursor(QCursor(Qt::IBeamCursor));
 
     updateActions();
 }
@@ -535,6 +536,7 @@ PDFCreateImageTool::PDFCreateImageTool(PDFDrawWidgetProxy* proxy, PDFToolManager
     m_pickTool->setSnapToAnnotations(true);
     addTool(m_pickTool);
     connect(m_pickTool, &PDFPickTool::rectanglePicked, this, &PDFCreateImageTool::onRectanglePicked);
+    m_pickTool->setPointerCursor(QCursor(Qt::CrossCursor));
 
     updateActions();
 }
@@ -641,6 +643,7 @@ void PDFCreateLineTypeTool::setActiveImpl(bool active)
     {
         Q_EMIT messageDisplayRequest(tr("Use key 'C' to show/hide large cross. Use key 'O' to switch on/off orthogonal mode."), 25000);
         m_styleManager->activateStyle();
+        m_pickTool->setPointerCursor(PDFAnnotationCursors::createCrossCursor(m_styleManager->getStyle().strokeColor));
     }
     else
     {
@@ -650,7 +653,7 @@ void PDFCreateLineTypeTool::setActiveImpl(bool active)
 
 void PDFCreateLineTypeTool::onStyleChanged(const PDFAnnotationStyle& style)
 {
-    Q_UNUSED(style);
+    m_pickTool->setPointerCursor(PDFAnnotationCursors::createCrossCursor(style.strokeColor));
     Q_EMIT getProxy()->repaintNeeded();
 }
 
@@ -1075,6 +1078,7 @@ void PDFCreateEllipseTool::setActiveImpl(bool active)
     if (active)
     {
         m_styleManager->activateStyle();
+        m_pickTool->setPointerCursor(PDFAnnotationCursors::createCrossCursor(m_styleManager->getStyle().strokeColor));
     }
     else
     {
@@ -1084,7 +1088,7 @@ void PDFCreateEllipseTool::setActiveImpl(bool active)
 
 void PDFCreateEllipseTool::onStyleChanged(const PDFAnnotationStyle& style)
 {
-    Q_UNUSED(style);
+    m_pickTool->setPointerCursor(PDFAnnotationCursors::createCrossCursor(style.strokeColor));
     Q_EMIT getProxy()->repaintNeeded();
 }
 
@@ -1220,7 +1224,11 @@ PDFCreateFreehandCurveTool::PDFCreateFreehandCurveTool(PDFDrawWidgetProxy* proxy
                                                    PDFAnnotationStyleManager::StrokeColor | PDFAnnotationStyleManager::PenWidth,
                                                    defaultStyle,
                                                    PDFAnnotationStyleSettings::STYLE_FREEHAND);
-    connect(m_styleManager, &PDFAnnotationStyleManager::styleChanged, this, [this]() { Q_EMIT getProxy()->repaintNeeded(); });
+    connect(m_styleManager, &PDFAnnotationStyleManager::styleChanged, this, [this](const PDFAnnotationStyle& style)
+    {
+        setCursor(PDFAnnotationCursors::createPenCursor(style.strokeColor, style.penWidth));
+        Q_EMIT getProxy()->repaintNeeded();
+    });
 }
 
 void PDFCreateFreehandCurveTool::setActiveImpl(bool active)
@@ -1230,6 +1238,8 @@ void PDFCreateFreehandCurveTool::setActiveImpl(bool active)
     if (active)
     {
         m_styleManager->activateStyle();
+        const PDFAnnotationStyle& style = m_styleManager->getStyle();
+        setCursor(PDFAnnotationCursors::createPenCursor(style.strokeColor, style.penWidth));
     }
     else
     {
@@ -1723,6 +1733,7 @@ void PDFCreateHighlightTextTool::onActionTriggered(QAction* action)
 void PDFCreateHighlightTextTool::onStyleChanged(const PDFAnnotationStyle& style)
 {
     m_color = style.strokeColor;
+    updateCursor();
 
     if (!m_textSelection.isEmpty())
     {
@@ -1783,7 +1794,11 @@ void PDFCreateHighlightTextTool::updateCursor()
 {
     if (isActive())
     {
-        if (m_isCursorOverText)
+        if (m_type == AnnotationType::Highlight)
+        {
+            setCursor(PDFAnnotationCursors::createHighlighterCursor(m_color));
+        }
+        else if (m_isCursorOverText)
         {
             setCursor(QCursor(Qt::IBeamCursor));
         }

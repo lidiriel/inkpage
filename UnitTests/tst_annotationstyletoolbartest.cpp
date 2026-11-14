@@ -36,6 +36,7 @@ private slots:
     void fillAndPenWidth();
     void itemsOfTheToolEnableActions();
     void deactivatedToolDisablesActions();
+    void pointersShowTheColor();
 
 private:
     static QAction* action(PDFAnnotationStyleToolBar& toolBar, const QString& name) { return toolBar.findChild<QAction*>(name); }
@@ -166,6 +167,35 @@ void AnnotationStyleToolBarTest::deactivatedToolDisablesActions()
     // The destroyed manager is removed from the hub
     QVERIFY(!PDFAnnotationStyleHub::getInstance()->getActiveManager());
     QVERIFY(!action(toolBar, "actionStyleColor0")->isEnabled());
+}
+
+void AnnotationStyleToolBarTest::pointersShowTheColor()
+{
+    auto centerColor = [](const QCursor& cursor)
+    {
+        const QImage image = cursor.pixmap().toImage();
+        return image.pixelColor(cursor.hotSpot());
+    };
+
+    // The hot spot of the pointers is drawn in the color of the annotation
+    QCOMPARE(centerColor(PDFAnnotationCursors::createPenCursor(Qt::red, 2.0)).rgb(), QColor(Qt::red).rgb());
+    QCOMPARE(centerColor(PDFAnnotationCursors::createCrossCursor(Qt::blue)).rgb(), QColor(Qt::blue).rgb());
+
+    const QColor highlight = centerColor(PDFAnnotationCursors::createHighlighterCursor(Qt::yellow));
+    QVERIFY(highlight.red() > 200 && highlight.green() > 200 && highlight.blue() < 60);
+
+    // A wider pen has a larger dot
+    auto dotWidth = [](const QCursor& cursor)
+    {
+        const QImage image = cursor.pixmap().toImage();
+        int count = 0;
+        for (int x = 0; x < image.width(); ++x)
+        {
+            count += image.pixelColor(x, cursor.hotSpot().y()).alpha() > 0 ? 1 : 0;
+        }
+        return count;
+    };
+    QVERIFY(dotWidth(PDFAnnotationCursors::createPenCursor(Qt::black, 4.0)) > dotWidth(PDFAnnotationCursors::createPenCursor(Qt::black, 1.0)));
 }
 
 QTEST_MAIN(AnnotationStyleToolBarTest)
