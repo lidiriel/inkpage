@@ -1,0 +1,40 @@
+.\" inkpage - a simple PDF editor for Linux
+.\" Copyright (C) 2026 Ludovic Mercier
+.\" SPDX-License-Identifier: GPL-3.0-or-later
+.TH INKPAGE 1 "November 2026" "inkpage 0.2.0" "User Commands"
+.SH NAME
+inkpage \- simple PDF editor
+.SH SYNOPSIS
+.B inkpage
+[\fIOPTION\fR]... [\fIFILE\fR]
+.SH DESCRIPTION
+.B inkpage
+edits PDF documents: annotations (inline text, images, shapes, freehand
+drawing, highlighter, sticky notes), page content and pages (add, insert,
+duplicate, delete, move, ruled backgrounds).
+It is based on PDF4QT by Jakub Melka.
+.PP
+If \fIFILE\fR is given, the PDF document is opened.
+.SH OPTIONS
+.TP
+\fB\-c\fR, \fB\-\-config\fR \fIpath\fR
+Use the directory \fIpath\fR for the user settings, instead of
+\fI~/.config/inkpage\fR.
+.TP
+\fB\-\-no\-drm\fR
+Disable the DRM settings of the documents.
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+Display the help and exit.
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+Display the version and exit.
+.PP
+The standard options of Qt applications are also accepted (for example
+\fB\-platform\fR, \fB\-style\fR).
+.SH FILES
+.TP
+.I ~/.config/inkpage/inkpage.ini
+User settings (shortcuts, toolbars, styles of the annotations).
+.SH SEE ALSO
+https://github.com/lidiriel/inkpage

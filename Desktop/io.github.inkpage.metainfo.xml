@@ -11,6 +11,10 @@
       It edits annotations, page content and pages of PDF documents.
     </p>
   </description>
+  <url type="homepage">https://github.com/lidiriel/inkpage</url>
+  <developer id="io.github.lidiriel">
+    <name>Ludovic Mercier</name>
+  </developer>
   <categories>
     <category>Office</category>
   </categories>

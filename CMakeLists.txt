@@ -152,7 +152,9 @@ endif()
 option(PDF4QT_INSTALL_TO_USR "Install to usr directory" OFF)
 
 if(PDF4QT_LINUX)
-    set(PDF4QT_INSTALL_LIB_DIR_IMPL ${CMAKE_INSTALL_LIBDIR})
+    # inkpage: the libraries are private libraries of the application (no headers,
+    # no stable interface), they are installed in a directory of their own
+    set(PDF4QT_INSTALL_LIB_DIR_IMPL ${CMAKE_INSTALL_LIBDIR}/inkpage)
     set(PDF4QT_INSTALL_BIN_DIR_IMPL ${CMAKE_INSTALL_BINDIR})
 else()
     set(PDF4QT_INSTALL_LIB_DIR_IMPL ${CMAKE_INSTALL_BINDIR})
@@ -172,7 +174,9 @@ else()
 endif()
 
 if(PDF4QT_LINUX)
-    set(PDF4QT_PLUGINS_DIR ${PDF4QT_INSTALL_LIB_DIR}/inkpage)
+    # The plugins are separated from the private libraries: every *.so file of the
+    # plugin directory is loaded as a plugin
+    set(PDF4QT_PLUGINS_DIR ${PDF4QT_INSTALL_LIB_DIR}/plugins)
     set(PDF4QT_INSTALL_TRANS_DIR ${PDF4QT_INSTALL_SHARE_DIR}/inkpage/translations)
 else()
     set(PDF4QT_PLUGINS_DIR ${PDF4QT_INSTALL_LIB_DIR}/pdfplugins)
@@ -191,6 +195,15 @@ if(PDF4QT_LINUX)
     set(INKPAGE_INSTALL_LICENSES_DIR ${PDF4QT_INSTALL_SHARE_DIR}/inkpage/licenses)
 else()
     set(INKPAGE_INSTALL_LICENSES_DIR ${PDF4QT_INSTALL_BIN_DIR}/licenses)
+endif()
+
+# The installed binaries find the private libraries relative to their own location:
+# the application (bin), the libraries (lib/inkpage) and the plugins (lib/inkpage/plugins)
+if(PDF4QT_LINUX)
+    cmake_path(RELATIVE_PATH PDF4QT_INSTALL_LIB_DIR
+               BASE_DIRECTORY "${PDF4QT_INSTALL_BIN_DIR}"
+               OUTPUT_VARIABLE INKPAGE_LIB_RELATIVE_PATH)
+    set(CMAKE_INSTALL_RPATH "$ORIGIN/${INKPAGE_LIB_RELATIVE_PATH};$ORIGIN;$ORIGIN/..")
 endif()
 
 # Relative paths are used by the config
@@ -455,6 +468,11 @@ if(NOT PDF4QT_BUILD_ONLY_CORE_LIBRARY)
             DESTINATION ${PDF4QT_INSTALL_SHARE_DIR}/icons/hicolor/128x128/apps)
     install(FILES Desktop/io.github.inkpage.metainfo.xml
             DESTINATION ${PDF4QT_INSTALL_SHARE_DIR}/metainfo)
+endif()
+
+# Debian package (cpack -G DEB), see scripts/build-deb.sh
+if(PDF4QT_LINUX AND NOT PDF4QT_BUILD_ONLY_CORE_LIBRARY)
+    include(cmake/InkpagePackaging.cmake)
 endif()
 
 #macro(dump_variables)

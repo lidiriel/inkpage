@@ -202,8 +202,20 @@ run time, since the libraries are loaded from `$DEPS/install/lib`.
           -DPDF4QT_ENABLE_OCR=OFF
     cmake --build build
 
-The application is `build/bin/inkpage`, the plugins are in
-`build/lib/inkpage`. Run the unit tests with `ctest --test-dir build`.
+The application is `build/bin/inkpage`, its private libraries are in
+`build/lib/inkpage` and the plugins in `build/lib/inkpage/plugins`. Run the
+unit tests with `ctest --test-dir build`.
+
+### Debian package
+
+    scripts/build-deb.sh [DEPS_DIR] [BUILD_DIR]
+
+The script makes a Release build in `build-deb` (without the tests) and
+creates `build-deb/inkpage_<version>_amd64.deb` with `cpack`. The package
+installs inkpage in `/usr`; its private libraries, and Blend2D and Clipper2
+(not packaged by Debian), go to `/usr/lib/<triplet>/inkpage`. The other
+dependencies are Debian packages, computed by `dpkg-shlibdeps` (package
+`dpkg-dev`). Install it with `sudo apt install ./build-deb/inkpage_*.deb`.
 
 ### CMake options
 
@@ -215,6 +227,7 @@ The application is `build/bin/inkpage`, the plugins are in
 | `PDF4QT_ENABLE_OCR`          | Build the OCR feature (Tesseract), set it to OFF for now |
 | `INKPAGE_BUILD_DEV_TOOLS`    | Build the developer tools (CodeGenerator), OFF by default|
 | `INKPAGE_BUILD_DISABLED_PLUGINS` | Build the deactivated plugins (AudioBook, Redact, Scanner, SoftProofing), OFF by default |
+| `INKPAGE_BUNDLE_DEPS`        | Install Blend2D and Clipper2 with the private libraries (Debian package), OFF by default |
 
 ## 7. DISCLAIMER
 

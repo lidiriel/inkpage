@@ -2,6 +2,7 @@
 *.qbs.user
 *.txt.user
 build/*
+build-deb/
 jbig2test/
 
 # OCR language models are stored as xz archives, the extracted models belong to the build tree

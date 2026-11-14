@@ -1,0 +1,10 @@
+inkpage (0.2.0) unstable; urgency=medium
+
+  * First Debian package.
+  * Menu cleanup, About dialog with the GPL-3+ license, new icons.
+  * Page management toolbar (add, insert, duplicate, delete, move pages,
+    ruled backgrounds), toolbars on the top or the right side.
+  * Style toolbar with predefined colors and pen widths, Insert toolbar,
+    image and highlighter tools, paste of text and images.
+
+ -- Ludovic Mercier <ludovic@scilink.net>  Sat, 14 Nov 2026 18:00:00 +0100
