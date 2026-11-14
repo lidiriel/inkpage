@@ -57,6 +57,7 @@
 #include <QDockWidget>
 #include <QTreeView>
 #include <QLayout>
+#include <QHBoxLayout>
 #include <QHeaderView>
 #include <QInputDialog>
 #include <QSpinBox>
@@ -265,10 +266,8 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     ui->mainToolBar->addAction(ui->actionGoToNextPage);
     ui->mainToolBar->addAction(ui->actionGoToDocumentEnd);
 
-    // Zoom
+    // Zoom (inkpage: at the bottom right, in the status bar)
     ui->mainToolBar->addSeparator();
-    ui->mainToolBar->addAction(ui->actionZoom_In);
-    ui->mainToolBar->addAction(ui->actionZoom_Out);
 
     m_pageZoomSpinBox = new QDoubleSpinBox(this);
     m_pageZoomSpinBox->setObjectName("pageZoomSpinBox");
@@ -279,13 +278,7 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     m_pageZoomSpinBox->setFixedWidth(pdf::PDFWidgetUtils::scaleDPI_x(m_pageNumberSpinBox, 80));
     m_pageZoomSpinBox->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
     connect(m_pageZoomSpinBox, &QDoubleSpinBox::editingFinished, this, &PDFEditorMainWindow::onPageZoomSpinboxEditingFinished);
-    ui->mainToolBar->addWidget(m_pageZoomSpinBox);
-
-    // Fit page, width, height
-    ui->mainToolBar->addAction(ui->actionFitPage);
-    ui->mainToolBar->addAction(ui->actionFitWidth);
-    ui->mainToolBar->addAction(ui->actionFitHeight);
-    ui->mainToolBar->addSeparator();
+    initializeStatusBarZoom();
 
     // Tools
     ui->mainToolBar->addAction(ui->actionSelectText);
@@ -703,6 +696,37 @@ void PDFEditorMainWindow::initializeHiddenActions()
     {
         action->setVisible(false);
     }
+}
+
+void PDFEditorMainWindow::initializeStatusBarZoom()
+{
+    // Zoom out, zoom, zoom in, fit page / width / height - like the zoom of a
+    // document viewer, at the right side of the status bar (after the progress bar)
+    QWidget* zoomWidget = new QWidget(this);
+    zoomWidget->setObjectName("statusBarZoomWidget");
+    QHBoxLayout* layout = new QHBoxLayout(zoomWidget);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(pdf::PDFWidgetUtils::scaleDPI_x(zoomWidget, 2));
+
+    const QSize iconSize = pdf::PDFWidgetUtils::scaleDPI(this, QSize(16, 16));
+    auto addButton = [zoomWidget, layout, iconSize](QAction* action)
+    {
+        QToolButton* button = new QToolButton(zoomWidget);
+        button->setDefaultAction(action);
+        button->setAutoRaise(true);
+        button->setIconSize(iconSize);
+        layout->addWidget(button);
+    };
+
+    addButton(ui->actionZoom_Out);
+    layout->addWidget(m_pageZoomSpinBox);
+    addButton(ui->actionZoom_In);
+    layout->addSpacing(pdf::PDFWidgetUtils::scaleDPI_x(zoomWidget, 6));
+    addButton(ui->actionFitPage);
+    addButton(ui->actionFitWidth);
+    addButton(ui->actionFitHeight);
+
+    statusBar()->addPermanentWidget(zoomWidget);
 }
 
 void PDFEditorMainWindow::initializeStatusBarAction()

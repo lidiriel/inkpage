@@ -21,6 +21,9 @@
 #include <QSettings>
 #include <QStatusBar>
 #include <QTemporaryDir>
+#include <QToolBar>
+#include <QToolButton>
+#include <QDoubleSpinBox>
 
 using namespace pdfviewer;
 
@@ -41,6 +44,7 @@ public:
 private slots:
     void initTestCase();
     void statusBarVisibilityIsRemembered();
+    void zoomIsInStatusBar();
 
 private:
     static QSettings settings();
@@ -92,6 +96,31 @@ void EditorMainWindowTest::statusBarVisibilityIsRemembered()
         QVERIFY(!window.statusBar()->isHidden());
     }
     QCOMPARE(settings().value("statusBarVisible").toBool(), true);
+}
+
+void EditorMainWindowTest::zoomIsInStatusBar()
+{
+    PDFEditorMainWindow window;
+    QWidget* zoomWidget = window.statusBar()->findChild<QWidget*>("statusBarZoomWidget");
+    QVERIFY(zoomWidget);
+    QVERIFY(zoomWidget->findChild<QDoubleSpinBox*>("pageZoomSpinBox"));
+
+    QStringList zoomActions;
+    for (QToolButton* button : zoomWidget->findChildren<QToolButton*>())
+    {
+        zoomActions << button->defaultAction()->objectName();
+    }
+    QCOMPARE(zoomActions, (QStringList{ "actionZoom_Out", "actionZoom_In", "actionFitPage", "actionFitWidth", "actionFitHeight" }));
+
+    // The zoom is not in the main toolbar any more
+    QToolBar* mainToolBar = window.findChild<QToolBar*>("mainToolBar");
+    QVERIFY(mainToolBar);
+    for (const QString& name : zoomActions)
+    {
+        QAction* action = window.findChild<QAction*>(name);
+        QVERIFY(action);
+        QVERIFY(!mainToolBar->actions().contains(action));
+    }
 }
 
 QTEST_MAIN(EditorMainWindowTest)

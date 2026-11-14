@@ -130,6 +130,9 @@ private:
     /// (the choice is stored in the settings)
     void initializeStatusBarAction();
 
+    /// Places the zoom actions and the zoom spin box at the right side of the status bar
+    void initializeStatusBarZoom();
+
     /// Settings key of the visibility of the status bar
     static constexpr const char* STATUS_BAR_VISIBLE_KEY = "statusBarVisible";
 
