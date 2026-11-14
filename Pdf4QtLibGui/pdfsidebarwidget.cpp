@@ -139,6 +139,8 @@ PDFSidebarWidget::PDFSidebarWidget(pdf::PDFDrawWidgetProxy* proxy,
     ui->thumbnailsListView->setModel(m_thumbnailsModel);
     connect(ui->thumbnailsSizeSlider, &QSlider::valueChanged, this, &PDFSidebarWidget::onThumbnailsSizeChanged);
     connect(ui->thumbnailsListView, &QListView::clicked, this, &PDFSidebarWidget::onThumbnailClicked);
+    ui->thumbnailsListView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->thumbnailsListView, &QListView::customContextMenuRequested, this, &PDFSidebarWidget::onThumbnailsCustomContextMenuRequested);
     onThumbnailsSizeChanged(ui->thumbnailsSizeSlider->value());
 
     // Optional content
@@ -1045,6 +1047,21 @@ void PDFSidebarWidget::onThumbnailClicked(const QModelIndex& index)
     {
         m_proxy->goToPage(m_thumbnailsModel->getPageIndex(index));
     }
+}
+
+void PDFSidebarWidget::onThumbnailsCustomContextMenuRequested(const QPoint& pos)
+{
+    const QModelIndex index = ui->thumbnailsListView->indexAt(pos);
+    if (!index.isValid())
+    {
+        return;
+    }
+
+    // The page actions of the menu operate on the clicked page, which is also shown
+    const pdf::PDFInteger pageIndex = m_thumbnailsModel->getPageIndex(index);
+    ui->thumbnailsListView->setCurrentIndex(index);
+    m_proxy->goToPage(pageIndex);
+    Q_EMIT thumbnailContextMenuRequested(pageIndex, ui->thumbnailsListView->viewport()->mapToGlobal(pos));
 }
 
 void PDFSidebarWidget::onSignatureCustomContextMenuRequested(const QPoint& pos)

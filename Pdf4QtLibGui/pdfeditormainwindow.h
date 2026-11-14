@@ -103,6 +103,7 @@ protected:
 
 private:
     void onSidebarVisibilityRequested();
+    void onThumbnailContextMenuRequested(pdf::PDFInteger pageIndex, QPoint globalPosition);
     void onActionQuitTriggered();
 
     void onPageNumberSpinboxEditingFinished();
@@ -135,6 +136,7 @@ private:
     PDFProgramController* m_programController;
 
     PDFSidebarWidget* m_sidebarWidget;
+    QMenu* m_pagesMenu;
     QDockWidget* m_sidebarDockWidget;
     PDFAdvancedFindWidget* m_advancedFindWidget;
     QDockWidget* m_advancedFindDockWidget;

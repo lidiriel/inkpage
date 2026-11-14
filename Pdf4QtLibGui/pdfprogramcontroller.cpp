@@ -1645,8 +1645,17 @@ void PDFProgramController::performPageOperation(const PageOperation& operation, 
         return;
     }
 
-    const std::vector<pdf::PDFInteger> currentPages = m_pdfWidget->getDrawWidget()->getCurrentPages();
-    const pdf::PDFInteger pageIndex = currentPages.empty() ? 0 : currentPages.front();
+    const pdf::PDFInteger pageCount = static_cast<pdf::PDFInteger>(m_pdfDocument->getCatalog()->getPageCount());
+    pdf::PDFInteger pageIndex = 0;
+    if (m_pageOperationTarget && *m_pageOperationTarget >= 0 && *m_pageOperationTarget < pageCount)
+    {
+        pageIndex = *m_pageOperationTarget;
+    }
+    else
+    {
+        const std::vector<pdf::PDFInteger> currentPages = m_pdfWidget->getDrawWidget()->getCurrentPages();
+        pageIndex = currentPages.empty() ? 0 : currentPages.front();
+    }
 
     pdf::PDFDocument updatedDocument = *m_pdfDocument;
     pdf::PDFModifiedDocument::ModificationFlags flags;
@@ -1659,10 +1668,10 @@ void PDFProgramController::performPageOperation(const PageOperation& operation, 
 
     if (updatedDocument != *m_pdfDocument)
     {
-        const pdf::PDFInteger pageCount = static_cast<pdf::PDFInteger>(updatedDocument.getCatalog()->getPageCount());
+        const pdf::PDFInteger updatedPageCount = static_cast<pdf::PDFInteger>(updatedDocument.getCatalog()->getPageCount());
         pdf::PDFDocumentPointer pointer(new pdf::PDFDocument(std::move(updatedDocument)));
         onDocumentModified(pdf::PDFModifiedDocument(std::move(pointer), m_optionalContentActivity, flags));
-        m_pdfWidget->getDrawWidgetProxy()->goToPage(qBound<pdf::PDFInteger>(0, pageIndex + pageOffset, pageCount - 1));
+        m_pdfWidget->getDrawWidgetProxy()->goToPage(qBound<pdf::PDFInteger>(0, pageIndex + pageOffset, updatedPageCount - 1));
     }
 }
 

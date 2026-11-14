@@ -38,6 +38,7 @@
 #include <QFileSystemWatcher>
 
 #include <array>
+#include <optional>
 #include <functional>
 
 class QMainWindow;
@@ -348,6 +349,11 @@ public:
 
     bool isFactorySettingsBeingRestored() const;
 
+    /// Sets the page on which the page actions (Pages menu) operate, instead of the
+    /// current page (the first visible page). Used by the context menu of a page
+    /// thumbnail; reset it with std::nullopt when the menu is closed.
+    void setPageOperationTarget(std::optional<pdf::PDFInteger> pageIndex) { m_pageOperationTarget = pageIndex; }
+
 signals:
     void queryPasswordRequest(QString* password, bool* ok);
 
@@ -386,7 +392,8 @@ private:
     void onActionRemoveExternalLinksTriggered();
     void onActionPageGeometryTriggered();
 
-    /// Operation over the document and the current page (the first visible page)
+    /// Operation over the document and the current page (the first visible page,
+    /// or the page set by setPageOperationTarget)
     using PageOperation = std::function<pdf::PDFOperationResult(pdf::PDFDocument*, pdf::PDFInteger, pdf::PDFModifiedDocument::ModificationFlags*)>;
 
     /// Performs the page operation with the current page, the modified document is set
@@ -485,6 +492,7 @@ private:
     PDFRecentFileManager* m_recentFileManager;
     pdf::PDFOptionalContentActivity* m_optionalContentActivity;
     pdf::PDFDocumentPointer m_pdfDocument;
+    std::optional<pdf::PDFInteger> m_pageOperationTarget;
     bool m_isDocumentSetInProgress;
 
     QFuture<AsyncReadingResult> m_future;

@@ -88,6 +88,7 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     m_actionManager(new PDFActionManager(this)),
     m_programController(new PDFProgramController(this)),
     m_sidebarWidget(nullptr),
+    m_pagesMenu(nullptr),
     m_sidebarDockWidget(nullptr),
     m_advancedFindWidget(nullptr),
     m_advancedFindDockWidget(nullptr),
@@ -313,6 +314,7 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     connect(m_sidebarWidget, &PDFSidebarWidget::actionTriggered, m_programController, &PDFProgramController::onActionTriggered);
     connect(m_sidebarWidget, &PDFSidebarWidget::documentModified, m_programController, &PDFProgramController::onDocumentModified);
     connect(m_sidebarWidget, &PDFSidebarWidget::sidebarVisibilityRequested, this, &PDFEditorMainWindow::onSidebarVisibilityRequested);
+    connect(m_sidebarWidget, &PDFSidebarWidget::thumbnailContextMenuRequested, this, &PDFEditorMainWindow::onThumbnailContextMenuRequested);
     for (QAction* action : m_sidebarWidget->getOutlineActions())
     {
         m_actionManager->addAdditionalAction(action);
@@ -564,6 +566,19 @@ void PDFEditorMainWindow::adjustToolbar(QToolBar* toolbar)
     toolbar->setIconSize(iconSize);
 }
 
+void PDFEditorMainWindow::onThumbnailContextMenuRequested(pdf::PDFInteger pageIndex, QPoint globalPosition)
+{
+    if (!m_pagesMenu)
+    {
+        return;
+    }
+
+    // The Pages menu is reused: while it is open, its actions operate on the page of the thumbnail
+    m_programController->setPageOperationTarget(pageIndex);
+    m_pagesMenu->exec(globalPosition);
+    m_programController->setPageOperationTarget(std::nullopt);
+}
+
 void PDFEditorMainWindow::initializePageActions()
 {
     auto createAction = [this](PDFActionManager::Action type, QString text, QString toolTip, QString iconName, QString objectName)
@@ -608,6 +623,7 @@ void PDFEditorMainWindow::initializePageActions()
     pagesMenu->addSeparator();
     pagesMenu->addMenu(backgroundMenu);
     menuBar()->insertMenu(ui->menuTools->menuAction(), pagesMenu);
+    m_pagesMenu = pagesMenu;
 
     // The toolbar starts the second row, the toolbars of the plugins follow it
     QToolBar* pagesToolBar = new QToolBar(tr("Pages"), this);

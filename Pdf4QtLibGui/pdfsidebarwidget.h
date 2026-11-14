@@ -128,6 +128,10 @@ signals:
     /// title is being edited in place.
     void sidebarVisibilityRequested();
 
+    /// Emitted, when the context menu of a page thumbnail is requested. The view
+    /// already shows the page; \p globalPosition is the position of the menu.
+    void thumbnailContextMenuRequested(pdf::PDFInteger pageIndex, QPoint globalPosition);
+
 private:
     void updateGUI(Page preferredPage);
     void updateButtons();
@@ -143,6 +147,7 @@ private:
     void onAttachmentDoubleClicked(const QModelIndex& index);
     void onAttachmentCustomContextMenuRequested(const QPoint& pos);
     void onThumbnailClicked(const QModelIndex& index);
+    void onThumbnailsCustomContextMenuRequested(const QPoint& pos);
     void onSignatureCustomContextMenuRequested(const QPoint& pos);
     void onOutlineTreeViewContextMenuRequested(const QPoint& pos);
     void onNotesTreeViewContextMenuRequested(const QPoint& pos);
