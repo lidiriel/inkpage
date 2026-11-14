@@ -48,6 +48,10 @@
 #include <QVBoxLayout>
 #include <QApplication>
 #include <QSettings>
+#include <QFileDialog>
+#include <QImageReader>
+#include <QFileInfo>
+#include <QMessageBox>
 
 #include <limits>
 #include <algorithm>
@@ -512,6 +516,73 @@ void PDFCreateFreeTextTool::onRectanglePicked(PDFInteger pageIndex, QRectF pageR
     QString author = PDFAuthorSettings::getAuthorName();
     PDFObjectReference page = getDocument()->getCatalog()->getPage(pageIndex)->getPageReference();
     modifier.getBuilder()->createAnnotationFreeText(page, pageRectangle, author, QString(), text, m_style, m_autoResizeToContents);
+    modifier.markAnnotationsChanged();
+
+    if (modifier.finalize())
+    {
+        Q_EMIT m_toolManager->documentModified(PDFModifiedDocument(modifier.getDocument(), nullptr, modifier.getFlags()));
+    }
+
+    setActive(false);
+}
+
+PDFCreateImageTool::PDFCreateImageTool(PDFDrawWidgetProxy* proxy, PDFToolManager* toolManager, QAction* action, QObject* parent) :
+    BaseClass(proxy, action, parent),
+    m_toolManager(toolManager),
+    m_pickTool(nullptr)
+{
+    m_pickTool = new PDFPickTool(proxy, PDFPickTool::Mode::Rectangles, this);
+    m_pickTool->setSnapToAnnotations(true);
+    addTool(m_pickTool);
+    connect(m_pickTool, &PDFPickTool::rectanglePicked, this, &PDFCreateImageTool::onRectanglePicked);
+
+    updateActions();
+}
+
+QRectF PDFCreateImageTool::fitImageIntoRectangle(QSizeF imageSize, QRectF rectangle)
+{
+    rectangle = rectangle.normalized();
+    if (imageSize.isEmpty() || rectangle.isEmpty())
+    {
+        return rectangle;
+    }
+
+    const QSizeF size = imageSize.scaled(rectangle.size(), Qt::KeepAspectRatio);
+    const PDFReal left = rectangle.left() + (rectangle.width() - size.width()) / 2.0;
+    return QRectF(left, rectangle.bottom() - size.height(), size.width(), size.height());
+}
+
+QString PDFCreateImageTool::getImageFileFilter()
+{
+    QStringList patterns;
+    for (const QByteArray& format : QImageReader::supportedImageFormats())
+    {
+        patterns << QString("*.%1").arg(QString::fromLatin1(format));
+    }
+    return tr("Images (%1)").arg(patterns.join(' '));
+}
+
+void PDFCreateImageTool::onRectanglePicked(PDFInteger pageIndex, QRectF pageRectangle)
+{
+    const QString fileName = QFileDialog::getOpenFileName(getProxy()->getWidget(), tr("Insert Image"), QString(), getImageFileFilter());
+    if (fileName.isEmpty())
+    {
+        return;
+    }
+
+    QImageReader reader(fileName);
+    reader.setAutoTransform(true);
+    const QImage image = reader.read();
+    if (image.isNull())
+    {
+        QMessageBox::critical(getProxy()->getWidget(), tr("Error"), tr("Cannot read the image '%1': %2").arg(fileName, reader.errorString()));
+        return;
+    }
+
+    PDFDocumentModifier modifier(getDocument());
+    const PDFObjectReference page = getDocument()->getCatalog()->getPage(pageIndex)->getPageReference();
+    const QRectF imageRectangle = fitImageIntoRectangle(image.size(), pageRectangle);
+    modifier.getBuilder()->createAnnotationImage(page, imageRectangle, image, PDFAuthorSettings::getAuthorName(), QString(), QFileInfo(fileName).fileName());
     modifier.markAnnotationsChanged();
 
     if (modifier.finalize())

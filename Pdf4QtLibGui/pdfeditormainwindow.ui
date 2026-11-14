@@ -219,6 +219,7 @@
     <addaction name="actionCreateHyperlink"/>
     <addaction name="menuHyperlinkToThisPDF"/>
     <addaction name="actionInlineText"/>
+    <addaction name="actionCreateImage"/>
     <addaction name="actionCreateStraightLine"/>
     <addaction name="actionCreatePolyline"/>
     <addaction name="actionCreateRectangle"/>
@@ -919,6 +920,21 @@
    </property>
    <property name="text">
     <string>&amp;Inline text</string>
+   </property>
+  </action>
+  <action name="actionCreateImage">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="pdf4qtlibgui.qrc">
+     <normaloff>:/resources/insert-image.svg</normaloff>:/resources/insert-image.svg</iconset>
+   </property>
+   <property name="text">
+    <string>I&amp;mage...</string>
+   </property>
+   <property name="toolTip">
+    <string>Insert an image: drag a rectangle on the page, then select the image file</string>
    </property>
   </action>
   <action name="actionInsertPageNumbers">

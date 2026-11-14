@@ -32,6 +32,7 @@
 #include "pdfprogress.h"
 #include "pdfobjecteditormodel.h"
 #include "pdffile.h"
+#include "pdfadvancedtools.h"
 
 #include <QtTest>
 #include <QAction>
@@ -128,6 +129,7 @@ private slots:
     void doubleClickEditsAnnotation();
     void replyMenuEntryOpensPopup();
     void pastedTextBecomesInlineText();
+    void imageAnnotationKeepsItsAppearance();
     void attachedFileIsReplaced();
     void pointSnapsToOtherAnnotation();
     void alignAndDistribute();
@@ -2736,6 +2738,53 @@ void AnnotationSelectionTest::pastedTextBecomesInlineText()
     // Empty text is not pasted
     QApplication::clipboard()->setText("  \n ");
     QVERIFY(!fixture.annotations.canPaste());
+}
+
+void AnnotationSelectionTest::imageAnnotationKeepsItsAppearance()
+{
+    // Fitting of the image into the rectangle dragged by the user (top of the rectangle, centered)
+    const QRectF fitted = PDFCreateImageTool::fitImageIntoRectangle(QSizeF(200, 100), QRectF(10, 10, 100, 100));
+    QCOMPARE(fitted, QRectF(10, 60, 100, 50));
+
+    QImage image(40, 20, QImage::Format_RGB32);
+    image.fill(Qt::red);
+
+    PDFDocumentBuilder builder;
+    const PDFObjectReference page = builder.appendPage(QRectF(0, 0, 300, 300));
+    const PDFObjectReference stamp = builder.createAnnotationImage(page, QRectF(50, 50, 80, 40), image, "Title", QString(), "image.png");
+    QVERIFY(stamp.isValid());
+    SelectionFixture fixture(builder.build());
+
+    const PDFAnnotationPtr parsedAnnotation = PDFAnnotation::parse(&fixture.document->getStorage(), stamp);
+    QCOMPARE(parsedAnnotation->getType(), AnnotationType::Stamp);
+    QCOMPARE(fixture.entry(stamp, "Name").getString(), QByteArray(PDFDocumentBuilder::IMAGE_STAMP_NAME));
+    const PDFObject appearance = fixture.entry(stamp, "AP");
+    QVERIFY(!appearance.isNull());
+
+    // The appearance is a form, which draws an image
+    const PDFObjectStorage& storage = fixture.document->getStorage();
+    const PDFDictionary* appearanceDictionary = storage.getDictionaryFromObject(appearance);
+    QVERIFY(appearanceDictionary);
+    const PDFDictionary* formDictionary = storage.getDictionaryFromObject(appearanceDictionary->get("N"));
+    QVERIFY(formDictionary);
+    const PDFDictionary* resources = storage.getDictionaryFromObject(formDictionary->get("Resources"));
+    QVERIFY(resources);
+    const PDFDictionary* xobjects = storage.getDictionaryFromObject(resources->get("XObject"));
+    QVERIFY(xobjects);
+    bool hasImage = false;
+    for (size_t i = 0; i < xobjects->getCount(); ++i)
+    {
+        const PDFDictionary* xobject = storage.getDictionaryFromObject(xobjects->getValue(i));
+        const PDFObject& subtype = xobject ? storage.getObject(xobject->get("Subtype")) : PDFObject();
+        hasImage = hasImage || (subtype.isName() && subtype.getString() == "Image");
+    }
+    QVERIFY(hasImage);
+
+    // A new color must not replace the image by a generated appearance
+    fixture.annotations.setSelectedAnnotations({ stamp });
+    fixture.annotations.setSelectedAnnotationsColor(Qt::blue);
+    QCOMPARE(fixture.modificationCount, 1);
+    QCOMPARE(fixture.entry(stamp, "AP"), appearance);
 }
 
 void AnnotationSelectionTest::attachedFileIsReplaced()

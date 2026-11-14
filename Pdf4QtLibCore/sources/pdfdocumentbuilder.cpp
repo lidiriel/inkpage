@@ -1536,10 +1536,144 @@ void PDFPageContentStreamBuilder::replaceResources(PDFObjectReference contentStr
     }
 }
 
+PDFObjectReference PDFDocumentBuilder::createAnnotationImage(PDFObjectReference page,
+                                                             QRectF rectangle,
+                                                             const QImage& image,
+                                                             QString title,
+                                                             QString subject,
+                                                             QString contents)
+{
+    rectangle = rectangle.normalized();
+    if (image.isNull() || !rectangle.isValid())
+    {
+        return PDFObjectReference();
+    }
+
+    // Appearance stream: the image fills the form box (0, 0, width, height),
+    // which is mapped onto the rectangle of the annotation.
+    const QSizeF size = rectangle.size();
+    PDFContentStreamBuilder contentBuilder(size, PDFContentStreamBuilder::CoordinateSystem::Qt);
+    QPainter* painter = contentBuilder.begin();
+    painter->setRenderHint(QPainter::SmoothPixmapTransform);
+    painter->drawImage(QRectF(QPointF(0.0, 0.0), size), image);
+    PDFContentStreamBuilder::ContentStream contentStream = contentBuilder.end(painter);
+
+    std::vector<PDFObject> copiedObjects = copyFrom({ contentStream.resources, contentStream.contents }, contentStream.document.getStorage(), true);
+    Q_ASSERT(copiedObjects.size() == 2);
+    const PDFObjectReference resourcesReference = copiedObjects[0].getReference();
+    const PDFObjectReference formReference = copiedObjects[1].getReference();
+
+    PDFObjectFactory formFactory;
+    formFactory.beginDictionary();
+    formFactory.beginDictionaryItem("Type");
+    formFactory << WrapName("XObject");
+    formFactory.endDictionaryItem();
+    formFactory.beginDictionaryItem("Subtype");
+    formFactory << WrapName("Form");
+    formFactory.endDictionaryItem();
+    formFactory.beginDictionaryItem("BBox");
+    formFactory << QRectF(QPointF(0.0, 0.0), size);
+    formFactory.endDictionaryItem();
+    formFactory.beginDictionaryItem("Resources");
+    formFactory << resourcesReference;
+    formFactory.endDictionaryItem();
+    formFactory.endDictionary();
+    mergeTo(formReference, formFactory.takeObject());
+
+    PDFObjectFactory objectBuilder;
+    objectBuilder.beginDictionary();
+    objectBuilder.beginDictionaryItem("Type");
+    objectBuilder << WrapName("Annot");
+    objectBuilder.endDictionaryItem();
+    objectBuilder.beginDictionaryItem("Subtype");
+    objectBuilder << WrapName("Stamp");
+    objectBuilder.endDictionaryItem();
+    objectBuilder.beginDictionaryItem("Rect");
+    objectBuilder << rectangle;
+    objectBuilder.endDictionaryItem();
+    objectBuilder.beginDictionaryItem("F");
+    objectBuilder << 4;
+    objectBuilder.endDictionaryItem();
+    objectBuilder.beginDictionaryItem("P");
+    objectBuilder << page;
+    objectBuilder.endDictionaryItem();
+    objectBuilder.beginDictionaryItem("Name");
+    objectBuilder << WrapName(IMAGE_STAMP_NAME);
+    objectBuilder.endDictionaryItem();
+    objectBuilder.beginDictionaryItem("M");
+    objectBuilder << WrapCurrentDateTime();
+    objectBuilder.endDictionaryItem();
+    objectBuilder.beginDictionaryItem("CreationDate");
+    objectBuilder << WrapCurrentDateTime();
+    objectBuilder.endDictionaryItem();
+    objectBuilder.beginDictionaryItem("T");
+    objectBuilder << title;
+    objectBuilder.endDictionaryItem();
+    objectBuilder.beginDictionaryItem("Contents");
+    objectBuilder << contents;
+    objectBuilder.endDictionaryItem();
+    objectBuilder.beginDictionaryItem("Subj");
+    objectBuilder << subject;
+    objectBuilder.endDictionaryItem();
+    objectBuilder.beginDictionaryItem("AP");
+    objectBuilder.beginDictionary();
+    objectBuilder.beginDictionaryItem("N");
+    objectBuilder << formReference;
+    objectBuilder.endDictionaryItem();
+    objectBuilder.endDictionary();
+    objectBuilder.endDictionaryItem();
+    objectBuilder.endDictionary();
+    PDFObjectReference annotationObject = addObject(objectBuilder.takeObject());
+
+    objectBuilder.beginDictionary();
+    objectBuilder.beginDictionaryItem("Annots");
+    objectBuilder.beginArray();
+    objectBuilder << annotationObject;
+    objectBuilder.endArray();
+    objectBuilder.endDictionaryItem();
+    objectBuilder.endDictionary();
+    appendTo(page, objectBuilder.takeObject());
+    return annotationObject;
+}
+
+bool PDFDocumentBuilder::hasCustomStampAppearance(PDFObjectReference annotationReference) const
+{
+    const PDFDictionary* dictionary = m_storage.getDictionaryFromObject(m_storage.getObjectByReference(annotationReference));
+    if (!dictionary || !dictionary->hasKey("AP"))
+    {
+        return false;
+    }
+
+    const PDFObject& subtype = m_storage.getObject(dictionary->get("Subtype"));
+    if (!subtype.isName() || subtype.getString() != "Stamp")
+    {
+        return false;
+    }
+
+    const PDFObject& name = m_storage.getObject(dictionary->get("Name"));
+    if (!name.isName())
+    {
+        return false;
+    }
+
+    // Standard stamp names (PDF 2.0, 12.5.6.12), their appearance can be generated
+    static const std::set<QByteArray> standardNames = { "Approved", "Experimental", "NotApproved", "AsIs", "Expired", "NotForPublicRelease",
+                                                        "Confidential", "Final", "Sold", "Departmental", "ForComment", "TopSecret",
+                                                        "Draft", "ForPublicRelease" };
+    return !standardNames.count(name.getString());
+}
+
 void PDFDocumentBuilder::updateAnnotationAppearanceStreams(PDFObjectReference annotationReference, bool missingOnly)
 {
     PDFAnnotationPtr annotation = PDFAnnotation::parse(&m_storage, annotationReference);
     if (!annotation)
+    {
+        return;
+    }
+
+    // inkpage: a custom stamp (for example an image) displays its own appearance, which
+    // cannot be generated again - it would be replaced by the text of a standard stamp
+    if (hasCustomStampAppearance(annotationReference))
     {
         return;
     }

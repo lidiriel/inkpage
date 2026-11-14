@@ -1156,6 +1156,26 @@ public:
                                              QString subject,
                                              QString contents);
 
+    /// Name of the stamp annotations, which display an image (inkpage). A stamp
+    /// with a name, which is not a standard stamp name, keeps its appearance stream.
+    static constexpr const char* IMAGE_STAMP_NAME = "InkpageImage";
+
+    /// Creates a stamp annotation, which displays an image (the image is the appearance
+    /// stream of the stamp). The image fills the whole rectangle. The appearance stream
+    /// is not regenerated later (custom stamp), moving and resizing transform it.
+    /// \param page Page to which is annotation added
+    /// \param rectangle Area in which is the image displayed
+    /// \param image Image
+    /// \param title Title
+    /// \param subject Subject
+    /// \param contents Contents
+    PDFObjectReference createAnnotationImage(PDFObjectReference page,
+                                             QRectF rectangle,
+                                             const QImage& image,
+                                             QString title,
+                                             QString subject,
+                                             QString contents);
+
 
     /// Text markup annotation is used to strikeout text. It is a markup annotation, so it can contain window to 
     /// be opened (and commented).
@@ -1679,6 +1699,10 @@ private:
     static void appendHighlightQuadrilateralPath(QByteArray& data, const PDFAnnotationQuadrilaterals::Quadrilateral& quadrilateral);
 
     PDFFreeTextStyle createDefaultFreeTextStyle(TextAlignment alignment) const;
+
+    /// Returns true, if the annotation is a stamp with a name, which is not a standard stamp
+    /// name, and with an appearance stream - its appearance must not be regenerated
+    bool hasCustomStampAppearance(PDFObjectReference annotationReference) const;
     bool updateHighlightAnnotationAppearanceStream(PDFObjectReference annotationReference,
                                                    const PDFHighlightAnnotation* annotation);
     QRectF resizeFreeTextRectangleToContents(QRectF rectangle,

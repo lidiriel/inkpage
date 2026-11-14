@@ -156,6 +156,7 @@ public:
         CreateHyperlinkToThisPDFXYZInheritZoom,
         InsertPageNumbers,
         CreateInlineText,
+        CreateImage,
         CreateStraightLine,
         CreatePolyline,
         CreateRectangle,

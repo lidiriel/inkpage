@@ -1164,6 +1164,11 @@ void PDFProgramController::initializeToolManager()
         pdf::PDFCreateFreeTextTool* createFreeTextTool = new pdf::PDFCreateFreeTextTool(m_pdfWidget->getDrawWidgetProxy(), m_toolManager, action, this);
         m_toolManager->addTool(createFreeTextTool);
     }
+    if (QAction* action = m_actionManager->getAction(PDFActionManager::CreateImage))
+    {
+        pdf::PDFCreateImageTool* createImageTool = new pdf::PDFCreateImageTool(m_pdfWidget->getDrawWidgetProxy(), m_toolManager, action, this);
+        m_toolManager->addTool(createImageTool);
+    }
     if (QAction* action = m_actionManager->getAction(PDFActionManager::CreateStraightLine))
     {
         pdf::PDFCreateLineTypeTool* createStraightLineTool = new pdf::PDFCreateLineTypeTool(m_pdfWidget->getDrawWidgetProxy(), m_toolManager, pdf::PDFCreateLineTypeTool::Type::Line, action, this);

@@ -157,6 +157,34 @@ private:
     bool m_autoResizeToContents = true;
 };
 
+/// Tool that inserts an image (a stamp annotation displaying the image, see
+/// PDFDocumentBuilder::createAnnotationImage). The user drags a rectangle on the
+/// page and selects the image file; the image is fitted into the rectangle.
+class PDF4QTLIBWIDGETSSHARED_EXPORT PDFCreateImageTool : public PDFCreateAnnotationTool
+{
+    Q_OBJECT
+
+private:
+    using BaseClass = PDFCreateAnnotationTool;
+
+public:
+    explicit PDFCreateImageTool(PDFDrawWidgetProxy* proxy, PDFToolManager* toolManager, QAction* action, QObject* parent);
+
+    /// Returns the rectangle of the image of the given size fitted into the rectangle, keeping
+    /// the proportions of the image. The image is centered horizontally and placed at the top
+    /// of the rectangle (page coordinates, the top is the maximal y coordinate).
+    static QRectF fitImageIntoRectangle(QSizeF imageSize, QRectF rectangle);
+
+    /// Returns the filter of the file dialog with the supported image formats
+    static QString getImageFileFilter();
+
+private:
+    void onRectanglePicked(pdf::PDFInteger pageIndex, QRectF pageRectangle);
+
+    PDFToolManager* m_toolManager;
+    PDFPickTool* m_pickTool;
+};
+
 /// Tool that creates line/polyline/polygon annotations.
 class PDF4QTLIBWIDGETSSHARED_EXPORT PDFCreateLineTypeTool : public PDFCreateAnnotationTool
 {
