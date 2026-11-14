@@ -577,11 +577,20 @@ void PDFProgramController::initialize(Features features,
                 performPageOperation(operation, 1);
             }
         },
-        { PDFActionManager::PageBackgroundPlain, [this]() { setPageBackground(false, false); } },
-        { PDFActionManager::PageBackgroundRuled, [this]() { setPageBackground(false, true); } },
-        { PDFActionManager::PageBackgroundPlainAllPages, [this]() { setPageBackground(true, false); } },
-        { PDFActionManager::PageBackgroundRuledAllPages, [this]() { setPageBackground(true, true); } },
     }};
+
+    // The background actions (also Plain and Ruled) are in two action groups, the data
+    // of an action is the background
+    for (const auto& [group, allPages] : { std::make_pair(PDFActionManager::PageBackgroundGroup, false), std::make_pair(PDFActionManager::PageBackgroundAllPagesGroup, true) })
+    {
+        if (QActionGroup* actionGroup = m_actionManager->getActionGroup(group))
+        {
+            connect(actionGroup, &QActionGroup::triggered, this, [this, allPages](QAction* action)
+            {
+                setPageBackground(allPages, static_cast<pdf::PDFPageOrganizer::Background>(action->data().toInt()));
+            });
+        }
+    }
 
     for (const auto& pageAction : pageActions)
     {
@@ -1648,6 +1657,23 @@ void PDFProgramController::onActionPageGeometryTriggered()
     }
 }
 
+pdf::PDFInteger PDFProgramController::getPageOperationIndex() const
+{
+    if (!m_pdfDocument || m_pdfDocument->getCatalog()->getPageCount() == 0)
+    {
+        return -1;
+    }
+
+    const pdf::PDFInteger pageCount = static_cast<pdf::PDFInteger>(m_pdfDocument->getCatalog()->getPageCount());
+    if (m_pageOperationTarget && *m_pageOperationTarget >= 0 && *m_pageOperationTarget < pageCount)
+    {
+        return *m_pageOperationTarget;
+    }
+
+    const std::vector<pdf::PDFInteger> currentPages = m_pdfWidget->getDrawWidget()->getCurrentPages();
+    return currentPages.empty() ? 0 : currentPages.front();
+}
+
 void PDFProgramController::performPageOperation(const PageOperation& operation, pdf::PDFInteger pageOffset)
 {
     if (!m_pdfDocument || m_pdfDocument->getCatalog()->getPageCount() == 0)
@@ -1655,17 +1681,7 @@ void PDFProgramController::performPageOperation(const PageOperation& operation, 
         return;
     }
 
-    const pdf::PDFInteger pageCount = static_cast<pdf::PDFInteger>(m_pdfDocument->getCatalog()->getPageCount());
-    pdf::PDFInteger pageIndex = 0;
-    if (m_pageOperationTarget && *m_pageOperationTarget >= 0 && *m_pageOperationTarget < pageCount)
-    {
-        pageIndex = *m_pageOperationTarget;
-    }
-    else
-    {
-        const std::vector<pdf::PDFInteger> currentPages = m_pdfWidget->getDrawWidget()->getCurrentPages();
-        pageIndex = currentPages.empty() ? 0 : currentPages.front();
-    }
+    const pdf::PDFInteger pageIndex = getPageOperationIndex();
 
     pdf::PDFDocument updatedDocument = *m_pdfDocument;
     pdf::PDFModifiedDocument::ModificationFlags flags;
@@ -1685,9 +1701,8 @@ void PDFProgramController::performPageOperation(const PageOperation& operation, 
     }
 }
 
-void PDFProgramController::setPageBackground(bool allPages, bool ruled)
+void PDFProgramController::setPageBackground(bool allPages, pdf::PDFPageOrganizer::Background background)
 {
-    const pdf::PDFPageOrganizer::Background background = ruled ? pdf::PDFPageOrganizer::Background::Ruled : pdf::PDFPageOrganizer::Background::Plain;
     auto operation = [allPages, background](pdf::PDFDocument* document, pdf::PDFInteger pageIndex, pdf::PDFModifiedDocument::ModificationFlags* flags)
     {
         std::vector<pdf::PDFInteger> pageIndices;
@@ -2146,6 +2161,13 @@ void PDFProgramController::updateActionsAvailability()
                                              PDFActionManager::PageBackgroundPlainAllPages, PDFActionManager::PageBackgroundRuledAllPages })
     {
         m_actionManager->setEnabled(action, canOrganizePages);
+    }
+    for (PDFActionManager::ActionGroup group : { PDFActionManager::PageBackgroundGroup, PDFActionManager::PageBackgroundAllPagesGroup })
+    {
+        if (QActionGroup* actionGroup = m_actionManager->getActionGroup(group))
+        {
+            actionGroup->setEnabled(canOrganizePages);
+        }
     }
     m_actionManager->setEnabled(PDFActionManager::PageRemove, canOrganizePages && m_pdfDocument->getCatalog()->getPageCount() > 1);
     m_actionManager->setEnabled(PDFActionManager::CreateBitonalDocument, hasValidDocument);

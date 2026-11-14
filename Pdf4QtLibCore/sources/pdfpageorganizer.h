@@ -41,11 +41,31 @@ class PDF4QTLIBCORESHARED_EXPORT PDFPageOrganizer
 public:
     PDFPageOrganizer() = delete;
 
+    /// Backgrounds of the pages. Ruled is the background of inkpage, the other
+    /// ones are the page backgrounds of Xournal++ (pagetemplates.ini), drawn with
+    /// the sizes and colors of Xournal++.
     enum class Background
     {
-        Plain,  ///< No background
-        Ruled,  ///< Horizontal lines with a margin line
+        Plain,              ///< No background
+        Ruled,              ///< Horizontal lines with a margin line (8 mm)
+        Lines,              ///< Xournal++ "Ruled": horizontal lines
+        LinesMargin,        ///< Xournal++ "Ruled with vertical line": horizontal lines, margin line on the left
+        LinesRightMargin,   ///< Xournal++ "Ruled with vertical line on the right"
+        Graph,              ///< Xournal++ "Graph": squares of 5 mm
+        GraphBorder,        ///< Xournal++ "Graph with border": the grid stops at the margin
+        GraphBorderBold,    ///< Xournal++ "Graph with border (bold every 5th)"
+        Dotted,             ///< Xournal++ "Dotted": dots every 5 mm
+        IsometricDotted,    ///< Xournal++ "Isometric Dotted"
+        IsometricGraph,     ///< Xournal++ "Isometric Graph": triangles
+        Staves,             ///< Xournal++ "Staves": music staves
     };
+
+    /// Returns all the backgrounds, in the order in which they are offered to the user
+    static std::vector<Background> getBackgrounds();
+
+    /// Returns the name of the background stored in the document (also an identifier,
+    /// which does not change, for example for the object names of actions)
+    static QByteArray getBackgroundName(Background background);
 
     /// Key of the private data of the page in the /PieceInfo dictionary
     static constexpr const char* PIECE_INFO_KEY = "Inkpage";

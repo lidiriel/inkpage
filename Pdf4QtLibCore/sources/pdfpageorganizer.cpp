@@ -20,8 +20,10 @@
 #include "pdfobjectutils.h"
 
 #include <QTransform>
+#include <QColor>
 
 #include <algorithm>
+#include <cmath>
 #include <functional>
 
 #include "pdfdbgheap.h"
@@ -173,22 +175,17 @@ public:
         }
 
         PDFDocumentDataLoaderDecorator loader(storage);
-        const QByteArray background = loader.readNameFromDictionary(getPrivateData(storage, pageDictionary), "Background");
-        return background == "Ruled" ? PDFPageOrganizer::Background::Ruled : PDFPageOrganizer::Background::Plain;
-    }
-
-    static QByteArray getBackgroundName(PDFPageOrganizer::Background background)
-    {
-        switch (background)
+        const QByteArray name = loader.readNameFromDictionary(getPrivateData(storage, pageDictionary), "Background");
+        for (PDFPageOrganizer::Background background : PDFPageOrganizer::getBackgrounds())
         {
-            case PDFPageOrganizer::Background::Ruled:
-                return "Ruled";
-
-            case PDFPageOrganizer::Background::Plain:
-                break;
+            if (PDFPageOrganizer::getBackgroundName(background) == name)
+            {
+                return background;
+            }
         }
 
-        return "Plain";
+        // A background of a newer version is kept as it is (it is not plain)
+        return PDFPageOrganizer::Background::Ruled;
     }
 
     static PDFObject createContents(const std::vector<PDFObjectReference>& contents)
@@ -232,7 +229,7 @@ public:
         pieceInfo.removeEntry(PDFPageOrganizer::PIECE_INFO_KEY);
         if (backgroundStream.isValid())
         {
-            const QByteArray backgroundName = getBackgroundName(background);
+            const QByteArray backgroundName = PDFPageOrganizer::getBackgroundName(background);
 
             PDFObjectFactory privateFactory;
             privateFactory.beginDictionary();
@@ -415,7 +412,326 @@ public:
         content.append(formatNumber(start.x()) + ' ' + formatNumber(start.y()) + " m ");
         content.append(formatNumber(end.x()) + ' ' + formatNumber(end.y()) + " l S\n");
     }
+
+    /// Appends a segment to the current path (the path is stroked later)
+    static void appendSegment(QByteArray& content, QPointF start, QPointF end)
+    {
+        content.append(formatNumber(start.x()) + ' ' + formatNumber(start.y()) + " m ");
+        content.append(formatNumber(end.x()) + ' ' + formatNumber(end.y()) + " l\n");
+    }
+
+    /// Appends a dot: a very short segment, drawn by the round line cap (a segment
+    /// of zero length is not drawn by all renderers, the renderer of PDF4QT ignores it)
+    static void appendDot(QByteArray& content, QPointF point)
+    {
+        appendSegment(content, point, point + QPointF(0.01, 0.0));
+    }
+
+    /// Sets the stroke color, the line width and the line cap (0 butt, 1 round, 2 square)
+    static void appendStrokeStyle(QByteArray& content, QRgb color, PDFReal lineWidth, int lineCap)
+    {
+        content.append(formatNumber(qRed(color) / 255.0) + ' ' + formatNumber(qGreen(color) / 255.0) + ' ' + formatNumber(qBlue(color) / 255.0) + " RG ");
+        content.append(formatNumber(lineWidth) + " w " + QByteArray::number(lineCap) + " J\n");
+    }
+
+    /// Index bounds of the lines of a grid with the step, which lie in the interval
+    /// [margin, length - margin] (Xournal++ PlainBackgroundView::getIndexBounds,
+    /// for the whole page)
+    static std::pair<int, int> getIndexBounds(PDFReal step, PDFReal margin, PDFReal length)
+    {
+        return { int(std::ceil(margin / step)), int(std::floor((length - margin) / step)) };
+    }
+
+    // The backgrounds of Xournal++ (GPL-2.0-or-later, https://github.com/xournalpp/xournalpp,
+    // src/core/view/background): the same sizes (points), colors and algorithms. They are
+    // drawn in the coordinates of Xournal++ - origin in the top left corner of the
+    // displayed page, y axis pointing down. Colors of Xournal++ (light background).
+    static constexpr QRgb XOURNAL_SILVER = 0xbdbdbd;
+    static constexpr QRgb XOURNAL_DODGER_BLUE = 0x40a0ff;
+    static constexpr QRgb XOURNAL_DEEP_PINK = 0xff0080;
+    static constexpr QRgb XOURNAL_BLACK = 0x000000;
+    static constexpr PDFReal XOURNAL_HEADER_SIZE = 80.0;
+    static constexpr PDFReal XOURNAL_FOOTER_SIZE = 60.0;
+    static constexpr PDFReal XOURNAL_SQUARE_SIZE = 14.17;   // 5 mm
+
+    /// Horizontal lines (Xournal++ RuledBackgroundView), with a vertical margin line
+    /// at \p margin (LinedBackgroundView, negative margin is measured from the right
+    /// side, zero means no margin line)
+    static void appendXournalLines(QByteArray& content, QSizeF size, PDFReal margin)
+    {
+        const PDFReal lineSpacing = 24.0;
+        const PDFReal lineWidth = 0.5;
+        const auto [first, last] = getIndexBounds(lineSpacing, 0.0, size.height() - XOURNAL_HEADER_SIZE - XOURNAL_FOOTER_SIZE);
+
+        appendStrokeStyle(content, XOURNAL_DODGER_BLUE, lineWidth, 0);
+        for (int i = first; i <= last; ++i)
+        {
+            const PDFReal y = XOURNAL_HEADER_SIZE + i * lineSpacing;
+            appendSegment(content, QPointF(0.0, y), QPointF(size.width(), y));
+        }
+        content.append("S\n");
+
+        if (!qFuzzyIsNull(margin))
+        {
+            const PDFReal x = margin < 0.0 ? margin + size.width() : margin;
+            appendStrokeStyle(content, XOURNAL_DEEP_PINK, lineWidth, 0);
+            appendSegment(content, QPointF(x, 0.0), QPointF(x, size.height()));
+            content.append("S\n");
+        }
+    }
+
+    /// Squares (Xournal++ GraphBackgroundView). With a margin, the grid stops at the
+    /// first line inside the margin; every \p boldLineInterval-th line is bold.
+    static void appendXournalGraph(QByteArray& content, QSizeF size, PDFReal margin, int boldLineInterval, PDFReal boldLineWidth)
+    {
+        const PDFReal squareSize = XOURNAL_SQUARE_SIZE;
+        const PDFReal lineWidth = 0.5;
+        const PDFReal halfLineWidth = 0.5 * (boldLineInterval > 0 ? boldLineWidth : lineWidth);
+        const PDFReal clearance = std::max(margin, halfLineWidth);
+        const auto [firstX, lastX] = getIndexBounds(squareSize, clearance, size.width());
+        const auto [firstY, lastY] = getIndexBounds(squareSize, clearance, size.height());
+
+        // The lines span the page, or the grid rounded to the margin
+        PDFReal minX = 0.0;
+        PDFReal maxX = size.width();
+        PDFReal minY = 0.0;
+        PDFReal maxY = size.height();
+        if (margin > 0.0)
+        {
+            minX = squareSize * firstX;
+            maxX = squareSize * lastX;
+            minY = squareSize * firstY;
+            maxY = squareSize * lastY;
+        }
+
+        auto appendLines = [&](bool bold)
+        {
+            for (int i = firstX; i <= lastX; ++i)
+            {
+                if (boldLineInterval <= 0 || (i % boldLineInterval == 0) == bold)
+                {
+                    appendSegment(content, QPointF(i * squareSize, minY), QPointF(i * squareSize, maxY));
+                }
+            }
+            for (int i = firstY; i <= lastY; ++i)
+            {
+                if (boldLineInterval <= 0 || (i % boldLineInterval == 0) == bold)
+                {
+                    appendSegment(content, QPointF(minX, i * squareSize), QPointF(maxX, i * squareSize));
+                }
+            }
+            content.append("S\n");
+        };
+
+        appendStrokeStyle(content, XOURNAL_SILVER, lineWidth, 2);
+        appendLines(false);
+        if (boldLineInterval > 0)
+        {
+            appendStrokeStyle(content, XOURNAL_SILVER, boldLineWidth, 2);
+            appendLines(true);
+        }
+    }
+
+    /// Dots in the corners of squares of 5 mm (Xournal++ DottedBackgroundView)
+    static void appendXournalDots(QByteArray& content, QSizeF size)
+    {
+        const PDFReal squareSize = XOURNAL_SQUARE_SIZE;
+        const PDFReal lineWidth = 1.5;
+        const auto [firstX, lastX] = getIndexBounds(squareSize, 0.5 * lineWidth, size.width());
+        const auto [firstY, lastY] = getIndexBounds(squareSize, 0.5 * lineWidth, size.height());
+
+        appendStrokeStyle(content, XOURNAL_SILVER, lineWidth, 1);
+        for (int i = firstX; i <= lastX; ++i)
+        {
+            for (int j = firstY; j <= lastY; ++j)
+            {
+                appendDot(content, QPointF(i * squareSize, j * squareSize));
+            }
+        }
+        content.append("S\n");
+    }
+
+    /// Isometric grid of triangles of 5 mm, centered on the page, as dots or lines
+    /// (Xournal++ BaseIsometricBackgroundView, IsoDottedBackgroundView, IsoGraphBackgroundView)
+    static void appendXournalIsometric(QByteArray& content, QSizeF size, bool dots)
+    {
+        const PDFReal triangleSize = XOURNAL_SQUARE_SIZE;
+        const PDFReal xstep = std::sqrt(3.0) / 2.0 * triangleSize;
+        const PDFReal ystep = triangleSize / 2.0;
+        const PDFReal margin = triangleSize;
+        const int cols = int(std::floor((size.width() - 2 * margin) / xstep));
+        const int rows = int(std::floor((size.height() - 2 * margin) / ystep));
+        if (cols <= 0 || rows <= 0)
+        {
+            return;
+        }
+
+        const PDFReal contentWidth = cols * xstep;
+        const PDFReal contentHeight = rows * ystep;
+        const QPointF offset((size.width() - contentWidth) / 2, (size.height() - contentHeight) / 2);
+        auto segment = [&](PDFReal x1, PDFReal y1, PDFReal x2, PDFReal y2)
+        {
+            appendSegment(content, offset + QPointF(x1, y1), offset + QPointF(x2, y2));
+        };
+
+        if (dots)
+        {
+            appendStrokeStyle(content, XOURNAL_SILVER, 1.5, 1);
+            for (int col = 0; col <= cols; ++col)
+            {
+                const bool isEvenColumn = col % 2 == 0;
+                const PDFReal yoffset = isEvenColumn ? ystep : 0.0;
+                const int rowsInColumn = isEvenColumn ? rows - 2 : rows;
+                for (int row = 0; row <= rowsInColumn; row += 2)
+                {
+                    appendDot(content, offset + QPointF(col * xstep, yoffset + row * ystep));
+                }
+            }
+            content.append("S\n");
+            return;
+        }
+
+        appendStrokeStyle(content, XOURNAL_SILVER, 1.0, 1);
+
+        // Horizontal lines on the top and the bottom, vertical lines
+        segment(0.0, 0.0, contentWidth, 0.0);
+        segment(0.0, contentHeight, contentWidth, contentHeight);
+        for (int col = 0; col <= cols; ++col)
+        {
+            segment(col * xstep, 0.0, col * xstep, contentHeight);
+        }
+
+        const int hdiags = cols / 2;
+        const int vdiags = rows / 2;
+        const int diags = hdiags + vdiags;
+        const int hcorr = cols - 2 * hdiags;
+        const int vcorr = rows - 2 * vdiags;
+
+        // Diagonals starting in the top left corner (left-down)
+        for (int d = 0; d < diags + hcorr * vcorr; ++d)
+        {
+            PDFReal x1 = contentWidth;
+            PDFReal y1 = 0.0;
+            if (d < hdiags)
+            {
+                x1 = xstep + d * 2 * xstep;
+            }
+            else
+            {
+                y1 = ystep + (d - hdiags) * 2 * ystep - hcorr * ystep;
+            }
+
+            PDFReal x2 = 0.0;
+            PDFReal y2 = contentHeight;
+            if (d < vdiags)
+            {
+                y2 = ystep + d * 2 * ystep;
+            }
+            else
+            {
+                x2 = xstep + (d - vdiags) * 2 * xstep - vcorr * xstep;
+            }
+
+            segment(x1, y1, x2, y2);
+        }
+
+        // Diagonals starting in the top right corner (right-down)
+        for (int d = 0; d < diags; ++d)
+        {
+            PDFReal x1 = 0.0;
+            PDFReal y1 = 0.0;
+            if (d < hdiags)
+            {
+                x1 = contentWidth - (xstep + d * 2 * xstep) - hcorr * xstep;
+            }
+            else
+            {
+                y1 = ystep + (d - hdiags) * 2 * ystep;
+            }
+
+            PDFReal x2 = contentWidth;
+            PDFReal y2 = contentHeight;
+            if (d < vdiags)
+            {
+                y2 = ystep + d * 2 * ystep + hcorr * ystep;
+            }
+            else
+            {
+                x2 = contentWidth - (xstep + (d - vdiags) * 2 * xstep) + (vcorr - hcorr) * xstep;
+            }
+
+            segment(x1, y1, x2, y2);
+        }
+        content.append("S\n");
+    }
+
+    /// Music staves of five lines (Xournal++ StavesBackgroundView)
+    static void appendXournalStaves(QByteArray& content, QSizeF size)
+    {
+        const PDFReal lineWidth = 0.5;
+        const PDFReal margin = 50.0;
+        const PDFReal stavesSpacing = 40.0;
+        const PDFReal linesSpacing = 5.0;
+        const PDFReal staffHeight = lineWidth + 4 * linesSpacing;
+        const PDFReal offsetBetweenStaves = stavesSpacing + staffHeight + 4 * lineWidth;
+        const auto [first, last] = getIndexBounds(offsetBetweenStaves, 0.0, size.height() - XOURNAL_HEADER_SIZE - XOURNAL_FOOTER_SIZE);
+        const PDFReal right = size.width() - margin;
+
+        appendStrokeStyle(content, XOURNAL_BLACK, lineWidth, 2);
+        for (int i = first; i <= last; ++i)
+        {
+            const PDFReal top = XOURNAL_HEADER_SIZE + i * offsetBetweenStaves;
+            for (int line = 0; line < 5; ++line)
+            {
+                appendSegment(content, QPointF(margin, top + line * linesSpacing), QPointF(right, top + line * linesSpacing));
+            }
+            appendSegment(content, QPointF(margin, top), QPointF(margin, top + 4 * linesSpacing));
+            appendSegment(content, QPointF(right, top), QPointF(right, top + 4 * linesSpacing));
+        }
+        content.append("S\n");
+    }
 };
+
+std::vector<PDFPageOrganizer::Background> PDFPageOrganizer::getBackgrounds()
+{
+    return { Background::Plain, Background::Ruled, Background::Lines, Background::LinesMargin, Background::LinesRightMargin,
+             Background::Graph, Background::GraphBorder, Background::GraphBorderBold, Background::Dotted,
+             Background::IsometricDotted, Background::IsometricGraph, Background::Staves };
+}
+
+QByteArray PDFPageOrganizer::getBackgroundName(Background background)
+{
+    switch (background)
+    {
+        case Background::Plain:
+            return "Plain";
+        case Background::Ruled:
+            return "Ruled";
+        case Background::Lines:
+            return "Lines";
+        case Background::LinesMargin:
+            return "LinesMargin";
+        case Background::LinesRightMargin:
+            return "LinesRightMargin";
+        case Background::Graph:
+            return "Graph";
+        case Background::GraphBorder:
+            return "GraphBorder";
+        case Background::GraphBorderBold:
+            return "GraphBorderBold";
+        case Background::Dotted:
+            return "Dotted";
+        case Background::IsometricDotted:
+            return "IsometricDotted";
+        case Background::IsometricGraph:
+            return "IsometricGraph";
+        case Background::Staves:
+            return "Staves";
+    }
+
+    Q_ASSERT(false);
+    return "Plain";
+}
 
 PDFOperationResult PDFPageOrganizer::addBlankPage(PDFDocument* document, PDFInteger pageIndex, PDFModifiedDocument::ModificationFlags* modificationFlags)
 {
@@ -596,6 +912,52 @@ QByteArray PDFPageOrganizer::createBackgroundContent(const PDFPage* page, Backgr
                    PDFPageOrganizerHelper::formatNumber(transform.m22()) + ' ' +
                    PDFPageOrganizerHelper::formatNumber(transform.dx()) + ' ' +
                    PDFPageOrganizerHelper::formatNumber(transform.dy()) + " cm\n");
+
+    if (background != Background::Ruled)
+    {
+        // Backgrounds of Xournal++: origin in the top left corner, y axis pointing down
+        content.append("1 0 0 -1 0 " + PDFPageOrganizerHelper::formatNumber(size.height()) + " cm\n");
+        switch (background)
+        {
+            case Background::Lines:
+                PDFPageOrganizerHelper::appendXournalLines(content, size, 0.0);
+                break;
+            case Background::LinesMargin:
+                PDFPageOrganizerHelper::appendXournalLines(content, size, 72.0);
+                break;
+            case Background::LinesRightMargin:
+                PDFPageOrganizerHelper::appendXournalLines(content, size, -72.0);
+                break;
+            case Background::Graph:
+                PDFPageOrganizerHelper::appendXournalGraph(content, size, 0.0, 0, 0.0);
+                break;
+            case Background::GraphBorder:
+                PDFPageOrganizerHelper::appendXournalGraph(content, size, 40.0, 0, 0.0);
+                break;
+            case Background::GraphBorderBold:
+                PDFPageOrganizerHelper::appendXournalGraph(content, size, 20.0, 5, 1.0);
+                break;
+            case Background::Dotted:
+                PDFPageOrganizerHelper::appendXournalDots(content, size);
+                break;
+            case Background::IsometricDotted:
+                PDFPageOrganizerHelper::appendXournalIsometric(content, size, true);
+                break;
+            case Background::IsometricGraph:
+                PDFPageOrganizerHelper::appendXournalIsometric(content, size, false);
+                break;
+            case Background::Staves:
+                PDFPageOrganizerHelper::appendXournalStaves(content, size);
+                break;
+            case Background::Plain:
+            case Background::Ruled:
+                Q_ASSERT(false);
+                break;
+        }
+        content.append("Q\n");
+        return content;
+    }
+
     content.append("0.5 w 0.62 0.75 0.9 RG\n");
     for (PDFReal y = size.height() - topMargin; y >= bottomMargin; y -= spacing)
     {

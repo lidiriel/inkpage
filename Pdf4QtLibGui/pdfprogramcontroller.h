@@ -30,6 +30,7 @@
 #include "pdfdocumentpropertiesdialog.h"
 #include "pdfplugin.h"
 #include "pdfbookmarkmanager.h"
+#include "pdfpageorganizer.h"
 
 #include <QObject>
 #include <QAction>
@@ -228,6 +229,8 @@ public:
         CreateTextHighlightGroup,
         CreateInDocumentHyperlinkGroup,
         CreateStampGroup,
+        PageBackgroundGroup,            ///< Backgrounds of the current page (data: PDFPageOrganizer::Background)
+        PageBackgroundAllPagesGroup,    ///< Backgrounds of all pages (data: PDFPageOrganizer::Background)
         LastActionGroup
     };
 
@@ -235,6 +238,7 @@ public:
     inline QAction* getAction(Action type) const { return m_actions[type]; }
 
     inline QActionGroup* getActionGroup(ActionGroup group) const { return m_actionGroups[group]; }
+    inline void setActionGroup(ActionGroup group, QActionGroup* actionGroup) { m_actionGroups[group] = actionGroup; }
 
     /// Creates a tool button with menu for action group. If action group
     /// doesn't exist, then nullptr is returned.
@@ -356,6 +360,10 @@ public:
     /// thumbnail; reset it with std::nullopt when the menu is closed.
     void setPageOperationTarget(std::optional<pdf::PDFInteger> pageIndex) { m_pageOperationTarget = pageIndex; }
 
+    /// Returns the page on which the page actions operate (the page set by
+    /// setPageOperationTarget, or the first visible page), -1 without a page
+    pdf::PDFInteger getPageOperationIndex() const;
+
 signals:
     void queryPasswordRequest(QString* password, bool* ok);
 
@@ -404,7 +412,7 @@ private:
     void performPageOperation(const PageOperation& operation, pdf::PDFInteger pageOffset);
 
     /// Sets the background of the current page or of all pages
-    void setPageBackground(bool allPages, bool ruled);
+    void setPageBackground(bool allPages, pdf::PDFPageOrganizer::Background background);
     void onActionCreateBitonalDocumentTriggered();
     void onActionRecognizeTextTriggered();
     void onActionPrepareScannedPagesTriggered();

@@ -598,12 +598,79 @@ void PDFEditorMainWindow::initializePageActions()
     QAction* moveUpAction = createAction(PDFActionManager::PageMoveUp, tr("Move Page &Up"), tr("Move the current page before the previous page"), "page-move-up", "actionPageMoveUp");
     QAction* moveDownAction = createAction(PDFActionManager::PageMoveDown, tr("Move Page Do&wn"), tr("Move the current page after the next page"), "page-move-down", "actionPageMoveDown");
 
+    // Backgrounds of the current page (the background of the page is checked) and of all
+    // pages. Plain and Ruled keep their actions of the action manager (the shortcuts are
+    // stored by the object names); the backgrounds of Xournal++ follow them.
     QMenu* backgroundMenu = new QMenu(tr("&Background"), this);
-    backgroundMenu->addAction(createAction(PDFActionManager::PageBackgroundPlain, tr("&Plain (Current Page)"), tr("Remove the background of the current page"), "page", "actionPageBackgroundPlain"));
-    backgroundMenu->addAction(createAction(PDFActionManager::PageBackgroundRuled, tr("&Ruled (Current Page)"), tr("Set a ruled background on the current page"), "page-background", "actionPageBackgroundRuled"));
+    backgroundMenu->setObjectName("menuPageBackground");
+    QMenu* allPagesBackgroundMenu = new QMenu(tr("&All Pages"), this);
+    allPagesBackgroundMenu->setObjectName("menuPageBackgroundAllPages");
+    QActionGroup* backgroundGroup = new QActionGroup(this);
+    backgroundGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::Exclusive);
+    QActionGroup* allPagesBackgroundGroup = new QActionGroup(this);
+    allPagesBackgroundGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::None);
+
+    for (pdf::PDFPageOrganizer::Background background : pdf::PDFPageOrganizer::getBackgrounds())
+    {
+        const QString name = QString::fromLatin1(pdf::PDFPageOrganizer::getBackgroundName(background));
+        const QString text = getBackgroundText(background);
+        QAction* action = nullptr;
+        QAction* allPagesAction = nullptr;
+
+        switch (background)
+        {
+            case pdf::PDFPageOrganizer::Background::Plain:
+                action = createAction(PDFActionManager::PageBackgroundPlain, text, tr("Remove the background of the current page"), "page", "actionPageBackgroundPlain");
+                allPagesAction = createAction(PDFActionManager::PageBackgroundPlainAllPages, text, tr("Remove the background of all pages"), "page", "actionPageBackgroundPlainAllPages");
+                break;
+
+            case pdf::PDFPageOrganizer::Background::Ruled:
+                action = createAction(PDFActionManager::PageBackgroundRuled, text, tr("Set a ruled background on the current page"), "page-background", "actionPageBackgroundRuled");
+                allPagesAction = createAction(PDFActionManager::PageBackgroundRuledAllPages, text, tr("Set a ruled background on all pages"), "page-background", "actionPageBackgroundRuledAllPages");
+                break;
+
+            default:
+                action = new QAction(text, this);
+                action->setObjectName(QString("actionPageBackground%1").arg(name));
+                action->setStatusTip(tr("Set the background \"%1\" on the current page").arg(QString(text).remove('&')));
+                m_actionManager->addAdditionalAction(action);
+                allPagesAction = new QAction(text, this);
+                allPagesAction->setObjectName(QString("actionPageBackground%1AllPages").arg(name));
+                allPagesAction->setStatusTip(tr("Set the background \"%1\" on all pages").arg(QString(text).remove('&')));
+                m_actionManager->addAdditionalAction(allPagesAction);
+                break;
+        }
+
+        action->setCheckable(true);
+        action->setData(int(background));
+        allPagesAction->setData(int(background));
+        backgroundGroup->addAction(action);
+        allPagesBackgroundGroup->addAction(allPagesAction);
+        backgroundMenu->addAction(action);
+        allPagesBackgroundMenu->addAction(allPagesAction);
+
+        if (background == pdf::PDFPageOrganizer::Background::Ruled)
+        {
+            backgroundMenu->addSection(tr("Xournal++"));
+            allPagesBackgroundMenu->addSection(tr("Xournal++"));
+        }
+    }
     backgroundMenu->addSeparator();
-    backgroundMenu->addAction(createAction(PDFActionManager::PageBackgroundPlainAllPages, tr("P&lain (All Pages)"), tr("Remove the background of all pages"), "page", "actionPageBackgroundPlainAllPages"));
-    backgroundMenu->addAction(createAction(PDFActionManager::PageBackgroundRuledAllPages, tr("R&uled (All Pages)"), tr("Set a ruled background on all pages"), "page-background", "actionPageBackgroundRuledAllPages"));
+    backgroundMenu->addMenu(allPagesBackgroundMenu);
+    m_actionManager->setActionGroup(PDFActionManager::PageBackgroundGroup, backgroundGroup);
+    m_actionManager->setActionGroup(PDFActionManager::PageBackgroundAllPagesGroup, allPagesBackgroundGroup);
+
+    // The background of the page, on which the menu operates, is checked
+    connect(backgroundMenu, &QMenu::aboutToShow, this, [this, backgroundGroup]()
+    {
+        const pdf::PDFInteger pageIndex = m_programController->getPageOperationIndex();
+        const pdf::PDFDocument* document = m_programController->getDocument();
+        const pdf::PDFPageOrganizer::Background background = (document && pageIndex >= 0) ? pdf::PDFPageOrganizer::getBackground(document, pageIndex) : pdf::PDFPageOrganizer::Background::Plain;
+        for (QAction* action : backgroundGroup->actions())
+        {
+            action->setChecked(action->data().toInt() == int(background));
+        }
+    });
 
     QAction* backgroundAction = backgroundMenu->menuAction();
     backgroundAction->setIcon(QIcon(":/resources/page-background.svg"));
@@ -677,6 +744,40 @@ QToolBar* PDFEditorMainWindow::createInsertToolBar()
     insertToolBar->addAction(ui->actionCreateFreehandCurve);
     insertToolBar->addAction(ui->actionCreateHighlighter);
     return insertToolBar;
+}
+
+QString PDFEditorMainWindow::getBackgroundText(pdf::PDFPageOrganizer::Background background)
+{
+    switch (background)
+    {
+        case pdf::PDFPageOrganizer::Background::Plain:
+            return tr("&Plain");
+        case pdf::PDFPageOrganizer::Background::Ruled:
+            return tr("&Ruled");
+        case pdf::PDFPageOrganizer::Background::Lines:
+            return tr("&Lines");
+        case pdf::PDFPageOrganizer::Background::LinesMargin:
+            return tr("Lines with &Margin");
+        case pdf::PDFPageOrganizer::Background::LinesRightMargin:
+            return tr("Lines with Margin on the Righ&t");
+        case pdf::PDFPageOrganizer::Background::Graph:
+            return tr("&Graph");
+        case pdf::PDFPageOrganizer::Background::GraphBorder:
+            return tr("Graph with &Border");
+        case pdf::PDFPageOrganizer::Background::GraphBorderBold:
+            return tr("Graph with Border, Every 5th Line B&old");
+        case pdf::PDFPageOrganizer::Background::Dotted:
+            return tr("&Dotted");
+        case pdf::PDFPageOrganizer::Background::IsometricDotted:
+            return tr("&Isometric Dotted");
+        case pdf::PDFPageOrganizer::Background::IsometricGraph:
+            return tr("Isometric Grap&h");
+        case pdf::PDFPageOrganizer::Background::Staves:
+            return tr("&Staves");
+    }
+
+    Q_ASSERT(false);
+    return QString();
 }
 
 void PDFEditorMainWindow::initializeHiddenActions()

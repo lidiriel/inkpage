@@ -15,6 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "pdfeditormainwindow.h"
+#include "pdfprogramcontroller.h"
+#include "pdfdocumentbuilder.h"
+#include "pdfdocumentwriter.h"
+#include "pdfpageorganizer.h"
 
 #include <QtTest>
 #include <QAction>
@@ -24,6 +28,7 @@
 #include <QToolBar>
 #include <QToolButton>
 #include <QDoubleSpinBox>
+#include <QMenu>
 
 using namespace pdfviewer;
 
@@ -47,6 +52,7 @@ private slots:
     void zoomIsInStatusBar();
     void navigationToolBar();
     void stickyNoteIsInInsertToolBar();
+    void pageBackgrounds();
 
 private:
     static QSettings settings();
@@ -172,6 +178,81 @@ void EditorMainWindowTest::stickyNoteIsInInsertToolBar()
 
     QToolBar* mainToolBar = window.findChild<QToolBar*>("mainToolBar");
     QVERIFY(!mainToolBar->findChild<QToolButton*>("insertStickyNoteButton"));
+}
+
+void EditorMainWindowTest::pageBackgrounds()
+{
+    // Document with one page
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    const QString fileName = directory.filePath("page.pdf");
+    {
+        pdf::PDFDocumentBuilder builder;
+        builder.appendPage(QRectF(0, 0, 595, 842));
+        const pdf::PDFDocument document = builder.build();
+        pdf::PDFDocumentWriter writer(nullptr);
+        QVERIFY(writer.write(fileName, &document, false));
+    }
+
+    PDFEditorMainWindow window;
+    QMenu* backgroundMenu = window.findChild<QMenu*>("menuPageBackground");
+    QMenu* allPagesMenu = window.findChild<QMenu*>("menuPageBackgroundAllPages");
+    QVERIFY(backgroundMenu);
+    QVERIFY(allPagesMenu);
+
+    auto actionNames = [](QMenu* menu)
+    {
+        QStringList names;
+        for (QAction* action : menu->actions())
+        {
+            if (!action->isSeparator() && !action->menu())
+            {
+                names << action->objectName();
+            }
+        }
+        return names;
+    };
+
+    // Plain and Ruled of inkpage, then the backgrounds of Xournal++
+    const QStringList backgrounds = { "Plain", "Ruled", "Lines", "LinesMargin", "LinesRightMargin", "Graph", "GraphBorder",
+                                      "GraphBorderBold", "Dotted", "IsometricDotted", "IsometricGraph", "Staves" };
+    QStringList expectedNames;
+    QStringList expectedAllPagesNames;
+    for (const QString& background : backgrounds)
+    {
+        expectedNames << "actionPageBackground" + background;
+        expectedAllPagesNames << "actionPageBackground" + background + "AllPages";
+    }
+    QCOMPARE(actionNames(backgroundMenu), expectedNames);
+    QCOMPARE(actionNames(allPagesMenu), expectedAllPagesNames);
+    QVERIFY(backgroundMenu->actions().contains(allPagesMenu->menuAction()));
+
+    // Without a document, the backgrounds are disabled
+    QAction* graph = window.findChild<QAction*>("actionPageBackgroundGraph");
+    QAction* plain = window.findChild<QAction*>("actionPageBackgroundPlain");
+    QAction* dottedAllPages = window.findChild<QAction*>("actionPageBackgroundDottedAllPages");
+    QVERIFY(!graph->isEnabled());
+
+    PDFProgramController* controller = window.getProgramController();
+    controller->openDocument(fileName);
+    QTRY_VERIFY(controller->getDocument());
+    QVERIFY(graph->isEnabled());
+
+    // The background of the page is set, and checked in the menu
+    graph->trigger();
+    QCOMPARE(pdf::PDFPageOrganizer::getBackground(controller->getDocument(), 0), pdf::PDFPageOrganizer::Background::Graph);
+    Q_EMIT backgroundMenu->aboutToShow();
+    QVERIFY(graph->isChecked());
+    QVERIFY(!plain->isChecked());
+
+    dottedAllPages->trigger();
+    QCOMPARE(pdf::PDFPageOrganizer::getBackground(controller->getDocument(), 0), pdf::PDFPageOrganizer::Background::Dotted);
+    Q_EMIT backgroundMenu->aboutToShow();
+    QVERIFY(window.findChild<QAction*>("actionPageBackgroundDotted")->isChecked());
+    QVERIFY(!graph->isChecked());
+
+    plain->trigger();
+    QCOMPARE(pdf::PDFPageOrganizer::getBackground(controller->getDocument(), 0), pdf::PDFPageOrganizer::Background::Plain);
 }
 
 QTEST_MAIN(EditorMainWindowTest)

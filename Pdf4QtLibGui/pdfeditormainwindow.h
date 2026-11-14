@@ -133,6 +133,9 @@ private:
     /// Places the zoom actions and the zoom spin box at the right side of the status bar
     void initializeStatusBarZoom();
 
+    /// Returns the text of the menu entry of the background
+    static QString getBackgroundText(pdf::PDFPageOrganizer::Background background);
+
     /// Settings key of the visibility of the status bar
     static constexpr const char* STATUS_BAR_VISIBLE_KEY = "statusBarVisible";
 

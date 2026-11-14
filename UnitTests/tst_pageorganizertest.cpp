@@ -45,6 +45,9 @@ private slots:
     void ruledBackgroundIsSetOnlyOnce();
     void ruledBackgroundFollowsPageRotation();
     void blankPageTakesBackgroundOfPage();
+    void xournalBackgroundsAreStoredAndDrawn();
+    void xournalBackgroundsGeometry();
+    void xournalBackgroundFollowsPageRotation();
 
 private:
     static constexpr QRectF A4 = QRectF(0, 0, 595, 842);
@@ -402,6 +405,109 @@ void PageOrganizerTest::blankPageTakesBackgroundOfPage()
     QVERIFY(PDFPageOrganizer::setBackground(&document, { 1 }, PDFPageOrganizer::Background::Plain, nullptr));
     QCOMPARE(PDFPageOrganizer::getBackground(&document, 0), PDFPageOrganizer::Background::Ruled);
     QCOMPARE(PDFPageOrganizer::getBackground(&document, 1), PDFPageOrganizer::Background::Plain);
+}
+
+void PageOrganizerTest::xournalBackgroundsAreStoredAndDrawn()
+{
+    QCOMPARE(PDFPageOrganizer::getBackgrounds().size(), size_t(12));
+    QCOMPARE(PDFPageOrganizer::getBackgrounds().front(), PDFPageOrganizer::Background::Plain);
+
+    auto countColoredPixels = [](const QImage& image)
+    {
+        int coloredPixels = 0;
+        for (int y = 0; y < image.height(); ++y)
+        {
+            for (int x = 0; x < image.width(); ++x)
+            {
+                coloredPixels += image.pixelColor(x, y) != QColor(Qt::white) ? 1 : 0;
+            }
+        }
+        return coloredPixels;
+    };
+
+    // The page has a content (a black square), the background adds to it
+    const int contentPixels = countColoredPixels(renderPage(createDocument(1), 0));
+
+    for (PDFPageOrganizer::Background background : PDFPageOrganizer::getBackgrounds())
+    {
+        if (background == PDFPageOrganizer::Background::Plain)
+        {
+            continue;
+        }
+
+        const QString name = QString::fromLatin1(PDFPageOrganizer::getBackgroundName(background));
+        PDFDocument document = createDocument(1);
+        QVERIFY(PDFPageOrganizer::setBackground(&document, { 0 }, background, nullptr));
+        QCOMPARE(PDFPageOrganizer::getBackground(&document, 0), background);
+
+        // The background is drawn (also the dots)
+        const int coloredPixels = countColoredPixels(renderPage(document, 0)) - contentPixels;
+        QVERIFY2(coloredPixels > 1000, qPrintable(QString("%1: %2 pixels").arg(name).arg(coloredPixels)));
+
+        // The background can be replaced and removed
+        QVERIFY(PDFPageOrganizer::setBackground(&document, { 0 }, PDFPageOrganizer::Background::Ruled, nullptr));
+        QCOMPARE(PDFPageOrganizer::getBackground(&document, 0), PDFPageOrganizer::Background::Ruled);
+        QVERIFY(PDFPageOrganizer::setBackground(&document, { 0 }, PDFPageOrganizer::Background::Plain, nullptr));
+        QCOMPARE(PDFPageOrganizer::getBackground(&document, 0), PDFPageOrganizer::Background::Plain);
+    }
+}
+
+void PageOrganizerTest::xournalBackgroundsGeometry()
+{
+    // The numbers of lines and dots on an A4 page, as Xournal++ draws them
+    PDFDocument document = createDocument(1);
+    const PDFPage* page = document.getCatalog()->getPage(0);
+    auto segmentCount = [page](PDFPageOrganizer::Background background)
+    {
+        return int(PDFPageOrganizer::createBackgroundContent(page, background).count(" l\n"));
+    };
+
+    // Lines every 24 pt between the header (80 pt) and the footer (60 pt): (842 - 140) / 24
+    QCOMPARE(segmentCount(PDFPageOrganizer::Background::Lines), 30);
+    QCOMPARE(segmentCount(PDFPageOrganizer::Background::LinesMargin), 31);
+    QCOMPARE(segmentCount(PDFPageOrganizer::Background::LinesRightMargin), 31);
+    QVERIFY(PDFPageOrganizer::createBackgroundContent(page, PDFPageOrganizer::Background::LinesMargin).contains("72 0 m 72 842 l"));
+    QVERIFY(PDFPageOrganizer::createBackgroundContent(page, PDFPageOrganizer::Background::LinesRightMargin).contains("523 0 m 523 842 l"));
+
+    // Squares of 5 mm (14.17 pt): 41 vertical and 59 horizontal lines, 41 x 59 dots
+    QCOMPARE(segmentCount(PDFPageOrganizer::Background::Graph), 41 + 59);
+    QCOMPARE(segmentCount(PDFPageOrganizer::Background::Dotted), 41 * 59);
+
+    // With the border of 40 pt, the grid is rounded to the squares inside the border
+    const QByteArray border = PDFPageOrganizer::createBackgroundContent(page, PDFPageOrganizer::Background::GraphBorder);
+    QCOMPARE(int(border.count(" l\n")), 37 + 54);
+    QVERIFY(border.contains("42.51 42.51 m 552.63 42.51 l"));
+
+    // Bold lines: two line widths
+    const QByteArray bold = PDFPageOrganizer::createBackgroundContent(page, PDFPageOrganizer::Background::GraphBorderBold);
+    QVERIFY(bold.contains(" 0.5 w 2 J"));
+    QVERIFY(bold.contains(" 1 w 2 J"));
+
+    // 12 staves of 5 lines and 2 bar lines
+    QCOMPARE(segmentCount(PDFPageOrganizer::Background::Staves), 12 * 7);
+
+    // Xournal++ coordinates: origin in the top left corner, y axis pointing down
+    QVERIFY(PDFPageOrganizer::createBackgroundContent(page, PDFPageOrganizer::Background::Lines).contains("1 0 0 -1 0 842 cm"));
+}
+
+void PageOrganizerTest::xournalBackgroundFollowsPageRotation()
+{
+    for (PageRotation rotation : { PageRotation::None, PageRotation::Rotate90, PageRotation::Rotate180, PageRotation::Rotate270 })
+    {
+        PDFDocumentBuilder builder;
+        const PDFObjectReference page = builder.appendPage(A4);
+        builder.setPageRotation(page, rotation);
+        PDFDocument document = builder.build();
+
+        QVERIFY(PDFPageOrganizer::setBackground(&document, { 0 }, PDFPageOrganizer::Background::Lines, nullptr));
+
+        // Lines are horizontal on the displayed page, the header (80 pt) is on its top
+        const QImage image = renderPage(document, 0);
+        QVERIFY2(countRuledLines(image, Qt::Horizontal) > 10, qPrintable(QString("rotation %1").arg(int(rotation))));
+        QCOMPARE(countRuledLines(image, Qt::Vertical), 0);
+        QCOMPARE(countRuledLines(image.copy(0, 0, image.width(), 75), Qt::Horizontal), 0);
+        QVERIFY(countRuledLines(image.copy(0, 75, image.width(), 10), Qt::Horizontal) > 0);
+    }
 }
 
 QTEST_MAIN(PageOrganizerTest)

@@ -55,6 +55,11 @@ the Xournal++ colour icons (GPL-3+, Nararyans R.I.), Numix (GPL-3+), Papirus
 (MIT) and the MATE icon theme (LGPL-3+). The origin and license of each
 replaced file are listed in `3rdparty_licenses/icons_origin.txt`.
 
+The page backgrounds Lines, Graph, Dotted, Isometric and Staves (Pages >
+Background) are the page backgrounds of Xournal++
+(https://github.com/xournalpp/xournalpp, GPL-2.0-or-later), drawn with the
+same sizes, colors and algorithms (`src/core/view/background`).
+
 ## 3. LEGAL ISSUES
 
 inkpage is free software: you can redistribute it and/or modify it under the
