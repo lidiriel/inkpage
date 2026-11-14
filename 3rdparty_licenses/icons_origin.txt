@@ -46,9 +46,6 @@ Pdf4QtLibGui/resources/annot-inline-text.svg
 Pdf4QtLibGui/resources/annot-straight-line.svg
     from: FreeCAD, src/Mod/Draft/Resources/icons/Draft_Line.svg
     license: LGPL-2.1-or-later (FreeCAD)
-Pdf4QtLibGui/resources/insert-image.svg
-    from: FreeCAD, src/Gui/Icons/image-plane.svg
-    license: LGPL-2.1-or-later (FreeCAD)
 Pdf4QtLibGui/resources/annot-ellipse.svg
     from: FreeCAD, src/Mod/Draft/Resources/icons/Draft_Ellipse.svg
     license: CC-BY-SA-4.0
@@ -211,6 +208,9 @@ Pdf4QtLibGui/resources/quit.svg
 
 Xournal++
 ---------
+Pdf4QtLibGui/resources/insert-image.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-tool-image.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
 Pdf4QtLibGui/resources/style-fill.svg
     from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-fill.svg
     license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
