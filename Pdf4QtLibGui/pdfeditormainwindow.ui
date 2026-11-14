@@ -185,11 +185,7 @@
      </property>
      <addaction name="actionStickyNoteComment"/>
      <addaction name="actionStickyNoteHelp"/>
-     <addaction name="actionStickyNoteInsert"/>
-     <addaction name="actionStickyNoteKey"/>
-     <addaction name="actionStickyNoteNewParagraph"/>
      <addaction name="actionStickyNoteNote"/>
-     <addaction name="actionStickyNoteParagraph"/>
     </widget>
     <widget class="QMenu" name="menuStamp">
      <property name="title">
@@ -821,44 +817,12 @@
     <string>&amp;Help</string>
    </property>
   </action>
-  <action name="actionStickyNoteInsert">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Insert</string>
-   </property>
-  </action>
-  <action name="actionStickyNoteKey">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Key</string>
-   </property>
-  </action>
-  <action name="actionStickyNoteNewParagraph">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>&amp;New Paragraph</string>
-   </property>
-  </action>
   <action name="actionStickyNoteNote">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
     <string>No&amp;te</string>
-   </property>
-  </action>
-  <action name="actionStickyNoteParagraph">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Paragraph</string>
    </property>
   </action>
   <action name="actionCreateHyperlink">

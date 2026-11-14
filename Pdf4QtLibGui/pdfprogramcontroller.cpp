@@ -240,33 +240,21 @@ void PDFActionManager::initActions(QSize iconSize, bool initializeStampActions)
     setShortcut(FullscreenMode, QKeySequence("Ctrl+L"));
     setShortcut(PageGeometry, QKeySequence("Ctrl+Shift+R"));
 
-    if (hasActions({ CreateStickyNoteComment, CreateStickyNoteHelp, CreateStickyNoteInsert, CreateStickyNoteKey, CreateStickyNoteNewParagraph, CreateStickyNoteNote, CreateStickyNoteParagraph }))
+    if (hasActions({ CreateStickyNoteComment, CreateStickyNoteHelp, CreateStickyNoteNote }))
     {
         m_actionGroups[CreateStickyNoteGroup] = new QActionGroup(this);
         m_actionGroups[CreateStickyNoteGroup]->setExclusionPolicy(QActionGroup::ExclusionPolicy::ExclusiveOptional);
         m_actionGroups[CreateStickyNoteGroup]->addAction(getAction(CreateStickyNoteComment));
         m_actionGroups[CreateStickyNoteGroup]->addAction(getAction(CreateStickyNoteHelp));
-        m_actionGroups[CreateStickyNoteGroup]->addAction(getAction(CreateStickyNoteInsert));
-        m_actionGroups[CreateStickyNoteGroup]->addAction(getAction(CreateStickyNoteKey));
-        m_actionGroups[CreateStickyNoteGroup]->addAction(getAction(CreateStickyNoteNewParagraph));
         m_actionGroups[CreateStickyNoteGroup]->addAction(getAction(CreateStickyNoteNote));
-        m_actionGroups[CreateStickyNoteGroup]->addAction(getAction(CreateStickyNoteParagraph));
 
         getAction(CreateStickyNoteComment)->setData(int(pdf::TextAnnotationIcon::Comment));
         getAction(CreateStickyNoteHelp)->setData(int(pdf::TextAnnotationIcon::Help));
-        getAction(CreateStickyNoteInsert)->setData(int(pdf::TextAnnotationIcon::Insert));
-        getAction(CreateStickyNoteKey)->setData(int(pdf::TextAnnotationIcon::Key));
-        getAction(CreateStickyNoteNewParagraph)->setData(int(pdf::TextAnnotationIcon::NewParagraph));
         getAction(CreateStickyNoteNote)->setData(int(pdf::TextAnnotationIcon::Note));
-        getAction(CreateStickyNoteParagraph)->setData(int(pdf::TextAnnotationIcon::Paragraph));
 
         getAction(CreateStickyNoteComment)->setIcon(pdf::PDFTextAnnotation::createIcon("Comment", iconSize));
         getAction(CreateStickyNoteHelp)->setIcon(pdf::PDFTextAnnotation::createIcon("Help", iconSize));
-        getAction(CreateStickyNoteInsert)->setIcon(pdf::PDFTextAnnotation::createIcon("Insert", iconSize));
-        getAction(CreateStickyNoteKey)->setIcon(pdf::PDFTextAnnotation::createIcon("Key", iconSize));
-        getAction(CreateStickyNoteNewParagraph)->setIcon(pdf::PDFTextAnnotation::createIcon("NewParagraph", iconSize));
         getAction(CreateStickyNoteNote)->setIcon(pdf::PDFTextAnnotation::createIcon("Note", iconSize));
-        getAction(CreateStickyNoteParagraph)->setIcon(pdf::PDFTextAnnotation::createIcon("Paragraph", iconSize));
     }
 
     if (hasActions({ CreateTextHighlight, CreateTextUnderline, CreateTextStrikeout, CreateTextSquiggly }))
