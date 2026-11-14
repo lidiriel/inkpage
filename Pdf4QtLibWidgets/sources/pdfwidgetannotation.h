@@ -251,6 +251,24 @@ public:
     /// \param keepPosition Paste the annotations at their original position (the widget position selects just the page)
     void pasteAnnotations(std::optional<QPoint> widgetPosition, bool keepPosition = false);
 
+    /// Returns true, if the clipboard contains a text (and no annotations), which
+    /// can be pasted as an inline text (free text annotation)
+    bool canPasteText() const;
+
+    /// Inserts the text of the clipboard as an inline text (free text annotation). If the
+    /// widget position is on a page, the top left corner of the text is placed at it,
+    /// otherwise the text is placed at the top left part of the first displayed page.
+    /// The inserted annotation is selected.
+    /// \param widgetPosition Position in the widget (optional)
+    void pasteText(std::optional<QPoint> widgetPosition);
+
+    /// Returns true, if annotations or a text can be pasted
+    bool canPaste() const { return canPasteAnnotations() || canPasteText(); }
+
+    /// Pastes the annotations of the clipboard, or its text as an inline text
+    /// \param widgetPosition Position in the widget (optional)
+    void paste(std::optional<QPoint> widgetPosition);
+
     /// Copies the selected annotations (with their popup windows and replies)
     /// onto the pages. An annotation is not copied onto its own page.
     /// \param pageIndices Indices of the target pages

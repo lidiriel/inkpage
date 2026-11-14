@@ -47,6 +47,7 @@
 #include <QDialog>
 #include <QApplication>
 #include <QClipboard>
+#include <QFontMetricsF>
 #include <QMouseEvent>
 #include <QGroupBox>
 #include <QScrollArea>
@@ -236,7 +237,7 @@ void PDFWidgetAnnotationManager::shortcutOverrideEvent(QWidget* widget, QKeyEven
         return;
     }
 
-    if (event->matches(QKeySequence::Paste) && canPasteAnnotations())
+    if (event->matches(QKeySequence::Paste) && canPaste())
     {
         event->accept();
         return;
@@ -1887,11 +1888,11 @@ void PDFWidgetAnnotationManager::keyPressEvent(QWidget* widget, QKeyEvent* event
             return;
         }
 
-        if (event->matches(QKeySequence::Paste) && canPasteAnnotations())
+        if (event->matches(QKeySequence::Paste) && canPaste())
         {
             QWidget* deviceWidget = m_proxy->getWidget()->getDrawWidget()->getWidget();
             const QPoint widgetPosition = deviceWidget->mapFromGlobal(QCursor::pos());
-            pasteAnnotations(deviceWidget->rect().contains(widgetPosition) ? std::optional<QPoint>(widgetPosition) : std::nullopt);
+            paste(deviceWidget->rect().contains(widgetPosition) ? std::optional<QPoint>(widgetPosition) : std::nullopt);
             event->accept();
             return;
         }
@@ -2287,7 +2288,7 @@ void PDFWidgetAnnotationManager::mousePressEvent(QWidget* widget, QMouseEvent* e
         }
 
         PDFWidget* pdfWidget = m_proxy->getWidget();
-        if (hasSelection() || canPasteAnnotations() || hasSelectableAnnotation())
+        if (hasSelection() || canPaste() || hasSelectableAnnotation())
         {
             event->accept();
             showSelectionMenu(pdfWidget->mapToGlobal(event->pos()), event->pos(), pointContext);
@@ -2454,8 +2455,8 @@ void PDFWidgetAnnotationManager::showSelectionMenu(QPoint globalPosition, std::o
 
     QAction* pasteAction = menu.addAction(tr("Paste"));
     pasteAction->setShortcut(QKeySequence::Paste);
-    pasteAction->setEnabled(canPasteAnnotations());
-    connect(pasteAction, &QAction::triggered, this, [this, widgetPosition]() { pasteAnnotations(widgetPosition); });
+    pasteAction->setEnabled(canPaste());
+    connect(pasteAction, &QAction::triggered, this, [this, widgetPosition]() { paste(widgetPosition); });
 
     QAction* pasteInPlaceAction = menu.addAction(tr("Paste at Original Position"));
     pasteInPlaceAction->setEnabled(canPasteAnnotations());
@@ -4629,6 +4630,115 @@ void PDFWidgetAnnotationManager::pasteAnnotations(std::optional<QPoint> widgetPo
     {
         Q_EMIT documentModified(PDFModifiedDocument(modifier.getDocument(), nullptr, modifier.getFlags()));
         setSelectedAnnotations(insertedAnnotations);
+    }
+}
+
+bool PDFWidgetAnnotationManager::canPasteText() const
+{
+    if (!m_document || !isModificationAllowed())
+    {
+        return false;
+    }
+
+    const QMimeData* mimeData = QApplication::clipboard()->mimeData(QClipboard::Clipboard);
+    return mimeData && !mimeData->hasFormat(PDFAnnotationManipulator::getMimeType()) && mimeData->hasText() && !mimeData->text().trimmed().isEmpty();
+}
+
+void PDFWidgetAnnotationManager::pasteText(std::optional<QPoint> widgetPosition)
+{
+    if (!canPasteText())
+    {
+        return;
+    }
+
+    QString text = QApplication::clipboard()->mimeData(QClipboard::Clipboard)->text();
+    text.replace("\r\n", "\n");
+    while (text.endsWith('\n'))
+    {
+        text.chop(1);
+    }
+
+    // Target page and position
+    PDFInteger pageIndex = -1;
+    QPointF pagePoint;
+    if (widgetPosition)
+    {
+        pageIndex = m_proxy->getPageUnderPoint(*widgetPosition, &pagePoint);
+    }
+
+    const bool isPositionValid = pageIndex != -1;
+    if (!isPositionValid)
+    {
+        const std::vector<PDFInteger> currentPages = m_proxy->getWidget()->getDrawWidget()->getCurrentPages();
+        if (currentPages.empty())
+        {
+            return;
+        }
+        pageIndex = currentPages.front();
+    }
+
+    const PDFPage* page = m_document->getCatalog()->getPage(pageIndex);
+    if (!page || !page->getPageReference().isValid())
+    {
+        return;
+    }
+
+    // The page coordinates grow upwards: the top of the page is the bottom of the media box rectangle
+    const QRectF mediaBox = page->getMediaBox().normalized();
+    const PDFReal margin = 36.0;
+    const QPointF topLeft = isPositionValid ? pagePoint : QPointF(mediaBox.left() + margin, mediaBox.bottom() - margin);
+
+    // Size of the text: one line per line of the text, wrapped at the right margin of the page
+    const PDFFreeTextStyle style;
+    const PDFReal padding = 2.0;
+    QFont font(style.fontFamily);
+    font.setPixelSize(qMax(int(std::ceil(style.fontSize)), 1));
+    QFontMetricsF metrics(font);
+
+    PDFReal maxLineWidth = 0.0;
+    for (const QString& line : text.split('\n'))
+    {
+        maxLineWidth = qMax(maxLineWidth, metrics.horizontalAdvance(line.isEmpty() ? QStringLiteral(" ") : line));
+    }
+
+    const PDFReal availableWidth = qMax<PDFReal>(72.0, mediaBox.right() - topLeft.x() - margin / 2.0);
+    const PDFReal width = qMin(maxLineWidth + 2.0 * padding, availableWidth);
+    const QRectF textRectangle = metrics.boundingRect(QRectF(0.0, 0.0, qMax<PDFReal>(width - 2.0 * padding, 1.0), 1000000.0), int(Qt::TextWordWrap | Qt::AlignLeft | Qt::AlignTop), text);
+    const PDFReal height = textRectangle.height() + 2.0 * padding;
+
+    QRectF rectangle(topLeft.x(), topLeft.y() - height, width, height);
+    if (mediaBox.isValid())
+    {
+        if (rectangle.top() < mediaBox.top())
+        {
+            rectangle.moveTop(mediaBox.top());
+        }
+        if (rectangle.right() > mediaBox.right())
+        {
+            rectangle.moveRight(mediaBox.right());
+        }
+    }
+
+    PDFDocumentModifier modifier(m_document);
+    modifier.markAnnotationsChanged();
+    const PDFObjectReference annotation = modifier.getBuilder()->createAnnotationFreeText(page->getPageReference(), rectangle, PDFAuthorSettings::getAuthorName(), QString(), text, style, false, padding);
+
+    if (annotation.isValid() && modifier.finalize())
+    {
+        Q_EMIT documentModified(PDFModifiedDocument(modifier.getDocument(), nullptr, modifier.getFlags()));
+        setSelectedAnnotations({ annotation });
+    }
+}
+
+void PDFWidgetAnnotationManager::paste(std::optional<QPoint> widgetPosition)
+{
+    if (canPasteAnnotations())
+    {
+        pasteAnnotations(widgetPosition);
+    }
+    else if (canPasteText())
+    {
+        pasteText(widgetPosition);
     }
 }
 

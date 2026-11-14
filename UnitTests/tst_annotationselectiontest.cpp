@@ -127,6 +127,7 @@ private slots:
     void replyIsWrittenInPopup();
     void doubleClickEditsAnnotation();
     void replyMenuEntryOpensPopup();
+    void pastedTextBecomesInlineText();
     void attachedFileIsReplaced();
     void pointSnapsToOtherAnnotation();
     void alignAndDistribute();
@@ -2694,6 +2695,47 @@ void AnnotationSelectionTest::replyMenuEntryOpensPopup()
     const std::vector<PDFObjectReference> replies = PDFAnnotationManipulator::getReplies(&fixture.document->getStorage(), page, square);
     QCOMPARE(replies.size(), size_t(1));
     QCOMPARE(fixture.contents(replies.front()), QString("Agreed."));
+}
+
+void AnnotationSelectionTest::pastedTextBecomesInlineText()
+{
+    PDFDocumentBuilder builder;
+    const PDFObjectReference page = builder.appendPage(QRectF(0, 0, 300, 300));
+    const PDFObjectReference square = builder.createAnnotationSquare(page, QRectF(50, 50, 60, 40), 1.0, Qt::yellow, Qt::black, "Title", "Subject", "Contents");
+    SelectionFixture fixture(builder.build());
+    Q_UNUSED(page);
+
+    // Text in the clipboard is pasted as an inline text, its top left corner is at the position
+    QApplication::clipboard()->setText("First line\nSecond line\n");
+    QVERIFY(!fixture.annotations.canPasteAnnotations());
+    QVERIFY(fixture.annotations.canPasteText());
+    fixture.annotations.paste(fixture.device(QPointF(100, 250)));
+    QCOMPARE(fixture.modificationCount, 1);
+
+    const std::vector<PDFObjectReference> annotations = fixture.pageAnnotations();
+    QCOMPARE(annotations.size(), size_t(2));
+    const PDFObjectReference freeText = annotations.back();
+    QVERIFY(freeText != square);
+    QCOMPARE(fixture.contents(freeText), QString("First line\nSecond line"));
+    QVERIFY(fixture.annotations.isAnnotationSelected(freeText));
+
+    const PDFAnnotationPtr parsedAnnotation = PDFAnnotation::parse(&fixture.document->getStorage(), freeText);
+    QCOMPARE(parsedAnnotation->getType(), AnnotationType::FreeText);
+    const QRectF rectangle = parsedAnnotation->getRectangle().normalized();
+    QVERIFY(std::abs(rectangle.left() - 100.0) < 0.5);
+    QVERIFY(std::abs(rectangle.bottom() - 250.0) < 0.5);
+    QVERIFY(rectangle.height() > 10.0);
+    QVERIFY(rectangle.right() <= 300.0);
+
+    // Copied annotations are pasted as annotations, not as a text
+    fixture.annotations.setSelectedAnnotations({ square });
+    fixture.annotations.copySelectedAnnotations();
+    QVERIFY(fixture.annotations.canPasteAnnotations());
+    QVERIFY(!fixture.annotations.canPasteText());
+
+    // Empty text is not pasted
+    QApplication::clipboard()->setText("  \n ");
+    QVERIFY(!fixture.annotations.canPaste());
 }
 
 void AnnotationSelectionTest::attachedFileIsReplaced()
