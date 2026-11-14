@@ -638,12 +638,19 @@ void PDFEditorMainWindow::initializePageActions()
 
 void PDFEditorMainWindow::initializeHiddenActions()
 {
-    const QList<QAction*> hiddenActions = {
+    QList<QAction*> hiddenActions = {
         ui->actionRecognizeText,
         ui->actionBatchRecognizeText,
         ui->actionManageOCRLanguages,
         ui->actionScreenshot,
+        ui->menuStamp->menuAction(),
     };
+
+    // The stamp actions are hidden too, so they are not offered by the quick search
+    if (QActionGroup* stampGroup = m_actionManager->getActionGroup(PDFActionManager::CreateStampGroup))
+    {
+        hiddenActions.append(stampGroup->actions());
+    }
 
     for (QAction* action : hiddenActions)
     {
