@@ -787,7 +787,12 @@ private:
     void requestRepaint();
 
     void onShowPopupAnnotation();
+    void onReplyAnnotation();
     void onCopyAnnotation();
+
+    /// Shows the popup window of the editable annotation; with \p focusReply,
+    /// the text field for a reply gets the focus
+    void showPopupOfEditableAnnotation(bool focusReply);
     void onEditAnnotation();
     void onEditGeometry();
     void onDeleteAnnotation();

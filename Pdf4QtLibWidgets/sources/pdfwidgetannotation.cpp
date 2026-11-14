@@ -51,6 +51,7 @@
 #include <QGroupBox>
 #include <QScrollArea>
 #include <QTextEdit>
+#include <QTimer>
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QStyleOptionButton>
@@ -2345,6 +2346,10 @@ void PDFWidgetAnnotationManager::showUnselectableAnnotationMenu(const PageAnnota
     {
         QAction* showPopupAction = menu.addAction(tr("Show Popup Window"));
         connect(showPopupAction, &QAction::triggered, this, &PDFWidgetAnnotationManager::onShowPopupAnnotation);
+
+        QAction* replyAction = menu.addAction(tr("Reply..."));
+        replyAction->setEnabled(isModificationAllowed());
+        connect(replyAction, &QAction::triggered, this, &PDFWidgetAnnotationManager::onReplyAnnotation);
     }
 
     QAction* editAction = menu.addAction(tr("Edit..."));
@@ -2410,6 +2415,13 @@ void PDFWidgetAnnotationManager::showSelectionMenu(QPoint globalPosition, std::o
         {
             QAction* showPopupAction = menu.addAction(tr("Show Popup Window"));
             connect(showPopupAction, &QAction::triggered, this, &PDFWidgetAnnotationManager::onShowPopupAnnotation);
+
+            if (!singleAnnotation->annotation->isReplyTo())
+            {
+                QAction* replyAction = menu.addAction(tr("Reply..."));
+                replyAction->setEnabled(isModificationAllowed());
+                connect(replyAction, &QAction::triggered, this, &PDFWidgetAnnotationManager::onReplyAnnotation);
+            }
         }
 
         QAction* editAction = menu.addAction(tr("Edit..."));
@@ -2764,6 +2776,23 @@ void PDFWidgetAnnotationManager::mouseDoubleClickEvent(QWidget* widget, QMouseEv
             if (!markupAnnotation)
             {
                 continue;
+            }
+
+            // inkpage: a double click edits the annotation (as F2 or the Edit... entry of the
+            // menu); the popup window with the replies is opened by the Reply... entry of the
+            // context menu. A document, which cannot be modified, still shows the popup window.
+            if (isModificationAllowed() && isAnnotationSelectable(pageAnnotation))
+            {
+                const PDFObjectReference annotationReference = pageAnnotation.annotation->getSelfReference();
+                m_selection = { SelectedAnnotation{ annotationReference, snapshotItem.pageIndex } };
+                Q_EMIT selectionChanged();
+                requestRepaint();
+
+                m_editableAnnotation = annotationReference;
+                m_editableAnnotationPage = getPageReference(snapshotItem.pageIndex, pageAnnotation);
+                event->accept();
+                onEditAnnotation();
+                return;
             }
 
             QDialog* dialog = createDialogForMarkupAnnotations(pdfWidget, pageAnnotation, pageAnnotations);
@@ -4903,6 +4932,16 @@ const PDFAction* PDFWidgetAnnotationManager::getLinkActionAtPosition(QPoint widg
 
 void PDFWidgetAnnotationManager::onShowPopupAnnotation()
 {
+    showPopupOfEditableAnnotation(false);
+}
+
+void PDFWidgetAnnotationManager::onReplyAnnotation()
+{
+    showPopupOfEditableAnnotation(true);
+}
+
+void PDFWidgetAnnotationManager::showPopupOfEditableAnnotation(bool focusReply)
+{
     PDFWidgetSnapshot snapshot = m_proxy->getSnapshot();
     for (const PDFWidgetSnapshot::SnapshotItem& snapshotItem : snapshot.items)
     {
@@ -4919,6 +4958,14 @@ void PDFWidgetAnnotationManager::onShowPopupAnnotation()
             {
                 QDialog* dialog = createDialogForMarkupAnnotations(m_proxy->getWidget(), pageAnnotation, pageAnnotations);
                 dialog->move(m_editableAnnotationGlobalPosition);
+                if (focusReply)
+                {
+                    if (QTextEdit* replyEdit = dialog->findChild<QTextEdit*>("replyEdit"))
+                    {
+                        // The focus is set, when the dialog is shown
+                        QTimer::singleShot(0, replyEdit, [replyEdit]() { replyEdit->setFocus(Qt::OtherFocusReason); });
+                    }
+                }
                 dialog->exec();
                 return;
             }

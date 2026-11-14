@@ -125,6 +125,8 @@ private slots:
     void inkIsErasedAndItsPointsAreEdited();
     void handlesOfLongMarkupAreNearCursor();
     void replyIsWrittenInPopup();
+    void doubleClickEditsAnnotation();
+    void replyMenuEntryOpensPopup();
     void attachedFileIsReplaced();
     void pointSnapsToOtherAnnotation();
     void alignAndDistribute();
@@ -2626,6 +2628,72 @@ void AnnotationSelectionTest::replyIsWrittenInPopup()
     QVERIFY(!fixture.annotations.addAnnotationReply(PDFObjectReference(), "Text"));
     QVERIFY(fixture.annotations.addAnnotationReply(replies.front(), "Why?"));
     QCOMPARE(PDFAnnotationManipulator::getReplies(&fixture.document->getStorage(), page, square).size(), size_t(2));
+}
+
+void AnnotationSelectionTest::doubleClickEditsAnnotation()
+{
+    PDFDocumentBuilder builder;
+    const PDFObjectReference page = builder.appendPage(QRectF(0, 0, 300, 300));
+    const PDFObjectReference square = builder.createAnnotationSquare(page, QRectF(50, 50, 60, 40), 1.0, Qt::yellow, Qt::black, "Title", "Subject", "Contents");
+    SelectionFixture fixture(builder.build());
+    Q_UNUSED(page);
+
+    // The double click opens the editor of the annotation (not the popup window with the replies)
+    QString dialogClass;
+    bool hasReplyEdit = true;
+    QTimer timer;
+    QObject::connect(&timer, &QTimer::timeout, [&]()
+    {
+        if (QDialog* dialog = qobject_cast<QDialog*>(QApplication::activeModalWidget()))
+        {
+            dialogClass = dialog->metaObject()->className();
+            hasReplyEdit = dialog->findChild<QTextEdit*>("replyEdit") != nullptr;
+            dialog->reject();
+        }
+    });
+    timer.start(20);
+
+    const QPoint position = fixture.device(QPointF(80, 70));
+    QMouseEvent event(QEvent::MouseButtonDblClick, position, fixture.widget.mapToGlobal(position), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+    fixture.annotations.mouseDoubleClickEvent(&fixture.widget, &event);
+    timer.stop();
+
+    QCOMPARE(dialogClass, QString("pdf::PDFEditObjectDialog"));
+    QVERIFY(!hasReplyEdit);
+    QVERIFY(fixture.annotations.isAnnotationSelected(square));
+    QCOMPARE(fixture.modificationCount, 0);
+}
+
+void AnnotationSelectionTest::replyMenuEntryOpensPopup()
+{
+    PDFDocumentBuilder builder;
+    const PDFObjectReference page = builder.appendPage(QRectF(0, 0, 300, 300));
+    const PDFObjectReference square = builder.createAnnotationSquare(page, QRectF(50, 50, 60, 40), 1.0, Qt::yellow, Qt::black, "Title", "Subject", "Contents");
+    SelectionFixture fixture(builder.build());
+    fixture.annotations.setSelectedAnnotations({ square });
+
+    auto showMenu = [&]() { fixture.press(fixture.device(QPointF(80, 70)), Qt::NoModifier, Qt::RightButton); };
+    QVERIFY(SelectionFixture::menuActions(showMenu).count("Reply..."));
+
+    // The Reply... entry opens the popup window with the field for the reply
+    QVERIFY(SelectionFixture::triggerMenuAction(showMenu, "Reply...", [](QDialog* dialog)
+    {
+        QTextEdit* replyEdit = dialog->findChild<QTextEdit*>("replyEdit");
+        QPushButton* replyButton = dialog->findChild<QPushButton*>("replyButton");
+        if (!replyEdit || !replyButton)
+        {
+            dialog->reject();
+            return;
+        }
+
+        replyEdit->setPlainText("Agreed.");
+        replyButton->click();
+    }));
+    QCOMPARE(fixture.modificationCount, 1);
+
+    const std::vector<PDFObjectReference> replies = PDFAnnotationManipulator::getReplies(&fixture.document->getStorage(), page, square);
+    QCOMPARE(replies.size(), size_t(1));
+    QCOMPARE(fixture.contents(replies.front()), QString("Agreed."));
 }
 
 void AnnotationSelectionTest::attachedFileIsReplaced()
