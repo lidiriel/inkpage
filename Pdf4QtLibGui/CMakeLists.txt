@@ -41,8 +41,6 @@ add_library(Pdf4QtLibGui SHARED
     pdfrecentfilemanager.h
     pdfrendertoimagesdialog.cpp
     pdfrendertoimagesdialog.h
-    pdfsendmail.cpp
-    pdfsendmail.h
     pdfsidebarwidget.cpp
     pdfsidebarwidget.h
     pdfundoredomanager.cpp

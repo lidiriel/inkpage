@@ -121,6 +121,10 @@ private:
     /// Creates the actions, which place the toolbars at the top or at the right side
     void initializeToolBarPositionActions();
 
+    /// Hides the entries, which are not offered by inkpage. The actions and their
+    /// code are kept, they are only removed from the menus, toolbars and quick search.
+    void initializeHiddenActions();
+
     /// Checks the toolbar position action corresponding to the area of the standard toolbar
     void updateToolBarPositionActions();
 

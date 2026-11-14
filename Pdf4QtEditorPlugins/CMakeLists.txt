@@ -23,11 +23,11 @@
 add_subdirectory(ObjectInspectorPlugin)
 add_subdirectory(SignaturePlugin)
 add_subdirectory(EditorPlugin)
-add_subdirectory(ScannerPlugin)
 
 # Plugins kept in the sources but not built by default
 if(INKPAGE_BUILD_DISABLED_PLUGINS)
     add_subdirectory(AudioBookPlugin)
     add_subdirectory(RedactPlugin)
+    add_subdirectory(ScannerPlugin)
     add_subdirectory(SoftProofingPlugin)
 endif()

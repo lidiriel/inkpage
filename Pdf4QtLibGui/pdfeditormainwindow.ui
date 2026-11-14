@@ -34,7 +34,6 @@
     <addaction name="actionSave"/>
     <addaction name="actionSave_As"/>
     <addaction name="separator"/>
-    <addaction name="actionSend_by_E_Mail"/>
     <addaction name="actionPrint"/>
     <addaction name="actionRender_to_Images"/>
     <addaction name="separator"/>
@@ -135,7 +134,6 @@
      <string>&amp;Help</string>
     </property>
     <addaction name="actionGetSource"/>
-    <addaction name="actionBecomeASponsor"/>
     <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuDeveloper">
@@ -509,15 +507,6 @@
    </property>
    <property name="text">
     <string>Prope&amp;rties...</string>
-   </property>
-  </action>
-  <action name="actionSend_by_E_Mail">
-   <property name="icon">
-    <iconset resource="pdf4qtlibgui.qrc">
-     <normaloff>:/resources/send-mail.svg</normaloff>:/resources/send-mail.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Send by &amp;E-Mail...</string>
    </property>
   </action>
   <action name="actionShow_Text_Blocks">
@@ -1233,15 +1222,6 @@
    </property>
    <property name="statusTip">
     <string>Automatically reloads the document if a change made by an external program is detected.</string>
-   </property>
-  </action>
-  <action name="actionBecomeASponsor">
-   <property name="icon">
-    <iconset resource="pdf4qtlibgui.qrc">
-     <normaloff>:/resources/wallet.svg</normaloff>:/resources/wallet.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Become a &amp;Sponsor</string>
    </property>
   </action>
   <action name="actionCreateBitonalDocument">

@@ -113,9 +113,7 @@ public:
         ClearRecentFileHistory,
         CertificateManager,
         GetSource,
-        BecomeSponsor,
         About,
-        SendByMail,
         RenderToImages,
         Optimize,
         OptimizeImages,
@@ -386,7 +384,6 @@ private:
     void onActionRenderingOptionTriggered(bool checked);
     void onActionPropertiesTriggered();
     void onActionAboutTriggered();
-    void onActionSendByEMailTriggered();
     void onActionRenderToImagesTriggered();
     void onActionOptimizeTriggered();
     void onActionOptimizeImagesTriggered();
@@ -426,7 +423,6 @@ private:
     void onActionOpenTriggered();
     void onActionCloseTriggered();
     void onActionGetSource();
-    void onActionBecomeSponsor();
     void onActionAutomaticDocumentRefresh();
     void onActionBookmarkPage();
     void onActionBookmarkGoToNext();

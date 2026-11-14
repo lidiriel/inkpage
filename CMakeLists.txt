@@ -24,7 +24,7 @@ cmake_minimum_required(VERSION 3.16)
 
 # inkpage - a simple PDF editor for Linux, forked from PDF4QT 1.7.0.0.
 # The PDF engine keeps its PDF4QT version and its PDF4QT_* option names.
-set(INKPAGE_VERSION 0.1.0)
+set(INKPAGE_VERSION 0.2.0)
 set(PDF4QT_VERSION 1.7.0.0)
 message(STATUS "Build type - CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 
@@ -43,7 +43,7 @@ endif()
 
 option(PDF4QT_BUILD_ONLY_CORE_LIBRARY "Build only core library" OFF)
 option(INKPAGE_BUILD_DEV_TOOLS "Build the developer tools (CodeGenerator)" OFF)
-option(INKPAGE_BUILD_DISABLED_PLUGINS "Build the deactivated plugins (AudioBook, Redact, SoftProofing)" OFF)
+option(INKPAGE_BUILD_DISABLED_PLUGINS "Build the deactivated plugins (AudioBook, Redact, Scanner, SoftProofing)" OFF)
 option(PDF4QT_BUILD_TESTS "Build UnitTests" ON)
 option(PDF4QT_ENABLE_COVERAGE "Instrument the code for the source based code coverage of clang (llvm-cov)" OFF)
 option(PDF4QT_ENABLE_OCR "Build the OCR support with the Tesseract engine (requires Tesseract and Leptonica)" ON)

@@ -53,7 +53,6 @@
 #include "pdfaboutdialog.h"
 #include "pdfrenderingerrorswidget.h"
 #include "pdfpagegeometrydialog.h"
-#include "pdfsendmail.h"
 #include "pdfrecentfilemanager.h"
 #include "pdfencryptionsettingsdialog.h"
 #include "pdfwidgetannotation.h"
@@ -545,10 +544,6 @@ void PDFProgramController::initialize(Features features,
     {
         connect(action, &QAction::triggered, this, &PDFProgramController::onActionAboutTriggered);
     }
-    if (QAction* action = m_actionManager->getAction(PDFActionManager::SendByMail))
-    {
-        connect(action, &QAction::triggered, this, &PDFProgramController::onActionSendByEMailTriggered);
-    }
     if (QAction* action = m_actionManager->getAction(PDFActionManager::RenderToImages))
     {
         connect(action, &QAction::triggered, this, &PDFProgramController::onActionRenderToImagesTriggered);
@@ -710,10 +705,6 @@ void PDFProgramController::initialize(Features features,
     if (QAction* action = m_actionManager->getAction(PDFActionManager::GetSource))
     {
         connect(action, &QAction::triggered, this, &PDFProgramController::onActionGetSource);
-    }
-    if (QAction* action = m_actionManager->getAction(PDFActionManager::BecomeSponsor))
-    {
-        connect(action, &QAction::triggered, this, &PDFProgramController::onActionBecomeSponsor);
     }
     if (QAction* action = m_actionManager->getAction(PDFActionManager::AutomaticDocumentRefresh))
     {
@@ -1531,22 +1522,6 @@ void PDFProgramController::onActionAboutTriggered()
     dialog.exec();
 }
 
-void PDFProgramController::onActionSendByEMailTriggered()
-{
-    Q_ASSERT(m_pdfDocument);
-
-    QString subject = m_pdfDocument->getInfo()->title;
-    if (subject.isEmpty())
-    {
-        subject = m_fileInfo.fileName;
-    }
-
-    if (!PDFSendMail::sendMail(m_mainWindow, subject, m_fileInfo.originalFileName))
-    {
-        QMessageBox::critical(m_mainWindow, tr("Error"), tr("Error while starting email client occured!"));
-    }
-}
-
 void PDFProgramController::onActionRenderToImagesTriggered()
 {
     PDFRenderToImagesDialog dialog(m_pdfDocument.data(), m_pdfWidget->getDrawWidgetProxy(), m_progress, m_mainWindow);
@@ -2192,7 +2167,6 @@ void PDFProgramController::updateActionsAvailability()
     m_actionManager->setEnabled(PDFActionManager::Save, hasValidDocument);
     m_actionManager->setEnabled(PDFActionManager::SaveAs, hasValidDocument);
     m_actionManager->setEnabled(PDFActionManager::Properties, hasDocument);
-    m_actionManager->setEnabled(PDFActionManager::SendByMail, hasDocument);
     m_actionManager->setEnabled(PDFActionManager::FullscreenMode, hasValidDocument);
     m_mainWindow->setEnabled(!isBusy);
     updateUndoRedoActions();
@@ -3005,12 +2979,7 @@ void PDFProgramController::onActionCloseTriggered()
 
 void PDFProgramController::onActionGetSource()
 {
-    QDesktopServices::openUrl(QUrl("https://github.com/JakubMelka/PDF4QT"));
-}
-
-void PDFProgramController::onActionBecomeSponsor()
-{
-    QDesktopServices::openUrl(QUrl("https://github.com/sponsors/JakubMelka"));
+    QDesktopServices::openUrl(QUrl("https://github.com/lidiriel/inkpage"));
 }
 
 void PDFProgramController::onActionAutomaticDocumentRefresh()

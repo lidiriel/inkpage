@@ -170,7 +170,7 @@ void PDFActionComboBox::updateAction(QAction* action)
     }
 
     int actionIndex = findAction(action);
-    if (action->isEnabled())
+    if (action->isEnabled() && action->isVisible())
     {
         if (actionIndex == -1)
         {

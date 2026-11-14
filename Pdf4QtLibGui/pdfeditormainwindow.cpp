@@ -39,7 +39,6 @@
 #include "pdffont.h"
 #include "pdfitemmodels.h"
 #include "pdfutils.h"
-#include "pdfsendmail.h"
 #include "pdfexecutionpolicy.h"
 #include "pdfwidgetutils.h"
 #include "pdfdocumentwriter.h"
@@ -196,9 +195,7 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     m_actionManager->setAction(PDFActionManager::ClearRecentFileHistory, ui->actionClearRecentFileHistory);
     m_actionManager->setAction(PDFActionManager::CertificateManager, ui->actionCertificateManager);
     m_actionManager->setAction(PDFActionManager::GetSource, ui->actionGetSource);
-    m_actionManager->setAction(PDFActionManager::BecomeSponsor, ui->actionBecomeASponsor);
     m_actionManager->setAction(PDFActionManager::About, ui->actionAbout);
-    m_actionManager->setAction(PDFActionManager::SendByMail, ui->actionSend_by_E_Mail);
     m_actionManager->setAction(PDFActionManager::RenderToImages, ui->actionRender_to_Images);
     m_actionManager->setAction(PDFActionManager::Optimize, ui->actionOptimize);
     m_actionManager->setAction(PDFActionManager::OptimizeImages, ui->actionOptimizeImages);
@@ -345,7 +342,11 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     toggleAdvancedFindAction->setText(tr("Ad&vanced Find..."));
     toggleAdvancedFindAction->setShortcut(QKeySequence("Ctrl+Shift+F"));
     toggleAdvancedFindAction->setIcon(QIcon(":/resources/find-advanced.svg"));
-    ui->menuEdit->insertAction(nullptr, toggleAdvancedFindAction);
+    // inkpage: the advanced find is placed right after Find Next
+    const QList<QAction*> editActions = ui->menuEdit->actions();
+    const qsizetype findNextIndex = editActions.indexOf(ui->actionFindNext);
+    QAction* actionAfterFindNext = (findNextIndex >= 0 && findNextIndex + 1 < editActions.size()) ? editActions[findNextIndex + 1] : nullptr;
+    ui->menuEdit->insertAction(actionAfterFindNext, toggleAdvancedFindAction);
     m_actionManager->addAdditionalAction(m_advancedFindDockWidget->toggleViewAction());
 
     ui->menuView->addSeparator();
@@ -354,6 +355,7 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     m_actionManager->addAdditionalAction(m_sidebarDockWidget->toggleViewAction());
 
     initializeToolBarPositionActions();
+    initializeHiddenActions();
 
     connect(m_progress, &pdf::PDFProgress::progressStarted, this, &PDFEditorMainWindow::onProgressStarted);
     connect(m_progress, &pdf::PDFProgress::progressStep, this, &PDFEditorMainWindow::onProgressStep);
@@ -632,6 +634,21 @@ void PDFEditorMainWindow::initializePageActions()
 
     addToolBarBreak(Qt::TopToolBarArea);
     addToolBar(Qt::TopToolBarArea, pagesToolBar);
+}
+
+void PDFEditorMainWindow::initializeHiddenActions()
+{
+    const QList<QAction*> hiddenActions = {
+        ui->actionRecognizeText,
+        ui->actionBatchRecognizeText,
+        ui->actionManageOCRLanguages,
+        ui->actionScreenshot,
+    };
+
+    for (QAction* action : hiddenActions)
+    {
+        action->setVisible(false);
+    }
 }
 
 void PDFEditorMainWindow::initializeToolBarPositionActions()

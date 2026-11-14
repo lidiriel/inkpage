@@ -23,7 +23,8 @@ goal of a lighter editor for Linux only:
   Windows packaging (Wix installer) were removed.
 - The text-to-speech player (Qt TextToSpeech) was removed.
 - The Dimensions and Output Preview plugins were removed; the Audio Book,
-  Redact and Soft Proofing plugins are kept in the sources but not built.
+  Redact, Scanner and Soft Proofing plugins are kept in the sources but not
+  built.
 - The build uses the distribution packages instead of vcpkg.
 - New features: a page management toolbar (blank pages, duplicate, delete,
   move, page backgrounds) and toolbars that can be moved from the top to the
@@ -201,11 +202,10 @@ The application is `build/bin/inkpage`, the plugins are in
 | `PDF4QT_BUILD_TESTS`         | Build the unit tests, ON by default                      |
 | `PDF4QT_ENABLE_OCR`          | Build the OCR feature (Tesseract), set it to OFF for now |
 | `INKPAGE_BUILD_DEV_TOOLS`    | Build the developer tools (CodeGenerator), OFF by default|
-| `INKPAGE_BUILD_DISABLED_PLUGINS` | Build the deactivated plugins (AudioBook, Redact, SoftProofing), OFF by default |
+| `INKPAGE_BUILD_DISABLED_PLUGINS` | Build the deactivated plugins (AudioBook, Redact, Scanner, SoftProofing), OFF by default |
 
 ## 7. DISCLAIMER
 
 inkpage is a personal project built on the work of Jakub Melka, who wrote
-PDF4QT in his free time. Bugs in inkpage should be reported to inkpage, not
-to the PDF4QT project. If you find PDF4QT useful, consider supporting its
-author: [:heart: Sponsor](https://github.com/sponsors/JakubMelka).
+PDF4QT in his free time. 
+*Bugs in inkpage should be reported to inkpage, not to the PDF4QT project*.
