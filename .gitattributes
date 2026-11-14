@@ -1,6 +1,8 @@
 * text=auto eol=crlf
 *.desktop text eol=lf
 *.sh text eol=lf
+# Debian packaging files (changelog, copyright, man page) are read by Debian tools
+packaging/** text eol=lf
 
 # Binary data must not be converted by the text filter
 *.traineddata binary
