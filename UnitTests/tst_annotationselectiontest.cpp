@@ -131,6 +131,7 @@ private slots:
     void pastedTextBecomesInlineText();
     void imageAnnotationKeepsItsAppearance();
     void pastedImageBecomesImageAnnotation();
+    void colorOfInlineTextChangesItsText();
     void attachedFileIsReplaced();
     void pointSnapsToOtherAnnotation();
     void alignAndDistribute();
@@ -2829,6 +2830,30 @@ void AnnotationSelectionTest::pastedImageBecomesImageAnnotation()
     const QRectF largeRectangle = PDFAnnotation::parse(&fixture.document->getStorage(), fixture.pageAnnotations().back())->getRectangle().normalized();
     QVERIFY(largeRectangle.width() <= 300.0 - 72.0 + 0.5);
     QVERIFY(std::abs(largeRectangle.width() / largeRectangle.height() - 2.0) < 0.01);
+}
+
+void AnnotationSelectionTest::colorOfInlineTextChangesItsText()
+{
+    PDFDocumentBuilder builder;
+    const PDFObjectReference page = builder.appendPage(QRectF(0, 0, 300, 300));
+    PDFFreeTextStyle style;
+    style.fontFamily = "Courier";
+    style.fontSize = 14.0;
+    style.textColor = Qt::black;
+    const PDFObjectReference freeText = builder.createAnnotationFreeText(page, QRectF(50, 50, 150, 40), "Title", QString(), "Some text", style, false);
+    SelectionFixture fixture(builder.build());
+
+    // The color of the selected inline text is the color of its text, the font is kept
+    fixture.annotations.setSelectedAnnotations({ freeText });
+    fixture.annotations.setSelectedAnnotationsColor(Qt::red);
+    QCOMPARE(fixture.modificationCount, 1);
+
+    const PDFDictionary* dictionary = fixture.document->getDictionaryFromObject(fixture.document->getObjectByReference(freeText));
+    const PDFAnnotationDefaultAppearance appearance = PDFDocumentBuilder::getDefaultFreeTextAppearance(dictionary);
+    QCOMPARE(appearance.getFontColor().rgb(), QColor(Qt::red).rgb());
+    QCOMPARE(appearance.getFontSize(), 14.0);
+    QCOMPARE(PDFDocumentBuilder::decodeFreeTextFontName(appearance.getFontName()), QString("Courier"));
+    QCOMPARE(fixture.contents(freeText), QString("Some text"));
 }
 
 void AnnotationSelectionTest::attachedFileIsReplaced()

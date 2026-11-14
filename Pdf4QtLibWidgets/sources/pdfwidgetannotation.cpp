@@ -503,9 +503,29 @@ void PDFWidgetAnnotationManager::setSelectedAnnotationsColor(const QColor& color
 
         PDFObjectFactory factory;
         factory.beginDictionary();
-        factory.beginDictionaryItem("C");
-        factory << WrapAnnotationColor(color);
-        factory.endDictionaryItem();
+        if (pageAnnotation.annotation->getType() == AnnotationType::FreeText)
+        {
+            // inkpage: the color of an inline text is the color of its text (default
+            // appearance), its font and its size are kept
+            const PDFObjectStorage* storage = builder->getStorage();
+            const PDFDictionary* dictionary = storage->getDictionaryFromObject(storage->getObjectByReference(annotation));
+            const PDFAnnotationDefaultAppearance appearance = PDFDocumentBuilder::getDefaultFreeTextAppearance(dictionary);
+
+            PDFFreeTextStyle style;
+            style.fontFamily = PDFDocumentBuilder::decodeFreeTextFontName(appearance.getFontName());
+            style.fontSize = appearance.getFontSize() > 0.0 ? appearance.getFontSize() : style.fontSize;
+            style.textColor = color;
+
+            factory.beginDictionaryItem("DA");
+            factory << WrapString(PDFDocumentBuilder::createFreeTextDefaultAppearance(style));
+            factory.endDictionaryItem();
+        }
+        else
+        {
+            factory.beginDictionaryItem("C");
+            factory << WrapAnnotationColor(color);
+            factory.endDictionaryItem();
+        }
         factory.endDictionary();
         builder->mergeTo(annotation, factory.takeObject());
         builder->updateAnnotationAppearanceStreams(annotation);
