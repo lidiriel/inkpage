@@ -155,6 +155,8 @@ private:
     void onBookmarkActivated(int index, PDFBookmarkManager::Bookmark bookmark);
     void onBookmarsCurrentIndexChanged(const QModelIndex& current, const QModelIndex& previous);
     void onBookmarkClicked(const QModelIndex& index);
+    void onBookmarksContextMenuRequested(const QPoint& pos);
+    void onBookmarkActionDelete();
     void onNotesItemClicked(const QModelIndex& index);
     void onNotesSelectionChanged();
     void onAnnotationSelectionChanged();
@@ -245,6 +247,7 @@ private:
     std::vector<std::pair<pdf::PDFObjectReference, pdf::PDFInteger>> m_markupAnnotations;
     Page m_currentPage = Invalid;
     bool m_bookmarkChangeInProgress = false;
+    QAction* m_bookmarkActionDelete = nullptr;
     bool m_notesSelectionChangeInProgress = false;
 
     // Outline item actions (valid only when outline editing is enabled)

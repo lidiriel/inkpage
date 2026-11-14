@@ -42,6 +42,9 @@
 #include <QBuffer>
 #include <QTreeView>
 #include <QItemSelectionModel>
+#include <QListView>
+#include <QMenu>
+#include <QTimer>
 
 #include <array>
 #include <vector>
@@ -73,6 +76,7 @@ private slots:
     void undoRedoOfGeometry();
     void sidebarSelectionIsSynchronized();
     void editedDocumentIsSavedAndReopened();
+    void bookmarkIsDeletedByMenuAndKey();
 
 private:
     QTemporaryDir m_settingsDirectory;
@@ -357,6 +361,88 @@ void AnnotationIntegrationTest::sidebarSelectionIsSynchronized()
 
     fixture.undoRedo.doUndo();
     QCOMPARE(getLeaves().size(), size_t(3));
+}
+
+void AnnotationIntegrationTest::bookmarkIsDeletedByMenuAndKey()
+{
+    PDFDocumentBuilder builder;
+    for (int i = 0; i < 4; ++i)
+    {
+        builder.appendPage(QRectF(0, 0, 200, 200));
+    }
+    IntegrationFixture fixture(builder.build());
+    fixture.bookmarks.setGenerateBookmarksAutomatically(false);
+    fixture.bookmarks.toggleBookmark(0);
+    fixture.bookmarks.toggleBookmark(1);
+    fixture.bookmarks.toggleBookmark(2);
+    fixture.bookmarks.toggleBookmark(3);
+    QCOMPARE(fixture.bookmarks.getBookmarkCount(), 4);
+
+    auto bookmarkPages = [&fixture]()
+    {
+        std::vector<PDFInteger> pages;
+        for (int i = 0; i < fixture.bookmarks.getBookmarkCount(); ++i)
+        {
+            pages.push_back(fixture.bookmarks.getBookmark(i).pageIndex);
+        }
+        return pages;
+    };
+
+    QListView* view = fixture.sidebar->findChild<QListView*>("bookmarksView");
+    QVERIFY(view);
+    QAction* deleteAction = fixture.sidebar->findChild<QAction*>("actionBookmarkDelete");
+    QVERIFY(deleteAction);
+    QCOMPARE(deleteAction->shortcut(), QKeySequence(QKeySequence::Delete));
+
+    // Context menu of the second bookmark: it has the Delete entry, which deletes it
+    fixture.sidebar->selectPage(pdfviewer::PDFSidebarWidget::Bookmarks);
+    fixture.sidebar->resize(300, 600);
+    fixture.sidebar->show();
+    QVERIFY(QTest::qWaitForWindowExposed(fixture.sidebar.get()));
+    const QPoint position = view->visualRect(view->model()->index(1, 0)).center();
+    QStringList menuEntries;
+    QTimer timer;
+    QObject::connect(&timer, &QTimer::timeout, [&menuEntries]()
+    {
+        if (QMenu* menu = qobject_cast<QMenu*>(QApplication::activePopupWidget()))
+        {
+            for (QAction* action : menu->actions())
+            {
+                menuEntries << action->text();
+            }
+            menu->actions().front()->trigger();
+            menu->close();
+        }
+    });
+    timer.start(1);
+    Q_EMIT view->customContextMenuRequested(position);
+    timer.stop();
+    QCOMPARE(menuEntries, QStringList{ "Delete Bookmark" });
+    QCOMPARE(bookmarkPages(), (std::vector<PDFInteger>{ 0, 2, 3 }));
+
+    // The next bookmark is the current one, the Delete key deletes it
+    QCOMPARE(view->currentIndex().row(), 1);
+    fixture.sidebar->activateWindow();
+    view->setFocus();
+    QVERIFY(QTest::qWaitForWindowActive(fixture.sidebar.get()));
+    QVERIFY(view->isVisible());
+    QTest::keyClick(view, Qt::Key_Delete);
+    QCOMPARE(bookmarkPages(), (std::vector<PDFInteger>{ 0, 3 }));
+
+    // Deleting the last bookmark selects the previous one
+    view->setCurrentIndex(view->model()->index(1, 0));
+    deleteAction->trigger();
+    QCOMPARE(bookmarkPages(), (std::vector<PDFInteger>{ 0 }));
+    QCOMPARE(view->currentIndex().row(), 0);
+    deleteAction->trigger();
+    QVERIFY(fixture.bookmarks.isEmpty());
+
+    // The Delete key also deletes the current outline item (new object name, so an empty
+    // shortcut stored in the settings by the old version does not replace it)
+    pdfviewer::PDFSidebarWidget editableSidebar(fixture.widget.getDrawWidgetProxy(), nullptr, &fixture.bookmarks, &fixture.settings, true, nullptr);
+    QAction* outlineDelete = editableSidebar.findChild<QAction*>("actionOutlineDeleteItem");
+    QVERIFY(outlineDelete);
+    QCOMPARE(outlineDelete->shortcut(), QKeySequence(QKeySequence::Delete));
 }
 
 void AnnotationIntegrationTest::editedDocumentIsSavedAndReopened()

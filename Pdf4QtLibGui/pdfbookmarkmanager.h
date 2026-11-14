@@ -57,6 +57,11 @@ public:
     int getBookmarkCount() const;
     Bookmark getBookmark(int index) const;
     void toggleBookmark(pdf::PDFInteger pageIndex);
+
+    /// Removes the bookmark (also an automatically generated one, it is generated
+    /// again when a document is opened, or when the automatic generation is turned on)
+    /// \param index Index of the bookmark
+    void removeBookmark(int index);
     void setGenerateBookmarksAutomatically(bool generateBookmarksAutomatically);
 
     void goToNextBookmark();

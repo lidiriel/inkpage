@@ -166,6 +166,16 @@ PDFSidebarWidget::PDFSidebarWidget(pdf::PDFDrawWidgetProxy* proxy,
     connect(ui->bookmarksView->selectionModel(), &QItemSelectionModel::currentChanged, this, &PDFSidebarWidget::onBookmarsCurrentIndexChanged);
     connect(ui->bookmarksView, &QListView::clicked, this, &PDFSidebarWidget::onBookmarkClicked);
 
+    // inkpage: a bookmark is deleted from the context menu or by the Delete key
+    m_bookmarkActionDelete = new QAction(QIcon(":/resources/page-remove.svg"), tr("Delete Bookmark"), this);
+    m_bookmarkActionDelete->setObjectName("actionBookmarkDelete");
+    m_bookmarkActionDelete->setShortcut(QKeySequence::Delete);
+    m_bookmarkActionDelete->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+    ui->bookmarksView->addAction(m_bookmarkActionDelete);
+    connect(m_bookmarkActionDelete, &QAction::triggered, this, &PDFSidebarWidget::onBookmarkActionDelete);
+    ui->bookmarksView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->bookmarksView, &QListView::customContextMenuRequested, this, &PDFSidebarWidget::onBookmarksContextMenuRequested);
+
     // Notes
     m_notesTreeModel = new QStandardItemModel(this);
     m_notesSortProxyTreeModel = new QSortFilterProxyModel(this);
@@ -1124,8 +1134,11 @@ void PDFSidebarWidget::createOutlineActions()
     // shortcuts are persisted by the object name - the old, shortcut-less
     // action would restore an empty shortcut from the existing settings
     m_outlineActionInsert = createAction("actionOutlineNewItem", tr("New Outline Item"), &PDFSidebarWidget::onOutlineActionInsert);
-    m_outlineActionDelete = createAction("actionOutlineDelete", tr("Delete"), &PDFSidebarWidget::onOutlineActionDelete);
+    // inkpage: the object name differs from the old one ("actionOutlineDelete"), so the new
+    // Delete shortcut is not replaced by the empty shortcut stored in the existing settings
+    m_outlineActionDelete = createAction("actionOutlineDeleteItem", tr("Delete"), &PDFSidebarWidget::onOutlineActionDelete);
     m_outlineActionRename = createAction("actionOutlineRename", tr("Rename"), &PDFSidebarWidget::onOutlineActionRename);
+    m_outlineActionDelete->setShortcut(QKeySequence::Delete);
 
     // New item action is also placed into the main window's menu, so it must be
     // triggerable while the document is being read, i.e. when the outline tree
@@ -1886,6 +1899,46 @@ void PDFSidebarWidget::onBookmarsCurrentIndexChanged(const QModelIndex& current,
 
     pdf::PDFTemporaryValueChange<bool> guard(&m_bookmarkChangeInProgress, true);
     m_bookmarkManager->goToBookmark(current.row(), false);
+}
+
+void PDFSidebarWidget::onBookmarksContextMenuRequested(const QPoint& pos)
+{
+    const QModelIndex index = ui->bookmarksView->indexAt(pos);
+    if (!index.isValid())
+    {
+        return;
+    }
+
+    // The menu operates on the clicked bookmark, the view does not go to its page
+    {
+        pdf::PDFTemporaryValueChange<bool> guard(&m_bookmarkChangeInProgress, true);
+        ui->bookmarksView->setCurrentIndex(index);
+    }
+
+    QMenu contextMenu;
+    contextMenu.addAction(m_bookmarkActionDelete);
+    contextMenu.exec(ui->bookmarksView->viewport()->mapToGlobal(pos));
+}
+
+void PDFSidebarWidget::onBookmarkActionDelete()
+{
+    const QModelIndex index = ui->bookmarksView->currentIndex();
+    if (!index.isValid() || !m_bookmarkManager)
+    {
+        return;
+    }
+
+    const int row = index.row();
+    m_bookmarkManager->removeBookmark(row);
+
+    // The next bookmark becomes the current one, so several bookmarks can be deleted
+    // by pressing the Delete key repeatedly (the view does not go to its page)
+    const int count = m_bookmarkItemModel->rowCount(QModelIndex());
+    if (count > 0)
+    {
+        pdf::PDFTemporaryValueChange<bool> guard(&m_bookmarkChangeInProgress, true);
+        ui->bookmarksView->setCurrentIndex(m_bookmarkItemModel->index(qMin(row, count - 1), 0, QModelIndex()));
+    }
 }
 
 void PDFSidebarWidget::onBookmarkClicked(const QModelIndex& index)

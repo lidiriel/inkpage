@@ -205,6 +205,30 @@ void PDFBookmarkManager::toggleBookmark(pdf::PDFInteger pageIndex)
     Q_EMIT bookmarksChanged();
 }
 
+void PDFBookmarkManager::removeBookmark(int index)
+{
+    if (index < 0 || index >= getBookmarkCount())
+    {
+        return;
+    }
+
+    Q_EMIT bookmarksAboutToBeChanged();
+
+    m_bookmarks.bookmarks.erase(std::next(m_bookmarks.bookmarks.begin(), index));
+
+    // The current bookmark keeps pointing to the same bookmark, if it was not removed
+    if (m_currentBookmark > index)
+    {
+        --m_currentBookmark;
+    }
+    else if (m_currentBookmark == index)
+    {
+        m_currentBookmark = -1;
+    }
+
+    Q_EMIT bookmarksChanged();
+}
+
 void PDFBookmarkManager::setGenerateBookmarksAutomatically(bool generateBookmarksAutomatically)
 {
     if (m_generateBookmarksAutomatically != generateBookmarksAutomatically)
