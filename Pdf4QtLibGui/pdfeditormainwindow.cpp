@@ -650,11 +650,32 @@ void PDFEditorMainWindow::initializePageActions()
 
     addToolBarBreak(Qt::TopToolBarArea);
     addToolBar(Qt::TopToolBarArea, pagesToolBar);
+    addToolBar(Qt::TopToolBarArea, createInsertToolBar());
 
-    // Style of the annotations (colors, fill, pen width), it follows the Pages toolbar
+    // Style of the annotations (colors, fill, pen width), it follows the Insert toolbar
     m_styleToolBar = new PDFAnnotationStyleToolBar(this);
     adjustToolbar(m_styleToolBar);
     addToolBar(Qt::TopToolBarArea, m_styleToolBar);
+}
+
+QToolBar* PDFEditorMainWindow::createInsertToolBar()
+{
+    // The annotation tools of the Insert menu (like the tool palette of Xournal++),
+    // the Style toolbar placed after it sets their color and pen width
+    QToolBar* insertToolBar = new QToolBar(tr("Insert"), this);
+    insertToolBar->setObjectName("InsertToolBar");
+    adjustToolbar(insertToolBar);
+    insertToolBar->addAction(ui->actionInlineText);
+    insertToolBar->addAction(ui->actionCreateImage);
+    insertToolBar->addSeparator();
+    insertToolBar->addAction(ui->actionCreateStraightLine);
+    insertToolBar->addAction(ui->actionCreatePolyline);
+    insertToolBar->addAction(ui->actionCreateRectangle);
+    insertToolBar->addAction(ui->actionCreatePolygon);
+    insertToolBar->addAction(ui->actionCreateEllipse);
+    insertToolBar->addSeparator();
+    insertToolBar->addAction(ui->actionCreateFreehandCurve);
+    return insertToolBar;
 }
 
 void PDFEditorMainWindow::initializeHiddenActions()

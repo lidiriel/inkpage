@@ -120,6 +120,9 @@ private:
     /// reordering, backgrounds), the Pages menu and the Pages toolbar
     void initializePageActions();
 
+    /// Creates the toolbar with the annotation tools of the Insert menu
+    QToolBar* createInsertToolBar();
+
     /// Creates the actions, which place the toolbars at the top or at the right side
     void initializeToolBarPositionActions();
 
