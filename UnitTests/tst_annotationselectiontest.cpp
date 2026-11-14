@@ -130,6 +130,7 @@ private slots:
     void replyMenuEntryOpensPopup();
     void pastedTextBecomesInlineText();
     void imageAnnotationKeepsItsAppearance();
+    void pastedImageBecomesImageAnnotation();
     void attachedFileIsReplaced();
     void pointSnapsToOtherAnnotation();
     void alignAndDistribute();
@@ -2785,6 +2786,49 @@ void AnnotationSelectionTest::imageAnnotationKeepsItsAppearance()
     fixture.annotations.setSelectedAnnotationsColor(Qt::blue);
     QCOMPARE(fixture.modificationCount, 1);
     QCOMPARE(fixture.entry(stamp, "AP"), appearance);
+}
+
+void AnnotationSelectionTest::pastedImageBecomesImageAnnotation()
+{
+    PDFDocumentBuilder builder;
+    const PDFObjectReference page = builder.appendPage(QRectF(0, 0, 300, 300));
+    SelectionFixture fixture(builder.build());
+    Q_UNUSED(page);
+
+    // 96 DPI image of 192 x 96 pixels = 144 x 72 points; the image is preferred to the text
+    QImage image(192, 96, QImage::Format_RGB32);
+    image.fill(Qt::green);
+    image.setDotsPerMeterX(qRound(96.0 / 0.0254));
+    image.setDotsPerMeterY(qRound(96.0 / 0.0254));
+    QMimeData* mimeData = new QMimeData();
+    mimeData->setImageData(image);
+    mimeData->setText("Some text");
+    QApplication::clipboard()->setMimeData(mimeData);
+
+    QVERIFY(fixture.annotations.canPasteImage());
+    fixture.annotations.paste(fixture.device(QPointF(50, 250)));
+    QCOMPARE(fixture.modificationCount, 1);
+
+    const std::vector<PDFObjectReference> annotations = fixture.pageAnnotations();
+    QCOMPARE(annotations.size(), size_t(1));
+    QVERIFY(fixture.annotations.isAnnotationSelected(annotations.front()));
+    QCOMPARE(fixture.entry(annotations.front(), "Name").getString(), QByteArray(PDFDocumentBuilder::IMAGE_STAMP_NAME));
+
+    const QRectF rectangle = PDFAnnotation::parse(&fixture.document->getStorage(), annotations.front())->getRectangle().normalized();
+    QVERIFY(std::abs(rectangle.left() - 50.0) < 0.5);
+    QVERIFY(std::abs(rectangle.bottom() - 250.0) < 0.5);
+    QVERIFY(std::abs(rectangle.width() - 144.0) < 0.5);
+    QVERIFY(std::abs(rectangle.height() - 72.0) < 0.5);
+
+    // A large image is reduced to fit the page (proportions kept)
+    QImage largeImage(2000, 1000, QImage::Format_RGB32);
+    largeImage.fill(Qt::blue);
+    QApplication::clipboard()->setImage(largeImage);
+    fixture.annotations.paste(std::nullopt);
+    QCOMPARE(fixture.modificationCount, 2);
+    const QRectF largeRectangle = PDFAnnotation::parse(&fixture.document->getStorage(), fixture.pageAnnotations().back())->getRectangle().normalized();
+    QVERIFY(largeRectangle.width() <= 300.0 - 72.0 + 0.5);
+    QVERIFY(std::abs(largeRectangle.width() / largeRectangle.height() - 2.0) < 0.01);
 }
 
 void AnnotationSelectionTest::attachedFileIsReplaced()

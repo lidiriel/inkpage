@@ -262,10 +262,22 @@ public:
     /// \param widgetPosition Position in the widget (optional)
     void pasteText(std::optional<QPoint> widgetPosition);
 
-    /// Returns true, if annotations or a text can be pasted
-    bool canPaste() const { return canPasteAnnotations() || canPasteText(); }
+    /// Returns true, if the clipboard contains an image (and no annotations),
+    /// which can be pasted as an image annotation
+    bool canPasteImage() const;
 
-    /// Pastes the annotations of the clipboard, or its text as an inline text
+    /// Inserts the image of the clipboard as an image (stamp annotation, see
+    /// PDFDocumentBuilder::createAnnotationImage) in its natural size (reduced to fit
+    /// the page). If the widget position is on a page, the top left corner of the image
+    /// is placed at it, otherwise the image is placed at the top left part of the first
+    /// displayed page. The inserted annotation is selected.
+    /// \param widgetPosition Position in the widget (optional)
+    void pasteImage(std::optional<QPoint> widgetPosition);
+
+    /// Returns true, if annotations, an image or a text can be pasted
+    bool canPaste() const { return canPasteAnnotations() || canPasteImage() || canPasteText(); }
+
+    /// Pastes the annotations of the clipboard, or its image, or its text as an inline text
     /// \param widgetPosition Position in the widget (optional)
     void paste(std::optional<QPoint> widgetPosition);
 

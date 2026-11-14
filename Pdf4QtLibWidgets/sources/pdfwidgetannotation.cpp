@@ -4730,11 +4730,106 @@ void PDFWidgetAnnotationManager::pasteText(std::optional<QPoint> widgetPosition)
     }
 }
 
+bool PDFWidgetAnnotationManager::canPasteImage() const
+{
+    if (!m_document || !isModificationAllowed())
+    {
+        return false;
+    }
+
+    const QMimeData* mimeData = QApplication::clipboard()->mimeData(QClipboard::Clipboard);
+    return mimeData && !mimeData->hasFormat(PDFAnnotationManipulator::getMimeType()) && mimeData->hasImage();
+}
+
+void PDFWidgetAnnotationManager::pasteImage(std::optional<QPoint> widgetPosition)
+{
+    if (!canPasteImage())
+    {
+        return;
+    }
+
+    const QImage image = qvariant_cast<QImage>(QApplication::clipboard()->mimeData(QClipboard::Clipboard)->imageData());
+    if (image.isNull())
+    {
+        return;
+    }
+
+    // Target page and position
+    PDFInteger pageIndex = -1;
+    QPointF pagePoint;
+    if (widgetPosition)
+    {
+        pageIndex = m_proxy->getPageUnderPoint(*widgetPosition, &pagePoint);
+    }
+
+    const bool isPositionValid = pageIndex != -1;
+    if (!isPositionValid)
+    {
+        const std::vector<PDFInteger> currentPages = m_proxy->getWidget()->getDrawWidget()->getCurrentPages();
+        if (currentPages.empty())
+        {
+            return;
+        }
+        pageIndex = currentPages.front();
+    }
+
+    const PDFPage* page = m_document->getCatalog()->getPage(pageIndex);
+    if (!page || !page->getPageReference().isValid())
+    {
+        return;
+    }
+
+    // Natural size of the image (resolution of the image, 96 DPI if it has none),
+    // reduced to fit the page. The top of the page is the bottom of the media box.
+    const QRectF mediaBox = page->getMediaBox().normalized();
+    const PDFReal margin = 36.0;
+    const PDFReal dpiX = image.dotsPerMeterX() > 0 ? image.dotsPerMeterX() * 0.0254 : 96.0;
+    const PDFReal dpiY = image.dotsPerMeterY() > 0 ? image.dotsPerMeterY() * 0.0254 : 96.0;
+    QSizeF size(image.width() * 72.0 / dpiX, image.height() * 72.0 / dpiY);
+    const QSizeF maximalSize(qMax<PDFReal>(mediaBox.width() - 2.0 * margin, 36.0), qMax<PDFReal>(mediaBox.height() - 2.0 * margin, 36.0));
+    if (size.width() > maximalSize.width() || size.height() > maximalSize.height())
+    {
+        size = size.scaled(maximalSize, Qt::KeepAspectRatio);
+    }
+
+    const QPointF topLeft = isPositionValid ? pagePoint : QPointF(mediaBox.left() + margin, mediaBox.bottom() - margin);
+    QRectF rectangle(topLeft.x(), topLeft.y() - size.height(), size.width(), size.height());
+    if (mediaBox.isValid())
+    {
+        if (rectangle.right() > mediaBox.right())
+        {
+            rectangle.moveRight(mediaBox.right());
+        }
+        if (rectangle.left() < mediaBox.left())
+        {
+            rectangle.moveLeft(mediaBox.left());
+        }
+        if (rectangle.top() < mediaBox.top())
+        {
+            rectangle.moveTop(mediaBox.top());
+        }
+    }
+
+    PDFDocumentModifier modifier(m_document);
+    modifier.markAnnotationsChanged();
+    const PDFObjectReference annotation = modifier.getBuilder()->createAnnotationImage(page->getPageReference(), rectangle, image, PDFAuthorSettings::getAuthorName(), QString(), QString());
+
+    if (annotation.isValid() && modifier.finalize())
+    {
+        Q_EMIT documentModified(PDFModifiedDocument(modifier.getDocument(), nullptr, modifier.getFlags()));
+        setSelectedAnnotations({ annotation });
+    }
+}
+
 void PDFWidgetAnnotationManager::paste(std::optional<QPoint> widgetPosition)
 {
     if (canPasteAnnotations())
     {
         pasteAnnotations(widgetPosition);
+    }
+    else if (canPasteImage())
+    {
+        pasteImage(widgetPosition);
     }
     else if (canPasteText())
     {
