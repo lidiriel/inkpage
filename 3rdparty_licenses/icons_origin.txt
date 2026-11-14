@@ -1,0 +1,246 @@
+Origin of the icons replaced in inkpage
+=======================================
+
+The interface icons of inkpage come from PDF4QT (MIT, see PDF4QT_LICENSE), except the
+files listed below, which were taken from other free icon sets. The other icons are
+unchanged PDF4QT icons. Each replaced SVG file also starts with a comment giving its
+origin and license.
+
+Summary of the licenses (all compatible with the GNU GPL version 3, the license of inkpage):
+- FreeCAD (https://www.freecad.org): LGPL-2.1-or-later, see icons_FreeCAD_LGPL-2.1.txt;
+  Draft_Ellipse and colors are also marked CC-BY-SA-4.0, see icons_CC-BY-SA-4.0.txt
+- Xournal++ colour icons (https://github.com/xournalpp/xournalpp): GPL-3.0-or-later,
+  see icons_Xournalpp_GPL-3.txt
+- Numix icon theme (https://github.com/numixproject/numix-icon-theme): GPL-3.0-or-later,
+  see icons_Numix_GPL-3.txt
+- Papirus icon theme (https://github.com/PapirusDevelopmentTeam/papirus-icon-theme):
+  GPL-3.0-only, see icons_Papirus_GPL-3.txt (while these icons are included, inkpage as a
+  whole is distributed under the GPL version 3)
+- Tango icon theme 0.9.0 (https://git.golem.linux.it/matteobin/tango-icon-theme): CC0-1.0
+  (public domain), see icons_Tango_CC0-1.0.txt
+- Flat Color Icons by Icons8 (https://github.com/icons8/flat-color-icons): MIT,
+  see icons_FlatColor_MIT.txt
+- MATE icon theme (https://github.com/mate-desktop/mate-icon-theme): LGPL-3.0-or-later,
+  see icons_MATE_LGPL-3.txt
+
+Flat Color Icons
+----------------
+Pdf4QtEditorPlugins/EditorPlugin/activate.svg
+    from: Flat Color Icons (Icons8), svg/edit_image.svg
+    license: MIT (Icons8 Flat Color Icons)
+Pdf4QtEditorPlugins/SignaturePlugin/activate.svg
+    from: Flat Color Icons (Icons8), svg/edit_image.svg
+    license: MIT (Icons8 Flat Color Icons)
+Pdf4QtLibGui/resources/certificate-manager.svg
+    from: Flat Color Icons (Icons8), svg/diploma_1.svg
+    license: MIT (Icons8 Flat Color Icons)
+Pdf4QtLibGui/resources/plugins.svg
+    from: Flat Color Icons (Icons8), svg/puzzle.svg
+    license: MIT (Icons8 Flat Color Icons)
+
+FreeCAD
+-------
+Pdf4QtLibGui/resources/annot-ellipse.svg
+    from: FreeCAD, src/Mod/Draft/Resources/icons/Draft_Ellipse.svg
+    license: CC-BY-SA-4.0
+Pdf4QtLibGui/resources/annot-polygon.svg
+    from: FreeCAD, src/Mod/Draft/Resources/icons/Draft_Polygon.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/annot-polyline.svg
+    from: FreeCAD, src/Mod/Draft/Resources/icons/Draft_Wire.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/annot-rectangle.svg
+    from: FreeCAD, src/Mod/Draft/Resources/icons/Draft_Rectangle.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/close.svg
+    from: FreeCAD, src/Gui/Icons/Std_CloseActiveWindow.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/cms.svg
+    from: FreeCAD, src/Gui/Icons/colors.svg
+    license: CC-BY-SA-4.0
+Pdf4QtLibGui/resources/engine.svg
+    from: FreeCAD, src/Gui/Icons/preferences-system.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/hyperlink.svg
+    from: FreeCAD, src/Gui/Icons/Link.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/info.svg
+    from: FreeCAD, src/Gui/Icons/document-properties.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/open.svg
+    from: FreeCAD, src/Gui/Icons/document-open.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/page.svg
+    from: FreeCAD, src/Gui/Icons/TextDocument.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/print.svg
+    from: FreeCAD, src/Gui/Icons/document-print.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/rendering-errors.svg
+    from: FreeCAD, src/Gui/Icons/Warning.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/rendering.svg
+    from: FreeCAD, src/Gui/Icons/preferences-display.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/result-error.svg
+    from: FreeCAD, src/Gui/Icons/critical-info.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/result-information.svg
+    from: FreeCAD, src/Gui/Icons/info.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/result-ok.svg
+    from: FreeCAD, src/Gui/Icons/edit_OK.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/result-warning.svg
+    from: FreeCAD, src/Gui/Icons/Warning.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/rotate-left.svg
+    from: FreeCAD, src/Gui/Icons/view-rotate-left.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/rotate-right.svg
+    from: FreeCAD, src/Gui/Icons/view-rotate-right.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/save-as.svg
+    from: FreeCAD, src/Gui/Icons/document-save-as.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/save.svg
+    from: FreeCAD, src/Gui/Icons/document-save.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/settings.svg
+    from: FreeCAD, src/Gui/Icons/preferences-general.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+Pdf4QtLibGui/resources/user.svg
+    from: FreeCAD, src/Gui/Icons/user.svg
+    license: LGPL-2.1-or-later (FreeCAD)
+
+MATE icon theme
+---------------
+Pdf4QtLibGui/resources/shortcuts.png
+    from: MATE icon theme (Debian mate-icon-theme), 256x256/apps/preferences-desktop-keyboard-shortcuts.png
+    license: LGPL-3.0-or-later (MATE)
+
+Numix icon theme
+----------------
+Pdf4QtLibGui/resources/find-next.svg
+    from: Numix icon theme (Debian), 24/actions/go-next.svg
+    license: GPL-3.0-or-later (Numix, Satyajit Sahoo)
+Pdf4QtLibGui/resources/find-previous.svg
+    from: Numix icon theme (Debian), 24/actions/go-previous.svg
+    license: GPL-3.0-or-later (Numix, Satyajit Sahoo)
+Pdf4QtLibGui/resources/find.svg
+    from: Numix icon theme (Debian), 24/actions/filefind.svg -> edit-find.svg
+    license: GPL-3.0-or-later (Numix, Satyajit Sahoo)
+Pdf4QtLibGui/resources/outline.svg
+    from: Numix icon theme (Debian), 22/actions/stock_add-bookmark.svg -> bookmark-add.svg
+    license: GPL-3.0-or-later (Numix, Satyajit Sahoo)
+Pdf4QtLibGui/resources/sidebar-annotations.svg
+    from: Numix icon theme (Debian), 24/actions/stock_notes.svg
+    license: GPL-3.0-or-later (Numix, Satyajit Sahoo)
+Pdf4QtLibGui/resources/sidebar-outline.svg
+    from: Numix icon theme (Debian), 24/places/user-bookmarks.svg
+    license: GPL-3.0-or-later (Numix, Satyajit Sahoo)
+Pdf4QtLibGui/resources/web.svg
+    from: Numix icon theme (Debian), 22/actions/internet-services.svg -> stock_timezone.svg
+    license: GPL-3.0-or-later (Numix, Satyajit Sahoo)
+
+PDF4QT
+------
+Pdf4QtLibGui/resources/encryption.svg
+    from: PDF4QT, resources/security.svg
+    license: MIT (PDF4QT)
+
+Papirus icon theme
+------------------
+Pdf4QtLibGui/resources/bubble.svg
+    from: Papirus icon theme (Debian), 32x32/apps/indicator-stickynotes.svg -> mynotes.svg
+    license: GPL-3.0-only (Papirus, Alexey Varfolomeev)
+Pdf4QtLibGui/resources/sidebar-attachment.svg
+    from: Papirus icon theme (Debian), 16x16/actions/mail-attachment.svg
+    license: GPL-3.0-only (Papirus, Alexey Varfolomeev)
+Pdf4QtLibGui/resources/sidebar-favourites.svg
+    from: Papirus icon theme (Debian), 32x32/places/folder-bookmark.svg -> user-bookmarks.svg
+    license: GPL-3.0-only (Papirus, Alexey Varfolomeev)
+Pdf4QtLibGui/resources/sidebar-signature.svg
+    from: Papirus icon theme (Debian), 16x16/mimetypes/application-pgp-signature.svg -> application-pgp-keys.svg
+    license: GPL-3.0-only (Papirus, Alexey Varfolomeev)
+Pdf4QtLibGui/resources/sidebar-thumbnails.svg
+    from: Papirus icon theme (Debian), 16x16/actions/cm_thumbnailsview.svg -> view-grid.svg
+    license: GPL-3.0-only (Papirus, Alexey Varfolomeev)
+Pdf4QtLibGui/resources/sidebar-visibility.svg
+    from: Papirus icon theme (Debian), 24x24/actions/visibility.svg -> view-hidden.svg
+    license: GPL-3.0-only (Papirus, Alexey Varfolomeev)
+
+Tango icon theme 0.9.0
+----------------------
+Pdf4QtLibGui/resources/book.svg
+    from: Tango icon theme 0.9.0 (Debian tango-icon-theme), scalable/apps/help-browser.svg
+    license: CC0-1.0 (public domain)
+Pdf4QtLibGui/resources/magnifier.svg
+    from: Tango icon theme 0.9.0 (Debian tango-icon-theme), scalable/actions/system-search.svg
+    license: CC0-1.0 (public domain)
+Pdf4QtLibGui/resources/next-end.svg
+    from: Tango icon theme 0.9.0 (Debian tango-icon-theme), scalable/actions/go-last.svg
+    license: CC0-1.0 (public domain)
+Pdf4QtLibGui/resources/next-page.svg
+    from: Tango icon theme 0.9.0 (Debian tango-icon-theme), scalable/actions/go-next.svg
+    license: CC0-1.0 (public domain)
+Pdf4QtLibGui/resources/next.svg
+    from: Tango icon theme 0.9.0 (Debian tango-icon-theme), scalable/actions/go-down.svg
+    license: CC0-1.0 (public domain)
+Pdf4QtLibGui/resources/previous-page.svg
+    from: Tango icon theme 0.9.0 (Debian tango-icon-theme), scalable/actions/go-previous.svg
+    license: CC0-1.0 (public domain)
+Pdf4QtLibGui/resources/previous-start.svg
+    from: Tango icon theme 0.9.0 (Debian tango-icon-theme), scalable/actions/go-first.svg
+    license: CC0-1.0 (public domain)
+Pdf4QtLibGui/resources/previous.svg
+    from: Tango icon theme 0.9.0 (Debian tango-icon-theme), scalable/actions/go-up.svg
+    license: CC0-1.0 (public domain)
+Pdf4QtLibGui/resources/quit.svg
+    from: Tango icon theme 0.9.0 (Debian tango-icon-theme), scalable/actions/system-log-out.svg
+    license: CC0-1.0 (public domain)
+
+Xournal++
+---------
+Pdf4QtEditorPlugins/EditorPlugin/clear.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-tool-eraser.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtEditorPlugins/EditorPlugin/create-svg-image.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-tool-image.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtEditorPlugins/SignaturePlugin/clear.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-tool-eraser.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtEditorPlugins/SignaturePlugin/create-svg-image.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-tool-image.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtLibGui/resources/annot-freehand-curve.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-tool-pencil.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtLibGui/resources/annot-inline-text.svg
+    from: Xournal++, ui/iconsColor-light/hicolor/scalable/actions/xopp-tool-text.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtLibGui/resources/annot-straight-line.svg
+    from: Xournal++, ui/iconsColor-light/hicolor/scalable/actions/xopp-draw-line.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtLibGui/resources/extract-image.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-tool-image.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtLibGui/resources/page-add.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-page-add.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtLibGui/resources/page-insert.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-page-add.svg, rotated by 180 degrees
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtLibGui/resources/page-remove.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-page-delete.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtLibGui/resources/redo.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-edit-redo.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtLibGui/resources/select-text.svg
+    from: Xournal++, ui/iconsColor-light/hicolor/scalable/actions/xopp-select-pdf-text-area.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtLibGui/resources/undo.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-edit-undo.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)

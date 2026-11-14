@@ -1,39 +1,143 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Vrstva_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
-<g>
-	<g>
-		<g>
-			<path fill="#292D32" d="M22.75,10v5c0,3.7-1.08,5.96-3.49,7.02c-0.17,0.08-0.35,0.15-0.54,0.2c-1.02,0.36-2.26,0.53-3.72,0.53H9
-				c-1.46,0-2.7-0.17-3.72-0.53c-0.17-0.05-0.34-0.109-0.49-0.17C2.34,20.99,1.25,18.73,1.25,15V9c0-5.43,2.32-7.75,7.75-7.75h5
-				c0.1,0,0.2,0.02,0.29,0.06s0.17,0.09,0.24,0.16C14.66,1.61,14.75,1.8,14.75,2c0,0.41-0.34,0.75-0.75,0.75H9
-				c-0.48,0-0.92,0.02-1.34,0.06C4.07,3.12,2.75,4.87,2.75,9v6c0,2.77,0.59,4.47,2.07,5.37c0.45,0.29,0.99,0.5,1.62,0.64
-				c0.73,0.17,1.58,0.24,2.56,0.24h6c1,0,1.86-0.08,2.6-0.25c0.641-0.14,1.181-0.36,1.641-0.67c1.43-0.91,2.01-2.6,2.01-5.33v-5
-				c0-0.41,0.34-0.75,0.75-0.75c0.2,0,0.39,0.09,0.53,0.22c0.069,0.07,0.12,0.15,0.16,0.24S22.75,9.9,22.75,10z"/>
-		</g>
-		<g>
-			<path fill="#292D32" d="M22.75,10c0,0.19-0.07,0.38-0.22,0.53c-0.15,0.15-0.34,0.22-0.53,0.22s-0.38-0.07-0.53-0.22l-0.22-0.22
-				l-4.86-4.86l-1.64-1.64l-1.06-1.06L13.47,2.53c-0.29-0.29-0.29-0.77,0-1.06c0.15-0.15,0.34-0.22,0.53-0.22
-				c0.1,0,0.2,0.02,0.29,0.06s0.17,0.09,0.24,0.16l1.09,1.09l0.77,0.77l6.141,6.14c0.069,0.07,0.12,0.15,0.16,0.24
-				S22.75,9.9,22.75,10z"/>
-		</g>
-	</g>
-</g>
-<path fill="#292D32" d="M16.39,3.33V6.6c0,1.02-0.63,1.65-1.649,1.65H9.3c-1.01,0-1.64-0.64-1.64-1.66C7.65,5.73,7.65,4.87,7.66,4
-	V2.56h1.63v4.05h5.46V2.57H14.7V2.56h0.92L16.39,3.33z"/>
-<g>
-	<path fill="#292D32" d="M19.26,20.6v1.42c-0.17,0.08-0.35,0.15-0.54,0.2H17.6v-1.64h0.021V15.8c0-0.45-0.25-0.689-0.71-0.689H7.14
-		c-0.46,0-0.7,0.229-0.7,0.689v6.42H5.28c-0.17-0.05-0.34-0.109-0.49-0.17V20.6h0.03v-4.77c0-1.38,0.96-2.34,2.34-2.34h9.729
-		c1.38,0,2.351,0.96,2.351,2.34v4.77H19.26z"/>
-</g>
-<circle fill="#292D32" cx="19.015" cy="4.754" r="3.739"/>
-<path fill="#FFFFFF" d="M21.548,4.519c-0.108-0.126-0.255-0.126-0.31-0.126h-1.863c0.001-0.105-0.001-0.211-0.002-0.316
-	c-0.004-0.246-0.007-0.501,0.014-0.745c0.007-0.075,0-0.149-0.007-0.224c-0.005-0.044-0.01-0.088-0.009-0.133
-	c0.006-0.161,0.004-0.324,0.001-0.482c0-0.148-0.078-0.269-0.212-0.329c-0.127-0.057-0.271-0.037-0.377,0.052
-	c-0.131,0.105-0.131,0.257-0.131,0.307v1.872h-1.848c-0.041,0-0.081,0.001-0.12,0.008c-0.17,0.033-0.293,0.18-0.292,0.346
-	c-0.005,0.172,0.121,0.328,0.293,0.362c0.04,0.008,0.081,0.009,0.121,0.009l1.846,0v1.847c0,0.026,0.001,0.053,0.003,0.076
-	c0.014,0.191,0.168,0.336,0.357,0.336h0.004c0.19-0.002,0.343-0.147,0.354-0.324c0.004-0.03,0.005-0.061,0.005-0.092V5.118
-	l1.528,0.001l0.373-0.001c0.146-0.004,0.266-0.083,0.327-0.219C21.66,4.77,21.641,4.633,21.548,4.519z"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- inkpage icon: FreeCAD, src/Gui/Icons/document-save-as.svg. License: LGPL-2.1-or-later (FreeCAD). See 3rdparty_licenses/icons_origin.txt -->
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   id="svg2869"
+   version="1.1"
+   viewBox="0 0 64 64"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2871">
+    <linearGradient
+       id="linearGradient6">
+      <stop
+         style="stop-color:#888a85;stop-opacity:1"
+         offset="0"
+         id="stop7" />
+      <stop
+         style="stop-color:#d3d7cf;stop-opacity:1"
+         offset="1"
+         id="stop8" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient6"
+       id="linearGradient8"
+       x1="11.761719"
+       y1="55"
+       x2="11.730469"
+       y2="9.0234375"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(1.0000011)" />
+  </defs>
+  <metadata
+     id="metadata2874">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[maxwxyz]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date>2024</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer3"
+     style="display:inline">
+    <g
+       id="layer3-3"
+       style="display:inline">
+      <path
+         style="fill:#babdb6;fill-opacity:1;fill-rule:nonzero;stroke:#2e3436;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+         d="m 46.969644,5.0000007 c -1.016659,0.00167 -36.241296,0.023583 -36.241296,0.023583 -2.2376263,0.0025 -4.0482274,1.8163761 -4.0482274,4.0525194 l 0.030083,45.8765159 c 0,2.237085 1.8159095,4.050186 4.0526024,4.047377 l 42.508917,-0.02617 c 2.236618,-8.34e-4 4.051502,-1.815676 4.048152,-4.052836 0,0 -0.024,-39.562746 -0.024,-40.10958 C 57.294175,13.929073 57.083067,13.202314 56.5137,12.635605 56.147091,12.270547 52.136589,8.2656611 50.075358,6.2044389 49.34977,5.483076 47.985444,5.0000007 46.969644,5.0000007 Z"
+         id="path2" />
+      <path
+         style="fill:url(#linearGradient8);fill-opacity:1;fill-rule:nonzero;stroke:#d3d7cf;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+         d="m 55.294717,14.611042 -3.28e-4,-0.0032 c 0.0047,6.580947 0.01274,21.853798 0.02592,40.317964 0.0017,1.11961 -0.928889,2.04841 -2.050781,2.048828 L 10.76172,57.000004 C 9.6407231,57.001404 8.7109392,56.073536 8.7109386,54.951176 L 8.6796886,9.0761712 c 0,-1.122432 0.9275825,-2.0514794 2.0507814,-2.0527345 17.70908,-0.011603 30.337148,-0.018565 36.420303,-0.022568 -0.0025,-2.731e-4 -0.005,-5.412e-4 -0.0075,-8.043e-4 -0.170096,5.58e-5 -0.239149,4.11e-5 -0.174522,-6.52e-5 0.539605,0 1.40169,0.3291821 1.693359,0.6191406 2.061938,2.0619294 6.067557,6.0613262 6.441407,6.4335932 0.02999,0.02985 0.190469,0.273705 0.191406,0.757813 0,0.03115 -7.4e-5,-0.04282 -2.06e-4,-0.199504 z"
+         id="path5" />
+      <path
+         style="fill:#eeeeec;fill-opacity:1;fill-rule:nonzero;stroke:#555753;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+         d="m 44.021216,9.0020721 0.0094,12.3869269 c 0,1.204367 -1.237967,2.357126 -2.442018,2.359001 l -17.601769,0.01117 c -1.202576,0.0017 -2.33016,-1.150418 -2.33016,-2.354868 L 21.645439,9.0171471 Z"
+         id="path1" />
+      <path
+         style="fill:#eeeeec;fill-opacity:1;fill-rule:nonzero;stroke:#555753;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+         d="M 49.506274,54.976365 H 14.493636 v -2.695244 h 0.0042 V 33.975368 c 0,-1.455451 1.132342,-2.63846 2.529801,-2.63846 h 29.94626 c 1.397376,0 2.529635,1.183009 2.529635,2.63846 v 18.305753 h 0.0025 z"
+         id="path3" />
+      <path
+         id="path4"
+         d="m 35.638801,21.628897 4.593745,-0.0015 c 0.754817,0 1.366667,-0.539369 1.368609,-1.203677 l -0.0075,-8.093548 c -0.0017,-0.662477 -0.613717,-1.200749 -1.371418,-1.198897 l -4.588994,0.0015 c -0.757692,0 -1.370951,0.538821 -1.370951,1.201351 l 0.0067,8.095463 c 0.0017,0.664448 0.614733,1.201762 1.369476,1.199706"
+         style="fill:#2e3436;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.133333" />
+      <rect
+         style="display:inline;fill:#eeeeec;fill-rule:evenodd;stroke:#204a87;stroke-width:2;stroke-linecap:square;stroke-linejoin:round"
+         id="rect16"
+         width="28.636192"
+         height="17.675844"
+         x="17.682135"
+         y="34.318714" />
+      <g
+         id="g22"
+         transform="matrix(1,0,0,-1,2,85.019484)"
+         style="stroke:#2e3436" />
+      <g
+         id="g24"
+         transform="matrix(1,0,0,-1,2,86.019484)"
+         style="stroke:#2e3436">
+        <g
+           id="g25"
+           transform="matrix(0.85222107,0,0,1,3.6864856,0)"
+           style="stroke-width:1.08324">
+          <g
+             id="g18"
+             transform="matrix(1,0,0,-1,0,85.725695)"
+             style="display:inline;stroke:#2e3436;stroke-width:1.08324">
+            <path
+               style="fill:#eeeeec;fill-rule:evenodd;stroke:#2e3436;stroke-width:2.16648;stroke-linecap:square;stroke-linejoin:round"
+               d="M 22.453805,38.966225 V 46.75947"
+               id="path16" />
+            <path
+               style="fill:#eeeeec;fill-rule:evenodd;stroke:#2e3436;stroke-width:2.16648;stroke-linecap:square;stroke-linejoin:round"
+               d="m 23.874263,37.966225 h 1.071686"
+               id="path17" />
+            <path
+               style="fill:#eeeeec;fill-rule:evenodd;stroke:#2e3436;stroke-width:2.16648;stroke-linecap:square;stroke-linejoin:round"
+               d="m 19.96166,37.966225 h 1.071686"
+               id="path19" />
+          </g>
+          <path
+             style="fill:#eeeeec;fill-rule:evenodd;stroke:#2e3436;stroke-width:2.16648;stroke-linecap:square;stroke-linejoin:round"
+             d="m 23.874263,37.966225 h 1.071686"
+             id="path23" />
+          <path
+             style="fill:#eeeeec;fill-rule:evenodd;stroke:#2e3436;stroke-width:2.16648;stroke-linecap:square;stroke-linejoin:round"
+             d="m 19.96166,37.966225 h 1.071686"
+             id="path24" />
+        </g>
+      </g>
+    </g>
+  </g>
 </svg>

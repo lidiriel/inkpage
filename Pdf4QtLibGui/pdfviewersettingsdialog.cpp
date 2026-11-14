@@ -112,7 +112,7 @@ PDFViewerSettingsDialog::PDFViewerSettingsDialog(const PDFViewerSettings::Settin
     new QListWidgetItem(QIcon(":/resources/rendering.svg"), tr("Rendering"), ui->optionsPagesWidget, RenderingSettings);
     new QListWidgetItem(QIcon(":/resources/shading.svg"), tr("Shading"), ui->optionsPagesWidget, ShadingSettings);
     new QListWidgetItem(QIcon(":/resources/cache.svg"), tr("Cache"), ui->optionsPagesWidget, CacheSettings);
-    new QListWidgetItem(QIcon(":/resources/shortcuts.svg"), tr("Shortcuts"), ui->optionsPagesWidget, ShortcutSettings);
+    new QListWidgetItem(QIcon(":/resources/shortcuts.png"), tr("Shortcuts"), ui->optionsPagesWidget, ShortcutSettings);
     new QListWidgetItem(QIcon(":/resources/cms.svg"), tr("Colors | CMS"), ui->optionsPagesWidget, ColorManagementSystemSettings);
     new QListWidgetItem(QIcon(":/resources/cms.svg"), tr("Colors | Postprocessing"), ui->optionsPagesWidget, ColorPostprocessingSettings);
     new QListWidgetItem(QIcon(":/resources/security.svg"), tr("Security"), ui->optionsPagesWidget, SecuritySettings);

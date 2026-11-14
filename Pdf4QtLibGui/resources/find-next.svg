@@ -1,13 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Vrstva_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
-<path fill="none" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M11.596,21.03
-	c5.247,0,9.5-4.254,9.5-9.501c0-5.247-4.254-9.5-9.5-9.5c-5.247,0-9.5,4.253-9.5,9.5C2.096,16.776,6.349,21.03,11.596,21.03z"/>
-<path fill="none" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M22,22l-2-2"/>
-<path fill-rule="evenodd" clip-rule="evenodd" fill="#292D32" d="M11.444,11.558c0.055-0.017,0.114-0.029,0.169-0.043
-	c1.169-0.286,2.008-0.198,2.008-0.198l0.055,1.928c0.012,0.398,0.249,0.492,0.529,0.209c0.988-1,1.969-1.99,2.949-2.981
-	c0.28-0.284,0.277-0.74-0.008-1.021c-1.014-1-2.026-1.996-3.043-3c-0.285-0.28-0.514-0.182-0.512,0.216
-	c0.004,0.599,0.008,1.189,0.011,1.781c0,0-6.975-0.387-7.773,8.317C7.385,13.294,9.729,12.019,11.444,11.558z"/>
+<!-- inkpage icon: Numix icon theme (Debian), 24/actions/go-next.svg. License: GPL-3.0-or-later (Numix, Satyajit Sahoo). See 3rdparty_licenses/icons_origin.txt -->
+<svg width="24" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24">
+<g transform="translate(1 1)">
+<path style="fill:#268bd2;fill-rule:evenodd" d="M 21,11 C 21,5.4779827 16.522017,1 11,1 5.477983,1 1,5.4779827 1,11 c 0,5.522017 4.477983,10 10,10 5.522017,0 10,-4.477983 10,-10 z"/>
+<path style="fill:#fff;fill-opacity:.9" d="m 17,11.003395 c 0,-0.30606 -0.130466,-0.596458 -0.34375,-0.8125 L 12.9375,6.3471455 c -0.201597,-0.213041 -0.48908,-0.33476 -0.78125,-0.34375 -0.464552,-0.015002 -0.881355,0.2494155 -1.0625,0.6875 -0.181146,0.4380841 -0.08307,0.9511864 0.25,1.28125 l 1.96875,2.0312495 -8.3125,0 0,2 8.3125,0 -1.96875,2.03125 c -0.438256,0.450088 -0.438256,1.174913 0,1.625 0.438257,0.450087 1.155495,0.450087 1.59375,0 l 3.71875,-3.84375 C 16.869534,11.599854 17,11.309453 17,11.003395 z"/>
+</g>
 </svg>

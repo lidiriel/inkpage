@@ -1,12 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Vrstva_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
-<g>
-	<path fill="#292D32" d="M11.547,21.752c-5.652,0-10.25-4.599-10.25-10.252c0-5.651,4.598-10.25,10.25-10.25
-		c5.652,0,10.25,4.599,10.25,10.25C21.797,17.153,17.199,21.752,11.547,21.752z M11.547,2.75c-4.825,0-8.75,3.926-8.75,8.75
-		c0,4.826,3.925,8.752,8.75,8.752c4.824,0,8.75-3.926,8.75-8.752C20.297,6.676,16.371,2.75,11.547,2.75z"/>
+<!-- inkpage icon: Numix icon theme (Debian), 24/actions/filefind.svg -> edit-find.svg. License: GPL-3.0-or-later (Numix, Satyajit Sahoo). See 3rdparty_licenses/icons_origin.txt -->
+<svg width="24" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24">
+<g style="fill:#2aa198;fill-rule:evenodd">
+<path d="M 11 2.6875 C 6.58 2.6875 3 6.2645 3 10.6875 C 3 15.1075 6.58 18.6875 11 18.6875 C 12.22 18.6875 13.36625 18.4175 14.40625 17.9375 L 17.40625 20.9375 C 18.81625 22.3575 18.83 22.3575 20.25 20.9375 C 21.66 19.5275 21.66 19.51375 20.25 18.09375 L 17.5 15.34375 C 18.44 14.02375 19 12.4275 19 10.6875 C 19 6.2645 15.42 2.6875 11 2.6875 z M 10.875 6.6875 A 4 3.999 0 0 1 15 10.6875 A 4 3.999 0 0 1 7 10.6875 A 4 3.999 0 0 1 10.875 6.6875 z "/>
+<path style="fill:#fff" d="m 7,10.686 a 4,3.999 0 0 0 8,0 4,3.999 0 1 0 -8,0 z"/>
+<path style="fill-opacity:.1" d="m 7,10.686 a 4,3.999 0 0 0 8,0 4,3.999 0 1 0 -8,0 z"/>
 </g>
-<path fill="none" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M22,22l-2-2"/>
 </svg>

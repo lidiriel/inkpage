@@ -48,6 +48,13 @@ Duotone Interface Icons collection on SVG Repo
 (https://www.svgrepo.com/svg/381941/widget-layout-page-paper-office),
 licensed under the Creative Commons Attribution License.
 
+Most toolbar, menu and sidebar icons come from PDF4QT. About sixty of them were
+replaced by icons of free icon sets: FreeCAD (LGPL-2.1+, some CC-BY-SA-4.0),
+the Xournal++ colour icons (GPL-3+, Nararyans R.I.), Numix (GPL-3+), Papirus
+(GPL-3), the Tango icon theme (CC0, public domain), Flat Color Icons by Icons8
+(MIT) and the MATE icon theme (LGPL-3+). The origin and license of each
+replaced file are listed in `3rdparty_licenses/icons_origin.txt`.
+
 ## 3. LEGAL ISSUES
 
 inkpage is free software: you can redistribute it and/or modify it under the
@@ -73,6 +80,11 @@ the `3rdparty_licenses` folder; they are installed with inkpage in
 `share/inkpage/licenses` and can be opened from the About dialog. All of them can be used in a GPLv3 program.
 FreeType is dual-licensed under the FreeType License (FTL) or the GNU GPL
 version 2 or later; inkpage uses it under the terms of the GPL.
+
+The icons taken from other icon sets are listed in
+`3rdparty_licenses/icons_origin.txt`, with their license texts in the same
+folder. The Papirus icons are licensed under the GPL version 3 only: while they
+are included, inkpage as a whole is distributed under the GPL version 3.
 
 ## 4. FEATURES
 

@@ -1,29 +1,205 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Vrstva_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="23.693px" height="23.693px" viewBox="0 0 23.693 23.693" enable-background="new 0 0 23.693 23.693" xml:space="preserve">
-<g>
-	<path fill-rule="evenodd" clip-rule="evenodd" fill="#292D32" d="M13.472,11.669c-0.259,0-0.498,0-0.748,0
-		c-0.014,0.076-0.025,0.136-0.037,0.194c-0.098,0.54-0.514,0.781-1.03,0.602c-0.233-0.081-0.406-0.433-0.4-0.815
-		c0.005-0.395,0.18-0.725,0.423-0.8c0.029-0.009,0.061-0.014,0.092-0.014c0.562-0.001,1.123-0.001,1.701-0.001
-		C13.472,11.11,13.472,11.371,13.472,11.669z"/>
-	<path fill-rule="evenodd" clip-rule="evenodd" fill="#292D32" d="M19.456,21.147c0-6.753,0-13.484,0-20.231
-		c-0.121,0-0.217,0-0.312,0c-2.31,0-4.617,0.002-6.926-0.003c-0.149,0-0.303-0.025-0.445-0.067
-		c-0.534-0.159-1.064-0.328-1.628-0.504c0,0.207,0,0.387,0,0.581c-1.982,0-3.938,0-5.89,0C4.244,0.96,4.23,0.982,4.23,1.005
-		C4.229,1.726,4.229,2.448,4.228,3.17l0,0V18c-0.003,0.032-0.006,0.067-0.006,0.104c0.009,0.926,0.004,1.853,0.004,2.778
-		c0,0.086,0,0.169,0,0.279c-0.582,0-1.129,0-1.673,0c0,0.295,0,0.561,0,0.85c2.538,0,5.059,0,7.604,0c0,0.456,0,0.892,0,1.34
-		c1.852-0.346,3.683-0.675,5.505-1.032c1.045-0.204,2.087-0.368,3.157-0.319c0.686,0.031,1.373,0.005,2.063,0.005
-		c0.084,0,0.167,0,0.26,0c0-0.299,0-0.566,0-0.857C20.575,21.147,20.028,21.147,19.456,21.147z M10.135,21.141
-		c-1.128,0-2.235,0-3.379,0c0-0.848,0-1.691,0-2.533c0-1.087,0-2.169,0-3.252V6.721C6.758,6.72,6.76,6.719,6.762,6.718
-		c0-1.079,0-2.16,0-3.253c1.143,0,2.256,0,3.373,0C10.135,9.366,10.135,15.256,10.135,21.141z M10.137,2.611
-		c-1.409,0-2.803,0-4.211,0c0,0.576,0,1.145,0,1.71l0,0v13.737c-0.002,0.931,0,1.858,0,2.789c0,0.095,0,0.188,0,0.295
-		c-0.294,0-0.563,0-0.847,0c0-0.741,0-1.48,0-2.216c0-0.63,0-1.26,0-1.888V5.111c0.002,0.001,0.002,0.002,0.006,0.004
-		c0-1.167,0-2.25,0-3.341c1.694,0,3.367,0,5.052,0C10.137,2.053,10.137,2.319,10.137,2.611z M16.922,21.021c0,0.063,0,0.126,0,0.211
-		c-1.972,0.368-3.927,0.733-5.904,1.103c0-6.951,0-13.883,0-20.839c0.669,0.208,1.321,0.412,1.975,0.616
-		c1.242,0.386,2.482,0.774,3.727,1.155c0.158,0.048,0.207,0.116,0.207,0.281C16.922,9.372,16.923,15.196,16.922,21.021z
-		 M18.607,21.144c-0.283,0-0.543,0-0.834,0c0-0.11,0-0.213,0-0.313c0-5.943-0.001-11.888,0.007-17.832
-		c0-0.227-0.069-0.31-0.28-0.372c-0.811-0.238-1.615-0.498-2.421-0.75c-0.06-0.019-0.116-0.04-0.172-0.093c1.227,0,2.454,0,3.7,0
-		C18.607,8.231,18.607,14.675,18.607,21.144z"/>
-</g>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- inkpage icon: FreeCAD, src/Gui/Icons/Std_CloseActiveWindow.svg. License: LGPL-2.1-or-later (FreeCAD). See 3rdparty_licenses/icons_origin.txt -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   width="64px"
+   height="64px"
+   id="svg2985"
+   version="1.1">
+  <title
+     id="title889">Std_CloseActiveWindow</title>
+  <defs
+     id="defs2987">
+    <linearGradient
+       id="linearGradient893">
+      <stop
+         id="stop889"
+         offset="0"
+         style="stop-color:#ce5c00;stop-opacity:1;" />
+      <stop
+         id="stop891"
+         offset="1"
+         style="stop-color:#fcaf3e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4387">
+      <stop
+         style="stop-color:#71b2f8;stop-opacity:1;"
+         offset="0"
+         id="stop4389" />
+      <stop
+         style="stop-color:#002795;stop-opacity:1;"
+         offset="1"
+         id="stop4391" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient6321">
+      <stop
+         style="stop-color:#71b2f8;stop-opacity:1;"
+         offset="0"
+         id="stop6323" />
+      <stop
+         style="stop-color:#002795;stop-opacity:1;"
+         offset="1"
+         id="stop6325" />
+    </linearGradient>
+    <radialGradient
+       xlink:href="#linearGradient3377"
+       id="radialGradient3692"
+       cx="45.883327"
+       cy="28.869568"
+       fx="45.883327"
+       fy="28.869568"
+       r="19.467436"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-0.23443224,0.23443198)" />
+    <linearGradient
+       id="linearGradient3377">
+      <stop
+         id="stop3379"
+         offset="0"
+         style="stop-color:#faff2b;stop-opacity:1;" />
+      <stop
+         id="stop3381"
+         offset="1"
+         style="stop-color:#ffaa00;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3377-3">
+      <stop
+         id="stop3379-8"
+         offset="0"
+         style="stop-color:#faff2b;stop-opacity:1;" />
+      <stop
+         id="stop3381-3"
+         offset="1"
+         style="stop-color:#ffaa00;stop-opacity:1;" />
+    </linearGradient>
+    <radialGradient
+       xlink:href="#linearGradient3377-3"
+       id="radialGradient6412"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.67067175,0,0,0.64145918,-63.380792,0.83845403)"
+       cx="45.883327"
+       cy="28.869568"
+       fx="45.883327"
+       fy="28.869568"
+       r="19.467436" />
+    <linearGradient
+       id="linearGradient3036">
+      <stop
+         id="stop3038"
+         offset="0"
+         style="stop-color:#ef2929;stop-opacity:1" />
+      <stop
+         id="stop3040"
+         offset="1"
+         style="stop-color:#a40000;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="28"
+       x2="7"
+       y1="9"
+       x1="47"
+       id="linearGradient2095"
+       xlink:href="#linearGradient1189"
+       gradientTransform="matrix(0.96812402,0,0,0.96755864,-0.72057496,-2.6783592)" />
+    <linearGradient
+       id="linearGradient1189">
+      <stop
+         id="stop1185"
+         offset="0"
+         style="stop-color:#204a87;stop-opacity:1" />
+      <stop
+         id="stop1187"
+         offset="1"
+         style="stop-color:#729fcf;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="17.486736"
+       x2="16.006361"
+       y1="37.19397"
+       x1="46.529083"
+       id="linearGradient895"
+       xlink:href="#linearGradient893" />
+  </defs>
+  <metadata
+     id="metadata2990">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Std_CloseActiveWindow</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[bitacovir]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>Part_Shape_from_Mesh</dc:title>
+        <dc:date>2020/11/28</dc:date>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier />
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title />
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>cross</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>orange box with a cross</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1">
+    <g
+       id="g1632">
+      <rect
+         style="fill:url(#linearGradient895);fill-opacity:1;fill-rule:evenodd;stroke:#a40000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+         id="rect864"
+         width="40.202198"
+         height="40.202198"
+         x="11.777025"
+         y="11.860861" />
+      <rect
+         style="fill:none;fill-rule:evenodd;stroke:#fcaf3e;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter"
+         id="rect870"
+         width="36.188057"
+         height="36.253456"
+         x="13.777622"
+         y="13.821222"
+         ry="0" />
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:6;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 21.276835,21.015235 42.64087,42.55367"
+         id="path872" />
+      <path
+         id="path872-2"
+         d="M 42.582913,20.971634 21.218878,42.510069"
+         style="fill:none;stroke:#ffffff;stroke-width:6;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+  </g>
 </svg>

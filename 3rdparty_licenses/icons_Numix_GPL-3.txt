@@ -1,0 +1,3 @@
+Icons from the Numix icon theme (https://github.com/numixproject/numix-icon-theme)
+Copyright 2013 Satyajit Sahoo and the Numix project
+License: GNU General Public License version 3 or later (see the file LICENSE of inkpage).

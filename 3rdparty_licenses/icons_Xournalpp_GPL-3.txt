@@ -1,0 +1,4 @@
+Icons from the colour icon theme of Xournal++ (https://github.com/xournalpp/xournalpp, ui/iconsColor-*)
+Copyright 2020 Nararyans R.I.; xopp-select-pdf-text-area: Copyright 2021 aeghn
+License: GNU General Public License version 3 or later (see the file LICENSE of inkpage).
+Source: Xournal++ copyright.txt; the icons were inspired by the elementary icons.

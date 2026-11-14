@@ -1,0 +1,4 @@
+Icons from the Papirus icon theme (https://github.com/PapirusDevelopmentTeam/papirus-icon-theme)
+Copyright 2016-2017 Alexey Varfolomeev and the Papirus Development Team
+License: GNU General Public License version 3 (see the file LICENSE of inkpage).
+The colour of the monochrome icons, defined by a stylesheet of the theme, was written into the files.
