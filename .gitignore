@@ -9,3 +9,4 @@ ocr/tesseract/*/tessdata/*.traineddata
 
 # Personal task list
 TODO.md
+ICONS.md

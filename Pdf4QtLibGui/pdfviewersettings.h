@@ -58,13 +58,6 @@ public:
     /// from the previous versions in the function upgradeSettings.
     static constexpr int SETTINGS_VERSION = 1;
 
-    enum ColorScheme
-    {
-        AutoScheme,
-        LightScheme,
-        DarkScheme
-    };
-
     enum SidebarButtonIconSize
     {
         SidebarButtonIconSizeSmall,
@@ -142,8 +135,7 @@ public:
         pdf::PDFAuthorSettings::AuthorNameMode m_authorNameMode;
         QString m_customAuthorName;
 
-        // UI Dark/Light mode settings
-        ColorScheme m_colorScheme;
+        // UI settings
         SidebarButtonIconSize m_sidebarButtonIconSize;
         bool m_showSidebarOnDocumentOpen;
 
@@ -191,11 +183,6 @@ public:
     void setColorManagementSystemSettings(const pdf::PDFCMSSettings& settings) { m_colorManagementSystemSettings = settings; }
 
     pdf::PDFExecutionPolicy::Strategy getMultithreadingStrategy() const { return m_settings.m_multithreadingStrategy; }
-
-    ColorScheme getColorScheme() const;
-    void setColorScheme(ColorScheme colorScheme);
-
-    static ColorScheme getColorSchemeStatic();
 
 signals:
     void settingsChanged();

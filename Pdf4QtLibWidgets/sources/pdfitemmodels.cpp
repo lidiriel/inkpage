@@ -389,14 +389,7 @@ QVariant PDFOutlineTreeItemModel::data(const QModelIndex& index, int role) const
             return outlineItem->getTitle();
 
         case Qt::ForegroundRole:
-        {
-            // We do not set item color if the dark theme is set
-            if (pdf::PDFWidgetUtils::isDarkTheme())
-            {
-                return QVariant();
-            }
             return QBrush(outlineItem->getTextColor());
-        }
 
         case Qt::FontRole:
         {

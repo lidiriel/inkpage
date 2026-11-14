@@ -368,7 +368,6 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
         connect(toolManager, &pdf::PDFToolManager::messageDisplayRequest, statusBar(), &QStatusBar::showMessage);
     }
 
-    m_actionManager->styleActions();
     m_programController->initActionComboBox(actionComboBox);
 
 #ifndef NDEBUG

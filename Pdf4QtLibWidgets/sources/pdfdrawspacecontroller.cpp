@@ -820,8 +820,7 @@ QColor PDFDrawWidgetProxy::getPaperColor()
 
 void PDFDrawWidgetProxy::drawPages(QPainter* painter, QRect rect, PDFRenderer::Features features)
 {
-    const bool darkScheme = PDFWidgetUtils::isDarkTheme();
-    QColor backgroundColor = darkScheme ? QColor(34, 34, 34) : QColor(Qt::lightGray);
+    QColor backgroundColor = QColor(Qt::lightGray);
 
     painter->fillRect(rect, backgroundColor);
     QTransform baseMatrix = painter->worldTransform();

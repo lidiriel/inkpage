@@ -69,36 +69,8 @@ public:
     /// Apply style to the widget
     static void style(QWidget* widget);
 
-    /// Overrides automatically detected dark theme / light theme settings
-    static void setDarkTheme(bool isLightTheme, bool isDarkTheme);
-
-    /// Returns true if the dark theme is currently set for the application.
-    static bool isDarkTheme();
-
-    /// Converts an action's icon for use in a dark theme.
-    /// \param action Pointer to the QAction to be converted.
-    /// \param iconSize The size of the action's icon.
-    /// \param devicePixelRatioF The device pixel ratio factor.
-    static void convertActionForDarkTheme(QAction* action, QSize iconSize, qreal devicePixelRatioF);
-
-    /// Converts an icon for use in a dark theme.
-    /// \param icon The icon to be converted.
-    /// \param iconSize The size of the icon.
-    /// \param devicePixelRatioF The device pixel ratio factor.
-    static QIcon convertIconForDarkTheme(QIcon icon, QSize iconSize, qreal devicePixelRatioF);
-
-    /// Converts an action's icon for use in a dark theme.
-    /// \param action Pointer to the QAction to be converted.
-    /// \param iconSize The size of the action's icon.
-    /// \param devicePixelRatioF The device pixel ratio factor.
-    template<typename Container>
-    static void convertActionsForDarkTheme(const Container& actions, QSize iconSize, qreal devicePixelRatioF)
-    {
-        for (QAction* action : actions)
-        {
-            convertActionForDarkTheme(action, iconSize, devicePixelRatioF);
-        }
-    }
+    /// Sets the light color scheme for the application (the dark mode is not supported)
+    static void setLightTheme();
 
     /// Checks menu accessibility for all descendants of the specified widget.
     /// \param widget The widget whose descendants are to be checked.

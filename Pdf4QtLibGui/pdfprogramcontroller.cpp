@@ -349,18 +349,6 @@ void PDFActionManager::initActions(QSize iconSize, bool initializeStampActions)
     m_iconSize = iconSize;
 }
 
-void PDFActionManager::styleActions()
-{
-    if (pdf::PDFWidgetUtils::isDarkTheme())
-    {
-        qreal devicePixelRatio = qGuiApp->devicePixelRatio();
-
-        // Convert icons to dark theme icons
-        pdf::PDFWidgetUtils::convertActionsForDarkTheme(m_actions, m_iconSize, devicePixelRatio);
-        pdf::PDFWidgetUtils::convertActionsForDarkTheme(m_additionalActions, m_iconSize, devicePixelRatio);
-    }
-}
-
 bool PDFActionManager::hasActions(const std::initializer_list<Action>& actionTypes) const
 {
     for (Action actionType : actionTypes)

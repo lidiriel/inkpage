@@ -133,10 +133,6 @@ void PDFViewerSettings::readSettings(QSettings& settings, const pdf::PDFCMSSetti
     m_settings.m_customAuthorName = settings.value("customAuthorName", defaultSettings.m_customAuthorName).toString();
     settings.endGroup();
 
-    settings.beginGroup("ColorScheme");
-    m_settings.m_colorScheme = static_cast<ColorScheme>(settings.value("colorScheme", int(defaultSettings.m_colorScheme)).toInt());
-    settings.endGroup();
-
     // Language
     m_settings.m_language = pdf::PDFApplicationTranslator::loadSettings(settings);
 
@@ -244,10 +240,6 @@ void PDFViewerSettings::writeSettings(QSettings& settings)
     settings.setValue("customAuthorName", m_settings.m_customAuthorName);
     settings.endGroup();
 
-    settings.beginGroup("ColorScheme");
-    settings.setValue("colorScheme", int(m_settings.m_colorScheme));
-    settings.endGroup();
-
     pdf::PDFApplicationTranslator::saveSettings(settings, m_settings.m_language);
 }
 
@@ -320,30 +312,6 @@ void PDFViewerSettings::setColorTolerance(pdf::PDFReal colorTolerance)
     }
 }
 
-void PDFViewerSettings::setColorScheme(ColorScheme colorScheme)
-{
-    if (m_settings.m_colorScheme != colorScheme)
-    {
-        m_settings.m_colorScheme = colorScheme;
-        Q_EMIT settingsChanged();
-    }
-}
-
-PDFViewerSettings::ColorScheme PDFViewerSettings::getColorSchemeStatic()
-{
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QCoreApplication::organizationName(), QCoreApplication::applicationName());
-    settings.beginGroup("ColorScheme");
-    const ColorScheme colorScheme = static_cast<ColorScheme>(settings.value("colorScheme", int(AutoScheme)).toInt());
-    settings.endGroup();
-
-    return colorScheme;
-}
-
-PDFViewerSettings::ColorScheme PDFViewerSettings::getColorScheme() const
-{
-    return m_settings.m_colorScheme;
-}
-
 PDFViewerSettings::Settings::Settings() :
     m_features(pdf::PDFRenderer::getDefaultFeatures()),
     m_rendererEngine(pdf::RendererEngine::Blend2D_MultiThread),
@@ -373,7 +341,6 @@ PDFViewerSettings::Settings::Settings() :
     m_signatureUseSystemStore(true),
     m_autoGenerateBookmarks(true),
     m_authorNameMode(pdf::PDFAuthorSettings::AuthorNameMode::Anonymous),
-    m_colorScheme(AutoScheme),
     m_sidebarButtonIconSize(SidebarButtonIconSizeLarge),
     m_showSidebarOnDocumentOpen(true),
     m_smoothWheelScrolling(true),

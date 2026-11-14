@@ -195,11 +195,6 @@ PDFViewerSettingsDialog::PDFViewerSettingsDialog(const PDFViewerSettings::Settin
     ui->authorNameModeComboBox->addItem(tr("System user name"), static_cast<int>(pdf::PDFAuthorSettings::AuthorNameMode::SystemUserName));
     ui->authorNameModeComboBox->addItem(tr("Custom name"), static_cast<int>(pdf::PDFAuthorSettings::AuthorNameMode::CustomName));
 
-    // UI Color Schemes
-    ui->colorSchemeCombo->addItem(tr("Automatic (or via command line)"), static_cast<int>(PDFViewerSettings::AutoScheme));
-    ui->colorSchemeCombo->addItem(tr("Light scheme"), static_cast<int>(PDFViewerSettings::LightScheme));
-    ui->colorSchemeCombo->addItem(tr("Dark scheme"), static_cast<int>(PDFViewerSettings::DarkScheme));
-
     ui->sidebarButtonIconSizeComboBox->addItem(tr("Small"), static_cast<int>(PDFViewerSettings::SidebarButtonIconSizeSmall));
     ui->sidebarButtonIconSizeComboBox->addItem(tr("Medium"), static_cast<int>(PDFViewerSettings::SidebarButtonIconSizeMedium));
     ui->sidebarButtonIconSizeComboBox->addItem(tr("Large"), static_cast<int>(PDFViewerSettings::SidebarButtonIconSizeLarge));
@@ -393,7 +388,6 @@ void PDFViewerSettingsDialog::loadData()
     ui->maximumRedoStepsEdit->setValue(m_settings.m_maximumRedoSteps);
     ui->developerModeCheckBox->setChecked(m_settings.m_allowDeveloperMode);
     ui->logicalPixelZoomCheckBox->setChecked(m_settings.m_features.testFlag(pdf::PDFRenderer::LogicalSizeZooming));
-    ui->colorSchemeCombo->setCurrentIndex(ui->colorSchemeCombo->findData(static_cast<int>(m_settings.m_colorScheme)));
     ui->sidebarButtonIconSizeComboBox->setCurrentIndex(ui->sidebarButtonIconSizeComboBox->findData(static_cast<int>(m_settings.m_sidebarButtonIconSize)));
     ui->showSidebarOnDocumentOpenCheckBox->setChecked(m_settings.m_showSidebarOnDocumentOpen);
     ui->smoothMiddleMouseScrollingCheckBox->setChecked(m_settings.m_smoothWheelScrolling);
@@ -486,10 +480,6 @@ void PDFViewerSettingsDialog::saveData()
     if (sender == ui->languageCombo)
     {
         m_settings.m_language = static_cast<pdf::PDFApplicationTranslator::ELanguage>(ui->languageCombo->currentData().toInt());
-    }
-    else if (sender == ui->colorSchemeCombo)
-    {
-        m_settings.m_colorScheme = static_cast<PDFViewerSettings::ColorScheme>(ui->colorSchemeCombo->currentData().toInt());
     }
     else if (sender == ui->sidebarButtonIconSizeComboBox)
     {

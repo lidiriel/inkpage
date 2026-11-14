@@ -270,7 +270,6 @@ public:
     void addAdditionalAction(QAction* action);
 
     void initActions(QSize iconSize, bool initializeStampActions);
-    void styleActions();
 
 private:
     bool hasActions(const std::initializer_list<Action>& actionTypes) const;

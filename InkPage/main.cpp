@@ -50,15 +50,11 @@ int main(int argc, char *argv[])
     QGuiApplication::setDesktopFileName("io.github.inkpage");
 
     QCommandLineOption noDrm("no-drm", "Disable DRM settings of documents.");
-    QCommandLineOption lightGui("theme-light", "Use a light theme for the GUI.");
-    QCommandLineOption darkGui("theme-dark", "Use a dark theme for the GUI.");
     QCommandLineOption configPath = pdf::PDFSettings::getConfigPathOption();
 
     QCommandLineParser parser;
     parser.setApplicationDescription(QCoreApplication::applicationName());
     parser.addOption(noDrm);
-    parser.addOption(lightGui);
-    parser.addOption(darkGui);
     parser.addOption(configPath);
     parser.addHelpOption();
     parser.addVersionOption();
@@ -75,30 +71,7 @@ int main(int argc, char *argv[])
     translator.loadSettings();
     translator.installTranslator();
 
-    bool isLightGui = false;
-    bool isDarkGui = false;
-    const pdfviewer::PDFViewerSettings::ColorScheme colorScheme = pdfviewer::PDFViewerSettings::getColorSchemeStatic();
-    switch (colorScheme)
-    {
-        case pdfviewer::PDFViewerSettings::AutoScheme:
-            isLightGui = parser.isSet(lightGui);
-            isDarkGui = parser.isSet(darkGui);
-            break;
-
-        case pdfviewer::PDFViewerSettings::LightScheme:
-            isLightGui = true;
-            break;
-
-        case pdfviewer::PDFViewerSettings::DarkScheme:
-            isDarkGui = true;
-            break;
-
-        default:
-            Q_ASSERT(false);
-            break;
-    }
-
-    pdf::PDFWidgetUtils::setDarkTheme(isLightGui, isDarkGui);
+    pdf::PDFWidgetUtils::setLightTheme();
 
     QIcon appIcon(":/app-icon.svg");
     QApplication::setWindowIcon(appIcon);
