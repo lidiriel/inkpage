@@ -257,18 +257,21 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
         ui->menuStamp->addAction(action);
     }
 
-    // Page control
+    // Page control (inkpage: a toolbar of its own, after the main toolbar)
+    QToolBar* navigationToolBar = new QToolBar(tr("Navigation"), this);
+    navigationToolBar->setObjectName("NavigationToolBar");
+    adjustToolbar(navigationToolBar);
+    navigationToolBar->addAction(ui->actionGoToDocumentStart);
+    navigationToolBar->addAction(ui->actionGoToPreviousPage);
+    navigationToolBar->addWidget(m_pageNumberSpinBox);
+    navigationToolBar->addWidget(m_pageNumberLabel);
+    navigationToolBar->addAction(ui->actionGoToNextPage);
+    navigationToolBar->addAction(ui->actionGoToDocumentEnd);
+    addToolBar(Qt::TopToolBarArea, navigationToolBar);
+
     ui->mainToolBar->addSeparator();
-    ui->mainToolBar->addAction(ui->actionGoToDocumentStart);
-    ui->mainToolBar->addAction(ui->actionGoToPreviousPage);
-    ui->mainToolBar->addWidget(m_pageNumberSpinBox);
-    ui->mainToolBar->addWidget(m_pageNumberLabel);
-    ui->mainToolBar->addAction(ui->actionGoToNextPage);
-    ui->mainToolBar->addAction(ui->actionGoToDocumentEnd);
 
     // Zoom (inkpage: at the bottom right, in the status bar)
-    ui->mainToolBar->addSeparator();
-
     m_pageZoomSpinBox = new QDoubleSpinBox(this);
     m_pageZoomSpinBox->setObjectName("pageZoomSpinBox");
     m_pageZoomSpinBox->setMinimum(pdf::PDFDrawWidgetProxy::getMinZoom() * 100);

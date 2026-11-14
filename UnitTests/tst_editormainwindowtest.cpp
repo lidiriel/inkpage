@@ -45,6 +45,7 @@ private slots:
     void initTestCase();
     void statusBarVisibilityIsRemembered();
     void zoomIsInStatusBar();
+    void navigationToolBar();
 
 private:
     static QSettings settings();
@@ -121,6 +122,35 @@ void EditorMainWindowTest::zoomIsInStatusBar()
         QVERIFY(action);
         QVERIFY(!mainToolBar->actions().contains(action));
     }
+}
+
+void EditorMainWindowTest::navigationToolBar()
+{
+    PDFEditorMainWindow window;
+    QToolBar* navigationToolBar = window.findChild<QToolBar*>("NavigationToolBar");
+    QVERIFY(navigationToolBar);
+    QCOMPARE(window.toolBarArea(navigationToolBar), Qt::TopToolBarArea);
+
+    QStringList names;
+    for (QAction* action : navigationToolBar->actions())
+    {
+        if (QWidget* widget = navigationToolBar->widgetForAction(action); widget && !qobject_cast<QToolButton*>(widget))
+        {
+            names << widget->objectName();
+        }
+        else
+        {
+            names << action->objectName();
+        }
+    }
+    QCOMPARE(names, (QStringList{ "actionGoToDocumentStart", "actionGoToPreviousPage", "pageNumberSpinBox", "pageNumberLabel", "actionGoToNextPage", "actionGoToDocumentEnd" }));
+
+    // On the first row, after the main toolbar (the Pages toolbar starts the second row)
+    QToolBar* mainToolBar = window.findChild<QToolBar*>("mainToolBar");
+    QToolBar* pagesToolBar = window.findChild<QToolBar*>("PagesToolBar");
+    QVERIFY(!window.toolBarBreak(navigationToolBar));
+    QVERIFY(window.toolBarBreak(pagesToolBar));
+    QVERIFY(!mainToolBar->actions().contains(window.findChild<QAction*>("actionGoToNextPage")));
 }
 
 QTEST_MAIN(EditorMainWindowTest)
