@@ -977,6 +977,12 @@ QMenu* PDFEditorMainWindow::createPopupMenu()
     // The context menu of the toolbars and of the dock widgets
     QMenu* menu = QMainWindow::createPopupMenu();
 
+    // inkpage: the advanced find is opened by Edit > Advanced Find, it is not listed here
+    if (menu && m_advancedFindDockWidget)
+    {
+        menu->removeAction(m_advancedFindDockWidget->toggleViewAction());
+    }
+
     if (menu && m_toolBarPositionMenu)
     {
         updateToolBarPositionActions();

@@ -37,6 +37,8 @@
 #include <QSpinBox>
 #include <QDockWidget>
 
+#include <memory>
+
 using namespace pdfviewer;
 
 /// Tests of the main window of inkpage: its menus, toolbars and status bar
@@ -265,6 +267,23 @@ void EditorMainWindowTest::stickyNoteIsInInsertToolBar()
 
     QToolBar* mainToolBar = window.findChild<QToolBar*>("mainToolBar");
     QVERIFY(!mainToolBar->findChild<QToolButton*>("insertStickyNoteButton"));
+
+    // The context menu of the toolbars lists the toolbars and the docks, not the advanced find
+    std::unique_ptr<QMenu> popupMenu(window.createPopupMenu());
+    QVERIFY(popupMenu);
+    QStringList popupTexts;
+    for (QAction* action : popupMenu->actions())
+    {
+        popupTexts << action->text();
+    }
+    QVERIFY(popupTexts.contains("Standard"));
+    QAction* advancedFind = window.findChild<QAction*>("actionAdvancedFind");
+    QVERIFY(advancedFind);
+    QVERIFY(!popupMenu->actions().contains(advancedFind));
+
+    // It stays in the Edit menu
+    QMenu* editMenu = window.findChild<QMenu*>("menuEdit");
+    QVERIFY(editMenu && editMenu->actions().contains(advancedFind));
 
     // Optimize Images is in the Tools menu only, not in the standard toolbar
     QAction* optimizeImages = window.findChild<QAction*>("actionOptimizeImages");
