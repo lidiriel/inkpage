@@ -2935,6 +2935,186 @@ void PDFDocumentBuilder::setAnnotationBlendMode(PDFObjectReference annotation,
     mergeTo(annotation, annotationObject);
 }
 
+PDFObjectReference PDFDocumentBuilder::createOptionalContentGroup(QString name,
+                                                                bool visible,
+                                                                bool printed)
+{
+    auto writeState = [](bool state) { return WrapName(state ? "ON" : "OFF"); };
+
+    PDFObjectFactory objectBuilder;
+    objectBuilder.beginDictionary();
+    objectBuilder.beginDictionaryItem("Type");
+    objectBuilder << WrapName("OCG");
+    objectBuilder.endDictionaryItem();
+    objectBuilder.beginDictionaryItem("Name");
+    objectBuilder << name;
+    objectBuilder.endDictionaryItem();
+    objectBuilder.beginDictionaryItem("Usage");
+    objectBuilder.beginDictionary();
+    objectBuilder.beginDictionaryItem("View");
+    objectBuilder.beginDictionary();
+    objectBuilder.beginDictionaryItem("ViewState");
+    objectBuilder << writeState(visible);
+    objectBuilder.endDictionaryItem();
+    objectBuilder.endDictionary();
+    objectBuilder.endDictionaryItem();
+    objectBuilder.beginDictionaryItem("Print");
+    objectBuilder.beginDictionary();
+    objectBuilder.beginDictionaryItem("PrintState");
+    objectBuilder << writeState(printed);
+    objectBuilder.endDictionaryItem();
+    objectBuilder.endDictionary();
+    objectBuilder.endDictionaryItem();
+    objectBuilder.endDictionary();
+    objectBuilder.endDictionaryItem();
+    objectBuilder.endDictionary();
+    const PDFObjectReference group = addObject(objectBuilder.takeObject());
+    const PDFObject groupObject = PDFObject::createReference(group);
+
+    auto appendToArray = [this](PDFDictionaryBuilder& dictionary, const char* key, const PDFObject& item)
+    {
+        const PDFObject arrayObject = m_storage.getObject(dictionary.get(key));
+        PDFArrayBuilder array = arrayObject.isArray() ? PDFArrayBuilder(*arrayObject.getArray()) : PDFArrayBuilder();
+        array.appendItem(item);
+        dictionary.setEntry(PDFInplaceOrMemoryString(key), PDFObject::createArray(std::move(array)));
+    };
+
+    const PDFDictionary* catalog = m_storage.getDictionaryFromObject(m_storage.getObjectByReference(getCatalogReference()));
+    const PDFObject propertiesObject = catalog ? catalog->get("OCProperties") : PDFObject();
+    const PDFDictionary* existingProperties = m_storage.getDictionaryFromObject(propertiesObject);
+    PDFDictionaryBuilder properties = existingProperties ? PDFDictionaryBuilder(*existingProperties) : PDFDictionaryBuilder();
+    appendToArray(properties, "OCGs", groupObject);
+
+    // Default configuration: the layer is listed (Order), hidden if needed (OFF),
+    // and the view and print usages are applied automatically (AS)
+    const PDFDictionary* existingConfiguration = m_storage.getDictionaryFromObject(properties.get("D"));
+    PDFDictionaryBuilder configuration = existingConfiguration ? PDFDictionaryBuilder(*existingConfiguration) : PDFDictionaryBuilder();
+    appendToArray(configuration, "Order", groupObject);
+    if (!visible)
+    {
+        appendToArray(configuration, "OFF", groupObject);
+    }
+
+    PDFArrayBuilder automaticStates;
+    bool hasViewEvent = false;
+    bool hasPrintEvent = false;
+    const PDFObject automaticStatesObject = m_storage.getObject(configuration.get("AS"));
+    if (const PDFArray* existingAutomaticStates = automaticStatesObject.isArray() ? automaticStatesObject.getArray() : nullptr)
+    {
+        for (size_t i = 0; i < existingAutomaticStates->getCount(); ++i)
+        {
+            const PDFObject usageObject = existingAutomaticStates->getItem(i);
+            const PDFDictionary* usage = m_storage.getDictionaryFromObject(usageObject);
+            if (!usage)
+            {
+                automaticStates.appendItem(usageObject);
+                continue;
+            }
+
+            const PDFObject event = m_storage.getObject(usage->get("Event"));
+            const bool isView = event.isName() && event.getString() == "View";
+            const bool isPrint = event.isName() && event.getString() == "Print";
+            hasViewEvent = hasViewEvent || isView;
+            hasPrintEvent = hasPrintEvent || isPrint;
+
+            PDFDictionaryBuilder updatedUsage(*usage);
+            if (isView || isPrint)
+            {
+                appendToArray(updatedUsage, "OCGs", groupObject);
+            }
+            automaticStates.appendItem(PDFObject::createDictionary(std::move(updatedUsage)));
+        }
+    }
+
+    auto appendAutomaticState = [&automaticStates, &groupObject](const char* event)
+    {
+        PDFArrayBuilder groups;
+        groups.appendItem(groupObject);
+        PDFArrayBuilder category;
+        category.appendItem(PDFObject::createName(QByteArray(event)));
+        PDFDictionaryBuilder usage;
+        usage.setEntry(PDFInplaceOrMemoryString("Event"), PDFObject::createName(QByteArray(event)));
+        usage.setEntry(PDFInplaceOrMemoryString("OCGs"), PDFObject::createArray(std::move(groups)));
+        usage.setEntry(PDFInplaceOrMemoryString("Category"), PDFObject::createArray(std::move(category)));
+        automaticStates.appendItem(PDFObject::createDictionary(std::move(usage)));
+    };
+
+    if (!hasViewEvent)
+    {
+        appendAutomaticState("View");
+    }
+    if (!hasPrintEvent)
+    {
+        appendAutomaticState("Print");
+    }
+    configuration.setEntry(PDFInplaceOrMemoryString("AS"), PDFObject::createArray(std::move(automaticStates)));
+
+    const PDFObject configurationObject = properties.get("D");
+    if (existingConfiguration && configurationObject.isReference())
+    {
+        setObject(configurationObject.getReference(), PDFObject::createDictionary(std::move(configuration)));
+    }
+    else
+    {
+        properties.setEntry(PDFInplaceOrMemoryString("D"), PDFObject::createDictionary(std::move(configuration)));
+    }
+
+    PDFObject updatedProperties = PDFObject::createDictionary(std::move(properties));
+    if (existingProperties && propertiesObject.isReference())
+    {
+        setObject(propertiesObject.getReference(), std::move(updatedProperties));
+    }
+    else
+    {
+        setCatalogOptionalContentProperties(addObject(std::move(updatedProperties)));
+    }
+
+    return group;
+}
+
+PDFObjectReference PDFDocumentBuilder::findOptionalContentGroup(QString name) const
+{
+    PDFDocumentDataLoaderDecorator loader(&m_storage);
+    const PDFDictionary* catalog = m_storage.getDictionaryFromObject(m_storage.getObjectByReference(getCatalogReference()));
+    const PDFDictionary* properties = catalog ? m_storage.getDictionaryFromObject(catalog->get("OCProperties")) : nullptr;
+    if (!properties)
+    {
+        return PDFObjectReference();
+    }
+
+    for (const PDFObjectReference& group : loader.readReferenceArrayFromDictionary(properties, "OCGs"))
+    {
+        const PDFDictionary* groupDictionary = m_storage.getDictionaryFromObject(m_storage.getObjectByReference(group));
+        if (groupDictionary && loader.readTextStringFromDictionary(groupDictionary, "Name", QString()) == name)
+        {
+            return group;
+        }
+    }
+
+    return PDFObjectReference();
+}
+
+void PDFDocumentBuilder::setAnnotationOptionalContent(PDFObjectReference annotation,
+                                                      PDFObjectReference optionalContentGroup)
+{
+    PDFObjectFactory objectBuilder;
+
+    objectBuilder.beginDictionary();
+    objectBuilder.beginDictionaryItem("OC");
+    if (optionalContentGroup.isValid())
+    {
+        objectBuilder << optionalContentGroup;
+    }
+    else
+    {
+        objectBuilder << PDFObject();
+    }
+    objectBuilder.endDictionaryItem();
+    objectBuilder.endDictionary();
+    PDFObject annotationObject = objectBuilder.takeObject();
+    mergeTo(annotation, annotationObject);
+}
+
 /* START GENERATED CODE */
 
 PDFObjectReference PDFDocumentBuilder::appendPage(QRectF mediaBox)

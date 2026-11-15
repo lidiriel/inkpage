@@ -1672,6 +1672,31 @@ public:
     void setAnnotationBlendMode(PDFObjectReference annotation,
                                 BlendMode blendMode);
 
+    /// Creates a layer (optional content group) and adds it to the optional
+    /// content properties of the catalog, which are created if missing. The layer
+    /// is appended to the list of layers shown to the user (Order). Its view
+    /// and print states are written in its usage and applied by the automatic
+    /// states (AS) of the default configuration.
+    /// \param name Name of the layer shown to the user
+    /// \param visible Is the layer shown?
+    /// \param printed Is the layer printed?
+    /// \returns Reference to the layer
+    PDFObjectReference createOptionalContentGroup(QString name,
+                                                  bool visible = true,
+                                                  bool printed = true);
+
+    /// Returns the first layer (optional content group) of the catalog with
+    /// the name, or an invalid reference, if there is none.
+    /// \param name Name of the layer
+    PDFObjectReference findOptionalContentGroup(QString name) const;
+
+    /// Puts the annotation in a layer (entry OC): the annotation is shown only
+    /// when the layer is shown. An invalid reference removes the annotation from its layer.
+    /// \param annotation Annotation
+    /// \param optionalContentGroup Layer (optional content group)
+    void setAnnotationOptionalContent(PDFObjectReference annotation,
+                                      PDFObjectReference optionalContentGroup);
+
     /// Creates signature dictionary of a digital signature, the type of the
     /// created dictionary is Sig. Use the overload with the type to create
     /// a dictionary of a document timestamp.

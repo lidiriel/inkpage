@@ -132,6 +132,7 @@ private slots:
     void imageAnnotationKeepsItsAppearance();
     void pastedImageBecomesImageAnnotation();
     void highlighterCreatesTranslucentInk();
+    void annotationIsHiddenWithItsLayer();
     void colorOfInlineTextChangesItsText();
     void attachedFileIsReplaced();
     void pointSnapsToOtherAnnotation();
@@ -2922,6 +2923,71 @@ void AnnotationSelectionTest::pastedImageBecomesImageAnnotation()
     const QRectF largeRectangle = PDFAnnotation::parse(&fixture.document->getStorage(), fixture.pageAnnotations().back())->getRectangle().normalized();
     QVERIFY(largeRectangle.width() <= 300.0 - 72.0 + 0.5);
     QVERIFY(std::abs(largeRectangle.width() / largeRectangle.height() - 2.0) < 0.01);
+}
+
+void AnnotationSelectionTest::annotationIsHiddenWithItsLayer()
+{
+    PDFDocumentBuilder builder;
+    const PDFObjectReference page = builder.appendPage(QRectF(0, 0, 200, 200));
+    const PDFObjectReference square = builder.createAnnotationSquare(page, QRectF(50, 50, 100, 100), 0.0, Qt::black, Qt::black, "Title", QString(), QString());
+    QVERIFY(!builder.findOptionalContentGroup("Notes").isValid());
+
+    // The first layer creates the optional content properties, the second one is added to them
+    const PDFObjectReference notes = builder.createOptionalContentGroup("Notes");
+    const PDFObjectReference answers = builder.createOptionalContentGroup("Answers", false, false);
+    QCOMPARE(builder.findOptionalContentGroup("Notes"), notes);
+    QCOMPARE(builder.findOptionalContentGroup("Answers"), answers);
+    QVERIFY(!builder.findOptionalContentGroup("Background").isValid());
+    builder.setAnnotationOptionalContent(square, notes);
+
+    const PDFDocument document = builder.build();
+    const PDFOptionalContentProperties* properties = document.getCatalog()->getOptionalContentProperties();
+    QVERIFY(properties->isValid());
+    QCOMPARE(properties->getAllOptionalContentGroups(), (std::vector<PDFObjectReference>{ notes, answers }));
+    QCOMPARE(properties->getOptionalContentGroup(notes).getName(), QString("Notes"));
+    QCOMPARE(properties->getOptionalContentGroup(answers).getName(), QString("Answers"));
+
+    // Shown in the layer list (Order), hidden layer not shown and not printed
+    const PDFObject order = document.getObject(properties->getDefaultConfiguration().getOrder());
+    QVERIFY(order.isArray());
+    QCOMPARE(order.getArray()->getCount(), size_t(2));
+    PDFOptionalContentActivity viewActivity(&document, OCUsage::View, nullptr);
+    QCOMPARE(viewActivity.getState(notes), OCState::ON);
+    QCOMPARE(viewActivity.getState(answers), OCState::OFF);
+    PDFOptionalContentActivity printActivity(&document, OCUsage::Print, nullptr);
+    QCOMPARE(printActivity.getState(notes), OCState::ON);
+    QCOMPARE(printActivity.getState(answers), OCState::OFF);
+
+    const PDFAnnotationPtr annotation = PDFAnnotation::parse(&document.getStorage(), square);
+    QCOMPARE(annotation->getOptionalContent(), notes);
+
+    // The black square is drawn only when its layer is shown
+    auto render = [&document](PDFOptionalContentActivity* activity)
+    {
+        QImage image(200, 200, QImage::Format_RGB32);
+        image.fill(Qt::white);
+        PDFCMSManager cms(nullptr);
+        PDFFontCache fontCache(32, 32);
+        const PDFModifiedDocument modified(const_cast<PDFDocument*>(&document), activity);
+        fontCache.setDocument(modified);
+        PDFAnnotationManager renderer(&fontCache, nullptr, &cms, activity, PDFMeshQualitySettings(), PDFRenderer::getDefaultFeatures(), PDFAnnotationManager::Target::View, nullptr);
+        renderer.setDocument(modified);
+
+        QPainter painter(&image);
+        PDFTextLayoutGetter getter(nullptr, 0);
+        QList<PDFRenderError> errors;
+        const QTransform transform = PDFRenderer::createPagePointToDevicePointMatrix(document.getCatalog()->getPage(0), QRectF(0, 0, 200, 200));
+        renderer.drawPage(&painter, 0, nullptr, getter, transform, PDFColorConvertor(), errors);
+        return image.pixelColor(100, 100);
+    };
+    QCOMPARE(render(&viewActivity), QColor(Qt::black));
+    viewActivity.setState(notes, OCState::OFF);
+    QCOMPARE(render(&viewActivity), QColor(Qt::white));
+
+    // Removed from its layer: always shown
+    builder.setAnnotationOptionalContent(square, PDFObjectReference());
+    const PDFDocument documentWithoutLayer = builder.build();
+    QVERIFY(!PDFAnnotation::parse(&documentWithoutLayer.getStorage(), square)->getOptionalContent().isValid());
 }
 
 void AnnotationSelectionTest::colorOfInlineTextChangesItsText()
