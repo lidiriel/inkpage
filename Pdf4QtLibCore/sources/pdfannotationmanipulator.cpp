@@ -29,6 +29,7 @@
 #include <QUuid>
 #include <QFont>
 #include <QFontMetricsF>
+#include <QtMath>
 #include <QBuffer>
 #include <QPainterPath>
 #include <QRegularExpression>
@@ -1984,6 +1985,18 @@ bool PDFAnnotationManipulator::eraseInk(PDFDocumentBuilder* builder, PDFObjectRe
         return false;
     }
 
+    bool isErased = false;
+    const std::vector<QPolygonF> shapes = eraseStrokes(parts.shapes, center, radius, &isErased);
+    if (!isErased || shapes.empty())
+    {
+        return false;
+    }
+
+    return setParts(builder, annotation, shapes);
+}
+
+std::vector<QPolygonF> PDFAnnotationManipulator::eraseStrokes(const std::vector<QPolygonF>& strokes, const QPointF& center, PDFReal radius, bool* isErasedResult)
+{
     // Jakub Melka: each segment of a stroke is cut by the circle. The parameters of the
     // intersections of the line (start + t * (end - start)) with the circle are the roots
     // of a quadratic equation. The segment is affected, if the interval between the roots
@@ -1991,8 +2004,10 @@ bool PDFAnnotationManipulator::eraseInk(PDFDocumentBuilder* builder, PDFObjectRe
     std::vector<QPolygonF> shapes;
     bool isErased = false;
 
-    for (const QPolygonF& stroke : parts.shapes)
+    for (const QPolygonF& stroke : strokes)
     {
+        const size_t firstPiece = shapes.size();
+        bool isStrokeErased = false;
         QPolygonF current;
         auto finishStroke = [&shapes, &current]()
         {
@@ -2041,7 +2056,7 @@ bool PDFAnnotationManipulator::eraseInk(PDFDocumentBuilder* builder, PDFObjectRe
                 continue;
             }
 
-            isErased = true;
+            isStrokeErased = true;
 
             if (t1 > 0.0)
             {
@@ -2058,18 +2073,230 @@ bool PDFAnnotationManipulator::eraseInk(PDFDocumentBuilder* builder, PDFObjectRe
         if (stroke.size() == 1 && current.isEmpty())
         {
             // The stroke is a single point, which is in the circle
-            isErased = true;
+            isStrokeErased = true;
         }
 
         finishStroke();
+
+        if (!isStrokeErased)
+        {
+            // The stroke is out of the circle, it has been copied
+            continue;
+        }
+
+        isErased = true;
+
+        // inkpage: a closed stroke (the outline of a shape) cut at several places has its first
+        // and its last piece connected at its first point: they are joined into one piece
+        const bool isClosed = stroke.size() > 2 && stroke.front() == stroke.back();
+        if (isClosed && shapes.size() >= firstPiece + 2 && shapes[firstPiece].front() == stroke.front() && shapes.back().back() == stroke.back())
+        {
+            QPolygonF joined = shapes.back();
+            joined.removeLast();
+            joined << shapes[firstPiece];
+            shapes[firstPiece] = std::move(joined);
+            shapes.pop_back();
+        }
     }
 
-    if (!isErased || shapes.empty())
+    if (isErasedResult)
+    {
+        *isErasedResult = isErased;
+    }
+
+    return isErased ? shapes : strokes;
+}
+
+bool PDFAnnotationManipulator::isStrokeInCircle(const QPolygonF& stroke, const QPointF& center, PDFReal radius)
+{
+    auto isPointInCircle = [&center, radius](const QPointF& point) { return QLineF(center, point).length() <= radius; };
+
+    if (stroke.size() == 1)
+    {
+        return isPointInCircle(stroke.front());
+    }
+
+    for (qsizetype i = 1; i < stroke.size(); ++i)
+    {
+        // Distance of the center from the segment: the nearest point of the segment
+        // is the projection of the center, limited to the segment
+        const QPointF start = stroke[i - 1];
+        const QPointF direction = stroke[i] - start;
+        const PDFReal length2 = QPointF::dotProduct(direction, direction);
+        const PDFReal t = length2 > 0.0 ? qBound(0.0, QPointF::dotProduct(center - start, direction) / length2, 1.0) : 0.0;
+        if (isPointInCircle(start + direction * t))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+PDFAnnotationManipulator::EraserStrokes PDFAnnotationManipulator::getEraserStrokes(const PDFAnnotation* annotation)
+{
+    EraserStrokes result;
+    if (!annotation)
+    {
+        return result;
+    }
+
+    result.penWidth = annotation->getBorder().getWidth();
+
+    auto closed = [](QPolygonF polygon)
+    {
+        if (polygon.size() > 2 && polygon.front() != polygon.back())
+        {
+            polygon << polygon.front();
+        }
+        return polygon;
+    };
+
+    // The straight sides of a shape get points about two points apart: an ink is drawn
+    // as a smooth curve through its points, it stays straight between close points
+    // (the sides would bulge after the conversion to an ink)
+    auto densified = [](const QPolygonF& polygon)
+    {
+        QPolygonF result;
+        for (qsizetype i = 0; i < polygon.size(); ++i)
+        {
+            if (i > 0)
+            {
+                const QLineF side(polygon[i - 1], polygon[i]);
+                const int count = int(std::floor(side.length() / 2.0));
+                for (int j = 1; j < count; ++j)
+                {
+                    result << side.pointAt(qreal(j) / count);
+                }
+            }
+            result << polygon[i];
+        }
+        return result;
+    };
+
+    switch (annotation->getType())
+    {
+        case AnnotationType::Ink:
+        {
+            const PDFInkAnnotation* inkAnnotation = static_cast<const PDFInkAnnotation*>(annotation);
+            const QPainterPath& path = inkAnnotation->getInkPath();
+            if (inkAnnotation->isDefinedByPath())
+            {
+                // Curves are replaced by lines (the erased ink is written as an ink list)
+                for (const QPolygonF& polygon : path.toSubpathPolygons())
+                {
+                    result.strokes.push_back(polygon);
+                }
+            }
+            else
+            {
+                QPolygonF stroke;
+                for (int i = 0, count = path.elementCount(); i < count; ++i)
+                {
+                    const QPainterPath::Element element = path.elementAt(i);
+                    if (element.isMoveTo() && !stroke.isEmpty())
+                    {
+                        result.strokes.push_back(stroke);
+                        stroke.clear();
+                    }
+                    stroke << QPointF(element.x, element.y);
+                }
+                if (!stroke.isEmpty())
+                {
+                    result.strokes.push_back(stroke);
+                }
+            }
+            result.isInk = true;
+            result.isSupported = true;
+            break;
+        }
+
+        case AnnotationType::Line:
+        {
+            const QLineF line = static_cast<const PDFLineAnnotation*>(annotation)->getLine();
+            result.strokes.push_back(densified(QPolygonF({ line.p1(), line.p2() })));
+            result.isSupported = true;
+            break;
+        }
+
+        case AnnotationType::Polyline:
+        case AnnotationType::Polygon:
+        {
+            const std::vector<QPointF> points = getPolygonalPoints(static_cast<const PDFPolygonalGeometryAnnotation*>(annotation));
+            QPolygonF polygon(QList<QPointF>(points.cbegin(), points.cend()));
+            if (annotation->getType() == AnnotationType::Polygon)
+            {
+                polygon = closed(polygon);
+                result.isFilled = !static_cast<const PDFPolygonalGeometryAnnotation*>(annotation)->getInteriorColor().empty();
+            }
+            if (!polygon.isEmpty())
+            {
+                result.strokes.push_back(densified(polygon));
+            }
+            result.isSupported = !result.strokes.empty();
+            break;
+        }
+
+        case AnnotationType::Square:
+        {
+            // Drawn on its rectangle (see PDFSimpleGeometryAnnotation::draw)
+            const QRectF rectangle = annotation->getRectangle();
+            result.strokes.push_back(densified(closed(QPolygonF({ rectangle.topLeft(), rectangle.topRight(), rectangle.bottomRight(), rectangle.bottomLeft() }))));
+            result.isFilled = !static_cast<const PDFSimpleGeometryAnnotation*>(annotation)->getInteriorColor().empty();
+            result.isSupported = true;
+            break;
+        }
+
+        case AnnotationType::Circle:
+        {
+            // Drawn in its rectangle reduced by the pen width (see PDFSimpleGeometryAnnotation::draw),
+            // sampled with points about one point apart (at least 64 points)
+            const QRectF rectangle = annotation->getRectangle().adjusted(result.penWidth, result.penWidth, -result.penWidth, -result.penWidth);
+            const PDFReal rx = rectangle.width() / 2.0;
+            const PDFReal ry = rectangle.height() / 2.0;
+            const PDFReal perimeter = M_PI * (3.0 * (rx + ry) - std::sqrt((3.0 * rx + ry) * (rx + 3.0 * ry)));
+            const int count = qBound(64, int(std::ceil(perimeter)), 4096);
+
+            QPolygonF ellipse;
+            for (int i = 0; i <= count; ++i)
+            {
+                const PDFReal angle = 2.0 * M_PI * i / count;
+                ellipse << rectangle.center() + QPointF(rx * std::cos(angle), ry * std::sin(angle));
+            }
+            result.strokes.push_back(ellipse);
+            result.isFilled = !static_cast<const PDFSimpleGeometryAnnotation*>(annotation)->getInteriorColor().empty();
+            result.isSupported = rectangle.isValid();
+            break;
+        }
+
+        default:
+            break;
+    }
+
+    return result;
+}
+
+bool PDFAnnotationManipulator::convertToInk(PDFDocumentBuilder* builder, PDFObjectReference annotation, const std::vector<QPolygonF>& strokes)
+{
+    const PDFObjectStorage* storage = builder ? builder->getStorage() : nullptr;
+    const PDFDictionary* dictionary = storage ? storage->getDictionaryFromObject(storage->getObject(annotation)) : nullptr;
+    if (!dictionary || strokes.empty())
     {
         return false;
     }
 
-    return setParts(builder, annotation, shapes);
+    // The entries of the geometry of the shape are removed, the others (color, border,
+    // opacity, blend mode, author, dates, layer, popup...) are kept
+    PDFDictionaryBuilder inkDictionary(*dictionary);
+    for (const char* key : { "L", "LE", "LL", "LLE", "LLO", "Cap", "CP", "IT", "Measure", "Vertices", "Path", "IC", "RD", "BE", "CO", "AP", "AS", "InkList" })
+    {
+        inkDictionary.removeEntry(key);
+    }
+    inkDictionary.setEntry(PDFInplaceOrMemoryString("Subtype"), PDFObject::createName(QByteArray("Ink")));
+    builder->setObject(annotation, PDFObject::createDictionary(std::move(inkDictionary)));
+
+    // The ink list, the rectangle and the appearance
+    return setParts(builder, annotation, strokes);
 }
 
 bool PDFAnnotationManipulator::setParts(PDFDocumentBuilder* builder, PDFObjectReference annotation, const std::vector<QPolygonF>& shapes)

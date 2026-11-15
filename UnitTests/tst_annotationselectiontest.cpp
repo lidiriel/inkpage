@@ -135,6 +135,9 @@ private slots:
     void pastedImageBecomesImageAnnotation();
     void highlighterCreatesTranslucentInk();
     void inkIsDrawnAsSmoothCurve();
+    void eraserCutsStrokesOfTheNoteLayer();
+    void strokeEraserRemovesWholeStrokes();
+    void eraserIgnoresHiddenNoteLayer();
     void penKeepsEveryPreciseMove();
     void annotationIsHiddenWithItsLayer();
     void drawingToolsPutTheirAnnotationsInTheNoteLayer();
@@ -3114,6 +3117,196 @@ void AnnotationSelectionTest::inkIsDrawnAsSmoothCurve()
     QCOMPARE(pixel(QPointF(60, 100)), QColor(Qt::black));
     QCOMPARE(pixel(QPointF(60, 105)), QColor(Qt::white));
     QCOMPARE(pixel(QPointF(60, 95)), QColor(Qt::white));
+}
+
+/// Drives an eraser by the mouse (subpixel positions of the page points)
+struct EraserDriver
+{
+    SelectionFixture& fixture;
+    PDFEraserTool& tool;
+
+    void send(QEvent::Type type, QPointF pagePoint)
+    {
+        const QPointF position = fixture.pageToDevice().map(pagePoint);
+        const Qt::MouseButton button = (type == QEvent::MouseMove) ? Qt::NoButton : Qt::LeftButton;
+        const Qt::MouseButtons buttons = (type == QEvent::MouseButtonRelease) ? Qt::MouseButtons(Qt::NoButton) : Qt::MouseButtons(Qt::LeftButton);
+        QMouseEvent event(type, position, fixture.widget.mapToGlobal(position), button, buttons, Qt::NoModifier);
+        switch (type)
+        {
+            case QEvent::MouseButtonPress:
+                tool.mousePressEvent(&fixture.widget, &event);
+                break;
+            case QEvent::MouseButtonRelease:
+                tool.mouseReleaseEvent(&fixture.widget, &event);
+                break;
+            default:
+                tool.mouseMoveEvent(&fixture.widget, &event);
+                break;
+        }
+    }
+
+    /// Drags the eraser along the line, the release is optional
+    void drag(QPointF start, QPointF end, bool release = true)
+    {
+        send(QEvent::MouseButtonPress, start);
+        for (int i = 1; i <= 10; ++i)
+        {
+            send(QEvent::MouseMove, start + (end - start) * (i / 10.0));
+        }
+        if (release)
+        {
+            send(QEvent::MouseButtonRelease, end);
+        }
+    }
+};
+
+/// Connects the tool to the fixture: the modified document is applied (as in the application)
+static void connectTool(SelectionFixture& fixture, PDFWidgetTool* tool)
+{
+    QObject::connect(&fixture.tools, &PDFToolManager::documentModified, tool, [&fixture, tool](PDFModifiedDocument modified)
+    {
+        ++fixture.modificationCount;
+        fixture.document = modified;
+        fixture.apply(PDFModifiedDocument(fixture.document, nullptr, modified.getFlags()));
+        tool->setDocument(PDFModifiedDocument(fixture.document, nullptr, modified.getFlags()));
+    });
+    tool->setDocument(PDFModifiedDocument(fixture.document, nullptr));
+    tool->setActive(true);
+}
+
+void AnnotationSelectionTest::eraserCutsStrokesOfTheNoteLayer()
+{
+    PDFDocumentBuilder builder;
+    const PDFObjectReference page = builder.appendPage(QRectF(0, 0, 300, 300));
+    const PDFObjectReference ink = builder.createAnnotationInk(page, QPolygonF({ QPointF(50, 100), QPointF(250, 100) }), 2.0, Qt::black, "Title", QString(), QString());
+    const PDFObjectReference otherInk = builder.createAnnotationInk(page, QPolygonF({ QPointF(50, 150), QPointF(250, 150) }), 2.0, Qt::black, "Title", QString(), QString());
+    const PDFObjectReference rectangle = builder.createAnnotationPolygon(page, QPolygonF({ QPointF(50, 180), QPointF(250, 180), QPointF(250, 260), QPointF(50, 260) }), 3.0, QColor(), Qt::blue, "Title", QString(), QString());
+    const PDFObjectReference ellipse = builder.createAnnotationCircle(page, QRectF(20, 20, 40, 40), 1.0, Qt::yellow, Qt::red, "Title", QString(), QString());
+    builder.setAnnotationNoteLayer(ink);
+    builder.setAnnotationNoteLayer(rectangle);
+    const PDFObjectReference notes = builder.setAnnotationNoteLayer(ellipse);
+    SelectionFixture fixture(builder.build());
+
+    QAction action;
+    action.setCheckable(true);
+    PDFEraserTool tool(fixture.widget.getDrawWidgetProxy(), &fixture.tools, &action, nullptr, PDFEraserTool::Mode::Precise);
+    connectTool(fixture, &tool);
+    tool.setEraserSize(10.0);
+    EraserDriver driver{ fixture, tool };
+
+    auto strokes = [&fixture](PDFObjectReference annotation)
+    {
+        return PDFAnnotationManipulator::getEraserStrokes(PDFAnnotation::parse(&fixture.document->getStorage(), annotation).data());
+    };
+
+    // A vertical drag through the strokes: the document is changed at the release only
+    driver.drag(QPointF(150, 80), QPointF(150, 280), false);
+    QVERIFY(tool.isErasing());
+    QCOMPARE(fixture.modificationCount, 0);
+    driver.send(QEvent::MouseButtonRelease, QPointF(150, 280));
+    QVERIFY(!tool.isErasing());
+    QCOMPARE(fixture.modificationCount, 1);
+
+    // The ink of the note layer is cut at the eraser (radius 5 + half of the width 1)
+    PDFAnnotationManipulator::EraserStrokes inkStrokes = strokes(ink);
+    QCOMPARE(inkStrokes.strokes.size(), size_t(2));
+    QVERIFY(std::abs(inkStrokes.strokes[0].back().x() - 144.0) < 0.01);
+    QVERIFY(std::abs(inkStrokes.strokes[1].front().x() - 156.0) < 0.01);
+
+    // The ink, which is not in the note layer, is not erased
+    QCOMPARE(strokes(otherInk).strokes.size(), size_t(1));
+
+    // The rectangle is converted to an ink (the same reference, color, width and layer)
+    // cut at its top and its bottom side
+    const PDFAnnotationPtr converted = PDFAnnotation::parse(&fixture.document->getStorage(), rectangle);
+    QCOMPARE(converted->getType(), AnnotationType::Ink);
+    QCOMPARE(converted->getOptionalContent(), notes);
+    QCOMPARE(converted->getBorder().getWidth(), 3.0);
+    QCOMPARE(PDFAnnotation::getDrawColorFromAnnotationColor(converted->getColor(), 1.0), QColor(Qt::blue));
+    QCOMPARE(strokes(rectangle).strokes.size(), size_t(2));
+    QVERIFY(!fixture.entry(rectangle, "Vertices").isArray());
+    QVERIFY(!fixture.entry(rectangle, "AP").isNull());
+
+    // A filled shape is erased whole, even if the eraser touches only its border
+    const std::vector<PDFObjectReference> annotationsBefore = fixture.pageAnnotations();
+    QVERIFY(std::count(annotationsBefore.cbegin(), annotationsBefore.cend(), ellipse) == 1);
+    driver.drag(QPointF(70, 40), QPointF(64, 40));
+    QCOMPARE(fixture.modificationCount, 2);
+    const std::vector<PDFObjectReference> annotations = fixture.pageAnnotations();
+    QVERIFY(std::find(annotations.cbegin(), annotations.cend(), ellipse) == annotations.cend());
+
+    // An ink erased completely is deleted
+    driver.drag(QPointF(40, 100), QPointF(260, 100));
+    QCOMPARE(fixture.modificationCount, 3);
+    const std::vector<PDFObjectReference> remaining = fixture.pageAnnotations();
+    QVERIFY(std::find(remaining.cbegin(), remaining.cend(), ink) == remaining.cend());
+
+    // Nothing touched: the document is not modified
+    driver.drag(QPointF(280, 20), QPointF(290, 30));
+    QCOMPARE(fixture.modificationCount, 3);
+}
+
+void AnnotationSelectionTest::strokeEraserRemovesWholeStrokes()
+{
+    PDFDocumentBuilder builder;
+    const PDFObjectReference page = builder.appendPage(QRectF(0, 0, 300, 300));
+    const PDFObjectReference ink = builder.createAnnotationInk(page, Polygons{ QPolygonF({ QPointF(50, 100), QPointF(250, 100) }), QPolygonF({ QPointF(50, 200), QPointF(250, 200) }) },
+                                                               2.0, Qt::black, "Title", QString(), QString());
+    const PDFObjectReference line = builder.createAnnotationLine(page, QRectF(), QPointF(50, 250), QPointF(250, 250), 1.0, QColor(), Qt::red, "Title", QString(), QString(), AnnotationLineEnding::None, AnnotationLineEnding::None);
+    builder.setAnnotationNoteLayer(ink);
+    builder.setAnnotationNoteLayer(line);
+    SelectionFixture fixture(builder.build());
+
+    QAction action;
+    action.setCheckable(true);
+    PDFEraserTool tool(fixture.widget.getDrawWidgetProxy(), &fixture.tools, &action, nullptr, PDFEraserTool::Mode::WholeStroke);
+    connectTool(fixture, &tool);
+    tool.setEraserSize(10.0);
+    EraserDriver driver{ fixture, tool };
+
+    // A click on the first stroke removes it, the second stays whole
+    driver.drag(QPointF(120, 103), QPointF(120, 103));
+    QCOMPARE(fixture.modificationCount, 1);
+    const PDFAnnotationManipulator::EraserStrokes strokes = PDFAnnotationManipulator::getEraserStrokes(PDFAnnotation::parse(&fixture.document->getStorage(), ink).data());
+    QCOMPARE(strokes.strokes.size(), size_t(1));
+    QCOMPARE(strokes.strokes.front().front(), QPointF(50, 200));
+    QCOMPARE(strokes.strokes.front().back(), QPointF(250, 200));
+
+    // The last stroke: the ink is deleted; a touched line is deleted too
+    driver.drag(QPointF(200, 195), QPointF(200, 255));
+    QCOMPARE(fixture.modificationCount, 2);
+    QVERIFY(fixture.pageAnnotations().empty());
+}
+
+void AnnotationSelectionTest::eraserIgnoresHiddenNoteLayer()
+{
+    PDFDocumentBuilder builder;
+    const PDFObjectReference page = builder.appendPage(QRectF(0, 0, 300, 300));
+    const PDFObjectReference ink = builder.createAnnotationInk(page, QPolygonF({ QPointF(50, 100), QPointF(250, 100) }), 2.0, Qt::black, "Title", QString(), QString());
+    const PDFObjectReference notes = builder.setAnnotationNoteLayer(ink);
+    SelectionFixture fixture(builder.build());
+
+    // The note layer is hidden in the view
+    PDFOptionalContentActivity activity(fixture.document.data(), OCUsage::View, nullptr);
+    activity.setState(notes, OCState::OFF);
+    fixture.apply(PDFModifiedDocument());
+    fixture.apply(PDFModifiedDocument(fixture.document, &activity));
+
+    QAction action;
+    action.setCheckable(true);
+    PDFEraserTool tool(fixture.widget.getDrawWidgetProxy(), &fixture.tools, &action, nullptr, PDFEraserTool::Mode::Precise);
+    connectTool(fixture, &tool);
+    EraserDriver driver{ fixture, tool };
+
+    driver.drag(QPointF(150, 80), QPointF(150, 120));
+    QCOMPARE(fixture.modificationCount, 0);
+    QCOMPARE(fixture.pageAnnotations().size(), size_t(1));
+
+    // Shown again: the ink is erased
+    activity.setState(notes, OCState::ON);
+    driver.drag(QPointF(150, 80), QPointF(150, 120));
+    QCOMPARE(fixture.modificationCount, 1);
+    fixture.apply(PDFModifiedDocument(fixture.document, nullptr));
 }
 
 void AnnotationSelectionTest::penKeepsEveryPreciseMove()

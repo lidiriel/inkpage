@@ -284,6 +284,45 @@ public:
     /// \returns true, if the annotation has been modified
     static bool eraseInk(PDFDocumentBuilder* builder, PDFObjectReference annotation, const QPointF& center, PDFReal radius);
 
+    /// Erases the parts of the strokes, which are in the circle (see \ref eraseInk). The strokes
+    /// are cut at the border of the circle, the remaining pieces are returned (a piece has at
+    /// least two points).
+    /// \param strokes Strokes (page coordinates)
+    /// \param center Center of the erased circle
+    /// \param radius Radius of the erased circle
+    /// \param isErased Is set to true, if something has been erased (optional)
+    static std::vector<QPolygonF> eraseStrokes(const std::vector<QPolygonF>& strokes, const QPointF& center, PDFReal radius, bool* isErased = nullptr);
+
+    /// Returns true, if the stroke (a polyline) goes through the circle
+    /// \param stroke Stroke (page coordinates)
+    /// \param center Center of the circle
+    /// \param radius Radius of the circle
+    static bool isStrokeInCircle(const QPolygonF& stroke, const QPointF& center, PDFReal radius);
+
+    /// Lines of an annotation, which can be erased by the eraser
+    struct EraserStrokes
+    {
+        std::vector<QPolygonF> strokes;     ///< Lines drawn by the annotation (page coordinates, a closed shape ends at its first point)
+        PDFReal penWidth = 0.0;             ///< Width of the lines
+        bool isInk = false;                 ///< Ink annotation (a shape is converted to an ink, when a part of it is erased)
+        bool isFilled = false;              ///< Filled shape (polygon, rectangle, ellipse): it is erased whole
+        bool isSupported = false;           ///< The annotation can be erased (ink, line, polyline, polygon, rectangle, ellipse)
+    };
+
+    /// Returns the lines of an annotation for the eraser: the strokes of an ink, the
+    /// line of a line, the outline of a shape (an ellipse is sampled)
+    /// \param annotation Annotation
+    static EraserStrokes getEraserStrokes(const PDFAnnotation* annotation);
+
+    /// Converts a shape annotation (line, polyline, polygon, square, circle) into an ink
+    /// annotation with the strokes. The style (color, width, opacity, author, layer...)
+    /// and the reference of the annotation are kept, so its place in the drawing order too.
+    /// \param builder Document builder
+    /// \param annotation Annotation
+    /// \param strokes Strokes of the ink (page coordinates, each with at least two points)
+    /// \returns true, if the annotation has been converted
+    static bool convertToInk(PDFDocumentBuilder* builder, PDFObjectReference annotation, const std::vector<QPolygonF>& strokes);
+
     /// Removes a part of the annotation (see \ref getParts)
     /// \param builder Document builder
     /// \param annotation Annotation

@@ -165,6 +165,8 @@ public:
         CreateEllipse,
         CreateFreehandCurve,
         CreateHighlighter,
+        Eraser,
+        StrokeEraser,
         DeleteAnnotation,
         CreateStampApproved,
         CreateStampAsIs,

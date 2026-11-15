@@ -27,6 +27,8 @@
 #include "pdfcompiler.h"
 #include "pdfwidgetformmanager.h"
 #include "pdfwidgetannotation.h"
+#include "pdfannotationmanipulator.h"
+#include "pdfoptionalcontent.h"
 #include "pdfwidgetutils.h"
 #include "pdfcatalog.h"
 #include "insertpagenumbersdialog.h"
@@ -1491,6 +1493,378 @@ void PDFCreateFreehandCurveTool::resetTool()
     m_pageIndex = -1;
     m_pickedPoints.clear();
     setEventCompressionSuspended(false);
+}
+
+PDFEraserTool::PDFEraserTool(PDFDrawWidgetProxy* proxy, PDFToolManager* toolManager, QAction* action, QObject* parent, Mode mode) :
+    BaseClass(proxy, action, parent),
+    m_toolManager(toolManager),
+    m_styleManager(nullptr),
+    m_mode(mode)
+{
+    // The size of the eraser is set by the widths of the style toolbar (medium: 10 points);
+    // both erasers have the same size
+    PDFAnnotationStyle defaultStyle;
+    defaultStyle.strokeColor = QColor();
+    defaultStyle.fillColor = QColor();
+    defaultStyle.penWidth = 2.0 * ERASER_SIZE_SCALE;
+
+    m_styleManager = new PDFAnnotationStyleManager(this, PDFAnnotationStyleManager::PenWidth, defaultStyle, PDFAnnotationStyleSettings::STYLE_ERASER);
+    m_styleManager->setPenWidthScale(ERASER_SIZE_SCALE);
+    connect(m_styleManager, &PDFAnnotationStyleManager::styleChanged, this, &PDFEraserTool::updateCursor);
+
+    // The circle of the cursor follows the zoom
+    connect(proxy, &PDFDrawWidgetProxy::drawSpaceChanged, this, &PDFEraserTool::updateCursor);
+}
+
+PDFEraserTool::~PDFEraserTool()
+{
+    cancelErasing();
+}
+
+PDFReal PDFEraserTool::getEraserSize() const
+{
+    return m_styleManager->getStyle().penWidth;
+}
+
+void PDFEraserTool::setEraserSize(PDFReal size)
+{
+    PDFAnnotationStyle style = m_styleManager->getStyle();
+    style.penWidth = size;
+    m_styleManager->setStyle(style);
+}
+
+void PDFEraserTool::setActiveImpl(bool active)
+{
+    BaseClass::setActiveImpl(active);
+
+    if (active)
+    {
+        m_styleManager->activateStyle();
+        updateCursor();
+    }
+    else
+    {
+        cancelErasing();
+        m_styleManager->deactivateStyle();
+    }
+}
+
+void PDFEraserTool::updateCursor()
+{
+    if (!isActive())
+    {
+        return;
+    }
+
+    // Size of a point on the screen (the zoom of the displayed pages)
+    const PDFWidgetSnapshot snapshot = getProxy()->getSnapshot();
+    const PDFReal scale = snapshot.items.empty() ? 1.0 : std::sqrt(std::abs(snapshot.items.front().pageToDeviceMatrix.determinant()));
+    setCursor(PDFAnnotationCursors::createEraserCursor(getEraserSize() * scale));
+}
+
+void PDFEraserTool::startErasing(PDFInteger pageIndex, const QPointF& pagePoint)
+{
+    cancelErasing();
+
+    const PDFDocument* document = getDocument();
+    const PDFPage* page = document ? document->getCatalog()->getPage(pageIndex) : nullptr;
+    if (!page || !document->getStorage().getSecurityHandler()->isAllowed(PDFSecurityHandler::Permission::ModifyInteractiveItems))
+    {
+        return;
+    }
+
+    // The active layer is the note layer (see PDFDocumentBuilder::setAnnotationNoteLayer),
+    // its annotations are erased only when it is visible
+    const PDFOptionalContentProperties* properties = document->getCatalog()->getOptionalContentProperties();
+    PDFObjectReference layer;
+    if (properties && properties->isValid())
+    {
+        for (const PDFObjectReference& reference : properties->getAllOptionalContentGroups())
+        {
+            if (properties->getOptionalContentGroup(reference).getName() == QLatin1String(PDFDocumentBuilder::NOTE_LAYER_NAME))
+            {
+                layer = reference;
+                break;
+            }
+        }
+    }
+
+    const PDFOptionalContentActivity* activity = getProxy()->getOptionalContentActivity();
+    if (!layer.isValid() || (activity && activity->getState(layer) == OCState::OFF))
+    {
+        return;
+    }
+
+    m_pageIndex = pageIndex;
+    m_lastPoint = pagePoint;
+
+    for (const PDFObjectReference& reference : page->getAnnotations())
+    {
+        const PDFAnnotationPtr annotation = PDFAnnotation::parse(&document->getStorage(), reference);
+        if (!annotation || annotation->getOptionalContent() != layer)
+        {
+            continue;
+        }
+
+        const PDFAnnotation::Flags flags = annotation->getEffectiveFlags();
+        if (flags.testFlag(PDFAnnotation::Hidden) || flags.testFlag(PDFAnnotation::NoView) || flags.testFlag(PDFAnnotation::Locked))
+        {
+            continue;
+        }
+
+        PDFAnnotationManipulator::EraserStrokes strokes = PDFAnnotationManipulator::getEraserStrokes(annotation.data());
+        if (!strokes.isSupported || strokes.strokes.empty())
+        {
+            continue;
+        }
+
+        Item item;
+        item.annotation = reference;
+        item.strokes = std::move(strokes.strokes);
+        item.penWidth = strokes.penWidth;
+        item.isInk = strokes.isInk;
+        item.isFilled = strokes.isFilled;
+        item.color = PDFAnnotation::getDrawColorFromAnnotationColor(annotation->getColor(), annotation->getStrokeOpacity());
+        item.blendMode = annotation->getBlendMode();
+        m_items.push_back(std::move(item));
+    }
+}
+
+void PDFEraserTool::eraseAt(const QPointF& center)
+{
+    const PDFReal radius = getEraserSize() / 2.0;
+
+    for (Item& item : m_items)
+    {
+        if (item.strokes.empty())
+        {
+            continue;
+        }
+
+        // The eraser touches the visible stroke, which is wider than its middle line
+        const PDFReal effectiveRadius = radius + item.penWidth / 2.0;
+
+        if (item.isFilled)
+        {
+            // A filled shape is erased whole, when the eraser is on its border or inside it
+            const QPolygonF& outline = item.strokes.front();
+            if (outline.containsPoint(center, Qt::OddEvenFill) || PDFAnnotationManipulator::isStrokeInCircle(outline, center, effectiveRadius))
+            {
+                item.strokes.clear();
+                item.isModified = true;
+            }
+            continue;
+        }
+
+        if (m_mode == Mode::WholeStroke)
+        {
+            const size_t count = item.strokes.size();
+            item.strokes.erase(std::remove_if(item.strokes.begin(), item.strokes.end(), [&](const QPolygonF& stroke) { return PDFAnnotationManipulator::isStrokeInCircle(stroke, center, effectiveRadius); }), item.strokes.end());
+            item.isModified = item.isModified || item.strokes.size() != count;
+            continue;
+        }
+
+        bool isErased = false;
+        std::vector<QPolygonF> strokes = PDFAnnotationManipulator::eraseStrokes(item.strokes, center, effectiveRadius, &isErased);
+        if (isErased)
+        {
+            item.strokes = std::move(strokes);
+            item.isModified = true;
+        }
+    }
+}
+
+void PDFEraserTool::eraseTo(const QPointF& pagePoint)
+{
+    // The eraser goes along the line from the previous point, so a fast move does
+    // not leave gaps: the circle moves by a quarter of its size at most
+    const QLineF line(m_lastPoint, pagePoint);
+    const PDFReal step = qMax(getEraserSize() / 4.0, 0.25);
+    const int count = qMax(1, int(std::ceil(line.length() / step)));
+    for (int i = 1; i <= count; ++i)
+    {
+        eraseAt(line.pointAt(qreal(i) / count));
+    }
+
+    m_lastPoint = pagePoint;
+    updatePreview();
+}
+
+void PDFEraserTool::updatePreview()
+{
+    if (PDFWidgetAnnotationManager* annotationManager = getProxy()->getAnnotationManager())
+    {
+        std::set<PDFObjectReference> hiddenAnnotations;
+        for (const Item& item : m_items)
+        {
+            if (item.isModified)
+            {
+                hiddenAnnotations.insert(item.annotation);
+            }
+        }
+        annotationManager->setPreviewHiddenAnnotations(std::move(hiddenAnnotations));
+    }
+
+    Q_EMIT getProxy()->repaintNeeded();
+}
+
+void PDFEraserTool::cancelErasing()
+{
+    const bool wasErasing = isErasing();
+    m_pageIndex = -1;
+    m_items.clear();
+
+    if (wasErasing)
+    {
+        updatePreview();
+    }
+}
+
+void PDFEraserTool::finishErasing()
+{
+    const PDFDocument* document = getDocument();
+    const PDFPage* page = (document && m_pageIndex != -1) ? document->getCatalog()->getPage(m_pageIndex) : nullptr;
+    const std::vector<Item> items = std::move(m_items);
+    cancelErasing();
+
+    const bool isModified = std::any_of(items.cbegin(), items.cend(), [](const Item& item) { return item.isModified; });
+    if (!page || !isModified)
+    {
+        return;
+    }
+
+    PDFDocumentModifier modifier(document);
+    PDFDocumentBuilder* builder = modifier.getBuilder();
+    for (const Item& item : items)
+    {
+        if (!item.isModified)
+        {
+            continue;
+        }
+
+        if (item.strokes.empty())
+        {
+            builder->removeAnnotation(page->getPageReference(), item.annotation);
+        }
+        else if (item.isInk)
+        {
+            PDFAnnotationManipulator::setParts(builder, item.annotation, item.strokes);
+        }
+        else
+        {
+            PDFAnnotationManipulator::convertToInk(builder, item.annotation, item.strokes);
+        }
+    }
+    modifier.markAnnotationsChanged();
+
+    if (modifier.finalize())
+    {
+        Q_EMIT m_toolManager->documentModified(PDFModifiedDocument(modifier.getDocument(), nullptr, modifier.getFlags()));
+    }
+}
+
+void PDFEraserTool::drawPage(QPainter* painter,
+                             PDFInteger pageIndex,
+                             const PDFPrecompiledPage* compiledPage,
+                             PDFTextLayoutGetter& layoutGetter,
+                             const QTransform& pagePointToDevicePointMatrix,
+                             const PDFColorConvertor& convertor,
+                             QList<PDFRenderError>& errors) const
+{
+    BaseClass::drawPage(painter, pageIndex, compiledPage, layoutGetter, pagePointToDevicePointMatrix, convertor, errors);
+
+    if (pageIndex != m_pageIndex)
+    {
+        return;
+    }
+
+    // The remaining strokes of the erased annotations, drawn as their ink will be
+    PDFColorConvertor annotationConvertor = convertor;
+    PDFRenderer::applyFeaturesToAnnotationColorConvertor(getProxy()->getFeatures(), annotationConvertor);
+
+    painter->save();
+    painter->setWorldTransform(QTransform(pagePointToDevicePointMatrix), true);
+    painter->setRenderHint(QPainter::Antialiasing);
+    painter->setBrush(Qt::NoBrush);
+
+    for (const Item& item : m_items)
+    {
+        if (!item.isModified || item.strokes.empty() || item.penWidth <= 0.0)
+        {
+            continue;
+        }
+
+        QPen pen(annotationConvertor.convert(item.color, false, false));
+        pen.setWidthF(item.penWidth);
+        pen.setCapStyle(Qt::RoundCap);
+        pen.setJoinStyle(Qt::RoundJoin);
+        painter->setPen(pen);
+        painter->setCompositionMode(item.blendMode == BlendMode::Multiply ? QPainter::CompositionMode_Multiply : QPainter::CompositionMode_SourceOver);
+
+        QPainterPath path;
+        for (const QPolygonF& stroke : item.strokes)
+        {
+            path.addPath(PDFInkAnnotation::createSmoothPath(stroke));
+        }
+        painter->drawPath(path);
+    }
+
+    painter->restore();
+}
+
+void PDFEraserTool::mousePressEvent(QWidget* widget, QMouseEvent* event)
+{
+    Q_UNUSED(widget);
+    event->accept();
+
+    if (event->button() == Qt::LeftButton)
+    {
+        QPointF pagePoint;
+        const PDFInteger pageIndex = getProxy()->getPageUnderPoint(event->position(), &pagePoint);
+        if (pageIndex != -1)
+        {
+            startErasing(pageIndex, pagePoint);
+            if (isErasing())
+            {
+                eraseTo(pagePoint);
+            }
+        }
+    }
+    else if (event->button() == Qt::RightButton)
+    {
+        cancelErasing();
+    }
+}
+
+void PDFEraserTool::mouseMoveEvent(QWidget* widget, QMouseEvent* event)
+{
+    Q_UNUSED(widget);
+    event->accept();
+
+    if (isErasing() && event->buttons().testFlag(Qt::LeftButton))
+    {
+        QPointF pagePoint;
+        if (getProxy()->getPageUnderPoint(event->position(), &pagePoint) == m_pageIndex)
+        {
+            eraseTo(pagePoint);
+        }
+    }
+}
+
+void PDFEraserTool::mouseReleaseEvent(QWidget* widget, QMouseEvent* event)
+{
+    Q_UNUSED(widget);
+    event->accept();
+
+    if (event->button() == Qt::LeftButton && isErasing())
+    {
+        QPointF pagePoint;
+        if (getProxy()->getPageUnderPoint(event->position(), &pagePoint) == m_pageIndex)
+        {
+            eraseTo(pagePoint);
+        }
+        finishErasing();
+    }
 }
 
 PDFCreateStampTool::PDFCreateStampTool(PDFDrawWidgetProxy* proxy, PDFToolManager* toolManager, QActionGroup* actionGroup, QObject* parent) :

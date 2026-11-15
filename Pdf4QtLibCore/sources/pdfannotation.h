@@ -40,6 +40,7 @@
 #include <QPainterPath>
 
 #include <array>
+#include <set>
 
 class QKeyEvent;
 class QMouseEvent;
@@ -1528,6 +1529,11 @@ public:
     Target getTarget() const;
     void setTarget(Target target);
 
+    /// Sets the annotations, which are not drawn, because a tool shows them
+    /// differently while it changes them (the eraser shows the erased strokes)
+    /// \param annotations Annotations, which are not drawn
+    void setPreviewHiddenAnnotations(std::set<PDFObjectReference> annotations) { m_previewHiddenAnnotations = std::move(annotations); }
+
     const PDFOptionalContentActivity* getOptionalActivity() const;
     void setOptionalActivity(const PDFOptionalContentActivity* optionalActivity);
 
@@ -1699,6 +1705,7 @@ protected:
     mutable QMutex m_mutex;
     mutable std::map<PDFInteger, PageAnnotations> m_pageAnnotations;
     Target m_target = Target::View;
+    std::set<PDFObjectReference> m_previewHiddenAnnotations;
 };
 
 }   // namespace pdf

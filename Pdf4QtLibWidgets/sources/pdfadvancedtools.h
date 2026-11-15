@@ -355,6 +355,100 @@ private:
     std::optional<bool> m_compressionBeforeStroke;  ///< Compression of the events before the stroke (set while it is suspended)
 };
 
+/// Eraser (like Xournal++): erases the strokes of the visible annotations of the
+/// active layer (the note layer) under a circle, which follows the mouse. The precise
+/// eraser cuts the strokes at the circle, the stroke eraser removes the touched strokes.
+/// A shape (line, polyline, polygon, rectangle, ellipse) is converted to an ink, when
+/// a part of it is erased; a filled shape is erased whole. While the eraser is dragged,
+/// the erased annotations are shown by the tool; the document is changed once, at the
+/// release of the mouse button (one undo step).
+class PDF4QTLIBWIDGETSSHARED_EXPORT PDFEraserTool : public PDFCreateAnnotationTool
+{
+    Q_OBJECT
+
+private:
+    using BaseClass = PDFCreateAnnotationTool;
+
+public:
+    enum class Mode
+    {
+        Precise,        ///< The strokes are cut at the eraser
+        WholeStroke     ///< The touched strokes are removed
+    };
+
+    /// The size (diameter) of the eraser is the predefined pen width of the style
+    /// toolbar multiplied by this factor (5, 10 and 20 points)
+    static constexpr PDFReal ERASER_SIZE_SCALE = 5.0;
+
+    explicit PDFEraserTool(PDFDrawWidgetProxy* proxy, PDFToolManager* toolManager, QAction* action, QObject* parent, Mode mode);
+    virtual ~PDFEraserTool() override;
+
+    virtual void drawPage(QPainter* painter, PDFInteger pageIndex,
+                          const PDFPrecompiledPage* compiledPage,
+                          PDFTextLayoutGetter& layoutGetter,
+                          const QTransform& pagePointToDevicePointMatrix,
+                          const PDFColorConvertor& convertor,
+                          QList<PDFRenderError>& errors) const override;
+
+    virtual void mousePressEvent(QWidget* widget, QMouseEvent* event) override;
+    virtual void mouseReleaseEvent(QWidget* widget, QMouseEvent* event) override;
+    virtual void mouseMoveEvent(QWidget* widget, QMouseEvent* event) override;
+
+    virtual void setActiveImpl(bool active) override;
+
+    Mode getMode() const { return m_mode; }
+
+    /// Returns the diameter of the eraser (points)
+    PDFReal getEraserSize() const;
+
+    /// Sets the diameter of the eraser (points)
+    void setEraserSize(PDFReal size);
+
+    /// Returns true, while the eraser is dragged
+    bool isErasing() const { return m_pageIndex != -1; }
+
+private:
+    /// Annotation, which can be erased
+    struct Item
+    {
+        PDFObjectReference annotation;
+        std::vector<QPolygonF> strokes;     ///< Remaining strokes (page coordinates)
+        PDFReal penWidth = 0.0;
+        bool isInk = false;
+        bool isFilled = false;
+        bool isModified = false;
+        QColor color;                       ///< Color of the strokes (with the opacity)
+        BlendMode blendMode = BlendMode::Normal;
+    };
+
+    void updateCursor();
+
+    /// Starts erasing on the page: the visible annotations of the active layer are collected
+    void startErasing(PDFInteger pageIndex, const QPointF& pagePoint);
+
+    /// Erases along the line from the previous point to the point
+    void eraseTo(const QPointF& pagePoint);
+
+    /// Erases under the eraser at the center
+    void eraseAt(const QPointF& center);
+
+    /// Writes the erased annotations into the document (one modification)
+    void finishErasing();
+
+    /// Stops erasing without changing the document
+    void cancelErasing();
+
+    /// Shows the erased annotations by the tool (they are not drawn by the annotation manager)
+    void updatePreview();
+
+    PDFToolManager* m_toolManager;
+    PDFAnnotationStyleManager* m_styleManager;
+    Mode m_mode;
+    PDFInteger m_pageIndex = -1;
+    QPointF m_lastPoint;
+    std::vector<Item> m_items;
+};
+
 /// Tool that creates 'stamp' annotations. Multiple types of stamps
 /// are available, user can select a type of stamp (text).
 class PDF4QTLIBWIDGETSSHARED_EXPORT PDFCreateStampTool : public PDFWidgetTool

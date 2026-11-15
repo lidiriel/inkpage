@@ -68,6 +68,7 @@ public:
     static constexpr QLatin1String STYLE_SHAPE = QLatin1String("Shape");
     static constexpr QLatin1String STYLE_FREEHAND = QLatin1String("Freehand");
     static constexpr QLatin1String STYLE_HIGHLIGHTER = QLatin1String("Highlighter");
+    static constexpr QLatin1String STYLE_ERASER = QLatin1String("Eraser");
 
     /// Returns the style stored for the given style id. If no style has been
     /// stored yet, then \p defaultStyle is returned.
@@ -106,6 +107,11 @@ public:
     /// Shapes: a small cross in the color of the shape
     /// \param color Color of the shape
     static QCursor createCrossCursor(QColor color);
+
+    /// Eraser: a circle of the size of the eraser (it is visible on a light
+    /// and on a dark page)
+    /// \param diameter Diameter of the eraser (pixels of the screen)
+    static QCursor createEraserCursor(qreal diameter);
 };
 
 /// Central point of the annotation styles. The annotation tool, which is active,

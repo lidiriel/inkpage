@@ -265,3 +265,10 @@ Pdf4QtLibGui/resources/undo.svg
 Pdf4QtLibGui/resources/annot-highlighter.svg
     from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-tool-highlighter.svg
     license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtLibGui/resources/annot-eraser.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-tool-eraser.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
+Pdf4QtLibGui/resources/annot-stroke-eraser.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-tool-eraser.svg
+          (smaller, with a dashed stroke added by inkpage)
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)

@@ -227,6 +227,8 @@
     <addaction name="actionCreateEllipse"/>
     <addaction name="actionCreateFreehandCurve"/>
     <addaction name="actionCreateHighlighter"/>
+    <addaction name="actionEraser"/>
+    <addaction name="actionStrokeEraser"/>
     <addaction name="menuStamp"/>
     <addaction name="menuTextHighlight"/>
     <addaction name="separator"/>
@@ -1035,6 +1037,36 @@
    </property>
    <property name="toolTip">
     <string>Highlighter - draw a wide translucent line by hand, the text below it stays readable</string>
+   </property>
+  </action>
+  <action name="actionEraser">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="pdf4qtlibgui.qrc">
+     <normaloff>:/resources/annot-eraser.svg</normaloff>:/resources/annot-eraser.svg</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Eraser</string>
+   </property>
+   <property name="toolTip">
+    <string>Eraser - erase a part of the strokes of the note layer (the strokes are cut under the eraser)</string>
+   </property>
+  </action>
+  <action name="actionStrokeEraser">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="pdf4qtlibgui.qrc">
+     <normaloff>:/resources/annot-stroke-eraser.svg</normaloff>:/resources/annot-stroke-eraser.svg</iconset>
+   </property>
+   <property name="text">
+    <string>S&amp;troke Eraser</string>
+   </property>
+   <property name="toolTip">
+    <string>Stroke Eraser - erase the whole strokes of the note layer touched by the eraser</string>
    </property>
   </action>
   <action name="actionDeleteAnnotation">

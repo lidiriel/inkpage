@@ -1213,6 +1213,16 @@ void PDFProgramController::initializeToolManager()
         pdf::PDFCreateFreehandCurveTool* createHighlighterTool = new pdf::PDFCreateFreehandCurveTool(m_pdfWidget->getDrawWidgetProxy(), m_toolManager, action, this, pdf::PDFCreateFreehandCurveTool::Type::Highlighter);
         m_toolManager->addTool(createHighlighterTool);
     }
+    if (QAction* action = m_actionManager->getAction(PDFActionManager::Eraser))
+    {
+        pdf::PDFEraserTool* eraserTool = new pdf::PDFEraserTool(m_pdfWidget->getDrawWidgetProxy(), m_toolManager, action, this, pdf::PDFEraserTool::Mode::Precise);
+        m_toolManager->addTool(eraserTool);
+    }
+    if (QAction* action = m_actionManager->getAction(PDFActionManager::StrokeEraser))
+    {
+        pdf::PDFEraserTool* strokeEraserTool = new pdf::PDFEraserTool(m_pdfWidget->getDrawWidgetProxy(), m_toolManager, action, this, pdf::PDFEraserTool::Mode::WholeStroke);
+        m_toolManager->addTool(strokeEraserTool);
+    }
     if (QActionGroup* stampGroup = m_actionManager->getActionGroup(PDFActionManager::CreateStampGroup))
     {
         pdf::PDFCreateStampTool* createStampTool = new pdf::PDFCreateStampTool(m_pdfWidget->getDrawWidgetProxy(), m_toolManager, stampGroup, this);

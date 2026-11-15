@@ -27,6 +27,8 @@
 #include <QPainter>
 #include <QPixmap>
 
+#include <cmath>
+
 #include "pdfdbgheap.h"
 
 namespace pdf
@@ -92,6 +94,26 @@ QCursor PDFAnnotationCursors::createPenCursor(QColor color, PDFReal penWidth)
     painter.setPen(QPen(outline, 1.5));
     painter.setBrush(color);
     painter.drawEllipse(QPointF(size / 2.0, size / 2.0), diameter / 2.0, diameter / 2.0);
+    painter.end();
+
+    return QCursor(pixmap, size / 2, size / 2);
+}
+
+QCursor PDFAnnotationCursors::createEraserCursor(qreal diameter)
+{
+    diameter = qBound(4.0, diameter, 250.0);
+    const int size = int(std::ceil(diameter)) + 4;
+
+    QPixmap pixmap(size, size);
+    pixmap.fill(Qt::transparent);
+    QPainter painter(&pixmap);
+    painter.setRenderHint(QPainter::Antialiasing);
+    const QPointF center(size / 2.0, size / 2.0);
+    painter.setBrush(Qt::NoBrush);
+    painter.setPen(QPen(Qt::white, 3.0));
+    painter.drawEllipse(center, diameter / 2.0, diameter / 2.0);
+    painter.setPen(QPen(QColor(60, 60, 60), 1.0));
+    painter.drawEllipse(center, diameter / 2.0, diameter / 2.0);
     painter.end();
 
     return QCursor(pixmap, size / 2, size / 2);

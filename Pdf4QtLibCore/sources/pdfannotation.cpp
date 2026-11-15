@@ -1569,7 +1569,8 @@ bool PDFAnnotationManager::isAnnotationDrawEnabled(const PageAnnotation& annotat
     return !(annotationFlags.testFlag(PDFAnnotation::Hidden) || // Annotation is completely hidden
        (m_target == Target::Print && !annotationFlags.testFlag(PDFAnnotation::Print)) || // Target is print and annotation is marked as not printed
        (m_target == Target::View && annotationFlags.testFlag(PDFAnnotation::NoView)) ||  // Target is view, and annotation is disabled for screen
-        annotation.annotation->isReplyTo()); // Annotation is reply to another annotation, display just the first annotation
+        annotation.annotation->isReplyTo() || // Annotation is reply to another annotation, display just the first annotation
+        m_previewHiddenAnnotations.count(annotation.annotation->getSelfReference())); // A tool shows the annotation instead
 }
 
 bool PDFAnnotationManager::isAnnotationDrawnByEditor(const PageAnnotation& annotation) const
