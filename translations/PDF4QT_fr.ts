@@ -27,57 +27,57 @@
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.ui" line="14"/>
         <source>Insert Page Numbers</source>
-        <translation type="unfinished"></translation>
+        <translation>Insérer les numéros de page</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.ui" line="20"/>
         <source>Numbering</source>
-        <translation type="unfinished"></translation>
+        <translation>Numérotation</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.ui" line="26"/>
         <source>Style</source>
-        <translation type="unfinished">Style</translation>
+        <translation>Style</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.ui" line="36"/>
         <source>Format</source>
-        <translation type="unfinished">Format</translation>
+        <translation>Format</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.ui" line="50"/>
         <source>Start number</source>
-        <translation type="unfinished"></translation>
+        <translation>Premier numéro</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.ui" line="70"/>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Aperçu</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.ui" line="87"/>
         <source>Appearance</source>
-        <translation type="unfinished">Appearance</translation>
+        <translation>Apparence</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.ui" line="93"/>
         <source>Font</source>
-        <translation type="unfinished">Font</translation>
+        <translation>Police</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.ui" line="116"/>
         <source>Color</source>
-        <translation type="unfinished">Couleur</translation>
+        <translation>Couleur</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.ui" line="123"/>
         <source>...</source>
-        <translation type="unfinished">…</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.ui" line="130"/>
         <source>Alignment</source>
-        <translation type="unfinished">Alignment</translation>
+        <translation>Alignement</translation>
     </message>
 </context>
 <context>
@@ -169,7 +169,7 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfaboutdialog.ui" line="56"/>
         <source>Double-click a library to open its license text distributed with the application, or its web page.</source>
-        <translation type="unfinished"></translation>
+        <translation>Double-cliquez sur une bibliothèque pour ouvrir le texte de sa licence distribué avec l'application, ou sa page web.</translation>
     </message>
 </context>
 <context>
@@ -222,7 +222,7 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfadvancedfindwidget.ui" line="81"/>
         <source>Use wildcards (* and ?)</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser les jokers (* et ?)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfadvancedfindwidget.ui" line="88"/>
@@ -286,32 +286,32 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.ui" line="36"/>
         <source>Convert:</source>
-        <translation type="unfinished"></translation>
+        <translation>Convertir :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.ui" line="46"/>
         <source>Conversion method:</source>
-        <translation type="unfinished"></translation>
+        <translation>Méthode de conversion :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.ui" line="56"/>
         <source>Threshold (0-255):</source>
-        <translation type="unfinished"></translation>
+        <translation>Seuil (0-255) :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.ui" line="73"/>
         <source>Resolution (DPI):</source>
-        <translation type="unfinished"></translation>
+        <translation>Résolution (DPI) :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.ui" line="96"/>
         <source>Image compression:</source>
-        <translation type="unfinished"></translation>
+        <translation>Compression des images :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.ui" line="106"/>
         <source>Detect Blank Pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Détecter les pages blanches</translation>
     </message>
 </context>
 <context>
@@ -578,17 +578,17 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfdocumentpropertiesdialog.ui" line="197"/>
         <source>XMP Metadata</source>
-        <translation type="unfinished"></translation>
+        <translation>Métadonnées XMP</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfdocumentpropertiesdialog.ui" line="203"/>
         <source>XMP Metadata (XML)</source>
-        <translation type="unfinished"></translation>
+        <translation>Métadonnées XMP (XML)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfdocumentpropertiesdialog.ui" line="221"/>
         <source>Create Default XML Metadata</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer les métadonnées XML par défaut</translation>
     </message>
 </context>
 <context>
@@ -672,7 +672,7 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="206"/>
         <source>Hyperlink to this PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>Lien hypertexte vers ce PDF</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="266"/>
@@ -767,12 +767,12 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="362"/>
         <source>&amp;Fullscreen Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode &amp;plein écran</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="365"/>
         <source>Fullscreen Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode plein écran</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="374"/>
@@ -1032,12 +1032,12 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="782"/>
         <source>Optimize &amp;Images...</source>
-        <translation type="unfinished"></translation>
+        <translation>Optimiser les &amp;images...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="785"/>
         <source>Optimizes embedded images to reduce file size.</source>
-        <translation type="unfinished"></translation>
+        <translation>Optimise les images intégrées pour réduire la taille du fichier.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="794"/>
@@ -1067,47 +1067,47 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="847"/>
         <source>Fit Page</source>
-        <translation type="unfinished">Ajuster la page</translation>
+        <translation>Ajuster la page</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="855"/>
         <source>Fit Page Horizontally</source>
-        <translation type="unfinished">Ajuster la page horizontalement</translation>
+        <translation>Ajuster la page horizontalement</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="863"/>
         <source>Fit Page Vertically</source>
-        <translation type="unfinished">Ajuster la page verticalement</translation>
+        <translation>Ajuster la page verticalement</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="871"/>
         <source>Fit Rectangle</source>
-        <translation type="unfinished">Ajuster le rectangle</translation>
+        <translation>Ajuster au rectangle</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="879"/>
         <source>Fit Bounding Box</source>
-        <translation type="unfinished">Ajuster le cadre de sélection</translation>
+        <translation>Ajuster au cadre englobant</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="887"/>
         <source>Fit Bounding Box Horizontally</source>
-        <translation type="unfinished">Ajuster le cadre de sélection horizontalement</translation>
+        <translation>Ajuster au cadre englobant horizontalement</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="895"/>
         <source>Fit Bounding Box Vertically</source>
-        <translation type="unfinished">Ajuster le cadre de sélection verticalement</translation>
+        <translation>Ajuster au cadre englobant verticalement</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="903"/>
         <source>XYZ</source>
-        <translation type="unfinished">XYZ</translation>
+        <translation>XYZ</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="911"/>
         <source>XYZ (Inherit Zoom)</source>
-        <translation type="unfinished"></translation>
+        <translation>XYZ (conserver le zoom)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="923"/>
@@ -1127,7 +1127,7 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="950"/>
         <source>Insert Page &amp;Numbers...</source>
-        <translation type="unfinished"></translation>
+        <translation>Insérer les &amp;numéros de page...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="962"/>
@@ -1192,12 +1192,12 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1075"/>
         <source>&amp;Delete Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Supprimer des annotations</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1078"/>
         <source>Delete annotations - click on an annotation, or drag a rectangle over several annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer des annotations - cliquez sur une annotation, ou tracez un rectangle sur plusieurs annotations</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1090"/>
@@ -1287,12 +1287,12 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1236"/>
         <source>Page &amp;Geometry...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Géométrie de la page...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1239"/>
         <source>Change page size, margins and content placement.</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifier la taille de la page, les marges et la position du contenu.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1247"/>
@@ -1322,62 +1322,62 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1274"/>
         <source>Recognize &amp;Text (OCR)...</source>
-        <translation type="unfinished"></translation>
+        <translation>Reconnaître le &amp;texte (OCR)...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1277"/>
         <source>Recognize Text (OCR)</source>
-        <translation type="unfinished"></translation>
+        <translation>Reconnaître le texte (OCR)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1280"/>
         <source>Recognize the text of scanned pages, review it and insert an invisible searchable text layer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Reconnaître le texte des pages numérisées, le vérifier et insérer une couche de texte invisible et recherchable.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1285"/>
         <source>&amp;Prepare Scanned Pages...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Préparer les pages numérisées...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1288"/>
         <source>Prepare Scanned Pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Préparer les pages numérisées</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1291"/>
         <source>Crop the scanned pages, split the spreads of a book and straighten the skewed pages before the recognition. The images are not re-encoded.</source>
-        <translation type="unfinished"></translation>
+        <translation>Recadrer les pages numérisées, séparer les doubles pages d'un livre et redresser les pages inclinées avant la reconnaissance. Les images ne sont pas réencodées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1296"/>
         <source>&amp;Batch Recognize Text...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Reconnaître le texte par lots...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1299"/>
         <source>Batch Recognize Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Reconnaître le texte par lots</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1302"/>
         <source>Recognize the text of several PDF files and write the copies with a searchable text layer and the exports.</source>
-        <translation type="unfinished"></translation>
+        <translation>Reconnaître le texte de plusieurs fichiers PDF et écrire les copies avec une couche de texte recherchable et les exports.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1307"/>
         <source>Manage OCR &amp;Languages...</source>
-        <translation type="unfinished"></translation>
+        <translation>Gérer les &amp;langues de l'OCR...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1310"/>
         <source>Manage OCR Languages</source>
-        <translation type="unfinished"></translation>
+        <translation>Gérer les langues de l'OCR</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1313"/>
         <source>Download, import or remove the language models of the text recognition.</source>
-        <translation type="unfinished"></translation>
+        <translation>Télécharger, importer ou supprimer les modèles de langue de la reconnaissance du texte.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1322"/>
@@ -3370,142 +3370,142 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="6"/>
         <source>Optimize Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Optimiser les images</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="27"/>
         <source>Tip: hold Ctrl or Shift while clicking to select multiple images (Ctrl+A selects all). Global Defaults already apply to every image without an override.</source>
-        <translation type="unfinished"></translation>
+        <translation>Astuce : maintenez Ctrl ou Maj en cliquant pour sélectionner plusieurs images (Ctrl+A les sélectionne toutes). Les réglages globaux s'appliquent déjà à chaque image sans réglage particulier.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="41"/>
         <source>Global Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Réglages globaux</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="47"/>
         <source>Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="57"/>
         <source>Color mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode de couleur</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="67"/>
         <source>Goal</source>
-        <translation type="unfinished"></translation>
+        <translation>Objectif</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="77"/>
         <source>Keep original if larger</source>
-        <translation type="unfinished"></translation>
+        <translation>Garder l'original s'il est plus petit</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="84"/>
         <source>Preserve transparency</source>
-        <translation type="unfinished"></translation>
+        <translation>Conserver la transparence</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="98"/>
         <source>Color</source>
-        <translation type="unfinished">Couleur</translation>
+        <translation>Couleur</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="104"/>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="186"/>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="268"/>
         <source>Algorithm</source>
-        <translation type="unfinished">Algorithm</translation>
+        <translation>Algorithme</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="114"/>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="196"/>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="278"/>
         <source>Target DPI</source>
-        <translation type="unfinished"></translation>
+        <translation>DPI cible</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="128"/>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="210"/>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="292"/>
         <source>Resample</source>
-        <translation type="unfinished"></translation>
+        <translation>Rééchantillonnage</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="138"/>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="220"/>
         <source>JPEG quality</source>
-        <translation type="unfinished"></translation>
+        <translation>Qualité JPEG</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="155"/>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="237"/>
         <source>JPEG2000 rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Taux JPEG2000</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="172"/>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="254"/>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="330"/>
         <source>PNG predictor</source>
-        <translation type="unfinished"></translation>
+        <translation>Prédicteur PNG</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="180"/>
         <source>Grayscale</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveaux de gris</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="262"/>
         <source>Bitonal</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitonal</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="302"/>
         <source>Threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>Seuil</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="321"/>
         <source>Auto</source>
-        <translation type="unfinished">Auto</translation>
+        <translation>Auto</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="341"/>
         <source>Selected Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Images sélectionnées</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="347"/>
         <source>Enable compression for selected images</source>
-        <translation type="unfinished"></translation>
+        <translation>Activer la compression des images sélectionnées</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="354"/>
         <source>Override settings for selected images</source>
-        <translation type="unfinished"></translation>
+        <translation>Remplacer les réglages des images sélectionnées</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="405"/>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Aperçu</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="413"/>
         <source>Before</source>
-        <translation type="unfinished"></translation>
+        <translation>Avant</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="449"/>
         <source>After</source>
-        <translation type="unfinished"></translation>
+        <translation>Après</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="493"/>
         <source>Summary</source>
-        <translation type="unfinished"></translation>
+        <translation>Résumé</translation>
     </message>
 </context>
 <context>
@@ -3840,27 +3840,27 @@
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagerangewidget.ui" line="17"/>
         <source>All pages</source>
-        <translation type="unfinished">Toutes les pages</translation>
+        <translation>Toutes les pages</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagerangewidget.ui" line="27"/>
         <source>Even pages</source>
-        <translation type="unfinished">Pages paires</translation>
+        <translation>Pages paires</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagerangewidget.ui" line="34"/>
         <source>Odd pages</source>
-        <translation type="unfinished">Pages impaires</translation>
+        <translation>Pages impaires</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagerangewidget.ui" line="41"/>
         <source>Custom page range:</source>
-        <translation type="unfinished">Plage de pages personnalisée&#xa0;:</translation>
+        <translation>Plage de pages personnalisée :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagerangewidget.ui" line="48"/>
         <source>Visible pages</source>
-        <translation type="unfinished">Pages visibles</translation>
+        <translation>Pages visibles</translation>
     </message>
 </context>
 <context>
@@ -4293,22 +4293,22 @@ li.checked::marker { contenu&#xa0;: &quot;\2612&quot;&#xa0;; }
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="244"/>
         <source>Draw text as real text (print/export)</source>
-        <translation type="unfinished"></translation>
+        <translation>Dessiner le texte comme du vrai texte (impression/export)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="251"/>
         <source>Uses substitute fonts and may look different from the embedded font. Only affects printing and exporting to devices which preserve text (such as SVG), it has no effect on the on-screen page view.</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilise des polices de substitution et peut être différent de la police intégrée. Ne concerne que l'impression et l'export vers des formats qui conservent le texte (comme SVG), sans effet sur l'affichage de la page à l'écran.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="261"/>
         <source>Adjust colors of annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajuster les couleurs des annotations</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="268"/>
         <source>Applies the active color adjustment (inverted colors, grayscale, high contrast, bitonal or custom colors) also to annotations, so they match the adjusted page content. It affects the screen only, printing and exporting of the document are not changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Applique aussi aux annotations l'ajustement des couleurs actif (couleurs inversées, niveaux de gris, contraste élevé, bitonal ou couleurs personnalisées), pour qu'elles correspondent au contenu ajusté de la page. Ne concerne que l'écran, l'impression et l'export du document ne changent pas.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="280"/>
@@ -4323,7 +4323,17 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Smooth pictures&lt;/span&gt; option enables pictures to be transformed into device space coordinates using a high-quality image transformation method. This generally results in better image quality. When disabled, a default fast transformation is used, potentially reducing image quality if the source DPI and device DPI differ. &lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ignore optional content &lt;/span&gt;ignores all optional content settings and renders everything in the content stream. &lt;span style=&quot; font-weight:600;&quot;&gt;Clip to crop box&lt;/span&gt; restricts the rendering area to the page&apos;s crop box, which is usually smaller than the whole page. Graphics outside the crop box aren&apos;t drawn, which can be useful for removing printer marks and similar elements. &lt;span style=&quot; font-weight:600;&quot;&gt;Display page compile/draw time&lt;/span&gt; can be handy for debugging, showing the time taken to compile a page (stored in the cache) and the time taken to render the compiled page contents onto the output device. &lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Using the &lt;span style=&quot; font-weight:600;&quot;&gt;Display annotations&lt;/span&gt; setting, you can enable or disable the display of annotations. If annotations are disabled, the user will not be able to interact with them. &lt;span style=&quot; font-weight:600;&quot;&gt;Adjust colors of annotations&lt;/span&gt; controls whether the active color adjustment, such as inverted colors, is applied to annotations as well, or whether annotations keep their original colors above the adjusted page content. It affects the screen only, printing and exporting of the document are never color adjusted. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;meta charset="utf-8" /&gt;&lt;style type="text/css"&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: "\2610"; }
+li.checked::marker { content: "\2612"; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;"&gt;
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Les réglages du rendu déterminent comment le moteur de rendu traite le contenu des pages et l'apparence des graphiques affichés. L'&lt;span style=" font-weight:600;"&gt;anticrénelage&lt;/span&gt; adoucit l'apparence des formes dessinées, comme les rectangles, les graphiques vectoriels et les lignes, mais ne concerne pas le texte. L'&lt;span style=" font-weight:600;"&gt;anticrénelage du texte&lt;/span&gt;, lui, affine l'apparence des caractères du texte sans toucher aux autres éléments. L'&lt;span style=" font-weight:600;"&gt;anticrénelage &lt;/span&gt;et l'&lt;span style=" font-weight:600;"&gt;anticrénelage du texte &lt;/span&gt;ne concernent que le rendu logiciel. Avec un moteur de rendu matériel comme OpenGL, ces réglages n'ont pas d'effet, car OpenGL rend les images avec l'anticrénelage MSAA (s'il est activé). &lt;/p&gt;
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;L'option &lt;span style=" font-weight:600;"&gt;Images lissées&lt;/span&gt; transforme les images dans les coordonnées du périphérique avec une méthode de haute qualité, ce qui donne en général une meilleure qualité d'image. Désactivée, une transformation rapide par défaut est utilisée, qui peut réduire la qualité si le DPI de la source et celui du périphérique sont différents. &lt;/p&gt;
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Ignorer le contenu optionnel &lt;/span&gt;ignore tous les réglages du contenu optionnel (calques) et rend tout le contenu. &lt;span style=" font-weight:600;"&gt;Limiter à la zone de recadrage&lt;/span&gt; réduit la zone de rendu à la zone de recadrage de la page, en général plus petite que la page entière. Les graphiques hors de cette zone ne sont pas dessinés, ce qui peut servir à enlever les repères d'impression et autres éléments semblables. &lt;span style=" font-weight:600;"&gt;Afficher le temps de compilation/dessin des pages&lt;/span&gt; peut servir au débogage : il montre le temps de compilation d'une page (gardée dans le cache) et le temps de rendu du contenu compilé sur le périphérique de sortie. &lt;/p&gt;
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Le réglage &lt;span style=" font-weight:600;"&gt;Afficher les annotations&lt;/span&gt; active ou désactive l'affichage des annotations. Si elles sont désactivées, l'utilisateur ne peut pas agir sur elles. &lt;span style=" font-weight:600;"&gt;Ajuster les couleurs des annotations&lt;/span&gt; détermine si l'ajustement des couleurs actif, comme les couleurs inversées, s'applique aussi aux annotations, ou si elles gardent leurs couleurs d'origine au-dessus du contenu ajusté de la page. Ne concerne que l'écran, l'impression et l'export du document ne sont jamais ajustés. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="316"/>
@@ -4611,22 +4621,22 @@ li.checked::marker { contenu&#xa0;: &quot;\2612&quot;&#xa0;; }
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="944"/>
         <source>Author Identity</source>
-        <translation type="unfinished"></translation>
+        <translation>Identité de l'auteur</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="950"/>
         <source>Author of new annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>Auteur des nouvelles annotations</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="960"/>
         <source>Custom author name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom d'auteur personnalisé</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="970"/>
         <source>The author name is stored in the document and is visible to anyone who opens it. To protect your privacy, the name of the system user is used only when you explicitly select it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le nom de l'auteur est enregistré dans le document et visible par toute personne qui l'ouvre. Pour protéger votre vie privée, le nom de l'utilisateur du système n'est utilisé que si vous le choisissez explicitement.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="999"/>
@@ -4671,7 +4681,7 @@ li.checked::marker { contenu&#xa0;: &quot;\2612&quot;&#xa0;; }
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1099"/>
         <source>Show sidebar when opening documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher la barre latérale à l'ouverture des documents</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1113"/>
@@ -4686,7 +4696,7 @@ li.checked::marker { contenu&#xa0;: &quot;\2612&quot;&#xa0;; }
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1134"/>
         <source>Smooth mouse wheel scrolling</source>
-        <translation type="unfinished"></translation>
+        <translation>Défilement fluide avec la molette</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1141"/>
@@ -4696,18 +4706,18 @@ li.checked::marker { contenu&#xa0;: &quot;\2612&quot;&#xa0;; }
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1158"/>
         <source>Horizontal mouse wheel speed</source>
-        <translation type="unfinished"></translation>
+        <translation>Vitesse horizontale de la molette</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1165"/>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1179"/>
         <source>%</source>
-        <translation type="unfinished">%</translation>
+        <translation>%</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1172"/>
         <source>Vertical mouse wheel speed</source>
-        <translation type="unfinished"></translation>
+        <translation>Vitesse verticale de la molette</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1188"/>
@@ -4750,7 +4760,7 @@ li.checked::marker { contenu&#xa0;: &quot;\2612&quot;&#xa0;; }
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1259"/>
         <source>Allow editing of read-only form fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Permettre la modification des champs de formulaire en lecture seule</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1275"/>
@@ -4762,17 +4772,24 @@ li.unchecked::marker { content: &quot;\2610&quot;; }
 li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Segoe UI&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can customize the appearance of form fields using the provided settings, including the option to highlight editable fields. You can separately highlight required form fields in red, while other fields can be emphasized in blue. &lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Scripts of forms are not executed. Read-only fields, whose values are calculated by a script, are therefore unlocked, so you can enter their values manually (except in signed documents). You can also allow editing of all read-only fields, for example, when a script locks or unlocks fields depending on entered values. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;meta charset="utf-8" /&gt;&lt;style type="text/css"&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: "\2610"; }
+li.checked::marker { content: "\2612"; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;"&gt;
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Vous pouvez personnaliser l'apparence des champs de formulaire avec ces réglages, notamment mettre en évidence les champs modifiables. Les champs obligatoires peuvent être mis en évidence séparément en rouge, et les autres champs en bleu. &lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Les scripts des formulaires ne sont pas exécutés. Les champs en lecture seule dont la valeur est calculée par un script sont donc déverrouillés, pour que vous puissiez saisir leur valeur à la main (sauf dans les documents signés). Vous pouvez aussi permettre la modification de tous les champs en lecture seule, par exemple quand un script verrouille ou déverrouille des champs selon les valeurs saisies. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1507"/>
         <source>Text Recognition (OCR)</source>
-        <translation type="unfinished"></translation>
+        <translation>Reconnaissance du texte (OCR)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1526"/>
         <source>Manage OCR Languages...</source>
-        <translation type="unfinished"></translation>
+        <translation>Gérer les langues de l'OCR...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1308"/>
@@ -4825,82 +4842,82 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="519"/>
         <source>Text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur du texte</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="54"/>
         <source> mm</source>
-        <translation type="unfinished"></translation>
+        <translation> mm</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="80"/>
         <source>0 B</source>
-        <translation type="unfinished"></translation>
+        <translation>0 o</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="85"/>
         <source>%1 KB</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Ko</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="88"/>
         <source>%1 MB</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Mo</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="191"/>
         <source>Auto</source>
-        <translation type="unfinished">Auto</translation>
+        <translation>Auto</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="192"/>
         <source>Flate</source>
-        <translation type="unfinished"></translation>
+        <translation>Flate</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="195"/>
         <source>JPEG</source>
-        <translation type="unfinished"></translation>
+        <translation>JPEG</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="196"/>
         <source>JPEG2000</source>
-        <translation type="unfinished"></translation>
+        <translation>JPEG2000</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="198"/>
         <source>RunLength</source>
-        <translation type="unfinished"></translation>
+        <translation>RunLength</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="201"/>
         <source>CCITT Group 4</source>
-        <translation type="unfinished"></translation>
+        <translation>CCITT groupe 4</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="202"/>
         <source>JBIG2</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="212"/>
         <source>Nearest</source>
-        <translation type="unfinished"></translation>
+        <translation>Plus proche voisin</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="213"/>
         <source>Bilinear</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilinéaire</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="214"/>
         <source>Bicubic</source>
-        <translation type="unfinished"></translation>
+        <translation>Bicubique</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="215"/>
         <source>Lanczos</source>
-        <translation type="unfinished"></translation>
+        <translation>Lanczos</translation>
     </message>
 </context>
 <context>
@@ -4918,7 +4935,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signdialog.ui" line="26"/>
         <source>Type</source>
-        <translation type="unfinished">Type</translation>
+        <translation>Type</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signdialog.ui" line="36"/>
@@ -4938,7 +4955,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signdialog.ui" line="73"/>
         <source>Timestamp Authority</source>
-        <translation type="unfinished"></translation>
+        <translation>Autorité d'horodatage</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signdialog.ui" line="90"/>
@@ -4969,67 +4986,67 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.cpp" line="48"/>
         <source>Arabic numerals (1, 2, 3, ...)</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiffres arabes (1, 2, 3, ...)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.cpp" line="49"/>
         <source>Uppercase roman numerals (I, II, III, ...)</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiffres romains majuscules (I, II, III, ...)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.cpp" line="50"/>
         <source>Lowercase roman numerals (i, ii, iii, ...)</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiffres romains minuscules (i, ii, iii, ...)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.cpp" line="51"/>
         <source>Uppercase letters (A, B, C, ...)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lettres majuscules (A, B, C, ...)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.cpp" line="52"/>
         <source>Lowercase letters (a, b, c, ...)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lettres minuscules (a, b, c, ...)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.cpp" line="56"/>
         <source>Page %1</source>
-        <translation type="unfinished">Page %1</translation>
+        <translation>Page %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.cpp" line="57"/>
         <source>Page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Page %1 sur %2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.cpp" line="60"/>
         <source>Left</source>
-        <translation type="unfinished">Gauche</translation>
+        <translation>Gauche</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.cpp" line="61"/>
         <source>Center</source>
-        <translation type="unfinished">Center</translation>
+        <translation>Centre</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.cpp" line="62"/>
         <source>Right</source>
-        <translation type="unfinished">Droite</translation>
+        <translation>Droite</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.cpp" line="65"/>
         <source>Pages to Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Pages à numéroter</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.cpp" line="128"/>
         <source>Error</source>
-        <translation type="unfinished">Error</translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/insertpagenumbersdialog.cpp" line="146"/>
         <source>Select Text Color</source>
-        <translation type="unfinished">Sélectionnez la couleur du texte</translation>
+        <translation>Choisir la couleur du texte</translation>
     </message>
 </context>
 <context>
@@ -5453,57 +5470,57 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="459"/>
         <source>Free text annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Annotation de texte libre</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="478"/>
         <source>Select</source>
-        <translation type="unfinished">Sélectionner</translation>
+        <translation>Choisir</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="488"/>
         <source>Left</source>
-        <translation type="unfinished">Gauche</translation>
+        <translation>Gauche</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="489"/>
         <source>Center</source>
-        <translation type="unfinished">Center</translation>
+        <translation>Centre</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="490"/>
         <source>Right</source>
-        <translation type="unfinished">Droite</translation>
+        <translation>Droite</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="500"/>
         <source>Automatically expand annotation to fit text</source>
-        <translation type="unfinished"></translation>
+        <translation>Agrandir automatiquement l'annotation pour contenir le texte</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="503"/>
         <source>Text:</source>
-        <translation type="unfinished"></translation>
+        <translation>Texte :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="504"/>
         <source>Font:</source>
-        <translation type="unfinished"></translation>
+        <translation>Police :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="505"/>
         <source>Size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="506"/>
         <source>Color:</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="507"/>
         <source>Alignment:</source>
-        <translation type="unfinished"></translation>
+        <translation>Alignement :</translation>
     </message>
 </context>
 <context>
@@ -5547,17 +5564,17 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="272"/>
         <source>Select hyperlink rectangle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez le rectangle du lien hypertexte.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="308"/>
         <source>Select target rectangle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez le rectangle cible.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="314"/>
         <source>Select target page.</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez la page cible.</translation>
     </message>
 </context>
 <context>
@@ -5583,12 +5600,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagecontenteditortools.cpp" line="525"/>
         <source>Images (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Images (%1)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagecontenteditortools.cpp" line="526"/>
         <source>All files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les fichiers (*)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagecontenteditortools.cpp" line="528"/>
@@ -5614,7 +5631,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="2684"/>
         <source>Click on an annotation to delete it. Drag a rectangle to delete all annotations inside it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cliquez sur une annotation pour la supprimer. Tracez un rectangle pour supprimer toutes les annotations qu'il contient.</translation>
     </message>
 </context>
 <context>
@@ -7221,7 +7238,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagecontenteditorwidget.cpp" line="246"/>
         <source>%1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -7229,298 +7246,298 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="88"/>
         <source>Page Geometry</source>
-        <translation type="unfinished"></translation>
+        <translation>Géométrie de la page</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="94"/>
         <source>Pages</source>
-        <translation type="unfinished">Pages</translation>
+        <translation>Pages</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="96"/>
         <source>Document page count: 0</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de pages du document : 0</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="99"/>
         <source>All pages</source>
-        <translation type="unfinished">Toutes les pages</translation>
+        <translation>Toutes les pages</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="100"/>
         <source>Odd pages</source>
-        <translation type="unfinished">Pages impaires</translation>
+        <translation>Pages impaires</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="101"/>
         <source>Even pages</source>
-        <translation type="unfinished">Pages paires</translation>
+        <translation>Pages paires</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="102"/>
         <source>Portrait pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Pages en portrait</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="103"/>
         <source>Landscape pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Pages en paysage</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="105"/>
         <source>Page range</source>
-        <translation type="unfinished"></translation>
+        <translation>Plage de pages</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="106"/>
         <source>Subset</source>
-        <translation type="unfinished">Subset</translation>
+        <translation>Sous-ensemble</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="109"/>
         <source>Reference and Target Boxes</source>
-        <translation type="unfinished"></translation>
+        <translation>Zones de référence et cibles</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="112"/>
         <source>Media box</source>
-        <translation type="unfinished"></translation>
+        <translation>Zone de média</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="113"/>
         <source>Crop box</source>
-        <translation type="unfinished"></translation>
+        <translation>Zone de recadrage</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="114"/>
         <source>Bleed box</source>
-        <translation type="unfinished"></translation>
+        <translation>Zone de fond perdu</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="115"/>
         <source>Trim box</source>
-        <translation type="unfinished"></translation>
+        <translation>Zone de coupe</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="116"/>
         <source>Art box</source>
-        <translation type="unfinished"></translation>
+        <translation>Zone graphique</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="118"/>
         <source>Media</source>
-        <translation type="unfinished">Media</translation>
+        <translation>Média</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="119"/>
         <source>Crop</source>
-        <translation type="unfinished">Crop</translation>
+        <translation>Recadrage</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="120"/>
         <source>Bleed</source>
-        <translation type="unfinished">Bleed</translation>
+        <translation>Fond perdu</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="121"/>
         <source>Trim</source>
-        <translation type="unfinished">Trim</translation>
+        <translation>Coupe</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="122"/>
         <source>Art</source>
-        <translation type="unfinished">Art</translation>
+        <translation>Graphique</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="126"/>
         <source>Reference box</source>
-        <translation type="unfinished"></translation>
+        <translation>Zone de référence</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="128"/>
         <source>Apply to</source>
-        <translation type="unfinished"></translation>
+        <translation>Appliquer à</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="136"/>
         <source>Size and Margins</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille et marges</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="139"/>
         <source>Use target page size</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser la taille de page cible</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="141"/>
         <source>Custom</source>
-        <translation type="unfinished">Personnalisée</translation>
+        <translation>Personnalisée</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="142"/>
         <source>A5 148 x 210</source>
-        <translation type="unfinished"></translation>
+        <translation>A5 148 x 210</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="143"/>
         <source>A4 210 x 297</source>
-        <translation type="unfinished"></translation>
+        <translation>A4 210 x 297</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="144"/>
         <source>A3 297 x 420</source>
-        <translation type="unfinished"></translation>
+        <translation>A3 297 x 420</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="145"/>
         <source>Letter 216 x 279</source>
-        <translation type="unfinished"></translation>
+        <translation>Letter 216 x 279</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="146"/>
         <source>Legal 216 x 356</source>
-        <translation type="unfinished"></translation>
+        <translation>Legal 216 x 356</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="160"/>
         <source>Preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Préréglage</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="162"/>
         <source>Width</source>
-        <translation type="unfinished">Width</translation>
+        <translation>Largeur</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="164"/>
         <source>Height</source>
-        <translation type="unfinished">Height</translation>
+        <translation>Hauteur</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="166"/>
         <source>Left margin</source>
-        <translation type="unfinished"></translation>
+        <translation>Marge gauche</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="168"/>
         <source>Top margin</source>
-        <translation type="unfinished"></translation>
+        <translation>Marge haute</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="170"/>
         <source>Right margin</source>
-        <translation type="unfinished"></translation>
+        <translation>Marge droite</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="172"/>
         <source>Bottom margin</source>
-        <translation type="unfinished"></translation>
+        <translation>Marge basse</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="176"/>
         <source>Placement and Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Position et contenu</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="180"/>
         <source>Top left</source>
-        <translation type="unfinished"></translation>
+        <translation>En haut à gauche</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="181"/>
         <source>Top center</source>
-        <translation type="unfinished"></translation>
+        <translation>En haut au centre</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="182"/>
         <source>Top right</source>
-        <translation type="unfinished"></translation>
+        <translation>En haut à droite</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="183"/>
         <source>Middle left</source>
-        <translation type="unfinished"></translation>
+        <translation>Au milieu à gauche</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="184"/>
         <source>Middle center</source>
-        <translation type="unfinished"></translation>
+        <translation>Au milieu au centre</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="185"/>
         <source>Middle right</source>
-        <translation type="unfinished"></translation>
+        <translation>Au milieu à droite</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="186"/>
         <source>Bottom left</source>
-        <translation type="unfinished"></translation>
+        <translation>En bas à gauche</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="187"/>
         <source>Bottom center</source>
-        <translation type="unfinished"></translation>
+        <translation>En bas au centre</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="188"/>
         <source>Bottom right</source>
-        <translation type="unfinished"></translation>
+        <translation>En bas à droite</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="194"/>
         <source>Scale content</source>
-        <translation type="unfinished"></translation>
+        <translation>Mettre le contenu à l'échelle</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="195"/>
         <source>Preserve aspect ratio</source>
-        <translation type="unfinished"></translation>
+        <translation>Conserver les proportions</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="196"/>
         <source>Scale comments and form fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Mettre à l'échelle les commentaires et les champs de formulaire</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="200"/>
         <source>Anchor</source>
-        <translation type="unfinished"></translation>
+        <translation>Ancrage</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="202"/>
         <source>Offset X</source>
-        <translation type="unfinished"></translation>
+        <translation>Décalage X</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="204"/>
         <source>Offset Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Décalage Y</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="211"/>
         <source>Tip: if content scaling is disabled, page geometry is adjusted only by page boxes (non-destructive).</source>
-        <translation type="unfinished"></translation>
+        <translation>Astuce : si la mise à l'échelle du contenu est désactivée, la géométrie de la page est modifiée seulement par les zones de la page (sans modifier le contenu).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="229"/>
         <source>Document page count: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de pages du document : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="328"/>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="337"/>
         <source>Error</source>
-        <translation type="unfinished">Error</translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="328"/>
         <source>Select at least one target page box.</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez au moins une zone de page cible.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="337"/>
         <source>Target page size must be greater than zero.</source>
-        <translation type="unfinished"></translation>
+        <translation>La taille de la page cible doit être supérieure à zéro.</translation>
     </message>
 </context>
 <context>
@@ -7528,7 +7545,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagerangewidget.cpp" line="125"/>
         <source>Selected page range is empty.</source>
-        <translation type="unfinished">la plage de pages sélectionnée est vide.</translation>
+        <translation>La plage de pages sélectionnée est vide.</translation>
     </message>
 </context>
 <context>
@@ -11260,7 +11277,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagecontentelements.cpp" line="2866"/>
         <source>Shading</source>
-        <translation type="unfinished">Shading</translation>
+        <translation>Ombrage</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfdrawspacecontroller.cpp" line="967"/>
@@ -14163,17 +14180,17 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <message>
         <location filename="../Pdf4QtEditorPlugins/EditorPlugin/editorplugin.cpp" line="79"/>
         <source>Create &amp;Multiple Elements</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer plusieurs élé&amp;ments</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/EditorPlugin/editorplugin.cpp" line="80"/>
         <source>&amp;Undo</source>
-        <translation type="unfinished">&amp;Annuler</translation>
+        <translation>&amp;Annuler</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/EditorPlugin/editorplugin.cpp" line="81"/>
         <source>&amp;Redo</source>
-        <translation type="unfinished">&amp;Rétablir</translation>
+        <translation>&amp;Rétablir</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/EditorPlugin/editorplugin.cpp" line="82"/>
@@ -14185,7 +14202,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>Create Multiple Elements
 
 The creation tool stays active after an element has been created and the size of the last created element is reused, so a single click creates the next element of the same size. Hold Shift to define a different size.</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer plusieurs éléments
+
+L'outil de création reste actif après la création d'un élément et la taille du dernier élément créé est réutilisée : un seul clic crée l'élément suivant de la même taille. Maintenez Maj pour définir une autre taille.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/EditorPlugin/editorplugin.cpp" line="254"/>
@@ -14567,7 +14586,7 @@ The creation tool stays active after an element has been created and the size of
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signdialog.cpp" line="63"/>
         <source>Sign digitally (visible signature)</source>
-        <translation type="unfinished"></translation>
+        <translation>Signer numériquement (signature visible)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signdialog.cpp" line="64"/>
@@ -14577,17 +14596,17 @@ The creation tool stays active after an element has been created and the size of
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signdialog.cpp" line="67"/>
         <source>Signature</source>
-        <translation type="unfinished">Signature</translation>
+        <translation>Signature</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signdialog.cpp" line="68"/>
         <source>Signature with timestamp</source>
-        <translation type="unfinished"></translation>
+        <translation>Signature avec horodatage</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signdialog.cpp" line="69"/>
         <source>Document timestamp only</source>
-        <translation type="unfinished"></translation>
+        <translation>Horodatage du document seulement</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signdialog.cpp" line="148"/>
@@ -14609,7 +14628,7 @@ The creation tool stays active after an element has been created and the size of
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signdialog.cpp" line="167"/>
         <source>Address of the timestamp authority is not valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'adresse de l'autorité d'horodatage n'est pas valide.</translation>
     </message>
 </context>
 <context>
@@ -14714,12 +14733,12 @@ The creation tool stays active after an element has been created and the size of
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signatureplugin.cpp" line="353"/>
         <source>No signature graphics were created, the signature will have no visible appearance. Continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun graphisme de signature n'a été créé, la signature n'aura pas d'apparence visible. Continuer ?</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signatureplugin.cpp" line="363"/>
         <source>Signature graphics span multiple pages. Only the first page containing graphics will be used. Continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>Les graphismes de la signature sont sur plusieurs pages. Seule la première page qui contient des graphismes sera utilisée. Continuer ?</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signatureplugin.cpp" line="373"/>
@@ -14731,7 +14750,7 @@ The creation tool stays active after an element has been created and the size of
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signatureplugin.cpp" line="373"/>
         <source>The document has no page for a signature widget.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le document n'a pas de page pour le widget de signature.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signatureplugin.cpp" line="532"/>
@@ -14746,7 +14765,7 @@ The creation tool stays active after an element has been created and the size of
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signatureplugin.cpp" line="543"/>
         <source>Failed to save the signed document.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'enregistrement du document signé a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signatureplugin.cpp" line="713"/>
@@ -14759,27 +14778,27 @@ The creation tool stays active after an element has been created and the size of
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1620"/>
         <source>Convert this item to the bitonal format using the selected conversion method.</source>
-        <translation type="unfinished"></translation>
+        <translation>Convertir cet élément au format bitonal avec la méthode de conversion choisie.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1623"/>
         <source>Convert this item to the bitonal format using the selected conversion method and then swap its black and white pixels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Convertir cet élément au format bitonal avec la méthode de conversion choisie, puis inverser ses pixels noirs et blancs.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1626"/>
         <source>Leave this item unchanged.</source>
-        <translation type="unfinished"></translation>
+        <translation>Laisser cet élément inchangé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1629"/>
         <source>Replace this item with a black area.</source>
-        <translation type="unfinished"></translation>
+        <translation>Remplacer cet élément par une zone noire.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1632"/>
         <source>Replace this item with a white area.</source>
-        <translation type="unfinished"></translation>
+        <translation>Remplacer cet élément par une zone blanche.</translation>
     </message>
 </context>
 <context>
@@ -14787,7 +14806,7 @@ The creation tool stays active after an element has been created and the size of
     <message>
         <location filename="../Pdf4QtLibGui/pdfaboutdialog.cpp" line="122"/>
         <source>Tesseract language models (built-in, %1, %2 models)</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèles de langue Tesseract (intégrés, %1, %2 modèles)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfaboutdialog.cpp" line="138"/>
@@ -14812,24 +14831,26 @@ The creation tool stays active after an element has been created and the size of
     <message>
         <location filename="../Pdf4QtLibGui/pdfaboutdialog.cpp" line="138"/>
         <source>License text</source>
-        <translation type="unfinished"></translation>
+        <translation>Texte de la licence</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfaboutdialog.cpp" line="162"/>
         <source>%1
 
 Double-click the row to open the license text.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1
+
+Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfaboutdialog.cpp" line="167"/>
         <source>%1 (missing)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (absent)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfaboutdialog.cpp" line="168"/>
         <source>The license text %1 is not distributed with this installation.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le texte de licence %1 n'est pas distribué avec cette installation.</translation>
     </message>
 </context>
 <context>
@@ -15044,57 +15065,57 @@ Double-click the row to open the license text.</source>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="217"/>
         <source>Images</source>
-        <translation type="unfinished">Images</translation>
+        <translation>Images</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="218"/>
         <source>Whole pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Pages entières</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="227"/>
         <source>Automatic (Otsu&apos;s 1D method)</source>
-        <translation type="unfinished">Automatique (méthode 1D d&apos;Otsu)</translation>
+        <translation>Automatique (méthode 1D d'Otsu)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="228"/>
         <source>User-defined threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>Seuil défini par l'utilisateur</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="229"/>
         <source>Adaptive thresholding</source>
-        <translation type="unfinished"></translation>
+        <translation>Seuillage adaptatif</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="230"/>
         <source>Dithering (Floyd-Steinberg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tramage (Floyd-Steinberg)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="232"/>
         <source>Automatic (smallest result)</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatique (plus petit résultat)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="233"/>
         <source>Flate</source>
-        <translation type="unfinished"></translation>
+        <translation>Flate</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="234"/>
         <source>RunLength</source>
-        <translation type="unfinished"></translation>
+        <translation>RunLength</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="235"/>
         <source>CCITT Group 4</source>
-        <translation type="unfinished"></translation>
+        <translation>CCITT groupe 4</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="236"/>
         <source>JBIG2</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="255"/>
@@ -15107,142 +15128,142 @@ Double-click the row to open the license text.</source>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1154"/>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1356"/>
         <source>Detect Blank Pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Détecter les pages blanches</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="436"/>
         <source>Blank page detection could not examine all pages. No page modes have been changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>La détection des pages blanches n'a pas pu examiner toutes les pages. Aucun mode de page n'a été modifié.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="470"/>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1005"/>
         <source>Not available</source>
-        <translation type="unfinished"></translation>
+        <translation>Non disponible</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="487"/>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="502"/>
         <source>Create Bitonal Document</source>
-        <translation type="unfinished">Créer un document bitonal</translation>
+        <translation>Créer un document bitonal</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="487"/>
         <source>The bitonal document has not been created. No item of the document could be converted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le document bitonal n'a pas été créé. Aucun élément du document n'a pu être converti.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="498"/>
         <source>%1 of %2 items could not be converted and they are left unchanged. Do you want to use the partially converted document?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 éléments sur %2 n'ont pas pu être convertis et restent inchangés. Voulez-vous utiliser le document converti en partie ?</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="601"/>
         <source>Selected items (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Éléments sélectionnés (%1)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="601"/>
         <source>All items</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les éléments</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="609"/>
         <source>Convert using the selected method</source>
-        <translation type="unfinished"></translation>
+        <translation>Convertir avec la méthode choisie</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="610"/>
         <source>Convert using the selected method, inverted</source>
-        <translation type="unfinished"></translation>
+        <translation>Convertir avec la méthode choisie, inversé</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="611"/>
         <source>Leave unchanged</source>
-        <translation type="unfinished"></translation>
+        <translation>Laisser inchangé</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="612"/>
         <source>Fill with black</source>
-        <translation type="unfinished"></translation>
+        <translation>Remplir en noir</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="613"/>
         <source>Fill with white</source>
-        <translation type="unfinished"></translation>
+        <translation>Remplir en blanc</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="735"/>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="749"/>
         <source>Generating...</source>
-        <translation type="unfinished"></translation>
+        <translation>Génération...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="735"/>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1279"/>
         <source>Image %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Image %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="749"/>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1282"/>
         <source>Page %1</source>
-        <translation type="unfinished">Page %1</translation>
+        <translation>Page %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1146"/>
         <source>No blank page has been found in the document.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune page blanche n'a été trouvée dans le document.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1150"/>
         <source>%1 of %2 pages seem to be blank. Do you want to replace them by a white fill?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 pages sur %2 semblent blanches. Voulez-vous les remplacer par un remplissage blanc ?</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1156"/>
         <source>Blank pages: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Pages blanches : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1228"/>
         <source>%1-%2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1-%2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1236"/>
         <source>%1, ...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1, ...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1355"/>
         <source>Stop Detection (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Arrêter la détection (%1/%2)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1450"/>
         <source>BITONAL INVERTED</source>
-        <translation type="unfinished"></translation>
+        <translation>BITONAL INVERSÉ</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1453"/>
         <source>UNCHANGED</source>
-        <translation type="unfinished"></translation>
+        <translation>INCHANGÉ</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1456"/>
         <source>FILLED BLACK</source>
-        <translation type="unfinished"></translation>
+        <translation>REMPLI EN NOIR</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1459"/>
         <source>FILLED WHITE</source>
-        <translation type="unfinished"></translation>
+        <translation>REMPLI EN BLANC</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1475"/>
         <source>%1 - PREVIEW AT %2 DPI</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 - APERÇU À %2 DPI</translation>
     </message>
 </context>
 <context>
@@ -15250,7 +15271,7 @@ Double-click the row to open the license text.</source>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="148"/>
         <source>Generating...</source>
-        <translation type="unfinished"></translation>
+        <translation>Génération...</translation>
     </message>
 </context>
 <context>
@@ -15672,12 +15693,12 @@ Double-click the row to open the license text.</source>
     <message>
         <location filename="../Pdf4QtLibGui/pdfdocumentpropertiesdialog.cpp" line="620"/>
         <source>XMP Metadata</source>
-        <translation type="unfinished"></translation>
+        <translation>Métadonnées XMP</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfdocumentpropertiesdialog.cpp" line="620"/>
         <source>XMP metadata already exist in this document.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les métadonnées XMP existent déjà dans ce document.</translation>
     </message>
 </context>
 <context>
@@ -19021,347 +19042,347 @@ If a built-in version of the language exists, it will be used again. OCR project
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="177"/>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="180"/>
         <source>Auto</source>
-        <translation type="unfinished">Auto</translation>
+        <translation>Auto</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="178"/>
         <source>Custom</source>
-        <translation type="unfinished">Personnalisée</translation>
+        <translation>Personnalisé</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="181"/>
         <source>Preserve</source>
-        <translation type="unfinished"></translation>
+        <translation>Conserver</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="182"/>
         <source>Color (RGB)</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur (RVB)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="183"/>
         <source>Grayscale</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveaux de gris</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="184"/>
         <source>Bitonal</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitonal</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="186"/>
         <source>Prefer quality</source>
-        <translation type="unfinished"></translation>
+        <translation>Privilégier la qualité</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="187"/>
         <source>Minimum size</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille minimale</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="224"/>
         <source>Optimize</source>
-        <translation type="unfinished">Optimize</translation>
+        <translation>Optimiser</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="237"/>
         <source>&lt;b&gt;Mode&lt;/b&gt;&lt;br/&gt;Auto uses image analysis to pick color mode and compression.&lt;br/&gt;Custom respects the selected color mode and profiles.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Mode&lt;/b&gt;&lt;br/&gt;Auto analyse l'image pour choisir le mode de couleur et la compression.&lt;br/&gt;Personnalisé respecte le mode de couleur et les profils choisis.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="238"/>
         <source>&lt;b&gt;Color mode&lt;/b&gt;&lt;br/&gt;Choose output color space or let the optimizer decide.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Mode de couleur&lt;/b&gt;&lt;br/&gt;Choisissez l'espace colorimétrique de sortie ou laissez l'optimiseur décider.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="239"/>
         <source>&lt;b&gt;Goal&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Prefer quality&lt;/b&gt; keeps more detail.&lt;br/&gt;&lt;b&gt;Minimum size&lt;/b&gt; prefers smaller output.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Objectif&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Privilégier la qualité&lt;/b&gt; garde plus de détails.&lt;br/&gt;&lt;b&gt;Taille minimale&lt;/b&gt; privilégie un résultat plus petit.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="240"/>
         <source>&lt;b&gt;Keep original if larger&lt;/b&gt;&lt;br/&gt;Leaves the original image if re-encoding does not shrink it.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Garder l'original s'il est plus petit&lt;/b&gt;&lt;br/&gt;Laisse l'image d'origine si le réencodage ne la réduit pas.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="241"/>
         <source>&lt;b&gt;Preserve transparency&lt;/b&gt;&lt;br/&gt;Stores alpha as a soft mask when possible.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Conserver la transparence&lt;/b&gt;&lt;br/&gt;Enregistre la transparence comme masque doux si possible.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="243"/>
         <source>&lt;b&gt;Algorithm&lt;/b&gt;&lt;br/&gt;Compression for color images (Auto picks based on content).</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Algorithme&lt;/b&gt;&lt;br/&gt;Compression des images en couleur (Auto choisit selon le contenu).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="244"/>
         <source>&lt;b&gt;Algorithm&lt;/b&gt;&lt;br/&gt;Compression for grayscale images (Auto picks based on content).</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Algorithme&lt;/b&gt;&lt;br/&gt;Compression des images en niveaux de gris (Auto choisit selon le contenu).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="245"/>
         <source>&lt;b&gt;Algorithm&lt;/b&gt;&lt;br/&gt;Compression for bitonal images (Auto picks JBIG2, which is lossless and usually the smallest).</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Algorithme&lt;/b&gt;&lt;br/&gt;Compression des images bitonales (Auto choisit JBIG2, sans perte et en général le plus petit).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="247"/>
         <source>&lt;b&gt;Target DPI&lt;/b&gt;&lt;br/&gt;Downsample color images to this DPI (0 keeps original).</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;DPI cible&lt;/b&gt;&lt;br/&gt;Réduit la résolution des images en couleur à ce DPI (0 garde l'original).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="248"/>
         <source>&lt;b&gt;Target DPI&lt;/b&gt;&lt;br/&gt;Downsample grayscale images to this DPI (0 keeps original).</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;DPI cible&lt;/b&gt;&lt;br/&gt;Réduit la résolution des images en niveaux de gris à ce DPI (0 garde l'original).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="249"/>
         <source>&lt;b&gt;Target DPI&lt;/b&gt;&lt;br/&gt;Downsample bitonal images to this DPI (0 keeps original).</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;DPI cible&lt;/b&gt;&lt;br/&gt;Réduit la résolution des images bitonales à ce DPI (0 garde l'original).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="251"/>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="252"/>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="253"/>
         <source>&lt;b&gt;Resample&lt;/b&gt;&lt;br/&gt;Scaling filter used when resizing images.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Rééchantillonnage&lt;/b&gt;&lt;br/&gt;Filtre utilisé pour redimensionner les images.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="255"/>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="256"/>
         <source>&lt;b&gt;JPEG quality&lt;/b&gt;&lt;br/&gt;Higher values preserve detail but increase size.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Qualité JPEG&lt;/b&gt;&lt;br/&gt;Une valeur plus élevée garde plus de détails mais augmente la taille.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="258"/>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="259"/>
         <source>&lt;b&gt;JPEG2000 rate&lt;/b&gt;&lt;br/&gt;0 = lossless, higher values increase compression.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Taux JPEG2000&lt;/b&gt;&lt;br/&gt;0 = sans perte, une valeur plus élevée augmente la compression.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="261"/>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="262"/>
         <source>&lt;b&gt;PNG predictor&lt;/b&gt;&lt;br/&gt;Improves Flate compression for continuous-tone images.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Prédicteur PNG&lt;/b&gt;&lt;br/&gt;Améliore la compression Flate des images en tons continus.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="263"/>
         <source>&lt;b&gt;PNG predictor&lt;/b&gt;&lt;br/&gt;Improves Flate compression for 1-bit images.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Prédicteur PNG&lt;/b&gt;&lt;br/&gt;Améliore la compression Flate des images à 1 bit.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="265"/>
         <source>&lt;b&gt;Threshold&lt;/b&gt;&lt;br/&gt;Manual threshold for bitonal conversion (0-255).</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Seuil&lt;/b&gt;&lt;br/&gt;Seuil manuel de la conversion bitonale (0-255).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="266"/>
         <source>&lt;b&gt;Auto threshold&lt;/b&gt;&lt;br/&gt;Let the optimizer pick an automatic threshold.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Seuil automatique&lt;/b&gt;&lt;br/&gt;Laisser l'optimiseur choisir un seuil automatique.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="268"/>
         <source>&lt;b&gt;Enable compression&lt;/b&gt;&lt;br/&gt;Exclude the selected images from optimization when unchecked.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Activer la compression&lt;/b&gt;&lt;br/&gt;Décoché, exclut les images sélectionnées de l'optimisation.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="269"/>
         <source>&lt;b&gt;Override settings&lt;/b&gt;&lt;br/&gt;Use custom settings for the selected images.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Remplacer les réglages&lt;/b&gt;&lt;br/&gt;Utiliser des réglages particuliers pour les images sélectionnées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="270"/>
         <source>&lt;b&gt;Images&lt;/b&gt;&lt;br/&gt;Hold Ctrl or Shift while clicking to select multiple images, or press Ctrl+A to select all of them. The settings editor and the check boxes below then apply to the whole selection.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Images&lt;/b&gt;&lt;br/&gt;Maintenez Ctrl ou Maj en cliquant pour sélectionner plusieurs images, ou appuyez sur Ctrl+A pour toutes les sélectionner. L'éditeur de réglages et les cases à cocher ci-dessous s'appliquent alors à toute la sélection.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="272"/>
         <source>&lt;b&gt;Optimize&lt;/b&gt;&lt;br/&gt;Run image optimization with the current settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Optimiser&lt;/b&gt;&lt;br/&gt;Lancer l'optimisation des images avec les réglages actuels.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="405"/>
         <source>Image %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Image %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="406"/>
         <source>%1 x %2 px</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 x %2 px</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="414"/>
         <source>disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>désactivée</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="419"/>
         <source>override</source>
-        <translation type="unfinished"></translation>
+        <translation>réglage particulier</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="431"/>
         <source>will keep original</source>
-        <translation type="unfinished"></translation>
+        <translation>gardera l'original</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="437"/>
         <source>Status: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>État : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="442"/>
         <source>Min DPI: %1 x %2</source>
-        <translation type="unfinished"></translation>
+        <translation>DPI min. : %1 x %2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="446"/>
         <source>ColorSpace: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Espace colorimétrique : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="450"/>
         <source>Filter: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtre : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="456"/>
         <source>Size: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="460"/>
         <source>Size: %1 -&gt; %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille : %1 -&gt; %2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="502"/>
         <source>Original images size: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille d'origine des images : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="503"/>
         <source>Estimated optimized size: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille optimisée estimée : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="508"/>
         <source>Compression ratio: %1%</source>
-        <translation type="unfinished"></translation>
+        <translation>Taux de compression : %1%</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="512"/>
         <source>Compression ratio: n/a</source>
-        <translation type="unfinished"></translation>
+        <translation>Taux de compression : n/d</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="580"/>
         <source>Edits on the right apply to the overrides of %1 selected images. Each override started as a copy of the global settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les modifications à droite s'appliquent aux réglages particuliers de %1 images sélectionnées. Chaque réglage particulier a commencé comme une copie des réglages globaux.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="585"/>
         <source>Edits on the right currently apply only to this image. The override started as a copy of the global settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les modifications à droite s'appliquent pour l'instant à cette image seulement. Son réglage particulier a commencé comme une copie des réglages globaux.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="591"/>
         <source>Edits on the right currently change the global settings used by images without an override.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les modifications à droite changent pour l'instant les réglages globaux utilisés par les images sans réglage particulier.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="595"/>
         <source>%1 of the selected images use an override and are not affected.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 des images sélectionnées utilisent un réglage particulier et ne sont pas concernées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="603"/>
         <source>Selected images: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Images sélectionnées : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="604"/>
         <source>Enabled for optimization: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Activées pour l'optimisation : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="605"/>
         <source>Original size of selection: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille d'origine de la sélection : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="610"/>
         <source>Reference: %1 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Référence : %1 %2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="613"/>
         <source>Transparency: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Transparence : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="613"/>
         <source>Yes</source>
-        <translation type="unfinished">Oui</translation>
+        <translation>Oui</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="613"/>
         <source>No</source>
-        <translation type="unfinished">Non</translation>
+        <translation>Non</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="616"/>
         <source>Soft mask: Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>Masque doux : oui</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="621"/>
         <source>BPC: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>BPC : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="664"/>
         <source>Settings Editor - Global Defaults</source>
-        <translation type="unfinished"></translation>
+        <translation>Éditeur de réglages - réglages globaux</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="665"/>
         <source>These settings currently modify the global defaults used by images without an override.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ces réglages modifient pour l'instant les réglages globaux utilisés par les images sans réglage particulier.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="669"/>
         <source>Settings Editor - Selected Image Overrides</source>
-        <translation type="unfinished"></translation>
+        <translation>Éditeur de réglages - réglages particuliers des images sélectionnées</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="670"/>
         <source>These settings currently modify the overrides of all selected images.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ces réglages modifient pour l'instant les réglages particuliers de toutes les images sélectionnées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="674"/>
         <source>Settings Editor - Selected Image Override</source>
-        <translation type="unfinished"></translation>
+        <translation>Éditeur de réglages - réglage particulier de l'image sélectionnée</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="675"/>
         <source>These settings currently modify only the selected image override.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ces réglages modifient pour l'instant seulement le réglage particulier de l'image sélectionnée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="1040"/>
         <source>Optimization is disabled for the selected image. The original image will be kept.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'optimisation est désactivée pour l'image sélectionnée. L'image d'origine sera gardée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="1054"/>
         <source>Estimated size: %1 -&gt; %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille estimée : %1 -&gt; %2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="1058"/>
         <source> (will keep original)</source>
-        <translation type="unfinished"></translation>
+        <translation> (gardera l'original)</translation>
     </message>
 </context>
 <context>
@@ -19447,7 +19468,7 @@ If a built-in version of the language exists, it will be used again. OCR project
     <message>
         <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1340"/>
         <source>Changes made by the plugin &apos;%1&apos; have not been written to the document yet and they will not be saved. Do you wish to write them to the document before it is saved?</source>
-        <translation type="unfinished"></translation>
+        <translation>Les modifications faites par le module « %1 » n'ont pas encore été écrites dans le document et elles ne seront pas enregistrées. Voulez-vous les écrire dans le document avant de l'enregistrer ?</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1441"/>
@@ -19495,7 +19516,7 @@ If a built-in version of the language exists, it will be used again. OCR project
     <message>
         <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2414"/>
         <source>The form contains fields, whose values are calculated by scripts. Scripts are not executed, so these fields were unlocked and you have to fill in their values manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le formulaire contient des champs dont les valeurs sont calculées par des scripts. Les scripts ne sont pas exécutés : ces champs ont été déverrouillés et vous devez saisir leurs valeurs à la main.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2428"/>
@@ -19648,12 +19669,12 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsanitizedocumentdialog.cpp" line="66"/>
         <source>Remove page labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer les étiquettes de page</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsanitizedocumentdialog.cpp" line="67"/>
         <source>Remove invisible text (OCR layer)</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le texte invisible (couche OCR)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsanitizedocumentdialog.cpp" line="69"/>
@@ -19702,90 +19723,90 @@ Page %2&#xa0;: %3</translation>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="490"/>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2193"/>
         <source>Prepare Scanned Pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Préparer les pages numérisées</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="556"/>
         <source>Pages</source>
-        <translation type="unfinished">Pages</translation>
+        <translation>Pages</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="565"/>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="772"/>
         <source>All</source>
-        <translation type="unfinished">All</translation>
+        <translation>Toutes</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="567"/>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="705"/>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="740"/>
         <source>None</source>
-        <translation type="unfinished">Aucun</translation>
+        <translation>Aucune</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="569"/>
         <source>Invert</source>
-        <translation type="unfinished">Invert</translation>
+        <translation>Inverser</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="576"/>
         <source>Filter of the pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtre des pages</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="577"/>
         <source>All pages</source>
-        <translation type="unfinished">Toutes les pages</translation>
+        <translation>Toutes les pages</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="578"/>
         <source>Pages with changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Pages modifiées</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="579"/>
         <source>Skew above...</source>
-        <translation type="unfinished"></translation>
+        <translation>Inclinaison supérieure à...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="580"/>
         <source>Pages with warnings</source>
-        <translation type="unfinished"></translation>
+        <translation>Pages avec avertissements</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="583"/>
         <source>Minimal skew of the filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Inclinaison minimale du filtre</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="603"/>
         <source>Result</source>
-        <translation type="unfinished"></translation>
+        <translation>Résultat</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="605"/>
         <source>Show the output pages of the current page, rendered from the really prepared document</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher les pages de sortie de la page courante, rendues à partir du document réellement préparé</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="608"/>
         <source>Table</source>
-        <translation type="unfinished"></translation>
+        <translation>Tableau</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="610"/>
         <source>Show all pages in a table, sort them by the skew and edit them together</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher toutes les pages dans un tableau, les trier par inclinaison et les modifier ensemble</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="611"/>
         <source>Grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Grille</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="615"/>
         <source>Spacing of the grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Espacement de la grille</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="618"/>
@@ -19793,495 +19814,499 @@ Page %2&#xa0;: %3</translation>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="719"/>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="749"/>
         <source> mm</source>
-        <translation type="unfinished"></translation>
+        <translation> mm</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="619"/>
         <source>Keys [ and ] rotate by 0.05°, with Shift by 0.5°</source>
-        <translation type="unfinished"></translation>
+        <translation>Les touches [ et ] tournent de 0,05°, avec Maj de 0,5°</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="635"/>
         <source>Page</source>
-        <translation type="unfinished">Page</translation>
+        <translation>Page</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="635"/>
         <source>Class</source>
-        <translation type="unfinished">Class</translation>
+        <translation>Classe</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="635"/>
         <source>Detected skew</source>
-        <translation type="unfinished"></translation>
+        <translation>Inclinaison détectée</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="635"/>
         <source>Applied skew</source>
-        <translation type="unfinished"></translation>
+        <translation>Inclinaison appliquée</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="635"/>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="700"/>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="770"/>
         <source>Split</source>
-        <translation type="unfinished"></translation>
+        <translation>Séparation</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="635"/>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="735"/>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="771"/>
         <source>Crop</source>
-        <translation type="unfinished">Crop</translation>
+        <translation>Recadrage</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="635"/>
         <source>Warnings</source>
-        <translation type="unfinished"></translation>
+        <translation>Avertissements</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="649"/>
         <source>Detection</source>
-        <translation type="unfinished"></translation>
+        <translation>Détection</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="651"/>
         <source>&amp;Detect on Checked Pages</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Détecter sur les pages cochées</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="653"/>
         <source>Detect the skew, the content and the spine of the checked pages. The detected values are proposals; edited values are not overwritten.</source>
-        <translation type="unfinished"></translation>
+        <translation>Détecter l'inclinaison, le contenu et la reliure des pages cochées. Les valeurs détectées sont des propositions ; les valeurs modifiées ne sont pas remplacées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="657"/>
         <source>&amp;Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Arrêter</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="667"/>
         <source>Straighten</source>
-        <translation type="unfinished"></translation>
+        <translation>Redresser</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="669"/>
         <source>Straighten the page</source>
-        <translation type="unfinished"></translation>
+        <translation>Redresser la page</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="673"/>
         <source>Skew of the page</source>
-        <translation type="unfinished"></translation>
+        <translation>Inclinaison de la page</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="678"/>
         <source>Skew of the content (positive = the lines descend to the right); the page is rotated by the opposite angle</source>
-        <translation type="unfinished"></translation>
+        <translation>Inclinaison du contenu (positive = les lignes descendent vers la droite) ; la page est tournée de l'angle opposé</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="682"/>
         <source>Use Detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser la valeur détectée</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="686"/>
         <source>Minimal angle of the deskew</source>
-        <translation type="unfinished"></translation>
+        <translation>Angle minimal du redressement</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="692"/>
         <source>Smaller angles are not corrected (all pages)</source>
-        <translation type="unfinished"></translation>
+        <translation>Les angles plus petits ne sont pas corrigés (toutes les pages)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="694"/>
         <source>Angle:</source>
-        <translation type="unfinished"></translation>
+        <translation>Angle :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="697"/>
         <source>Ignore angles below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorer les angles inférieurs à :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="704"/>
         <source>Split of the page</source>
-        <translation type="unfinished"></translation>
+        <translation>Séparation de la page</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="706"/>
         <source>Two pages side by side</source>
-        <translation type="unfinished"></translation>
+        <translation>Deux pages côte à côte</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="707"/>
         <source>Two pages one above another</source>
-        <translation type="unfinished"></translation>
+        <translation>Deux pages l'une au-dessus de l'autre</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="710"/>
         <source>Position of the split line</source>
-        <translation type="unfinished"></translation>
+        <translation>Position de la ligne de séparation</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="716"/>
         <source>Width of the gutter removed around the split line</source>
-        <translation type="unfinished"></translation>
+        <translation>Largeur du blanc de couture supprimé autour de la ligne de séparation</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="722"/>
         <source>Order of the halves</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordre des moitiés</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="723"/>
         <source>Left page first</source>
-        <translation type="unfinished"></translation>
+        <translation>Page de gauche en premier</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="724"/>
         <source>Right page first</source>
-        <translation type="unfinished"></translation>
+        <translation>Page de droite en premier</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="728"/>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="756"/>
         <source>Mode:</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="729"/>
         <source>Position:</source>
-        <translation type="unfinished"></translation>
+        <translation>Position :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="730"/>
         <source>Gutter:</source>
-        <translation type="unfinished"></translation>
+        <translation>Blanc de couture :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="731"/>
         <source>Order:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordre :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="739"/>
         <source>Crop of the page</source>
-        <translation type="unfinished"></translation>
+        <translation>Recadrage de la page</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="741"/>
         <source>Automatic to content</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatique selon le contenu</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="742"/>
         <source>Manual</source>
-        <translation type="unfinished"></translation>
+        <translation>Manuel</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="743"/>
         <source>Same size on all pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Même taille sur toutes les pages</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="746"/>
         <source>Margin around the content</source>
-        <translation type="unfinished"></translation>
+        <translation>Marge autour du contenu</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="750"/>
         <source>Separate for odd and even pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Séparément pour les pages paires et impaires</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="752"/>
         <source>The same size is computed separately for the odd and the even output pages (all pages)</source>
-        <translation type="unfinished"></translation>
+        <translation>La même taille est calculée séparément pour les pages de sortie impaires et paires (toutes les pages)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="757"/>
         <source>Margin:</source>
-        <translation type="unfinished"></translation>
+        <translation>Marge :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="765"/>
         <source>Apply to Checked Pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Appliquer aux pages cochées</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="767"/>
         <source>Copy the settings of the current page to the checked pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier les réglages de la page courante sur les pages cochées</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="769"/>
         <source>Straightening</source>
-        <translation type="unfinished"></translation>
+        <translation>Redressement</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="774"/>
         <source>Reset Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Réinitialiser la page</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="776"/>
         <source>Reset the settings of the current page to the detected proposals</source>
-        <translation type="unfinished"></translation>
+        <translation>Remettre les réglages de la page courante aux propositions détectées</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="794"/>
         <source>&amp;Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Appliquer</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="911"/>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1722"/>
         <source>%1 x %2 mm</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 x %2 mm</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1073"/>
         <source>The page has an OCR layer of PDF4QT.</source>
-        <translation type="unfinished"></translation>
+        <translation>La page a une couche OCR de PDF4QT.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1077"/>
         <source>A tagged page cannot be split.</source>
-        <translation type="unfinished"></translation>
+        <translation>Une page balisée ne peut pas être séparée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1081"/>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1687"/>
         <source>The content of the page is not balanced, it cannot be straightened.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le contenu de la page n'est pas équilibré, il ne peut pas être redressé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1085"/>
         <source>Text outside of the visible area stays in the file and can be found by the search.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le texte hors de la zone visible reste dans le fichier et peut être trouvé par la recherche.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1089"/>
         <source>Annotations are not rotated.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les annotations ne sont pas tournées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1100"/>
         <source>Page %1</source>
-        <translation type="unfinished">Page %1</translation>
+        <translation>Page %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1435"/>
         <source>The result cannot be rendered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le résultat ne peut pas être rendu.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1680"/>
         <source>Detected %1°, confidence %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Détecté %1°, confiance %2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1683"/>
         <source>The page is not a scan; it is not straightened by default.</source>
-        <translation type="unfinished"></translation>
+        <translation>La page n'est pas une numérisation ; elle n'est pas redressée par défaut.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1696"/>
         <source>Spine side by side detected at %1 mm (confidence %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Reliure côte à côte détectée à %1 mm (confiance %2)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1697"/>
         <source>No spine was detected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune reliure n'a été détectée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1701"/>
         <source>Detected at %1 mm (%2, confidence %3)</source>
-        <translation type="unfinished"></translation>
+        <translation>Détectée à %1 mm (%2, confiance %3)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1702"/>
         <source>shadow of the spine</source>
-        <translation type="unfinished"></translation>
+        <translation>ombre de la reliure</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1702"/>
         <source>white gap</source>
-        <translation type="unfinished"></translation>
+        <translation>espace blanc</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1706"/>
         <source>No spine was detected, the split line is in the middle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune reliure n'a été détectée, la ligne de séparation est au milieu.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1711"/>
         <source>Not detected yet (button Detect on Checked Pages).</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas encore détecté (bouton Détecter sur les pages cochées).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1727"/>
         <source>The automatic crop needs the detection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le recadrage automatique nécessite la détection.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1731"/>
         <source>The manual crop is used only for pages, which are not split.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le recadrage manuel n'est utilisé que pour les pages qui ne sont pas séparées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1916"/>
         <source>The document has no page.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le document n'a pas de page.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1923"/>
         <source>Rendering the page...</source>
-        <translation type="unfinished"></translation>
+        <translation>Rendu de la page...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1927"/>
         <source>The page cannot be rendered.</source>
-        <translation type="unfinished"></translation>
+        <translation>La page ne peut pas être rendue.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1998"/>
         <source>not detected</source>
-        <translation type="unfinished"></translation>
+        <translation>non détecté</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2001"/>
         <source>scan</source>
-        <translation type="unfinished"></translation>
+        <translation>numérisation</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2001"/>
         <source>text</source>
-        <translation type="unfinished"></translation>
+        <translation>texte</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2001"/>
         <source>other</source>
-        <translation type="unfinished"></translation>
+        <translation>autre</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2007"/>
         <source>no</source>
-        <translation type="unfinished"></translation>
+        <translation>non</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2010"/>
         <source>side by side, right first</source>
-        <translation type="unfinished"></translation>
+        <translation>côte à côte, droite en premier</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2010"/>
         <source>side by side</source>
-        <translation type="unfinished"></translation>
+        <translation>côte à côte</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2014"/>
         <source>one above another</source>
-        <translation type="unfinished"></translation>
+        <translation>l'une au-dessus de l'autre</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2077"/>
         <source>%1 page(s) straightened, %2 split (the document will have %3 pages), %4 cropped. The content is not re-encoded.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 page(s) redressée(s), %2 séparée(s) (le document aura %3 pages), %4 recadrée(s). Le contenu n'est pas réencodé.</translation>
     </message>
     <message numerus="yes">
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2084"/>
         <source>%n changed page(s) have an OCR layer of PDF4QT; you will be asked what to do with them.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n page modifiée a une couche OCR de PDF4QT ; il vous sera demandé quoi en faire.</numerusform>
+            <numerusform>%n pages modifiées ont une couche OCR de PDF4QT ; il vous sera demandé quoi en faire.</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2088"/>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2182"/>
         <source>The document is signed; the change of the pages invalidates the signatures.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le document est signé ; la modification des pages invalide les signatures.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2114"/>
         <source>The following changed pages have a text layer created by the OCR of PDF4QT: %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les pages modifiées suivantes ont une couche de texte créée par l'OCR de PDF4QT : %1.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2116"/>
         <source>The layer would not fit the changed page (text outside of the visible area, a duplicated layer of the split pages). Skip these pages, or remove their OCR layer and recognize them again after the preparation. Corrections saved in an OCR project are not loaded for the changed pages.</source>
-        <translation type="unfinished"></translation>
+        <translation>La couche ne correspondrait plus à la page modifiée (texte hors de la zone visible, couche dupliquée sur les pages séparées). Ignorez ces pages, ou supprimez leur couche OCR et reconnaissez-les de nouveau après la préparation. Les corrections enregistrées dans un projet OCR ne sont pas chargées pour les pages modifiées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2118"/>
         <source>Skip These Pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorer ces pages</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2119"/>
         <source>Remove OCR Layer and Continue</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer la couche OCR et continuer</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2166"/>
         <source>Pages straightened: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Pages redressées : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2167"/>
         <source>Pages split: %1 (the document will have %2 pages)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pages séparées : %1 (le document aura %2 pages)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2168"/>
         <source>Pages cropped: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Pages recadrées : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2169"/>
         <source>The content of the pages is not re-encoded; the change is one step of the undo history.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le contenu des pages n'est pas réencodé ; la modification est une étape de l'historique d'annulation.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2174"/>
         <source>Annotations of the straightened pages are not rotated.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les annotations des pages redressées ne sont pas tournées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2178"/>
         <source>Text outside of the visible area of the cropped pages stays in the file and can be found by the search.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le texte hors de la zone visible des pages recadrées reste dans le fichier et peut être trouvé par la recherche.</translation>
     </message>
     <message numerus="yes">
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2188"/>
         <source>The OCR layer is removed from %n page(s); recognize them again after the preparation.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>La couche OCR est supprimée de %n page ; reconnaissez-la de nouveau après la préparation.</numerusform>
+            <numerusform>La couche OCR est supprimée de %n pages ; reconnaissez-les de nouveau après la préparation.</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2195"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Appliquer</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2209"/>
         <source>The pages were not prepared, the document was not changed.
 
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Les pages n'ont pas été préparées, le document n'a pas été modifié.
+
+%1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2215"/>
         <source>Nothing was changed.
 
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Rien n'a été modifié.
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -20289,27 +20314,27 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="87"/>
         <source>Page with the plan of the preparation</source>
-        <translation type="unfinished"></translation>
+        <translation>Page avec le plan de la préparation</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="162"/>
         <source>The result is being prepared...</source>
-        <translation type="unfinished"></translation>
+        <translation>Le résultat est en préparation...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="188"/>
         <source>Output page %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Page de sortie %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="215"/>
         <source>Rendering the page...</source>
-        <translation type="unfinished"></translation>
+        <translation>Rendu de la page...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="276"/>
         <source>%1 x %2 mm</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 x %2 mm</translation>
     </message>
 </context>
 <context>
@@ -20524,7 +20549,7 @@ Page %2&#xa0;: %3</translation>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1063"/>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1076"/>
         <source>Open Attachment</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir la pièce jointe</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="964"/>
@@ -20741,72 +20766,72 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1037"/>
         <source>Opening attachments is disabled by application launch security settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'ouverture des pièces jointes est désactivée par les réglages de sécurité du lancement d'applications.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1044"/>
         <source>attachment</source>
-        <translation type="unfinished"></translation>
+        <translation>pièce jointe</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1047"/>
         <source>Would you like to open attachment &apos;%1&apos; using the associated application?</source>
-        <translation type="unfinished"></translation>
+        <translation>Voulez-vous ouvrir la pièce jointe « %1 » avec l'application associée ?</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1063"/>
         <source>Failed to create temporary directory for attachment.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de créer le dossier temporaire pour la pièce jointe.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1076"/>
         <source>Opening attachment &apos;%1&apos; failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'ouverture de la pièce jointe « %1 » a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1150"/>
         <source>Outline</source>
-        <translation type="unfinished">Outline</translation>
+        <translation>Plan</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1162"/>
         <source>New Outline Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouvel élément du plan</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1175"/>
         <source>Create a new outline item pointing to the current page and start editing its title.</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un nouvel élément du plan pointant vers la page courante et commencer à modifier son titre.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1177"/>
         <source>Move Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Monter</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1179"/>
         <source>Move Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Descendre</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1181"/>
         <source>Move Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer à gauche</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1183"/>
         <source>Move the item one level up in the outline hierarchy.</source>
-        <translation type="unfinished"></translation>
+        <translation>Remonter l'élément d'un niveau dans la hiérarchie du plan.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1184"/>
         <source>Move Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer à droite</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1186"/>
         <source>Make the item a child of the preceding item.</source>
-        <translation type="unfinished"></translation>
+        <translation>Faire de l'élément un enfant de l'élément précédent.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1201"/>
@@ -20874,7 +20899,7 @@ Voulez-vous effectuer cette action&#xa0;?</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="66"/>
         <source>%1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 : %2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="111"/>
@@ -20939,32 +20964,32 @@ Voulez-vous effectuer cette action&#xa0;?</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="123"/>
         <source>OCR</source>
-        <translation type="unfinished"></translation>
+        <translation>OCR</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="133"/>
         <source>Engine: %1 %2 (license %3)</source>
-        <translation type="unfinished"></translation>
+        <translation>Moteur : %1 %2 (licence %3)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="138"/>
         <source>No OCR engine is available in this build.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun moteur d'OCR n'est disponible dans cette version.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="140"/>
         <source>Built-in language models: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèles de langue intégrés : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="141"/>
         <source>Downloaded and imported language models: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèles de langue téléchargés et importés : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="142"/>
         <source>The recognition works locally. The network is used only for an explicitly requested download of language models; documents and recognized text are never sent anywhere.</source>
-        <translation type="unfinished"></translation>
+        <translation>La reconnaissance se fait en local. Le réseau n'est utilisé que pour un téléchargement de modèles de langue demandé explicitement ; les documents et le texte reconnu ne sont jamais envoyés nulle part.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="160"/>
@@ -21065,17 +21090,17 @@ Voulez-vous effectuer cette action&#xa0;?</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="194"/>
         <source>Anonymous (do not disclose the user name)</source>
-        <translation type="unfinished"></translation>
+        <translation>Anonyme (ne pas divulguer le nom de l'utilisateur)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="195"/>
         <source>System user name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de l'utilisateur du système</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="196"/>
         <source>Custom name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom personnalisé</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="198"/>
