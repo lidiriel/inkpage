@@ -1390,13 +1390,9 @@ void PDFCreateFreehandCurveTool::mouseReleaseEvent(QWidget* widget, QMouseEvent*
 
             if (m_pickedPoints.size() >= 3)
             {
+                // inkpage: the pen and the highlighter stay active, so several strokes
+                // can be drawn (handwriting); Esc or another tool ends the drawing
                 createAnnotation();
-
-                // inkpage: the highlighter stays active, so several lines can be highlighted
-                if (m_type != Type::Highlighter)
-                {
-                    setActive(false);
-                }
             }
         }
 

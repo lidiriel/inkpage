@@ -3184,6 +3184,9 @@ void AnnotationSelectionTest::penKeepsEveryPreciseMove()
     send(QEvent::MouseButtonRelease, QPointF(150, 130));
     QVERIFY(QCoreApplication::testAttribute(Qt::AA_CompressHighFrequencyEvents));
 
+    // The pen stays active for the next stroke
+    QVERIFY(tool.isActive());
+
     // An ink annotation, its appearance is made of curves with round ends
     const std::vector<PDFObjectReference> annotations = fixture.pageAnnotations();
     QCOMPARE(annotations.size(), size_t(1));
