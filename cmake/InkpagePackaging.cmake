@@ -39,27 +39,87 @@ if(INKPAGE_BUNDLE_DEPS)
     endif()
 endif()
 
+set(INKPAGE_MAINTAINER "Ludovic Mercier <ludovic@scilink.net>")
+
+# The version of the package is the version of inkpage (git tag, see
+# cmake/InkpageVersion.cmake). The files of the package carrying a version must
+# agree with it:
+# - a release (the tag vX.Y.Z) must be described by packaging/changelog and by the
+#   releases of the metainfo (scripts/release.sh checks it before it creates the tag)
+# - a development snapshot gets an entry of its own in the changelog of the package
+file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/packaging/changelog INKPAGE_CHANGELOG_FIRST_LINE LIMIT_COUNT 1)
+string(REGEX MATCH "^inkpage \\(([^)]+)\\)" INKPAGE_CHANGELOG_MATCH "${INKPAGE_CHANGELOG_FIRST_LINE}")
+set(INKPAGE_CHANGELOG_VERSION "${CMAKE_MATCH_1}")
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/Desktop/io.github.inkpage.metainfo.xml INKPAGE_METAINFO)
+if(INKPAGE_IS_RELEASE)
+    if(NOT INKPAGE_CHANGELOG_VERSION STREQUAL INKPAGE_VERSION)
+        message(FATAL_ERROR "Release ${INKPAGE_VERSION} (git tag v${INKPAGE_VERSION}), but the last entry of packaging/changelog is ${INKPAGE_CHANGELOG_VERSION}: add the entry of the release.")
+    endif()
+    if(NOT INKPAGE_METAINFO MATCHES "<release version=\"${INKPAGE_VERSION}\"")
+        message(FATAL_ERROR "Release ${INKPAGE_VERSION} (git tag v${INKPAGE_VERSION}) is missing in the releases of Desktop/io.github.inkpage.metainfo.xml.")
+    endif()
+endif()
+
+# Date of the commit: the files generated from it do not depend on the time of the build
+set(INKPAGE_COMMIT_DATE_RFC2822 "")
+set(INKPAGE_COMMIT_TIME "")
+if(GIT_EXECUTABLE AND INKPAGE_GIT_COMMIT)
+    execute_process(COMMAND "${GIT_EXECUTABLE}" -C "${CMAKE_CURRENT_SOURCE_DIR}" log -1 --format=%cD
+                    OUTPUT_VARIABLE INKPAGE_COMMIT_DATE_RFC2822 ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+    execute_process(COMMAND "${GIT_EXECUTABLE}" -C "${CMAKE_CURRENT_SOURCE_DIR}" log -1 --format=%ct
+                    OUTPUT_VARIABLE INKPAGE_COMMIT_TIME ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+endif()
+
+set(INKPAGE_PACKAGING_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/packaging)
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/packaging/changelog INKPAGE_CHANGELOG)
+if(NOT INKPAGE_CHANGELOG_VERSION STREQUAL INKPAGE_FULL_VERSION)
+    set(INKPAGE_SNAPSHOT_DATE "${INKPAGE_COMMIT_DATE_RFC2822}")
+    if(NOT INKPAGE_SNAPSHOT_DATE)
+        string(TIMESTAMP INKPAGE_SNAPSHOT_DATE "%a, %d %b %Y %H:%M:%S +0000" UTC)
+    endif()
+    set(INKPAGE_SNAPSHOT_COMMIT "")
+    if(INKPAGE_GIT_COMMIT)
+        set(INKPAGE_SNAPSHOT_COMMIT " (commit ${INKPAGE_GIT_COMMIT})")
+    endif()
+    string(PREPEND INKPAGE_CHANGELOG
+           "inkpage (${INKPAGE_FULL_VERSION}) UNRELEASED; urgency=medium\n\n"
+           "  * Development snapshot${INKPAGE_SNAPSHOT_COMMIT}, see the git history.\n\n"
+           " -- ${INKPAGE_MAINTAINER}  ${INKPAGE_SNAPSHOT_DATE}\n\n")
+endif()
+# Copied only when it changes, so the package files are not rebuilt otherwise
+file(WRITE ${INKPAGE_PACKAGING_BUILD_DIR}/changelog.new "${INKPAGE_CHANGELOG}")
+configure_file(${INKPAGE_PACKAGING_BUILD_DIR}/changelog.new ${INKPAGE_PACKAGING_BUILD_DIR}/changelog COPYONLY)
+
+# Man page: version of inkpage, month of the commit
+if(INKPAGE_COMMIT_TIME)
+    set(INKPAGE_SAVED_SOURCE_DATE_EPOCH "$ENV{SOURCE_DATE_EPOCH}")
+    set(ENV{SOURCE_DATE_EPOCH} ${INKPAGE_COMMIT_TIME})
+    string(TIMESTAMP INKPAGE_MAN_DATE "%B %Y" UTC)
+    set(ENV{SOURCE_DATE_EPOCH} "${INKPAGE_SAVED_SOURCE_DATE_EPOCH}")
+else()
+    string(TIMESTAMP INKPAGE_MAN_DATE "%B %Y" UTC)
+endif()
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/packaging/inkpage.1.in ${INKPAGE_PACKAGING_BUILD_DIR}/inkpage.1 @ONLY)
+
 # Files required by the Debian policy: copyright and changelog of the package
 set(INKPAGE_INSTALL_DOC_DIR ${PDF4QT_INSTALL_SHARE_DIR}/doc/inkpage)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/packaging/copyright DESTINATION ${INKPAGE_INSTALL_DOC_DIR})
 
 find_program(INKPAGE_GZIP gzip)
 if(INKPAGE_GZIP)
-    set(INKPAGE_MAN_PAGE_GZ ${CMAKE_CURRENT_BINARY_DIR}/packaging/inkpage.1.gz)
+    set(INKPAGE_MAN_PAGE_GZ ${INKPAGE_PACKAGING_BUILD_DIR}/inkpage.1.gz)
     add_custom_command(OUTPUT ${INKPAGE_MAN_PAGE_GZ}
-                       COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/packaging
-                       COMMAND ${INKPAGE_GZIP} -9 -n -c ${CMAKE_CURRENT_SOURCE_DIR}/packaging/inkpage.1 > ${INKPAGE_MAN_PAGE_GZ}
-                       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/packaging/inkpage.1
+                       COMMAND ${INKPAGE_GZIP} -9 -n -c ${INKPAGE_PACKAGING_BUILD_DIR}/inkpage.1 > ${INKPAGE_MAN_PAGE_GZ}
+                       DEPENDS ${INKPAGE_PACKAGING_BUILD_DIR}/inkpage.1
                        VERBATIM)
     add_custom_target(inkpage_man_page ALL DEPENDS ${INKPAGE_MAN_PAGE_GZ})
     install(FILES ${INKPAGE_MAN_PAGE_GZ} DESTINATION ${PDF4QT_INSTALL_SHARE_DIR}/man/man1)
 
     # -n: no name and time stamp, the compressed file is reproducible
-    set(INKPAGE_CHANGELOG_GZ ${CMAKE_CURRENT_BINARY_DIR}/packaging/changelog.gz)
+    set(INKPAGE_CHANGELOG_GZ ${INKPAGE_PACKAGING_BUILD_DIR}/changelog.gz)
     add_custom_command(OUTPUT ${INKPAGE_CHANGELOG_GZ}
-                       COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/packaging
-                       COMMAND ${INKPAGE_GZIP} -9 -n -c ${CMAKE_CURRENT_SOURCE_DIR}/packaging/changelog > ${INKPAGE_CHANGELOG_GZ}
-                       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/packaging/changelog
+                       COMMAND ${INKPAGE_GZIP} -9 -n -c ${INKPAGE_PACKAGING_BUILD_DIR}/changelog > ${INKPAGE_CHANGELOG_GZ}
+                       DEPENDS ${INKPAGE_PACKAGING_BUILD_DIR}/changelog
                        VERBATIM)
     add_custom_target(inkpage_changelog ALL DEPENDS ${INKPAGE_CHANGELOG_GZ})
     install(FILES ${INKPAGE_CHANGELOG_GZ} DESTINATION ${INKPAGE_INSTALL_DOC_DIR})
@@ -67,9 +127,10 @@ endif()
 
 set(CPACK_GENERATOR "DEB")
 set(CPACK_PACKAGE_NAME "inkpage")
-set(CPACK_PACKAGE_VERSION ${INKPAGE_VERSION})
+set(CPACK_PACKAGE_VERSION ${INKPAGE_FULL_VERSION})
+set(CPACK_DEBIAN_PACKAGE_VERSION ${INKPAGE_FULL_VERSION})
 set(CPACK_PACKAGE_VENDOR "Ludovic Mercier")
-set(CPACK_PACKAGE_CONTACT "Ludovic Mercier <ludovic@scilink.net>")
+set(CPACK_PACKAGE_CONTACT "${INKPAGE_MAINTAINER}")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "simple PDF editor")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "inkpage")
 set(CPACK_STRIP_FILES ON)
@@ -90,7 +151,7 @@ It is based on PDF4QT by Jakub Melka.")
 # libraries are found in the package itself.
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS_PRIVATE_DIRS
-    ${CMAKE_BINARY_DIR}/_CPack_Packages/Linux/DEB/inkpage-${INKPAGE_VERSION}-Linux/${CMAKE_INSTALL_PREFIX}/${PDF4QT_INSTALL_LIB_DIR})
+    ${CMAKE_BINARY_DIR}/_CPack_Packages/Linux/DEB/inkpage-${INKPAGE_FULL_VERSION}-Linux/${CMAKE_INSTALL_PREFIX}/${PDF4QT_INSTALL_LIB_DIR})
 # The Qt plugins loaded at run time are not seen by dpkg-shlibdeps
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "qt6-svg-plugins, qt6-qpa-plugins")
 set(CPACK_DEBIAN_PACKAGE_RECOMMENDS "qt6-image-formats-plugins")

@@ -27,6 +27,7 @@
 #include "pdfviewersettings.h"
 #include "pdfapplicationtranslator.h"
 #include "pdfsettings.h"
+#include "inkpage_version.h"
 
 #include <QSettings>
 #include <QApplication>

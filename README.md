@@ -222,6 +222,33 @@ installs inkpage in `/usr`; its private libraries, and Blend2D and Clipper2
 dependencies are Debian packages, computed by `dpkg-shlibdeps` (package
 `dpkg-dev`). Install it with `sudo apt install ./build-deb/inkpage_*.deb`.
 
+### Version and releases
+
+The version of inkpage (shown by `inkpage --version` and the About dialog,
+and the version of the Debian package) is taken from the git tag of the
+release, `vX.Y.Z`:
+
+| Source tree                         | Version               |
+| ----------------------------------- | --------------------- |
+| at the tag `v0.3.0`                 | `0.3.0`               |
+| 5 commits after the tag             | `0.3.0+git5.g1a2b3c4` |
+| with uncommitted changes            | `0.3.0+dirty`, `0.3.0+git5.g1a2b3c4.dirty` |
+| no tag, or no git checkout          | `INKPAGE_BASE_VERSION` of `CMakeLists.txt` (with `+gitN.gHASH` in a checkout) |
+
+A development snapshot is sorted by Debian after the release and before the
+next one; its package gets a changelog entry of its own. To make a release:
+
+1. add the entry of the release at the top of `packaging/changelog`
+   (`inkpage (X.Y.Z) unstable; urgency=medium`) and
+   `<release version="X.Y.Z" date="..."/>` to
+   `Desktop/io.github.inkpage.metainfo.xml`, and commit them;
+2. run `scripts/release.sh X.Y.Z`: it checks the entries and creates the
+   annotated tag `vX.Y.Z` (it does not push it);
+3. run `scripts/build-deb.sh` and `git push origin vX.Y.Z`.
+
+The configuration fails at a release tag whose version is missing in the
+changelog or in the metainfo.
+
 ### CMake options
 
 |                  Option      |     Description                                          |

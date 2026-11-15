@@ -1,7 +1,7 @@
 .\" inkpage - a simple PDF editor for Linux
 .\" Copyright (C) 2026 Ludovic Mercier
 .\" SPDX-License-Identifier: GPL-3.0-or-later
-.TH INKPAGE 1 "November 2026" "inkpage 0.2.0" "User Commands"
+.TH INKPAGE 1 "@INKPAGE_MAN_DATE@" "inkpage @INKPAGE_FULL_VERSION@" "User Commands"
 .SH NAME
 inkpage \- simple PDF editor
 .SH SYNOPSIS

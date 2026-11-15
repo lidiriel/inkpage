@@ -24,7 +24,13 @@ cmake_minimum_required(VERSION 3.16)
 
 # inkpage - a simple PDF editor for Linux, forked from PDF4QT 1.7.0.0.
 # The PDF engine keeps its PDF4QT version and its PDF4QT_* option names.
-set(INKPAGE_VERSION 0.2.0)
+# The version of inkpage is the git tag of the release (vX.Y.Z), see
+# cmake/InkpageVersion.cmake and scripts/release.sh; INKPAGE_BASE_VERSION is
+# used only without a git checkout or a tag.
+set(INKPAGE_BASE_VERSION 0.2.0)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/InkpageVersion.cmake)
+inkpage_compute_version(${CMAKE_CURRENT_SOURCE_DIR} ${INKPAGE_BASE_VERSION})
+message(STATUS "inkpage version: ${INKPAGE_FULL_VERSION}")
 set(PDF4QT_VERSION 1.7.0.0)
 message(STATUS "Build type - CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 
@@ -34,7 +40,6 @@ option(PDF4QT_INSTALL_INCLUDE "Install include headers of the PDF libraries" OFF
 option(PDF4QT_FLATPAK_BUILD "Special flag for Flatpak" OFF)
 
 add_compile_definitions(PDF4QT_PROJECT_VERSION="${PDF4QT_VERSION}")
-add_compile_definitions(INKPAGE_VERSION="${INKPAGE_VERSION}")
 add_compile_definitions(QT_NO_EMIT)
 
 if(PDF4QT_FLATPAK_BUILD)
