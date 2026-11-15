@@ -27,6 +27,8 @@
 #include "pdfmeasure.h"
 
 #include <QUuid>
+#include <QFont>
+#include <QFontMetricsF>
 #include <QBuffer>
 #include <QPainterPath>
 #include <QRegularExpression>
@@ -2210,6 +2212,60 @@ bool PDFAnnotationManipulator::setFreeTextRectangle(PDFDocumentBuilder* builder,
     builder->setObject(annotation, PDFObject::createDictionary(std::move(modifiedDictionary)));
     builder->updateAnnotationAppearanceStreams(annotation);
     return true;
+}
+
+QSizeF PDFAnnotationManipulator::getFreeTextSize(const QString& text,
+                                                 const QString& fontFamily,
+                                                 PDFReal fontSize,
+                                                 PDFReal maximumWidth)
+{
+    // Same font as the appearance of the annotation (PDFFreeTextAnnotation::draw)
+    QFont font(fontFamily);
+    font.setPixelSize(qMax(int(fontSize), 1));
+    const QFontMetricsF metrics(font);
+
+    PDFReal maxLineWidth = 0.0;
+    for (const QString& line : text.split('\n'))
+    {
+        maxLineWidth = qMax(maxLineWidth, metrics.horizontalAdvance(line.isEmpty() ? QStringLiteral(" ") : line));
+    }
+
+    // A very narrow box would show one word per line, it is at least one inch wide
+    const PDFReal width = qMin(maxLineWidth + 2.0 * FREE_TEXT_PADDING, qMax<PDFReal>(maximumWidth, 72.0));
+    const QRectF wrappingRectangle(0.0, 0.0, qMax<PDFReal>(width - 2.0 * FREE_TEXT_PADDING, 1.0), 1000000.0);
+    const QRectF textRectangle = metrics.boundingRect(wrappingRectangle, int(Qt::TextWordWrap | Qt::AlignLeft | Qt::AlignTop), text.isEmpty() ? QStringLiteral(" ") : text);
+    return QSizeF(width, textRectangle.height() + 2.0 * FREE_TEXT_PADDING);
+}
+
+bool PDFAnnotationManipulator::fitFreeTextRectangleToContents(PDFDocumentBuilder* builder,
+                                                              PDFObjectReference annotation,
+                                                              PDFReal maximumRight)
+{
+    const PDFObjectStorage* storage = builder ? builder->getStorage() : nullptr;
+    const QRectF textRectangle = storage ? getFreeTextRectangle(storage, annotation).normalized() : QRectF();
+    const PDFDictionary* dictionary = storage ? storage->getDictionaryFromObject(storage->getObjectByReference(annotation)) : nullptr;
+    if (!textRectangle.isValid() || !dictionary)
+    {
+        return false;
+    }
+
+    PDFDocumentDataLoaderDecorator loader(storage);
+    const QString contents = loader.readTextStringFromDictionary(dictionary, "Contents", QString());
+    const PDFAnnotationDefaultAppearance appearance = PDFDocumentBuilder::getDefaultFreeTextAppearance(dictionary);
+    const QString fontFamily = PDFDocumentBuilder::decodeFreeTextFontName(appearance.getFontName());
+    const PDFReal fontSize = appearance.getFontSize() > 0.0 ? appearance.getFontSize() : PDFFreeTextStyle().fontSize;
+    const PDFReal maximumWidth = std::isfinite(maximumRight) ? maximumRight - textRectangle.left() : std::numeric_limits<PDFReal>::infinity();
+    const QSizeF size = getFreeTextSize(contents, fontFamily, fontSize, maximumWidth);
+
+    // The page coordinates grow upwards: the top of the text box is the bottom of the rectangle
+    const QRectF fittedRectangle(textRectangle.left(), textRectangle.bottom() - size.height(), size.width(), size.height());
+    auto isSame = [](PDFReal a, PDFReal b) { return std::abs(a - b) < 0.01; };
+    if (isSame(fittedRectangle.width(), textRectangle.width()) && isSame(fittedRectangle.height(), textRectangle.height()))
+    {
+        return false;
+    }
+
+    return setFreeTextRectangle(builder, annotation, fittedRectangle);
 }
 
 bool PDFAnnotationManipulator::setFreeTextCalloutLine(PDFDocumentBuilder* builder, PDFObjectReference annotation, const std::vector<QPointF>& calloutLine)

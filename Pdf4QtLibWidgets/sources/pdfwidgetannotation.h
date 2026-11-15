@@ -30,6 +30,7 @@
 #include "pdfannotationmanipulator.h"
 
 #include <QPixmap>
+#include <QPointer>
 #include <QUuid>
 
 #include <map>
@@ -38,6 +39,7 @@
 #include <functional>
 
 class QMimeData;
+class QTextEdit;
 
 namespace pdf
 {
@@ -280,6 +282,28 @@ public:
     /// Pastes the annotations of the clipboard, or its image, or its text as an inline text
     /// \param widgetPosition Position in the widget (optional)
     void paste(std::optional<QPoint> widgetPosition);
+
+    /// Starts the editing of the text of an inline text (free text annotation) in place: a text
+    /// editor is shown over the annotation, with its font at the current zoom. Esc or a click
+    /// outside of the editor validates the text (see \ref finishInlineTextEditing).
+    /// \param annotation Free text annotation
+    /// \param pageIndex Index of its page
+    /// \returns true, if the editing has started
+    bool startInlineTextEditing(PDFObjectReference annotation, PDFInteger pageIndex);
+
+    /// Finishes the editing of an inline text. When \p apply is set and the text has changed,
+    /// the text is written into the annotation and its frame fits the new text (one change
+    /// of the document); an empty text deletes the annotation.
+    /// \param apply Write the text into the annotation
+    void finishInlineTextEditing(bool apply = true);
+
+    /// Returns true, if an inline text is edited in place
+    bool isInlineTextEditing() const;
+
+    /// Returns the editor of the inline text edited in place (or nullptr)
+    QTextEdit* getInlineTextEditor() const;
+
+    virtual bool eventFilter(QObject* watched, QEvent* event) override;
 
     /// Copies the selected annotations (with their popup windows and replies)
     /// onto the pages. An annotation is not copied onto its own page.
@@ -824,6 +848,17 @@ private:
     /// the text field for a reply gets the focus
     void showPopupOfEditableAnnotation(bool focusReply);
     void onEditAnnotation();
+
+    /// Places the editor of the inline text over its annotation (position and font
+    /// at the current zoom, size fitting the text)
+    void updateInlineTextEditorGeometry();
+
+    /// Makes the frame of an inline text fit its text (the frame does not go out of the page)
+    /// \param builder Document builder
+    /// \param annotation Free text annotation
+    /// \param pageIndex Index of its page
+    bool fitInlineText(PDFDocumentBuilder* builder, PDFObjectReference annotation, PDFInteger pageIndex) const;
+
     void onEditGeometry();
     void onDeleteAnnotation();
 
@@ -851,6 +886,19 @@ private:
     QPoint m_editableAnnotationGlobalPosition; ///< Position, where action on annotation was executed
     PDFObjectReference m_editableAnnotation;    ///< Annotation to be edited or deleted
     PDFObjectReference m_editableAnnotationPage;    ///< Page of annotation above
+
+    /// Inline text edited in place
+    struct InlineTextEditing
+    {
+        QPointer<QTextEdit> editor;
+        PDFObjectReference annotation;
+        PDFInteger pageIndex = -1;
+        QRectF textRectangle;       ///< Text box of the annotation (page coordinates)
+        QString fontFamily;
+        PDFReal fontSize = 0.0;
+        QString originalText;
+    };
+    InlineTextEditing m_inlineTextEditing;
     bool m_suppressLinkActivationOnRelease = false;
     bool m_isLinkPressed = false;               ///< The mouse button was pressed over a link (so its release can activate it)
     PDFObjectReference m_pendingDeselection;    ///< Selected annotation clicked with a modifier, it is deselected on release (if it is not dragged)

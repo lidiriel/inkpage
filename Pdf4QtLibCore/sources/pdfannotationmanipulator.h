@@ -30,6 +30,7 @@
 
 #include <QFlags>
 #include <QRectF>
+#include <QSizeF>
 #include <QPolygonF>
 #include <QTransform>
 #include <QByteArray>
@@ -304,6 +305,32 @@ public:
     /// \param textRectangle New text box
     /// \returns true, if the annotation has been modified
     static bool setFreeTextRectangle(PDFDocumentBuilder* builder, PDFObjectReference annotation, const QRectF& textRectangle);
+
+    /// Space between the text of an inline text (free text annotation) and its frame
+    static constexpr PDFReal FREE_TEXT_PADDING = 2.0;
+
+    /// Returns the size of the text box, which shows the text with the font (one line
+    /// of the box per line of the text, measured as the appearance of the annotation
+    /// draws it). A text wider than \p maximumWidth is wrapped at this width.
+    /// \param text Text
+    /// \param fontFamily Font family
+    /// \param fontSize Font size
+    /// \param maximumWidth Maximal width of the text box (infinity, if the width is not limited)
+    static QSizeF getFreeTextSize(const QString& text,
+                                  const QString& fontFamily,
+                                  PDFReal fontSize,
+                                  PDFReal maximumWidth = std::numeric_limits<PDFReal>::infinity());
+
+    /// Resizes the text box of a free text annotation, so it fits its text (font and size
+    /// of its default appearance). The top left corner of the text box stays, where it is.
+    /// \param builder Document builder
+    /// \param annotation Annotation
+    /// \param maximumRight The text box does not go to the right of this coordinate (the right
+    ///        edge of the page), a longer text is wrapped
+    /// \returns true, if the annotation has been modified
+    static bool fitFreeTextRectangleToContents(PDFDocumentBuilder* builder,
+                                               PDFObjectReference annotation,
+                                               PDFReal maximumRight = std::numeric_limits<PDFReal>::infinity());
 
     /// Adds a callout line to a free text annotation (or replaces the existing one), or
     /// removes it, if no points are given. The text box is not changed.

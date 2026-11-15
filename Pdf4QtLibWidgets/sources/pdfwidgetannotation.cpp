@@ -184,15 +184,24 @@ PDFWidgetAnnotationManager::PDFWidgetAnnotationManager(PDFDrawWidgetProxy* proxy
 
     m_snapper.setSnapPointPixelSize(PDFWidgetUtils::scaleDPI_x(proxy->getWidget(), 10));
     m_snapper.setSnapPointTolerance(m_snapper.getSnapPointPixelSize());
+
+    // The editor of an inline text follows the zoom and the scrolling
+    connect(m_proxy, &PDFDrawWidgetProxy::drawSpaceChanged, this, &PDFWidgetAnnotationManager::updateInlineTextEditorGeometry);
+    connect(m_proxy, &PDFDrawWidgetProxy::repaintNeeded, this, &PDFWidgetAnnotationManager::updateInlineTextEditorGeometry);
 }
 
 PDFWidgetAnnotationManager::~PDFWidgetAnnotationManager()
 {
+    delete m_inlineTextEditing.editor.data();
     m_proxy->unregisterDrawInterface(this);
 }
 
 void PDFWidgetAnnotationManager::setDocument(const PDFModifiedDocument& document)
 {
+    // The document is changed by something else (undo, another tool...): the text
+    // edited in place is dropped, the annotation may not exist any more
+    finishInlineTextEditing(false);
+
     BaseClass::setDocument(document);
 
     if (document.hasReset() || document.getFlags().testFlag(PDFModifiedDocument::Annotation))
@@ -2812,6 +2821,15 @@ void PDFWidgetAnnotationManager::mouseDoubleClickEvent(QWidget* widget, QMouseEv
                 m_editableAnnotation = annotationReference;
                 m_editableAnnotationPage = getPageReference(snapshotItem.pageIndex, pageAnnotation);
                 event->accept();
+
+                // inkpage: the text of an inline text is edited in place (the dialog
+                // is still available in the context menu)
+                if (pageAnnotation.annotation->getType() == AnnotationType::FreeText &&
+                    startInlineTextEditing(annotationReference, snapshotItem.pageIndex))
+                {
+                    return;
+                }
+
                 onEditAnnotation();
                 return;
             }
@@ -4710,23 +4728,9 @@ void PDFWidgetAnnotationManager::pasteText(std::optional<QPoint> widgetPosition)
 
     // Size of the text: one line per line of the text, wrapped at the right margin of the page
     const PDFFreeTextStyle style;
-    const PDFReal padding = 2.0;
-    QFont font(style.fontFamily);
-    font.setPixelSize(qMax(int(std::ceil(style.fontSize)), 1));
-    QFontMetricsF metrics(font);
-
-    PDFReal maxLineWidth = 0.0;
-    for (const QString& line : text.split('\n'))
-    {
-        maxLineWidth = qMax(maxLineWidth, metrics.horizontalAdvance(line.isEmpty() ? QStringLiteral(" ") : line));
-    }
-
-    const PDFReal availableWidth = qMax<PDFReal>(72.0, mediaBox.right() - topLeft.x() - margin / 2.0);
-    const PDFReal width = qMin(maxLineWidth + 2.0 * padding, availableWidth);
-    const QRectF textRectangle = metrics.boundingRect(QRectF(0.0, 0.0, qMax<PDFReal>(width - 2.0 * padding, 1.0), 1000000.0), int(Qt::TextWordWrap | Qt::AlignLeft | Qt::AlignTop), text);
-    const PDFReal height = textRectangle.height() + 2.0 * padding;
-
-    QRectF rectangle(topLeft.x(), topLeft.y() - height, width, height);
+    const PDFReal padding = PDFAnnotationManipulator::FREE_TEXT_PADDING;
+    const QSizeF size = PDFAnnotationManipulator::getFreeTextSize(text, style.fontFamily, style.fontSize, mediaBox.right() - topLeft.x() - margin / 2.0);
+    QRectF rectangle(topLeft.x(), topLeft.y() - size.height(), size.width(), size.height());
     if (mediaBox.isValid())
     {
         if (rectangle.top() < mediaBox.top())
@@ -5288,6 +5292,15 @@ void PDFWidgetAnnotationManager::onEditAnnotation()
             {
                 PDFAnnotationManipulator::setRectangle(modifier.getBuilder(), m_editableAnnotation, newRectangle);
             }
+            else
+            {
+                // inkpage: the frame of an inline text fits its text (new text, font or size)
+                const PDFObject subtype = editedDictionary ? m_document->getObject(editedDictionary->get("Subtype")) : PDFObject();
+                if (subtype.isName() && subtype.getString() == "FreeText")
+                {
+                    fitInlineText(modifier.getBuilder(), m_editableAnnotation, findAnnotationPage(m_editableAnnotation));
+                }
+            }
 
             if (modifier.finalize())
             {
@@ -5295,6 +5308,245 @@ void PDFWidgetAnnotationManager::onEditAnnotation()
             }
         }
     }
+}
+
+bool PDFWidgetAnnotationManager::fitInlineText(PDFDocumentBuilder* builder, PDFObjectReference annotation, PDFInteger pageIndex) const
+{
+    const PDFPage* page = (m_document && pageIndex >= 0) ? m_document->getCatalog()->getPage(pageIndex) : nullptr;
+    const QRectF mediaBox = page ? page->getMediaBox().normalized() : QRectF();
+    const PDFReal maximumRight = mediaBox.isValid() ? mediaBox.right() : std::numeric_limits<PDFReal>::infinity();
+    return PDFAnnotationManipulator::fitFreeTextRectangleToContents(builder, annotation, maximumRight);
+}
+
+bool PDFWidgetAnnotationManager::isInlineTextEditing() const
+{
+    return !m_inlineTextEditing.editor.isNull();
+}
+
+QTextEdit* PDFWidgetAnnotationManager::getInlineTextEditor() const
+{
+    return m_inlineTextEditing.editor.data();
+}
+
+bool PDFWidgetAnnotationManager::startInlineTextEditing(PDFObjectReference annotation, PDFInteger pageIndex)
+{
+    finishInlineTextEditing();
+
+    const PageAnnotation* pageAnnotation = (m_document && pageIndex >= 0) ? findPageAnnotation(pageIndex, annotation) : nullptr;
+    const PDFFreeTextAnnotation* freeTextAnnotation = pageAnnotation ? dynamic_cast<const PDFFreeTextAnnotation*>(pageAnnotation->annotation.data()) : nullptr;
+    if (!freeTextAnnotation || !isModificationAllowed())
+    {
+        return false;
+    }
+
+    const QRectF textRectangle = PDFAnnotationManipulator::getFreeTextRectangle(&m_document->getStorage(), annotation).normalized();
+    if (!textRectangle.isValid())
+    {
+        return false;
+    }
+
+    const PDFAnnotationDefaultAppearance appearance = PDFAnnotationDefaultAppearance::parse(freeTextAnnotation->getDefaultAppearance());
+    const QColor textColor = appearance.getFontColor().isValid() ? appearance.getFontColor() : QColor(Qt::black);
+
+    QTextEdit* editor = new QTextEdit(m_proxy->getWidget()->getDrawWidget()->getWidget());
+    editor->setObjectName("inlineTextEditor");
+    editor->setAcceptRichText(false);
+    editor->setLineWrapMode(QTextEdit::NoWrap);
+    editor->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    editor->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    editor->setFrameShape(QFrame::NoFrame);
+    editor->document()->setDocumentMargin(0);
+
+    // Opaque background: the text of the annotation is not seen below the edited text
+    QPalette palette = editor->palette();
+    palette.setColor(QPalette::Base, Qt::white);
+    palette.setColor(QPalette::Text, textColor);
+    editor->setPalette(palette);
+
+    Qt::Alignment alignment = Qt::AlignLeft;
+    switch (freeTextAnnotation->getJustification())
+    {
+        case PDFFreeTextAnnotation::Justification::Centered:
+            alignment = Qt::AlignHCenter;
+            break;
+
+        case PDFFreeTextAnnotation::Justification::Right:
+            alignment = Qt::AlignRight;
+            break;
+
+        default:
+            break;
+    }
+    QTextOption textOption = editor->document()->defaultTextOption();
+    textOption.setAlignment(alignment);
+    editor->document()->setDefaultTextOption(textOption);
+
+    m_inlineTextEditing = InlineTextEditing();
+    m_inlineTextEditing.editor = editor;
+    m_inlineTextEditing.annotation = annotation;
+    m_inlineTextEditing.pageIndex = pageIndex;
+    m_inlineTextEditing.textRectangle = textRectangle;
+    m_inlineTextEditing.fontFamily = PDFDocumentBuilder::decodeFreeTextFontName(appearance.getFontName());
+    m_inlineTextEditing.fontSize = appearance.getFontSize() > 0.0 ? appearance.getFontSize() : PDFFreeTextStyle().fontSize;
+    m_inlineTextEditing.originalText = freeTextAnnotation->getContents();
+
+    editor->setPlainText(m_inlineTextEditing.originalText);
+    editor->moveCursor(QTextCursor::End);
+    editor->installEventFilter(this);
+    connect(editor, &QTextEdit::textChanged, this, &PDFWidgetAnnotationManager::updateInlineTextEditorGeometry);
+
+    updateInlineTextEditorGeometry();
+    editor->setFocus(Qt::OtherFocusReason);
+    return true;
+}
+
+void PDFWidgetAnnotationManager::updateInlineTextEditorGeometry()
+{
+    QTextEdit* editor = m_inlineTextEditing.editor;
+    if (!editor)
+    {
+        return;
+    }
+
+    const PDFWidgetSnapshot snapshot = m_proxy->getSnapshot();
+    const PDFWidgetSnapshot::SnapshotItem* snapshotItem = nullptr;
+    for (const PDFWidgetSnapshot::SnapshotItem& item : snapshot.items)
+    {
+        if (item.pageIndex == m_inlineTextEditing.pageIndex)
+        {
+            snapshotItem = &item;
+            break;
+        }
+    }
+
+    if (!snapshotItem)
+    {
+        // The page is not displayed
+        editor->hide();
+        return;
+    }
+
+    // Font of the annotation at the current zoom
+    const QTransform& pageToDevice = snapshotItem->pageToDeviceMatrix;
+    const PDFReal scale = std::sqrt(std::abs(pageToDevice.determinant()));
+    QFont font(m_inlineTextEditing.fontFamily);
+    font.setPixelSize(qMax(qRound(m_inlineTextEditing.fontSize * scale), 1));
+    if (editor->font() != font)
+    {
+        editor->setFont(font);
+    }
+
+    // The editor covers the text box of the annotation and grows with the text
+    const QRect deviceRectangle = pageToDevice.mapRect(m_inlineTextEditing.textRectangle).toAlignedRect();
+    const int cursorWidth = 2 * editor->cursorWidth();
+    const int width = qMax(deviceRectangle.width(), int(std::ceil(editor->document()->idealWidth())) + cursorWidth);
+    const int height = qMax(deviceRectangle.height(), int(std::ceil(editor->document()->size().height())));
+    editor->setGeometry(deviceRectangle.left(), deviceRectangle.top(), width, height);
+    editor->show();
+}
+
+void PDFWidgetAnnotationManager::finishInlineTextEditing(bool apply)
+{
+    QTextEdit* editor = m_inlineTextEditing.editor;
+    if (!editor)
+    {
+        return;
+    }
+
+    const InlineTextEditing editing = m_inlineTextEditing;
+    m_inlineTextEditing = InlineTextEditing();
+
+    const QString text = editor->toPlainText();
+    const bool hadFocus = editor->hasFocus();
+    editor->removeEventFilter(this);
+    disconnect(editor, nullptr, this, nullptr);
+    editor->hide();
+    editor->deleteLater();
+
+    if (hadFocus)
+    {
+        m_proxy->getWidget()->getDrawWidget()->getWidget()->setFocus(Qt::OtherFocusReason);
+    }
+
+    const PDFPage* page = (m_document && editing.pageIndex >= 0) ? m_document->getCatalog()->getPage(editing.pageIndex) : nullptr;
+    if (!apply || text == editing.originalText || !page)
+    {
+        return;
+    }
+
+    PDFDocumentModifier modifier(m_document);
+    modifier.markAnnotationsChanged();
+    PDFDocumentBuilder* builder = modifier.getBuilder();
+
+    const bool isEmpty = text.trimmed().isEmpty();
+    if (isEmpty)
+    {
+        builder->removeAnnotation(page->getPageReference(), editing.annotation);
+    }
+    else
+    {
+        builder->setAnnotationContents(editing.annotation, text);
+        builder->updateAnnotationAppearanceStreams(editing.annotation);
+        fitInlineText(builder, editing.annotation, editing.pageIndex);
+    }
+
+    if (modifier.finalize())
+    {
+        Q_EMIT documentModified(PDFModifiedDocument(modifier.getDocument(), nullptr, modifier.getFlags()));
+        if (!isEmpty)
+        {
+            setSelectedAnnotations({ editing.annotation });
+        }
+    }
+}
+
+bool PDFWidgetAnnotationManager::eventFilter(QObject* watched, QEvent* event)
+{
+    if (watched && watched == m_inlineTextEditing.editor)
+    {
+        switch (event->type())
+        {
+            case QEvent::ShortcutOverride:
+            {
+                // Esc validates the text, it is not a shortcut of the window
+                QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+                if (keyEvent->key() == Qt::Key_Escape)
+                {
+                    event->accept();
+                    return true;
+                }
+                break;
+            }
+
+            case QEvent::KeyPress:
+            {
+                if (static_cast<QKeyEvent*>(event)->key() == Qt::Key_Escape)
+                {
+                    finishInlineTextEditing(true);
+                    return true;
+                }
+                break;
+            }
+
+            case QEvent::FocusOut:
+            {
+                // A click outside of the editor validates the text. The focus is also lost,
+                // when the context menu of the editor is shown, or when the user switches to
+                // another window: the editing continues.
+                const Qt::FocusReason reason = static_cast<QFocusEvent*>(event)->reason();
+                if (reason != Qt::PopupFocusReason && reason != Qt::ActiveWindowFocusReason)
+                {
+                    finishInlineTextEditing(true);
+                }
+                break;
+            }
+
+            default:
+                break;
+        }
+    }
+
+    return BaseClass::eventFilter(watched, event);
 }
 
 void PDFWidgetAnnotationManager::onEditGeometry()

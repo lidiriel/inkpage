@@ -127,6 +127,8 @@ private slots:
     void handlesOfLongMarkupAreNearCursor();
     void replyIsWrittenInPopup();
     void doubleClickEditsAnnotation();
+    void inlineTextFrameFitsItsText();
+    void doubleClickEditsInlineTextInPlace();
     void replyMenuEntryOpensPopup();
     void pastedTextBecomesInlineText();
     void imageAnnotationKeepsItsAppearance();
@@ -2671,6 +2673,139 @@ void AnnotationSelectionTest::doubleClickEditsAnnotation()
     QVERIFY(!hasReplyEdit);
     QVERIFY(fixture.annotations.isAnnotationSelected(square));
     QCOMPARE(fixture.modificationCount, 0);
+}
+
+void AnnotationSelectionTest::inlineTextFrameFitsItsText()
+{
+    PDFDocumentBuilder builder;
+    const PDFObjectReference page = builder.appendPage(QRectF(0, 0, 300, 300));
+    PDFFreeTextStyle style;
+    style.fontSize = 12.0;
+    const PDFObjectReference freeText = builder.createAnnotationFreeText(page, QRectF(50, 100, 200, 100), "Title", QString(), "Short", style, false);
+
+    // Too large frame: it shrinks to the text, its top left corner stays (top = 200)
+    QVERIFY(PDFAnnotationManipulator::fitFreeTextRectangleToContents(&builder, freeText));
+    const QSizeF oneLine = PDFAnnotationManipulator::getFreeTextSize("Short", style.fontFamily, style.fontSize);
+    QRectF rectangle = PDFAnnotationManipulator::getFreeTextRectangle(builder.getStorage(), freeText).normalized();
+    QCOMPARE(rectangle.left(), 50.0);
+    QCOMPARE(rectangle.bottom(), 200.0);
+    QVERIFY(std::abs(rectangle.width() - oneLine.width()) < 0.01);
+    QVERIFY(std::abs(rectangle.height() - oneLine.height()) < 0.01);
+    QVERIFY(rectangle.height() > style.fontSize && rectangle.height() < 3.0 * style.fontSize);
+    QVERIFY(rectangle.width() < 100.0);
+
+    // Already fitted: not modified
+    QVERIFY(!PDFAnnotationManipulator::fitFreeTextRectangleToContents(&builder, freeText));
+
+    // Three lines: three times higher (about), still at the same top left corner
+    builder.setAnnotationContents(freeText, "Short\nA longer second line\nThird");
+    QVERIFY(PDFAnnotationManipulator::fitFreeTextRectangleToContents(&builder, freeText));
+    rectangle = PDFAnnotationManipulator::getFreeTextRectangle(builder.getStorage(), freeText).normalized();
+    QCOMPARE(rectangle.left(), 50.0);
+    QCOMPARE(rectangle.bottom(), 200.0);
+    QVERIFY(rectangle.height() > 2.5 * oneLine.height() - 4.0 * PDFAnnotationManipulator::FREE_TEXT_PADDING);
+    QVERIFY(rectangle.width() > oneLine.width());
+
+    // A long line is wrapped at the right edge (of the page)
+    builder.setAnnotationContents(freeText, "A long line of words, which does not fit between the left side of the box and the edge of the page");
+    QVERIFY(PDFAnnotationManipulator::fitFreeTextRectangleToContents(&builder, freeText, 300.0));
+    rectangle = PDFAnnotationManipulator::getFreeTextRectangle(builder.getStorage(), freeText).normalized();
+    QVERIFY(rectangle.right() <= 300.0 + 0.01);
+    QVERIFY(rectangle.height() > 2.0 * oneLine.height() - 2.0 * PDFAnnotationManipulator::FREE_TEXT_PADDING);
+}
+
+void AnnotationSelectionTest::doubleClickEditsInlineTextInPlace()
+{
+    PDFDocumentBuilder builder;
+    const PDFObjectReference page = builder.appendPage(QRectF(0, 0, 300, 300));
+    PDFFreeTextStyle style;
+    style.fontSize = 12.0;
+    style.textColor = Qt::blue;
+    const PDFObjectReference freeText = builder.createAnnotationFreeText(page, QRectF(50, 200, 120, 30), "Title", QString(), "First text", style, false);
+    SelectionFixture fixture(builder.build());
+
+    // No dialog is opened (one is rejected and reported, if any)
+    QString dialogClass;
+    QTimer timer;
+    QObject::connect(&timer, &QTimer::timeout, [&]()
+    {
+        if (QDialog* dialog = qobject_cast<QDialog*>(QApplication::activeModalWidget()))
+        {
+            dialogClass = dialog->metaObject()->className();
+            dialog->reject();
+        }
+    });
+    timer.start(20);
+
+    auto doubleClick = [&fixture](QPointF pagePoint)
+    {
+        const QPoint position = fixture.device(pagePoint);
+        QMouseEvent move(QEvent::MouseMove, position, fixture.widget.mapToGlobal(position), Qt::NoButton, Qt::NoButton, Qt::NoModifier);
+        fixture.annotations.mouseMoveEvent(&fixture.widget, &move);
+        QMouseEvent event(QEvent::MouseButtonDblClick, position, fixture.widget.mapToGlobal(position), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+        fixture.annotations.mouseDoubleClickEvent(&fixture.widget, &event);
+    };
+
+    doubleClick(QPointF(80, 215));
+    QCOMPARE(dialogClass, QString());
+    QVERIFY(fixture.annotations.isInlineTextEditing());
+    QTextEdit* editor = fixture.annotations.getInlineTextEditor();
+    QVERIFY(editor);
+    QCOMPARE(editor->toPlainText(), QString("First text"));
+    QCOMPARE(editor->palette().color(QPalette::Text), QColor(Qt::blue));
+    QVERIFY(fixture.annotations.isAnnotationSelected(freeText));
+
+    // The editor is over the annotation, its font follows the zoom
+    const QTransform pageToDevice = fixture.pageToDevice();
+    const PDFReal scale = std::sqrt(std::abs(pageToDevice.determinant()));
+    QCOMPARE(editor->font().pixelSize(), qRound(12.0 * scale));
+    const QRect deviceRectangle = pageToDevice.mapRect(QRectF(50, 200, 120, 30)).toAlignedRect();
+    QCOMPARE(editor->geometry().topLeft(), deviceRectangle.topLeft());
+
+    // Unchanged text: the document is not modified
+    QTest::keyClick(editor, Qt::Key_Escape);
+    QVERIFY(!fixture.annotations.isInlineTextEditing());
+    QCOMPARE(fixture.modificationCount, 0);
+
+    // New text on two lines, validated by Esc: one modification, the frame fits the text
+    doubleClick(QPointF(80, 215));
+    editor = fixture.annotations.getInlineTextEditor();
+    QVERIFY(editor);
+    editor->setPlainText("New text\nOn two lines, a bit longer");
+    QVERIFY(editor->width() > deviceRectangle.width());
+    QTest::keyClick(editor, Qt::Key_Escape);
+    QVERIFY(!fixture.annotations.isInlineTextEditing());
+    QCOMPARE(fixture.modificationCount, 1);
+    QCOMPARE(fixture.contents(freeText), QString("New text\nOn two lines, a bit longer"));
+    QVERIFY(fixture.annotations.isAnnotationSelected(freeText));
+
+    const QSizeF size = PDFAnnotationManipulator::getFreeTextSize("New text\nOn two lines, a bit longer", style.fontFamily, style.fontSize);
+    const QRectF rectangle = PDFAnnotationManipulator::getFreeTextRectangle(&fixture.document->getStorage(), freeText).normalized();
+    QCOMPARE(rectangle.left(), 50.0);
+    QCOMPARE(rectangle.bottom(), 230.0);
+    QVERIFY(std::abs(rectangle.width() - size.width()) < 0.01);
+    QVERIFY(std::abs(rectangle.height() - size.height()) < 0.01);
+
+    // A document changed by something else drops the edited text
+    doubleClick(QPointF(70, 225));
+    QVERIFY(fixture.annotations.isInlineTextEditing());
+    fixture.annotations.getInlineTextEditor()->setPlainText("Dropped");
+    fixture.apply(PDFModifiedDocument(fixture.document, nullptr, PDFModifiedDocument::Annotation));
+    QVERIFY(!fixture.annotations.isInlineTextEditing());
+    QCOMPARE(fixture.modificationCount, 1);
+    QCOMPARE(fixture.contents(freeText), QString("New text\nOn two lines, a bit longer"));
+
+    // An empty text deletes the inline text
+    doubleClick(QPointF(70, 225));
+    editor = fixture.annotations.getInlineTextEditor();
+    QVERIFY(editor);
+    editor->clear();
+    QTest::keyClick(editor, Qt::Key_Escape);
+    QCOMPARE(fixture.modificationCount, 2);
+    QVERIFY(fixture.pageAnnotations().empty());
+
+    timer.stop();
+    QCOMPARE(dialogClass, QString());
 }
 
 void AnnotationSelectionTest::replyMenuEntryOpensPopup()
