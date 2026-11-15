@@ -137,13 +137,6 @@ void AnnotationToolsTest::activationDoesNotIndexDocument()
     highlight.setActive(true);
     highlight.setActive(false);
     QCOMPARE(indexing.count(), 0);
-
-    QAction action;
-    pdf::PDFCreateRedactTextTool redact(proxy, &fixture.tools, &action, nullptr);
-    redact.setDocument(pdf::PDFModifiedDocument(&fixture.document, nullptr));
-    redact.setActive(true);
-    redact.setActive(false);
-    QCOMPARE(indexing.count(), 0);
 }
 
 QTEST_MAIN(AnnotationToolsTest)

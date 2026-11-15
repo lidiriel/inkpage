@@ -501,6 +501,9 @@ struct FormFixture
           &actions[6], &actions[7], &actions[8], &actions[9] }, nullptr, &widget };
     int modificationCount = 0;
 
+    /// Visibility of the layers, the drawing of the annotations needs it (as in the application)
+    std::unique_ptr<PDFOptionalContentActivity> optionalContentActivity;
+
     explicit FormFixture(PDFDocument initialDocument) :
         document(new PDFDocument(std::move(initialDocument)))
     {
@@ -539,6 +542,16 @@ struct FormFixture
 
     void apply(PDFModifiedDocument modified)
     {
+        if (PDFDocument* modifiedDocument = modified.getDocument())
+        {
+            if (!optionalContentActivity)
+            {
+                optionalContentActivity = std::make_unique<PDFOptionalContentActivity>(modifiedDocument, OCUsage::View, nullptr);
+            }
+            optionalContentActivity->setDocument(modifiedDocument);
+            modified.setOptionalContentActivity(optionalContentActivity.get());
+        }
+
         widget.setDocument(modified, {});
         annotations.setDocument(modified);
         forms.setDocument(modified);
