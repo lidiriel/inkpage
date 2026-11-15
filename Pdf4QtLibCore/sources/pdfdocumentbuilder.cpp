@@ -2970,7 +2970,8 @@ void PDFDocumentBuilder::modifyOptionalContentProperties(const std::function<voi
 
 PDFObjectReference PDFDocumentBuilder::createOptionalContentGroup(QString name,
                                                                 bool visible,
-                                                                bool printed)
+                                                                bool printed,
+                                                                bool isOnTop)
 {
     auto writeState = [](bool state) { return WrapName(state ? "ON" : "OFF"); };
 
@@ -3016,17 +3017,24 @@ PDFObjectReference PDFDocumentBuilder::createOptionalContentGroup(QString name,
     {
         appendToArray(properties, "OCGs", groupObject);
 
-        // The new layer is at the top of the list shown to the user (Order), it is hidden
-        // if needed (OFF), and the view and print usages are applied automatically (AS)
+        // The new layer is at the top (or the bottom) of the list shown to the user (Order), it
+        // is hidden if needed (OFF), and the view and print usages are applied automatically (AS)
         const PDFObject orderObject = m_storage.getObject(configuration.get("Order"));
         PDFArrayBuilder order;
-        order.appendItem(groupObject);
+        if (isOnTop)
+        {
+            order.appendItem(groupObject);
+        }
         if (const PDFArray* existingOrder = orderObject.isArray() ? orderObject.getArray() : nullptr)
         {
             for (size_t i = 0; i < existingOrder->getCount(); ++i)
             {
                 order.appendItem(existingOrder->getItem(i));
             }
+        }
+        if (!isOnTop)
+        {
+            order.appendItem(groupObject);
         }
         configuration.setEntry(PDFInplaceOrMemoryString("Order"), PDFObject::createArray(std::move(order)));
 

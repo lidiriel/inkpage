@@ -354,7 +354,13 @@ QList<PDFRenderError> PDFPageContentProcessor::processContents()
                 break;
             }
 
-            const PDFObject& streamObject = m_document->getObject(array->getItem(i));
+            const PDFObject& item = array->getItem(i);
+            if (item.isReference() && m_skippedContentStreams.count(item.getReference()))
+            {
+                continue;
+            }
+
+            const PDFObject& streamObject = m_document->getObject(item);
             if (streamObject.isStream())
             {
                 processContentStream(streamObject.getStream());
@@ -367,7 +373,19 @@ QList<PDFRenderError> PDFPageContentProcessor::processContents()
     }
     else if (contents.isStream())
     {
-        processContentStream(contents.getStream());
+        // The page has a single content stream, it can be skipped too (its reference is in the page)
+        bool isSkipped = false;
+        if (!m_skippedContentStreams.empty())
+        {
+            const PDFDictionary* pageDictionary = m_document->getDictionaryFromObject(m_document->getObjectByReference(m_page->getPageReference()));
+            const PDFObject contentsEntry = pageDictionary ? pageDictionary->get("Contents") : PDFObject();
+            isSkipped = contentsEntry.isReference() && m_skippedContentStreams.count(contentsEntry.getReference());
+        }
+
+        if (!isSkipped)
+        {
+            processContentStream(contents.getStream());
+        }
     }
     else
     {

@@ -32,6 +32,7 @@
 #include "pdfpagecontenteditorcontentstreambuilder.h"
 #include "pdfstreamfilters.h"
 #include "pdfoptimizer.h"
+#include "pdfpageorganizer.h"
 
 #include <QAction>
 #include <QToolButton>
@@ -451,8 +452,19 @@ bool EditorPlugin::updatePageContent(pdf::PDFInteger pageIndex,
     factory << resourcesDictionary;
     factory.endDictionaryItem();
 
+    // inkpage: the background of the page (with its layer marker) is not edited, it stays
+    // the first content stream of the page, so it is still the background of the page
     factory.beginDictionaryItem("Contents");
-    factory << builder->addObject(std::move(contentObject));
+    const pdf::PDFObjectReference contentReference = builder->addObject(std::move(contentObject));
+    const pdf::PDFObjectReference backgroundStream = pdf::PDFPageOrganizer::getBackgroundStream(m_document, pageIndex);
+    if (backgroundStream.isValid())
+    {
+        factory << std::vector<pdf::PDFObjectReference>{ backgroundStream, contentReference };
+    }
+    else
+    {
+        factory << contentReference;
+    }
     factory.endDictionaryItem();
 
     factory.endDictionary();
@@ -1010,6 +1022,14 @@ void EditorPlugin::updateEditedPages()
                                                      QTransform(),
                                                      pdf::PDFMeshQualitySettings());
 
+        // inkpage: the background of the page (ruled, grid... in the layer of the backgrounds)
+        // is not edited, it is kept as it is, when the page is written (see updatePageContent)
+        const pdf::PDFObjectReference backgroundStream = pdf::PDFPageOrganizer::getBackgroundStream(m_document, pageIndex);
+        if (backgroundStream.isValid())
+        {
+            processor.setSkippedContentStreams({ backgroundStream });
+        }
+
         QList<pdf::PDFRenderError> errors = processor.processContents();
         Q_UNUSED(errors);
 
@@ -1061,6 +1081,13 @@ bool EditorPlugin::updateTextElement(pdf::PDFPageContentElementEdited* element)
         fontCache.setDocument(pdf::PDFModifiedDocument(document, &activity));
         iccProfileCache.setDocument(pdf::PDFModifiedDocument(document, &activity));
         pdf::PDFPageContentEditorProcessor processor(page, document, &fontCache, &iccProfileCache, cms.data(), &activity, QTransform(), pdf::PDFMeshQualitySettings());
+
+        // The background of the page is not edited (see updateEditedPages)
+        const pdf::PDFObjectReference backgroundStream = pdf::PDFPageOrganizer::getBackgroundStream(document, element->getPageIndex());
+        if (backgroundStream.isValid())
+        {
+            processor.setSkippedContentStreams({ backgroundStream });
+        }
 
         QList<pdf::PDFRenderError> errors = processor.processContents();
         Q_UNUSED(errors);

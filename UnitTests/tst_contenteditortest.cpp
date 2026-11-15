@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "pdfpageorganizer.h"
 #include "pdfcms.h"
 #include "pdfcolorspaces.h"
 #include "pdfconstants.h"
@@ -103,6 +104,7 @@ class ContentEditorTest : public QObject
     Q_OBJECT
 
 private slots:
+    void backgroundIsNotEdited();
     void test_image_orientation_plain();
     void test_image_orientation_flipped_matrix();
     void test_image_orientation_form_xobject();
@@ -2861,6 +2863,37 @@ void ContentEditorTest::test_clip_path_curves_are_preserved()
     }
 
     QCOMPARE(renderPage(modifiedDocument.data()), originalImage);
+}
+
+void ContentEditorTest::backgroundIsNotEdited()
+{
+    // A page with a black square and a ruled background (a separate content stream)
+    pdf::PDFDocumentBuilder builder;
+    pdf::PDFPageContentStreamBuilder contentBuilder(&builder);
+    QPainter* painter = contentBuilder.beginNewPage(QRectF(0, 0, 595, 842));
+    painter->fillRect(QRectF(200, 300, 100, 100), Qt::black);
+    contentBuilder.end(painter);
+    pdf::PDFDocument document = builder.build();
+    const size_t elementCount = processPageContent(&document).getElementCount();
+    QVERIFY(elementCount > 0);
+
+    QVERIFY(pdf::PDFPageOrganizer::setBackground(&document, { 0 }, pdf::PDFPageOrganizer::Background::Ruled, nullptr));
+    QVERIFY(processPageContent(&document).getElementCount() > elementCount);
+
+    // The background stream is skipped: the elements of the content of the page only
+    const pdf::PDFObjectReference backgroundStream = pdf::PDFPageOrganizer::getBackgroundStream(&document, 0);
+    QVERIFY(backgroundStream.isValid());
+    const pdf::PDFPage* page = document.getCatalog()->getPage(0);
+    pdf::PDFCMSGeneric cms;
+    pdf::PDFFontCache fontCache(32, 32);
+    pdf::PDFICCProfileCache iccProfileCache;
+    pdf::PDFOptionalContentActivity activity(&document, pdf::OCUsage::View, nullptr);
+    fontCache.setDocument(pdf::PDFModifiedDocument(&document, &activity));
+    iccProfileCache.setDocument(pdf::PDFModifiedDocument(&document, &activity));
+    pdf::PDFPageContentEditorProcessor processor(page, &document, &fontCache, &iccProfileCache, &cms, &activity, QTransform(), pdf::PDFMeshQualitySettings());
+    processor.setSkippedContentStreams({ backgroundStream });
+    processor.processContents();
+    QCOMPARE(processor.takeEditedPageContent().getElementCount(), elementCount);
 }
 
 QTEST_MAIN(ContentEditorTest)

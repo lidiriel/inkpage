@@ -1684,10 +1684,13 @@ public:
     /// \param name Name of the layer shown to the user
     /// \param visible Is the layer shown?
     /// \param printed Is the layer printed?
+    /// \param isOnTop The layer is put at the top of the list (otherwise at its bottom,
+    ///        for example the layer of the backgrounds of the pages)
     /// \returns Reference to the layer
     PDFObjectReference createOptionalContentGroup(QString name,
                                                   bool visible = true,
-                                                  bool printed = true);
+                                                  bool printed = true,
+                                                  bool isOnTop = true);
 
     /// Returns the first layer (optional content group) of the catalog with
     /// the name, or an invalid reference, if there is none.

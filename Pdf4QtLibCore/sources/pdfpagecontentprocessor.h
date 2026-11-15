@@ -34,6 +34,8 @@
 #include "pdfoperationcontrol.h"
 
 #include <QVector>
+
+#include <set>
 #include <QTransform>
 #include <QPainterPath>
 #include <QSharedPointer>
@@ -492,6 +494,11 @@ public:
 
     /// Process the contents of the page
     QList<PDFRenderError> processContents();
+
+    /// Sets the content streams of the page, which are not processed by \ref processContents
+    /// (inkpage: the page content editor does not edit the background of the page)
+    /// \param streams Content streams of the page (references)
+    void setSkippedContentStreams(std::set<PDFObjectReference> streams) { m_skippedContentStreams = std::move(streams); }
 
     virtual void reportRenderError(RenderErrorType type, QString message) override;
 
@@ -1121,6 +1128,7 @@ private:
     void finishMarkedContent();
 
     const PDFPage* m_page;
+    std::set<PDFObjectReference> m_skippedContentStreams;
     const PDFDocument* m_document;
     const PDFFontCache* m_fontCache;
     const PDFICCProfileCache* m_iccProfileCache;

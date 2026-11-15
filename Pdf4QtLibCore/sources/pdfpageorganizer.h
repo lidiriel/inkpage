@@ -36,6 +36,11 @@ namespace pdf
 /// (/PieceInfo /Inkpage), so it can be replaced or removed later without touching
 /// the content of the page. A background is drawn in the displayed orientation of
 /// the page (the /Rotate of the page is taken into account) over the crop box.
+///
+/// inkpage: the background is marked as the content of the layer "Background"
+/// (/OC /InkpageBackground BDC ... EMC, the name is in the /Properties of the
+/// resources of the page), so it can be hidden or not printed. A background
+/// set before (without the marker) is kept as it is.
 class PDF4QTLIBCORESHARED_EXPORT PDFPageOrganizer
 {
 public:
@@ -69,6 +74,12 @@ public:
 
     /// Key of the private data of the page in the /PieceInfo dictionary
     static constexpr const char* PIECE_INFO_KEY = "Inkpage";
+
+    /// Name of the layer of the backgrounds (optional content group, at the bottom of the list)
+    static constexpr const char* BACKGROUND_LAYER_NAME = "Background";
+
+    /// Name of the layer of the backgrounds in the /Properties of the resources of the page
+    static constexpr const char* BACKGROUND_PROPERTY_NAME = "InkpageBackground";
 
     /// Distance of the lines of the ruled background, in millimeters
     static constexpr PDFReal RULED_LINE_SPACING_MM = 8.0;
@@ -120,6 +131,12 @@ public:
     /// \param document Document
     /// \param pageIndex Index of the page
     static Background getBackground(const PDFDocument* document, PDFInteger pageIndex);
+
+    /// Returns the content stream of the background of the page set by \ref setBackground
+    /// (the first content stream of the page), or an invalid reference
+    /// \param document Document
+    /// \param pageIndex Index of the page
+    static PDFObjectReference getBackgroundStream(const PDFDocument* document, PDFInteger pageIndex);
 
     /// Returns the content stream of the background (in the coordinates of the page)
     /// \param page Page

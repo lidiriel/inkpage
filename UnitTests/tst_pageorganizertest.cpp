@@ -41,6 +41,7 @@ private slots:
     void movePage();
     void invalidPageFails();
     void ruledBackgroundIsDrawnUnderContent();
+    void backgroundIsInTheBackgroundLayer();
     void plainBackgroundRemovesRuledBackground();
     void ruledBackgroundIsSetOnlyOnce();
     void ruledBackgroundFollowsPageRotation();
@@ -60,7 +61,7 @@ private:
     static std::vector<PDFObjectReference> pageReferences(const PDFDocument& document);
     static std::vector<PDFObjectReference> contentReferences(const PDFDocument& document, PDFInteger pageIndex);
     static std::vector<PDFObjectReference> annotations(const PDFDocument& document, PDFInteger pageIndex);
-    static QImage renderPage(const PDFDocument& document, PDFInteger pageIndex);
+    static QImage renderPage(const PDFDocument& document, PDFInteger pageIndex, PDFObjectReference hiddenLayer = PDFObjectReference());
 
     /// Number of rows (or columns), which are mostly covered by the color of the ruled lines
     static int countRuledLines(const QImage& image, Qt::Orientation orientation);
@@ -125,12 +126,16 @@ std::vector<PDFObjectReference> PageOrganizerTest::annotations(const PDFDocument
     return loader.readReferenceArrayFromDictionary(page, "Annots");
 }
 
-QImage PageOrganizerTest::renderPage(const PDFDocument& document, PDFInteger pageIndex)
+QImage PageOrganizerTest::renderPage(const PDFDocument& document, PDFInteger pageIndex, PDFObjectReference hiddenLayer)
 {
     PDFCMSGeneric cms;
     PDFFontCache fontCache(32, 32);
     PDFICCProfileCache iccProfileCache;
     PDFOptionalContentActivity activity(&document, OCUsage::View, nullptr);
+    if (hiddenLayer.isValid())
+    {
+        activity.setState(hiddenLayer, OCState::OFF);
+    }
     fontCache.setDocument(PDFModifiedDocument(const_cast<PDFDocument*>(&document), &activity));
     iccProfileCache.setDocument(PDFModifiedDocument(const_cast<PDFDocument*>(&document), &activity));
 
@@ -325,6 +330,57 @@ void PageOrganizerTest::ruledBackgroundIsDrawnUnderContent()
             QCOMPARE(image.pixelColor(x, y), QColor(Qt::black));
         }
     }
+}
+
+void PageOrganizerTest::backgroundIsInTheBackgroundLayer()
+{
+    // A document with a note layer
+    PDFDocument document = createDocument();
+    PDFObjectReference notes;
+    {
+        PDFDocumentBuilder builder(&document);
+        notes = builder.createOptionalContentGroup("Notes");
+        document = builder.build();
+    }
+
+    QVERIFY(PDFPageOrganizer::setBackground(&document, { 0, 1 }, PDFPageOrganizer::Background::Ruled, nullptr));
+
+    // One layer of the backgrounds, at the bottom of the list
+    const PDFOptionalContentProperties* properties = document.getCatalog()->getOptionalContentProperties();
+    const PDFObjectReference background = properties->findOptionalContentGroup(PDFPageOrganizer::BACKGROUND_LAYER_NAME);
+    QVERIFY(background.isValid());
+    QCOMPARE(properties->getAllOptionalContentGroups().size(), size_t(2));
+    QCOMPARE(PDFDocumentBuilder(&document).getOptionalContentGroupsInOrder(), (std::vector<PDFObjectReference>{ notes, background }));
+
+    for (PDFInteger pageIndex : { 0, 1 })
+    {
+        // The background is marked as the content of the layer
+        const PDFObjectReference stream = PDFPageOrganizer::getBackgroundStream(&document, pageIndex);
+        QVERIFY(stream.isValid());
+        QCOMPARE(contentReferences(document, pageIndex).front(), stream);
+        const QByteArray content = document.getDecodedStream(document.getObjectByReference(stream).getStream());
+        QVERIFY(content.startsWith("/OC /InkpageBackground BDC\n"));
+        QVERIFY(content.endsWith("EMC\n"));
+
+        // The name of the layer is in the resources of the page
+        const PDFDictionary* resources = document.getDictionaryFromObject(document.getCatalog()->getPage(pageIndex)->getResources());
+        QVERIFY(resources);
+        const PDFDictionary* layers = document.getDictionaryFromObject(resources->get("Properties"));
+        QVERIFY(layers);
+        QVERIFY(layers->get(PDFPageOrganizer::BACKGROUND_PROPERTY_NAME).isReference());
+        QCOMPARE(layers->get(PDFPageOrganizer::BACKGROUND_PROPERTY_NAME).getReference(), background);
+    }
+
+    // The background is not drawn, when its layer is hidden (the content of the page is)
+    QVERIFY(countRuledLines(renderPage(document, 0), Qt::Horizontal) > 10);
+    const QImage hidden = renderPage(document, 0, background);
+    QCOMPARE(countRuledLines(hidden, Qt::Horizontal), 0);
+    QCOMPARE(hidden.pixelColor(250, 350), QColor(Qt::black));
+
+    // Another background uses the same layer
+    QVERIFY(PDFPageOrganizer::setBackground(&document, { 0 }, PDFPageOrganizer::Background::Graph, nullptr));
+    QCOMPARE(document.getCatalog()->getOptionalContentProperties()->getAllOptionalContentGroups().size(), size_t(2));
+    QCOMPARE(PDFPageOrganizer::getBackground(&document, 0), PDFPageOrganizer::Background::Graph);
 }
 
 void PageOrganizerTest::plainBackgroundRemovesRuledBackground()

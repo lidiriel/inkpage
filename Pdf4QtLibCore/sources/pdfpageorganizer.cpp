@@ -828,6 +828,7 @@ PDFOperationResult PDFPageOrganizer::setBackground(PDFDocument* document,
     const PDFObjectStorage* storage = builder->getStorage();
 
     bool isChanged = false;
+    PDFObjectReference backgroundLayer;
     for (const PDFInteger pageIndex : pageIndices)
     {
         const PDFPage* page = catalog->getPage(pageIndex);
@@ -850,8 +851,32 @@ PDFOperationResult PDFPageOrganizer::setBackground(PDFDocument* document,
             continue;
         }
 
-        const PDFObjectReference stream = PDFPageOrganizerHelper::createContentStream(builder, createBackgroundContent(page, background));
+        // The background is the content of the layer of the backgrounds (marked content
+        // with the name of the layer in the properties of the resources of the page)
+        if (!backgroundLayer.isValid())
+        {
+            backgroundLayer = builder->findOptionalContentGroup(QString::fromLatin1(BACKGROUND_LAYER_NAME));
+            if (!backgroundLayer.isValid())
+            {
+                backgroundLayer = builder->createOptionalContentGroup(QString::fromLatin1(BACKGROUND_LAYER_NAME), true, true, false);
+            }
+        }
+
+        QByteArray content = "/OC /" + QByteArray(BACKGROUND_PROPERTY_NAME) + " BDC\n";
+        content.append(createBackgroundContent(page, background));
+        content.append("EMC\n");
+
+        const PDFObjectReference stream = PDFPageOrganizerHelper::createContentStream(builder, content);
         PDFPageOrganizerHelper::writeBackground(builder, pageReference, stream, background);
+
+        // The resources of the page (they can be inherited) get the name of the layer
+        PDFDictionaryBuilder resources = PDFObjectUtils::copyDictionary(storage, page->getResources());
+        PDFDictionaryBuilder properties = PDFObjectUtils::copyDictionary(storage, resources.get("Properties"));
+        properties.setEntry(PDFInplaceOrMemoryString(BACKGROUND_PROPERTY_NAME), PDFObject::createReference(backgroundLayer));
+        resources.setEntry(PDFInplaceOrMemoryString("Properties"), PDFObject::createDictionary(std::move(properties)));
+        PDFDictionaryBuilder updatedPage = PDFObjectUtils::copyDictionary(storage, storage->getObjectByReference(pageReference));
+        updatedPage.setEntry(PDFInplaceOrMemoryString("Resources"), PDFObject::createDictionary(std::move(resources)));
+        builder->setObject(pageReference, PDFObject::createDictionary(std::move(updatedPage)));
         isChanged = true;
     }
 
@@ -886,6 +911,18 @@ PDFPageOrganizer::Background PDFPageOrganizer::getBackground(const PDFDocument* 
     const PDFObjectStorage* storage = &document->getStorage();
     const PDFObjectReference pageReference = document->getCatalog()->getPage(pageIndex)->getPageReference();
     return PDFPageOrganizerHelper::getBackground(storage, storage->getDictionaryFromObject(storage->getObjectByReference(pageReference)));
+}
+
+PDFObjectReference PDFPageOrganizer::getBackgroundStream(const PDFDocument* document, PDFInteger pageIndex)
+{
+    if (!document || pageIndex < 0 || pageIndex >= static_cast<PDFInteger>(document->getCatalog()->getPageCount()))
+    {
+        return PDFObjectReference();
+    }
+
+    const PDFObjectStorage* storage = &document->getStorage();
+    const PDFObjectReference pageReference = document->getCatalog()->getPage(pageIndex)->getPageReference();
+    return PDFPageOrganizerHelper::getBackgroundStream(storage, storage->getDictionaryFromObject(storage->getObjectByReference(pageReference)));
 }
 
 QByteArray PDFPageOrganizer::createBackgroundContent(const PDFPage* page, Background background)
