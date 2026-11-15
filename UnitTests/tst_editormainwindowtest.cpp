@@ -29,6 +29,7 @@
 #include <QToolButton>
 #include <QDoubleSpinBox>
 #include <QMenu>
+#include <QLabel>
 #include <QDockWidget>
 
 using namespace pdfviewer;
@@ -181,6 +182,15 @@ void EditorMainWindowTest::sidebarTitleBarHasNavigation()
     }
     QCOMPARE(names, (QStringList{ "actionGoToDocumentStart", "actionGoToPreviousPage", "actionGoToNextPage", "actionGoToDocumentEnd", "actionSidebarFloat", "actionSidebarClose" }));
 
+    // The page number is between the previous and next page arrows
+    QLabel* pageLabel = titleBar->findChild<QLabel*>("sidebarPageLabel");
+    QVERIFY(pageLabel);
+    const QList<QAction*> actions = titleBar->actions();
+    QCOMPARE(actions[1]->objectName(), QString("actionGoToPreviousPage"));
+    QCOMPARE(titleBar->widgetForAction(actions[2]), pageLabel);
+    QCOMPARE(actions[3]->objectName(), QString("actionGoToNextPage"));
+    QVERIFY(pageLabel->text().isEmpty());
+
     // The buttons of the title bar replace the float and close buttons of the dock widget
     window.show();
     sidebar->show();
@@ -191,6 +201,27 @@ void EditorMainWindowTest::sidebarTitleBarHasNavigation()
     QVERIFY(!sidebar->isFloating());
     titleBar->findChild<QAction*>("actionSidebarClose")->trigger();
     QVERIFY(!sidebar->isVisible());
+
+    // Current page and page count of a document with three pages
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    const QString fileName = directory.filePath("pages.pdf");
+    {
+        pdf::PDFDocumentBuilder builder;
+        for (int i = 0; i < 3; ++i)
+        {
+            builder.appendPage(QRectF(0, 0, 595, 842));
+        }
+        const pdf::PDFDocument document = builder.build();
+        pdf::PDFDocumentWriter writer(nullptr);
+        QVERIFY(writer.write(fileName, &document, false));
+    }
+    PDFProgramController* controller = window.getProgramController();
+    controller->openDocument(fileName);
+    QTRY_VERIFY(controller->getDocument());
+    QTRY_COMPARE(pageLabel->text(), QString("1 / 3"));
+    window.findChild<QAction*>("actionGoToDocumentEnd")->trigger();
+    QTRY_COMPARE(pageLabel->text(), QString("3 / 3"));
 
     // Closed before its destruction, as in the application (the window is active)
     window.close();

@@ -100,6 +100,7 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     m_advancedFindDockWidget(nullptr),
     m_pageNumberSpinBox(nullptr),
     m_pageNumberLabel(nullptr),
+    m_sidebarPageLabel(nullptr),
     m_pageZoomSpinBox(nullptr),
     m_toolBarPositionMenu(nullptr),
     m_toolBarsTopAction(nullptr),
@@ -518,6 +519,7 @@ void PDFEditorMainWindow::updateUI(bool fullUpdate)
     }
 
     m_pageZoomSpinBox->setValue(m_programController->getPdfWidget()->getDrawWidgetProxy()->getZoom() * 100);
+    updateSidebarPageLabel();
 }
 
 QMenu* PDFEditorMainWindow::addToolMenu(QString name, pdf::PDFPlugin::PluginMenuLocation location)
@@ -844,6 +846,11 @@ void PDFEditorMainWindow::initializeSidebarTitleBar()
     titleBar->setIconSize(pdf::PDFWidgetUtils::scaleDPI(this, QSize(16, 16)));
     titleBar->addAction(ui->actionGoToDocumentStart);
     titleBar->addAction(ui->actionGoToPreviousPage);
+    m_sidebarPageLabel = new QLabel(titleBar);
+    m_sidebarPageLabel->setObjectName("sidebarPageLabel");
+    m_sidebarPageLabel->setAlignment(Qt::AlignCenter);
+    m_sidebarPageLabel->setContentsMargins(pdf::PDFWidgetUtils::scaleDPI_x(this, 4), 0, pdf::PDFWidgetUtils::scaleDPI_x(this, 4), 0);
+    titleBar->addWidget(m_sidebarPageLabel);
     titleBar->addAction(ui->actionGoToNextPage);
     titleBar->addAction(ui->actionGoToDocumentEnd);
 
@@ -863,6 +870,24 @@ void PDFEditorMainWindow::initializeSidebarTitleBar()
     connect(closeAction, &QAction::triggered, m_sidebarDockWidget, &QDockWidget::close);
 
     m_sidebarDockWidget->setTitleBarWidget(titleBar);
+    updateSidebarPageLabel();
+}
+
+void PDFEditorMainWindow::updateSidebarPageLabel()
+{
+    if (!m_sidebarPageLabel)
+    {
+        return;
+    }
+
+    if (m_programController && m_programController->getDocument())
+    {
+        m_sidebarPageLabel->setText(tr("%1 / %2").arg(m_pageNumberSpinBox->value()).arg(m_pageNumberSpinBox->maximum()));
+    }
+    else
+    {
+        m_sidebarPageLabel->setText(QString());
+    }
 }
 
 void PDFEditorMainWindow::initializeStatusBarAction()

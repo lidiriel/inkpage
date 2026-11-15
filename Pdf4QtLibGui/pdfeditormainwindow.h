@@ -137,6 +137,9 @@ private:
     /// actions, followed by the float and close buttons of the dock widget
     void initializeSidebarTitleBar();
 
+    /// Shows the current page and the page count in the title bar of the sidebar
+    void updateSidebarPageLabel();
+
     /// Returns the text of the menu entry of the background
     static QString getBackgroundText(pdf::PDFPageOrganizer::Background background);
 
@@ -164,6 +167,7 @@ private:
     QDockWidget* m_advancedFindDockWidget;
     QSpinBox* m_pageNumberSpinBox;
     QLabel* m_pageNumberLabel;
+    QLabel* m_sidebarPageLabel;
     QDoubleSpinBox* m_pageZoomSpinBox;
     QMenu* m_toolBarPositionMenu;
     QAction* m_toolBarsTopAction;
