@@ -386,6 +386,30 @@ void PDFOptionalContentActivity::setDocument(const PDFDocument* document)
         Q_ASSERT(document);
         m_document = document;
         m_properties = document->getCatalog()->getOptionalContentProperties();
+
+        // The modified document can have new layers (they get the state of the
+        // default configuration) and removed ones (undo). The layers already
+        // known keep the state chosen by the user.
+        std::map<PDFObjectReference, OCState> previousStates = std::move(m_states);
+        m_states.clear();
+        if (m_properties->isValid())
+        {
+            for (const PDFObjectReference& reference : m_properties->getAllOptionalContentGroups())
+            {
+                m_states[reference] = OCState::Unknown;
+            }
+
+            applyConfiguration(m_properties->getDefaultConfiguration());
+
+            for (auto& item : m_states)
+            {
+                auto it = previousStates.find(item.first);
+                if (it != previousStates.cend())
+                {
+                    item.second = it->second;
+                }
+            }
+        }
     }
 }
 

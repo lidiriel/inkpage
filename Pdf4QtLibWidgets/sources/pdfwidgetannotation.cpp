@@ -4742,6 +4742,7 @@ void PDFWidgetAnnotationManager::pasteText(std::optional<QPoint> widgetPosition)
     PDFDocumentModifier modifier(m_document);
     modifier.markAnnotationsChanged();
     const PDFObjectReference annotation = modifier.getBuilder()->createAnnotationFreeText(page->getPageReference(), rectangle, PDFAuthorSettings::getAuthorName(), QString(), text, style, false, padding);
+    modifier.getBuilder()->setAnnotationNoteLayer(annotation);
 
     if (annotation.isValid() && modifier.finalize())
     {

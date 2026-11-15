@@ -1697,6 +1697,15 @@ public:
     void setAnnotationOptionalContent(PDFObjectReference annotation,
                                       PDFObjectReference optionalContentGroup);
 
+    /// Name of the layer of the notes drawn by the user
+    static constexpr const char* NOTE_LAYER_NAME = "Notes";
+
+    /// Puts a new annotation of the user (drawing, inline text) in the note layer,
+    /// which is created if the document has none.
+    /// \param annotation Annotation
+    /// \returns Reference to the note layer
+    PDFObjectReference setAnnotationNoteLayer(PDFObjectReference annotation);
+
     /// Creates signature dictionary of a digital signature, the type of the
     /// created dictionary is Sig. Use the overload with the type to create
     /// a dictionary of a document timestamp.

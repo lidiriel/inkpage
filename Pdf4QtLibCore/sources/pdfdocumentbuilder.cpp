@@ -3115,6 +3115,19 @@ void PDFDocumentBuilder::setAnnotationOptionalContent(PDFObjectReference annotat
     mergeTo(annotation, annotationObject);
 }
 
+PDFObjectReference PDFDocumentBuilder::setAnnotationNoteLayer(PDFObjectReference annotation)
+{
+    const QString name = QString::fromLatin1(NOTE_LAYER_NAME);
+    PDFObjectReference layer = findOptionalContentGroup(name);
+    if (!layer.isValid())
+    {
+        layer = createOptionalContentGroup(name);
+    }
+
+    setAnnotationOptionalContent(annotation, layer);
+    return layer;
+}
+
 /* START GENERATED CODE */
 
 PDFObjectReference PDFDocumentBuilder::appendPage(QRectF mediaBox)

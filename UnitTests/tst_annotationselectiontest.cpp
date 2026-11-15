@@ -133,6 +133,8 @@ private slots:
     void pastedImageBecomesImageAnnotation();
     void highlighterCreatesTranslucentInk();
     void annotationIsHiddenWithItsLayer();
+    void drawingToolsPutTheirAnnotationsInTheNoteLayer();
+    void layerStatesFollowTheModifiedDocument();
     void colorOfInlineTextChangesItsText();
     void attachedFileIsReplaced();
     void pointSnapsToOtherAnnotation();
@@ -2988,6 +2990,145 @@ void AnnotationSelectionTest::annotationIsHiddenWithItsLayer()
     builder.setAnnotationOptionalContent(square, PDFObjectReference());
     const PDFDocument documentWithoutLayer = builder.build();
     QVERIFY(!PDFAnnotation::parse(&documentWithoutLayer.getStorage(), square)->getOptionalContent().isValid());
+}
+
+void AnnotationSelectionTest::drawingToolsPutTheirAnnotationsInTheNoteLayer()
+{
+    PDFDocumentBuilder builder;
+    builder.appendPage(QRectF(0, 0, 300, 300));
+    SelectionFixture fixture(builder.build());
+    QVERIFY(!fixture.document->getCatalog()->getOptionalContentProperties()->isValid());
+    QObject::connect(&fixture.tools, &PDFToolManager::documentModified, &fixture.tools, [&fixture](PDFModifiedDocument modified)
+    {
+        fixture.document = modified;
+        fixture.apply(PDFModifiedDocument(fixture.document, nullptr, modified.getFlags()));
+    });
+
+    // The tools are not owned by the tool manager, they get the modified document here (as in the application)
+    auto useTool = [&fixture](PDFWidgetTool* tool, std::function<void()> draw)
+    {
+        tool->setDocument(PDFModifiedDocument(fixture.document, nullptr));
+        QMetaObject::Connection connection = QObject::connect(&fixture.tools, &PDFToolManager::documentModified, tool, [&fixture, tool](PDFModifiedDocument modified)
+        {
+            tool->setDocument(PDFModifiedDocument(fixture.document, nullptr, modified.getFlags()));
+        });
+        tool->setActive(true);
+        draw();
+        tool->setActive(false);
+        QObject::disconnect(connection);
+    };
+
+    // A move is done with the left button held during a drag, without it before a click
+    auto mouse = [&fixture](PDFWidgetTool* tool, QEvent::Type type, QPointF pagePoint, bool leftButtonHeld = false)
+    {
+        const QPoint point = fixture.device(pagePoint);
+        const Qt::MouseButton button = (type == QEvent::MouseMove) ? Qt::NoButton : Qt::LeftButton;
+        const Qt::MouseButtons buttons = (type == QEvent::MouseButtonPress || leftButtonHeld) ? Qt::MouseButtons(Qt::LeftButton) : Qt::MouseButtons(Qt::NoButton);
+        QMouseEvent event(type, point, fixture.widget.mapToGlobal(point), button, buttons, Qt::NoModifier);
+        switch (type)
+        {
+            case QEvent::MouseButtonPress:
+                tool->mousePressEvent(&fixture.widget, &event);
+                break;
+            case QEvent::MouseButtonRelease:
+                tool->mouseReleaseEvent(&fixture.widget, &event);
+                break;
+            default:
+                tool->mouseMoveEvent(&fixture.widget, &event);
+                break;
+        }
+    };
+
+    // Two clicks: a line from the first point to the second one, or a rectangle
+    auto clickTwice = [&mouse](PDFWidgetTool* tool, QPointF first, QPointF second)
+    {
+        for (const QPointF& point : { first, second })
+        {
+            mouse(tool, QEvent::MouseMove, point);
+            mouse(tool, QEvent::MouseButtonPress, point);
+            mouse(tool, QEvent::MouseButtonRelease, point);
+        }
+    };
+
+    auto drag = [&mouse](PDFWidgetTool* tool, PDFReal y)
+    {
+        mouse(tool, QEvent::MouseButtonPress, QPointF(20, y));
+        for (PDFReal x = 30; x < 150; x += 10)
+        {
+            mouse(tool, QEvent::MouseMove, QPointF(x, y), true);
+        }
+        mouse(tool, QEvent::MouseButtonRelease, QPointF(150, y));
+    };
+
+    QAction action;
+    action.setCheckable(true);
+    PDFCreateLineTypeTool lineTool(fixture.widget.getDrawWidgetProxy(), &fixture.tools, PDFCreateLineTypeTool::Type::Line, &action, nullptr);
+    useTool(&lineTool, [&]() { clickTwice(&lineTool, QPointF(20, 20), QPointF(120, 40)); });
+    QCOMPARE(fixture.pageAnnotations().size(), size_t(1));
+
+    PDFCreateLineTypeTool rectangleTool(fixture.widget.getDrawWidgetProxy(), &fixture.tools, PDFCreateLineTypeTool::Type::Rectangle, &action, nullptr);
+    useTool(&rectangleTool, [&]() { clickTwice(&rectangleTool, QPointF(20, 60), QPointF(120, 100)); });
+    QCOMPARE(fixture.pageAnnotations().size(), size_t(2));
+
+    PDFCreateEllipseTool ellipseTool(fixture.widget.getDrawWidgetProxy(), &fixture.tools, &action, nullptr);
+    useTool(&ellipseTool, [&]() { clickTwice(&ellipseTool, QPointF(150, 60), QPointF(250, 100)); });
+    QCOMPARE(fixture.pageAnnotations().size(), size_t(3));
+
+    PDFCreateFreehandCurveTool freehandTool(fixture.widget.getDrawWidgetProxy(), &fixture.tools, &action, nullptr, PDFCreateFreehandCurveTool::Type::Pen);
+    useTool(&freehandTool, [&]() { drag(&freehandTool, 150); });
+    QCOMPARE(fixture.pageAnnotations().size(), size_t(4));
+
+    PDFCreateFreehandCurveTool highlighterTool(fixture.widget.getDrawWidgetProxy(), &fixture.tools, &action, nullptr, PDFCreateFreehandCurveTool::Type::Highlighter);
+    useTool(&highlighterTool, [&]() { drag(&highlighterTool, 200); });
+    QCOMPARE(fixture.pageAnnotations().size(), size_t(5));
+
+    // Pasted text becomes an inline text
+    QApplication::clipboard()->setText("Pasted text");
+    fixture.annotations.paste(fixture.device(QPointF(20, 280)));
+    QCOMPARE(fixture.pageAnnotations().size(), size_t(6));
+
+    // One "Notes" layer, created by the first annotation, holds every annotation
+    const PDFOptionalContentProperties* properties = fixture.document->getCatalog()->getOptionalContentProperties();
+    QVERIFY(properties->isValid());
+    QCOMPARE(properties->getAllOptionalContentGroups().size(), size_t(1));
+    const PDFObjectReference notes = properties->getAllOptionalContentGroups().front();
+    QCOMPARE(properties->getOptionalContentGroup(notes).getName(), QString(PDFDocumentBuilder::NOTE_LAYER_NAME));
+
+    for (const PDFObjectReference& reference : fixture.pageAnnotations())
+    {
+        const PDFAnnotationPtr annotation = PDFAnnotation::parse(&fixture.document->getStorage(), reference);
+        QCOMPARE(annotation->getOptionalContent(), notes);
+    }
+}
+
+void AnnotationSelectionTest::layerStatesFollowTheModifiedDocument()
+{
+    PDFDocumentBuilder builder;
+    builder.appendPage(QRectF(0, 0, 200, 200));
+    const PDFObjectReference notes = builder.createOptionalContentGroup("Notes");
+    PDFDocument first = builder.build();
+
+    PDFOptionalContentActivity activity(&first, OCUsage::View, nullptr);
+    QCOMPARE(activity.getState(notes), OCState::ON);
+    activity.setState(notes, OCState::OFF);
+
+    // A layer added by a modification gets its default state, the user's choice is kept for the others
+    const PDFObjectReference answers = builder.createOptionalContentGroup("Answers", false, false);
+    const PDFObjectReference extra = builder.createOptionalContentGroup("Extra");
+    PDFDocument second = builder.build();
+    activity.setDocument(&second);
+    QCOMPARE(activity.getState(notes), OCState::OFF);
+    QCOMPARE(activity.getState(answers), OCState::OFF);
+    QCOMPARE(activity.getState(extra), OCState::ON);
+
+    // The new layer can be switched (unknown layers are ignored by setState)
+    activity.setState(answers, OCState::ON);
+    QCOMPARE(activity.getState(answers), OCState::ON);
+
+    // Back to the first document (undo): the removed layers are forgotten
+    activity.setDocument(&first);
+    QCOMPARE(activity.getState(notes), OCState::OFF);
+    QCOMPARE(activity.getState(answers), OCState::Unknown);
 }
 
 void AnnotationSelectionTest::colorOfInlineTextChangesItsText()
