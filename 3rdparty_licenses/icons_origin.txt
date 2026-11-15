@@ -160,6 +160,12 @@ Papirus icon theme
 Pdf4QtLibGui/resources/outline-item.svg
     from: Papirus icon theme (Debian), 16x16/actions/bookmark.svg -> bookmarks.svg
     license: GPL-3.0-only (Papirus, Alexey Varfolomeev)
+Pdf4QtLibGui/resources/sticky-note-comment.svg
+    from: Papirus icon theme (Debian), 24x24/actions/edit-comment.svg -> dialog-messages.svg
+    license: GPL-3.0-only (Papirus, Alexey Varfolomeev)
+Pdf4QtLibGui/resources/sticky-note-note.svg
+    from: Papirus icon theme (Debian), 24x24/actions/note.svg -> stock_notes.svg
+    license: GPL-3.0-only (Papirus, Alexey Varfolomeev)
 Pdf4QtLibGui/resources/bubble.svg
     from: Papirus icon theme (Debian), 32x32/apps/indicator-stickynotes.svg -> mynotes.svg
     license: GPL-3.0-only (Papirus, Alexey Varfolomeev)

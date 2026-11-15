@@ -252,9 +252,10 @@ void PDFActionManager::initActions(QSize iconSize, bool initializeStampActions)
         getAction(CreateStickyNoteHelp)->setData(int(pdf::TextAnnotationIcon::Help));
         getAction(CreateStickyNoteNote)->setData(int(pdf::TextAnnotationIcon::Note));
 
-        getAction(CreateStickyNoteComment)->setIcon(pdf::PDFTextAnnotation::createIcon("Comment", iconSize));
+        // inkpage: Papirus icons for the comment and the note (the help keeps its question mark)
+        getAction(CreateStickyNoteComment)->setIcon(QIcon(":/resources/sticky-note-comment.svg"));
         getAction(CreateStickyNoteHelp)->setIcon(pdf::PDFTextAnnotation::createIcon("Help", iconSize));
-        getAction(CreateStickyNoteNote)->setIcon(pdf::PDFTextAnnotation::createIcon("Note", iconSize));
+        getAction(CreateStickyNoteNote)->setIcon(QIcon(":/resources/sticky-note-note.svg"));
     }
 
     if (hasActions({ CreateTextHighlight, CreateTextUnderline, CreateTextStrikeout, CreateTextSquiggly }))
