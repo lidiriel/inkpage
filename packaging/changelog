@@ -1,3 +1,9 @@
+inkpage (0.3.1) unstable; urgency=medium
+
+  * Fix the crash of File > Open (std::bad_function_call).
+
+ -- Ludovic Mercier <ludovic@scilink.net>  Sun, 15 Nov 2026 22:59:40 +0100
+
 inkpage (0.3.0) unstable; urgency=medium
 
   * Layers (PDF optional content groups): Layers page of the sidebar with
