@@ -2196,6 +2196,34 @@ void PDFRealizedFontImpl::initializeLookupTables()
                 }
             }
         }
+
+        // inkpage: the unicode charmap of a substituted system font may not map the real
+        // unicode values (the charmap of the URW font D050000L, which replaces ZapfDingbats,
+        // maps the codes of the font encoding, so the check mark U+2714 is not found). The
+        // glyph is then searched by its name (a20 for the check mark).
+        if (!m_isEmbedded && FT_HAS_GLYPH_NAMES(m_face))
+        {
+            for (size_t i = 0; i < m_simpleFontGlyphIndices.size(); ++i)
+            {
+                const QChar character = simpleFont->getUnicode(static_cast<CID>(i));
+                if (m_simpleFontGlyphIndices[i] || character.isNull())
+                {
+                    continue;
+                }
+
+                for (const QByteArray& glyphName : { PDFNameToUnicode::getNameForUnicode(character), PDFNameToUnicode::getNameForUnicodeZapfDingbats(character) })
+                {
+                    if (!glyphName.isEmpty())
+                    {
+                        m_simpleFontGlyphIndices[i] = FT_Get_Name_Index(m_face, glyphName.constData());
+                        if (m_simpleFontGlyphIndices[i])
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     if (!m_isEmbedded && hasUnicodeCharmap && m_parentFont->getFontType() == FontType::Type0)
