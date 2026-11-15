@@ -79,11 +79,19 @@ public:
     /// Applies the pen width to the style of the active tool, or to the selected annotations
     void applyPenWidth(pdf::PDFReal penWidth);
 
+    /// Applies the font to the style of the active tool (inline text), or to the selected inline texts
+    void applyFont(const QString& fontFamily, pdf::PDFReal fontSize);
+
+    /// Returns the font of the active tool, or of the selected inline text
+    /// \returns false, if the font cannot be set
+    bool getCurrentFont(QString* fontFamily, pdf::PDFReal* fontSize) const;
+
     /// Updates the state of the actions from the active style or the selection
     void updateActions();
 
 private:
     void onOtherColorTriggered();
+    void onFontTriggered();
 
     QIcon createColorIcon(const QColor& color) const;
     bool hasSelection() const;
@@ -95,6 +103,7 @@ private:
     QAction* m_otherColorAction;
     QAction* m_fillAction;
     std::array<QAction*, PEN_WIDTHS.size()> m_widthActions;
+    QAction* m_fontAction;
 };
 
 }   // namespace pdfviewer

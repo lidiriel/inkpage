@@ -149,12 +149,18 @@ private:
 public:
     explicit PDFCreateFreeTextTool(PDFDrawWidgetProxy* proxy, PDFToolManager* toolManager, QAction* action, QObject* parent);
 
+    virtual void setActiveImpl(bool active) override;
+
+    /// Returns the style of the text (font, size and color are set by the style toolbar)
+    const PDFAnnotationStyle& getStyle() const;
+
 private:
     bool configureFreeText(QString& text);
     void onRectanglePicked(pdf::PDFInteger pageIndex, QRectF pageRectangle);
 
     PDFToolManager* m_toolManager;
     PDFPickTool* m_pickTool;
+    PDFAnnotationStyleManager* m_styleManager;
     PDFFreeTextStyle m_style;
     bool m_autoResizeToContents = true;
 };

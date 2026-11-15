@@ -48,6 +48,12 @@ struct PDF4QTLIBWIDGETSSHARED_EXPORT PDFAnnotationStyle
 
     /// Width of the pen used for the stroke
     PDFReal penWidth = 1.0;
+
+    /// Font of a text (inline text)
+    QString fontFamily = QStringLiteral("Helvetica");
+
+    /// Size of the font of a text (points)
+    PDFReal fontSize = 10.0;
 };
 
 /// Persistent storage of annotation styles. Each annotation tool (or a group of
@@ -69,6 +75,7 @@ public:
     static constexpr QLatin1String STYLE_FREEHAND = QLatin1String("Freehand");
     static constexpr QLatin1String STYLE_HIGHLIGHTER = QLatin1String("Highlighter");
     static constexpr QLatin1String STYLE_ERASER = QLatin1String("Eraser");
+    static constexpr QLatin1String STYLE_INLINE_TEXT = QLatin1String("InlineText");
 
     /// Returns the style stored for the given style id. If no style has been
     /// stored yet, then \p defaultStyle is returned.
@@ -164,7 +171,8 @@ public:
     {
         StrokeColor = 0x0001,   ///< Color of the stroke / text markup / redaction
         FillColor   = 0x0002,   ///< Color of the fill (can be turned off by the user)
-        PenWidth    = 0x0004    ///< Width of the pen
+        PenWidth    = 0x0004,   ///< Width of the pen
+        Font        = 0x0008    ///< Font of a text (family and size)
     };
     Q_DECLARE_FLAGS(StyleItems, StyleItem)
 

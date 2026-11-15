@@ -16,10 +16,14 @@
 
 #include "pdfannotationstyletoolbar.h"
 #include "pdfannotationstyle.h"
+#include "pdffontdialog.h"
 
 #include <QtTest>
 #include <QAction>
 #include <QSettings>
+#include <QTimer>
+#include <QApplication>
+#include <QListWidget>
 
 using namespace pdf;
 using namespace pdfviewer;
@@ -38,6 +42,8 @@ private slots:
     void deactivatedToolDisablesActions();
     void penWidthsFollowScaleOfTheTool();
     void pointersShowTheColor();
+    void fontButtonSetsFontOfTheTool();
+    void fontDialogChoosesFamilyAndSize();
 
 private:
     static QAction* action(PDFAnnotationStyleToolBar& toolBar, const QString& name) { return toolBar.findChild<QAction*>(name); }
@@ -219,6 +225,91 @@ void AnnotationStyleToolBarTest::pointersShowTheColor()
         return count;
     };
     QVERIFY(dotWidth(PDFAnnotationCursors::createPenCursor(Qt::black, 4.0)) > dotWidth(PDFAnnotationCursors::createPenCursor(Qt::black, 1.0)));
+}
+
+void AnnotationStyleToolBarTest::fontButtonSetsFontOfTheTool()
+{
+    PDFAnnotationStyleToolBar toolBar(nullptr);
+    QAction* font = action(toolBar, "actionStyleFont");
+    QVERIFY(font);
+    QVERIFY(!font->isEnabled());
+
+    // A tool without a font (a shape): the font cannot be set
+    PDFAnnotationStyleManager shapeManager(nullptr, PDFAnnotationStyleManager::StrokeColor | PDFAnnotationStyleManager::PenWidth, defaultStyle(), STYLE_ID);
+    shapeManager.activateStyle();
+    QVERIFY(!font->isEnabled());
+    shapeManager.deactivateStyle();
+
+    // The inline text tool: the button shows its font
+    PDFAnnotationStyle textStyle = defaultStyle();
+    textStyle.fontFamily = "Helvetica";
+    textStyle.fontSize = 10.0;
+    PDFAnnotationStyleManager textManager(nullptr, PDFAnnotationStyleManager::StrokeColor | PDFAnnotationStyleManager::Font, textStyle, "UnitTestText");
+    textManager.activateStyle();
+    QVERIFY(font->isEnabled());
+    QCOMPARE(font->text(), QString("Helvetica 10"));
+
+    toolBar.applyFont("DejaVu Sans", 14.0);
+    QCOMPARE(textManager.getStyle().fontFamily, QString("DejaVu Sans"));
+    QCOMPARE(textManager.getStyle().fontSize, 14.0);
+    QCOMPARE(font->text(), QString("DejaVu Sans 14"));
+
+    // The font is stored with the style
+    const PDFAnnotationStyle stored = PDFAnnotationStyleSettings::getStyle("UnitTestText", textStyle);
+    QCOMPARE(stored.fontFamily, QString("DejaVu Sans"));
+    QCOMPARE(stored.fontSize, 14.0);
+
+    // The button opens the font window, its choice is applied
+    QTimer::singleShot(0, [&]()
+    {
+        PDFFontDialog* dialog = qobject_cast<PDFFontDialog*>(QApplication::activeModalWidget());
+        if (!dialog)
+        {
+            return;
+        }
+
+        QCOMPARE(dialog->getFontFamily(), QString("DejaVu Sans"));
+        QCOMPARE(dialog->getFontSize(), 14.0);
+        dialog->setFontFamily("Helvetica");
+        dialog->setFontSize(18.0);
+        dialog->accept();
+    });
+    font->trigger();
+    QCOMPARE(textManager.getStyle().fontFamily, QString("Helvetica"));
+    QCOMPARE(textManager.getStyle().fontSize, 18.0);
+
+    textManager.deactivateStyle();
+    QVERIFY(!font->isEnabled());
+    QCOMPARE(font->text(), QString("Font"));
+}
+
+void AnnotationStyleToolBarTest::fontDialogChoosesFamilyAndSize()
+{
+    PDFFontDialog dialog(nullptr);
+    const int familyCount = dialog.getVisibleFamilyCount();
+    QVERIFY(familyCount > 0);
+
+    // A family, which is not installed (a standard PDF font), is kept
+    dialog.setFontFamily("NotInstalledFamily");
+    QCOMPARE(dialog.getFontFamily(), QString("NotInstalledFamily"));
+
+    // The search shows the matching families only, the first one is chosen
+    dialog.setFilter("installedfam");
+    QCOMPARE(dialog.getVisibleFamilyCount(), 1);
+    QCOMPARE(dialog.getFontFamily(), QString("NotInstalledFamily"));
+    dialog.setFilter("zzzz-no-such-family");
+    QCOMPARE(dialog.getVisibleFamilyCount(), 0);
+    dialog.setFilter(QString());
+    QCOMPARE(dialog.getVisibleFamilyCount(), familyCount + 1);
+
+    // The common sizes are offered, another size can be typed
+    QListWidget* sizeList = dialog.findChild<QListWidget*>("fontSizeList");
+    QVERIFY(sizeList);
+    QCOMPARE(sizeList->count(), int(PDFFontDialog::COMMON_SIZES.size()));
+    dialog.setFontSize(12.0);
+    QCOMPARE(sizeList->currentItem()->text(), QString("12"));
+    dialog.setFontSize(13.5);
+    QCOMPARE(dialog.getFontSize(), 13.5);
 }
 
 QTEST_MAIN(AnnotationStyleToolBarTest)

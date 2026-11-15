@@ -428,6 +428,18 @@ public:
     /// Sets the color of the selected annotations
     void setSelectedAnnotationsColor(const QColor& color);
 
+    /// Returns the font of the first selected inline text (free text annotation)
+    /// \param fontFamily Font family (output)
+    /// \param fontSize Font size (output)
+    /// \returns false, if no inline text is selected
+    bool getSelectedInlineTextFont(QString* fontFamily, PDFReal* fontSize) const;
+
+    /// Sets the font of the selected inline texts (free text annotations): their color
+    /// is kept, their frame fits the text (one modification of the document)
+    /// \param fontFamily Font family
+    /// \param fontSize Font size
+    void setSelectedAnnotationsFont(const QString& fontFamily, PDFReal fontSize);
+
     /// Sets the opacity of the selected annotations
     /// \param opacity Opacity (from 0 to 1)
     void setSelectedAnnotationsOpacity(PDFReal opacity);

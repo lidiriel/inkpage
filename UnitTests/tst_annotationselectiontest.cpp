@@ -130,6 +130,7 @@ private slots:
     void doubleClickEditsAnnotation();
     void inlineTextFrameFitsItsText();
     void doubleClickEditsInlineTextInPlace();
+    void fontOfSelectedInlineTextIsChanged();
     void replyMenuEntryOpensPopup();
     void pastedTextBecomesInlineText();
     void imageAnnotationKeepsItsAppearance();
@@ -2721,6 +2722,48 @@ void AnnotationSelectionTest::inlineTextFrameFitsItsText()
     rectangle = PDFAnnotationManipulator::getFreeTextRectangle(builder.getStorage(), freeText).normalized();
     QVERIFY(rectangle.right() <= 300.0 + 0.01);
     QVERIFY(rectangle.height() > 2.0 * oneLine.height() - 2.0 * PDFAnnotationManipulator::FREE_TEXT_PADDING);
+}
+
+void AnnotationSelectionTest::fontOfSelectedInlineTextIsChanged()
+{
+    PDFDocumentBuilder builder;
+    const PDFObjectReference page = builder.appendPage(QRectF(0, 0, 300, 300));
+    PDFFreeTextStyle style;
+    style.fontSize = 12.0;
+    style.textColor = Qt::blue;
+    const PDFObjectReference freeText = builder.createAnnotationFreeText(page, QRectF(50, 200, 60, 20), "Title", QString(), "Some text", style, false);
+    const PDFObjectReference square = builder.createAnnotationSquare(page, QRectF(50, 50, 60, 40), 1.0, Qt::yellow, Qt::black, "Title", QString(), QString());
+    SelectionFixture fixture(builder.build());
+
+    // Without a selected inline text, there is no font
+    QString fontFamily;
+    PDFReal fontSize = 0.0;
+    fixture.annotations.setSelectedAnnotations({ square });
+    QVERIFY(!fixture.annotations.getSelectedInlineTextFont(&fontFamily, &fontSize));
+
+    fixture.annotations.setSelectedAnnotations({ square, freeText });
+    QVERIFY(fixture.annotations.getSelectedInlineTextFont(&fontFamily, &fontSize));
+    QCOMPARE(fontFamily, QString("Helvetica"));
+    QCOMPARE(fontSize, 12.0);
+
+    // The font is changed, the color is kept, the frame fits the bigger text; the square is not changed
+    fixture.annotations.setSelectedAnnotationsFont("DejaVu Sans", 24.0);
+    QCOMPARE(fixture.modificationCount, 1);
+    QVERIFY(fixture.annotations.getSelectedInlineTextFont(&fontFamily, &fontSize));
+    QCOMPARE(fontFamily, QString("DejaVu Sans"));
+    QCOMPARE(fontSize, 24.0);
+
+    const PDFDictionary* dictionary = fixture.document->getDictionaryFromObject(fixture.document->getObjectByReference(freeText));
+    const PDFAnnotationDefaultAppearance appearance = PDFDocumentBuilder::getDefaultFreeTextAppearance(dictionary);
+    QCOMPARE(appearance.getFontColor(), QColor(Qt::blue));
+
+    const QSizeF size = PDFAnnotationManipulator::getFreeTextSize("Some text", "DejaVu Sans", 24.0, 300.0 - 50.0);
+    const QRectF rectangle = PDFAnnotationManipulator::getFreeTextRectangle(&fixture.document->getStorage(), freeText).normalized();
+    QVERIFY(std::abs(rectangle.height() - size.height()) < 0.01);
+    QVERIFY(rectangle.height() > 24.0);
+    QCOMPARE(rectangle.left(), 50.0);
+    QCOMPARE(rectangle.bottom(), 220.0);
+    QCOMPARE(PDFAnnotation::parse(&fixture.document->getStorage(), square)->getRectangle(), QRectF(50, 50, 60, 40));
 }
 
 void AnnotationSelectionTest::doubleClickEditsInlineTextInPlace()

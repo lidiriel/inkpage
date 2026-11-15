@@ -499,6 +499,77 @@ void PDFWidgetAnnotationManager::modifySelectedAnnotations(const std::function<b
     }
 }
 
+bool PDFWidgetAnnotationManager::getSelectedInlineTextFont(QString* fontFamily, PDFReal* fontSize) const
+{
+    if (!m_document)
+    {
+        return false;
+    }
+
+    for (const SelectedAnnotation& item : m_selection)
+    {
+        const PageAnnotation* pageAnnotation = findPageAnnotation(item.pageIndex, item.annotation);
+        const PDFFreeTextAnnotation* freeTextAnnotation = pageAnnotation ? dynamic_cast<const PDFFreeTextAnnotation*>(pageAnnotation->annotation.data()) : nullptr;
+        if (!freeTextAnnotation)
+        {
+            continue;
+        }
+
+        const PDFAnnotationDefaultAppearance appearance = PDFAnnotationDefaultAppearance::parse(freeTextAnnotation->getDefaultAppearance());
+        if (fontFamily)
+        {
+            *fontFamily = PDFDocumentBuilder::decodeFreeTextFontName(appearance.getFontName());
+        }
+        if (fontSize)
+        {
+            *fontSize = appearance.getFontSize() > 0.0 ? appearance.getFontSize() : PDFFreeTextStyle().fontSize;
+        }
+        return true;
+    }
+
+    return false;
+}
+
+void PDFWidgetAnnotationManager::setSelectedAnnotationsFont(const QString& fontFamily, PDFReal fontSize)
+{
+    if (fontFamily.isEmpty() || fontSize <= 0.0)
+    {
+        return;
+    }
+
+    modifySelectedAnnotations([this, &fontFamily, fontSize](PDFDocumentBuilder* builder, const PageAnnotation& pageAnnotation)
+    {
+        if (pageAnnotation.annotation->getType() != AnnotationType::FreeText)
+        {
+            return false;
+        }
+
+        // The color of the text (default appearance) is kept
+        const PDFObjectReference annotation = pageAnnotation.annotation->getSelfReference();
+        const PDFObjectStorage* storage = builder->getStorage();
+        const PDFDictionary* dictionary = storage->getDictionaryFromObject(storage->getObjectByReference(annotation));
+        const PDFAnnotationDefaultAppearance appearance = PDFDocumentBuilder::getDefaultFreeTextAppearance(dictionary);
+
+        PDFFreeTextStyle style;
+        style.fontFamily = fontFamily;
+        style.fontSize = fontSize;
+        style.textColor = appearance.getFontColor().isValid() ? appearance.getFontColor() : QColor(Qt::black);
+
+        PDFObjectFactory factory;
+        factory.beginDictionary();
+        factory.beginDictionaryItem("DA");
+        factory << WrapString(PDFDocumentBuilder::createFreeTextDefaultAppearance(style));
+        factory.endDictionaryItem();
+        factory.endDictionary();
+        builder->mergeTo(annotation, factory.takeObject());
+        builder->updateAnnotationAppearanceStreams(annotation);
+
+        // The frame fits the text in the new font
+        fitInlineText(builder, annotation, findAnnotationPage(annotation));
+        return true;
+    });
+}
+
 void PDFWidgetAnnotationManager::setSelectedAnnotationsColor(const QColor& color)
 {
     if (!color.isValid())

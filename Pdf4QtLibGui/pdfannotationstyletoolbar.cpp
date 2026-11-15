@@ -17,12 +17,15 @@
 #include "pdfannotationstyletoolbar.h"
 #include "pdfwidgetannotation.h"
 #include "pdfwidgetutils.h"
+#include "pdffontdialog.h"
 
 #include <QAction>
 #include <QActionGroup>
 #include <QColorDialog>
 #include <QPainter>
 #include <QPixmap>
+#include <QToolButton>
+#include <QLocale>
 
 #include "pdfdbgheap.h"
 
@@ -36,7 +39,8 @@ PDFAnnotationStyleToolBar::PDFAnnotationStyleToolBar(QWidget* parent) :
     m_colorActions(),
     m_otherColorAction(nullptr),
     m_fillAction(nullptr),
-    m_widthActions()
+    m_widthActions(),
+    m_fontAction(nullptr)
 {
     setObjectName("StyleToolBar");
     m_colorGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::ExclusiveOptional);
@@ -88,6 +92,17 @@ PDFAnnotationStyleToolBar::PDFAnnotationStyleToolBar(QWidget* parent) :
         connect(action, &QAction::triggered, this, [this, penWidth]() { applyPenWidth(penWidth * getPenWidthScale()); });
         m_widthActions[i] = action;
     }
+
+    // inkpage: the font of the inline texts (like the font button of Xournal++, it shows the font)
+    addSeparator();
+    m_fontAction = addAction(tr("Font"));
+    m_fontAction->setObjectName("actionStyleFont");
+    m_fontAction->setToolTip(tr("Font of the inline text"));
+    if (QToolButton* fontButton = qobject_cast<QToolButton*>(widgetForAction(m_fontAction)))
+    {
+        fontButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+    }
+    connect(m_fontAction, &QAction::triggered, this, &PDFAnnotationStyleToolBar::onFontTriggered);
 
     connect(pdf::PDFAnnotationStyleHub::getInstance(), &pdf::PDFAnnotationStyleHub::activeStyleChanged, this, &PDFAnnotationStyleToolBar::updateActions);
     updateActions();
@@ -188,6 +203,65 @@ void PDFAnnotationStyleToolBar::applyPenWidth(pdf::PDFReal penWidth)
     updateActions();
 }
 
+void PDFAnnotationStyleToolBar::applyFont(const QString& fontFamily, pdf::PDFReal fontSize)
+{
+    if (fontFamily.isEmpty() || fontSize <= 0.0)
+    {
+        return;
+    }
+
+    pdf::PDFAnnotationStyleManager* manager = pdf::PDFAnnotationStyleHub::getInstance()->getActiveManager();
+    if (manager && manager->getItems().testFlag(pdf::PDFAnnotationStyleManager::Font))
+    {
+        pdf::PDFAnnotationStyle style = manager->getStyle();
+        style.fontFamily = fontFamily;
+        style.fontSize = fontSize;
+        manager->setStyle(style);
+    }
+    else if (!manager && hasSelection())
+    {
+        m_annotationManager->setSelectedAnnotationsFont(fontFamily, fontSize);
+    }
+
+    updateActions();
+}
+
+bool PDFAnnotationStyleToolBar::getCurrentFont(QString* fontFamily, pdf::PDFReal* fontSize) const
+{
+    const pdf::PDFAnnotationStyleManager* manager = pdf::PDFAnnotationStyleHub::getInstance()->getActiveManager();
+    if (manager)
+    {
+        if (!manager->getItems().testFlag(pdf::PDFAnnotationStyleManager::Font))
+        {
+            return false;
+        }
+
+        *fontFamily = manager->getStyle().fontFamily;
+        *fontSize = manager->getStyle().fontSize;
+        return true;
+    }
+
+    return hasSelection() && m_annotationManager->getSelectedInlineTextFont(fontFamily, fontSize);
+}
+
+void PDFAnnotationStyleToolBar::onFontTriggered()
+{
+    QString fontFamily;
+    pdf::PDFReal fontSize = 0.0;
+    if (!getCurrentFont(&fontFamily, &fontSize))
+    {
+        return;
+    }
+
+    PDFFontDialog dialog(this);
+    dialog.setFontFamily(fontFamily);
+    dialog.setFontSize(fontSize);
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        applyFont(dialog.getFontFamily(), dialog.getFontSize());
+    }
+}
+
 void PDFAnnotationStyleToolBar::updateActions()
 {
     const pdf::PDFAnnotationStyleManager* manager = pdf::PDFAnnotationStyleHub::getInstance()->getActiveManager();
@@ -223,6 +297,13 @@ void PDFAnnotationStyleToolBar::updateActions()
         m_widthActions[i]->setChecked(manager && canSetWidth && qFuzzyCompare(style.penWidth, penWidth));
         m_widthActions[i]->setToolTip(tr("Pen width: %1 (%2 pt)").arg(widthNames[i]).arg(penWidth));
     }
+
+    // The font button shows the font of the active tool (or of the selected inline text)
+    QString fontFamily;
+    pdf::PDFReal fontSize = 0.0;
+    const bool canSetFont = getCurrentFont(&fontFamily, &fontSize);
+    m_fontAction->setEnabled(canSetFont);
+    m_fontAction->setText(canSetFont ? QString("%1 %2").arg(fontFamily, QLocale().toString(fontSize)) : tr("Font"));
 }
 
 void PDFAnnotationStyleToolBar::onOtherColorTriggered()

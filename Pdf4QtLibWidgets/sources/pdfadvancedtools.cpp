@@ -409,8 +409,16 @@ void PDFCreateInDocumentHyperlinkTool::resetPendingLink()
 PDFCreateFreeTextTool::PDFCreateFreeTextTool(PDFDrawWidgetProxy* proxy, PDFToolManager* toolManager, QAction* action, QObject* parent) :
     BaseClass(proxy, action, parent),
     m_toolManager(toolManager),
-    m_pickTool(nullptr)
+    m_pickTool(nullptr),
+    m_styleManager(nullptr)
 {
+    // inkpage: the font, its size and the color of the text are set by the style toolbar
+    PDFAnnotationStyle defaultStyle;
+    defaultStyle.strokeColor = Qt::black;
+    defaultStyle.fontFamily = m_style.fontFamily;
+    defaultStyle.fontSize = m_style.fontSize;
+    m_styleManager = new PDFAnnotationStyleManager(this, PDFAnnotationStyleManager::StrokeColor | PDFAnnotationStyleManager::Font, defaultStyle, PDFAnnotationStyleSettings::STYLE_INLINE_TEXT);
+
     m_pickTool = new PDFPickTool(proxy, PDFPickTool::Mode::Rectangles, this);
     m_pickTool->setSnapToAnnotations(true);
     addTool(m_pickTool);
@@ -420,8 +428,33 @@ PDFCreateFreeTextTool::PDFCreateFreeTextTool(PDFDrawWidgetProxy* proxy, PDFToolM
     updateActions();
 }
 
+void PDFCreateFreeTextTool::setActiveImpl(bool active)
+{
+    BaseClass::setActiveImpl(active);
+
+    if (active)
+    {
+        m_styleManager->activateStyle();
+    }
+    else
+    {
+        m_styleManager->deactivateStyle();
+    }
+}
+
+const PDFAnnotationStyle& PDFCreateFreeTextTool::getStyle() const
+{
+    return m_styleManager->getStyle();
+}
+
 bool PDFCreateFreeTextTool::configureFreeText(QString& text)
 {
+    // The dialog starts with the style of the tool
+    const PDFAnnotationStyle& toolStyle = m_styleManager->getStyle();
+    m_style.fontFamily = toolStyle.fontFamily;
+    m_style.fontSize = toolStyle.fontSize;
+    m_style.textColor = toolStyle.strokeColor.isValid() ? toolStyle.strokeColor : QColor(Qt::black);
+
     QDialog dialog(getProxy()->getWidget());
     dialog.setWindowTitle(tr("Free text annotation"));
 
@@ -502,6 +535,13 @@ bool PDFCreateFreeTextTool::configureFreeText(QString& text)
     m_style.textColor = selectedColor.isValid() ? selectedColor : QColor(Qt::black);
     m_style.textAlignment = TextAlignment(Qt::AlignTop | Qt::Alignment(alignmentCombo->currentData().toInt()));
     m_autoResizeToContents = autoResizeCheckBox->isChecked();
+
+    // The choice of the dialog becomes the style of the tool (shown in the style toolbar)
+    PDFAnnotationStyle updatedStyle = m_styleManager->getStyle();
+    updatedStyle.fontFamily = m_style.fontFamily;
+    updatedStyle.fontSize = m_style.fontSize;
+    updatedStyle.strokeColor = m_style.textColor;
+    m_styleManager->setStyle(updatedStyle);
 
     return !text.trimmed().isEmpty();
 }

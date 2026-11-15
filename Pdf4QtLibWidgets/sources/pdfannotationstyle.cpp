@@ -63,6 +63,13 @@ PDFAnnotationStyle PDFAnnotationStyleSettings::getStyle(const QString& styleId, 
 
     style.penWidth = qBound(0.0, settings.value("penWidth", defaultStyle.penWidth).toDouble(), 100.0);
 
+    const QString fontFamily = settings.value("fontFamily", defaultStyle.fontFamily).toString();
+    if (!fontFamily.isEmpty())
+    {
+        style.fontFamily = fontFamily;
+    }
+    style.fontSize = qBound(1.0, settings.value("fontSize", defaultStyle.fontSize).toDouble(), 400.0);
+
     settings.endGroup();
     settings.endGroup();
 
@@ -77,6 +84,8 @@ void PDFAnnotationStyleSettings::setStyle(const QString& styleId, const PDFAnnot
     settings.setValue("strokeColor", style.strokeColor);
     settings.setValue("fillColor", style.fillColor);
     settings.setValue("penWidth", style.penWidth);
+    settings.setValue("fontFamily", style.fontFamily);
+    settings.setValue("fontSize", style.fontSize);
     settings.endGroup();
     settings.endGroup();
 }
