@@ -46,7 +46,9 @@ Project (www.freetype.org). All rights reserved.
 The inkpage icon is "Widget Layout Page Paper Office" by efeaco, from the
 Duotone Interface Icons collection on SVG Repo
 (https://www.svgrepo.com/svg/381941/widget-layout-page-paper-office),
-licensed under the Creative Commons Attribution License.
+licensed under the Creative Commons Attribution License
+(https://creativecommons.org/licenses/by/4.0/; SVG Repo does not state the
+version).
 
 Most toolbar, menu and sidebar icons come from PDF4QT. About sixty of them were
 replaced by icons of free icon sets: FreeCAD (LGPL-2.1+, some CC-BY-SA-4.0),
