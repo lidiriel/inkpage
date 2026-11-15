@@ -1271,7 +1271,36 @@ void PDFCreateFreehandCurveTool::setActiveImpl(bool active)
     else
     {
         m_styleManager->deactivateStyle();
+        resetTool();
     }
+}
+
+void PDFCreateFreehandCurveTool::setEventCompressionSuspended(bool suspended)
+{
+    if (suspended && !m_compressionBeforeStroke)
+    {
+        m_compressionBeforeStroke = QCoreApplication::testAttribute(Qt::AA_CompressHighFrequencyEvents);
+        QCoreApplication::setAttribute(Qt::AA_CompressHighFrequencyEvents, false);
+    }
+    else if (!suspended && m_compressionBeforeStroke)
+    {
+        QCoreApplication::setAttribute(Qt::AA_CompressHighFrequencyEvents, *m_compressionBeforeStroke);
+        m_compressionBeforeStroke.reset();
+    }
+}
+
+void PDFCreateFreehandCurveTool::addPoint(const QPointF& pagePoint, bool force)
+{
+    if (!m_pickedPoints.empty())
+    {
+        const PDFReal distance = QLineF(m_pickedPoints.back(), pagePoint).length();
+        if (distance < MINIMAL_POINT_DISTANCE && !(force && distance > 0.0))
+        {
+            return;
+        }
+    }
+
+    m_pickedPoints.push_back(pagePoint);
 }
 
 void PDFCreateFreehandCurveTool::drawPage(QPainter* painter,
@@ -1298,7 +1327,10 @@ void PDFCreateFreehandCurveTool::drawPage(QPainter* painter,
     const PDFAnnotationStyle& style = m_styleManager->getStyle();
     QPen pen = annotationConvertor.convert(QPen(style.strokeColor), false, false);
     pen.setWidthF(style.penWidth);
+    pen.setCapStyle(Qt::RoundCap);
+    pen.setJoinStyle(Qt::RoundJoin);
     painter->setRenderHint(QPainter::Antialiasing);
+    painter->setBrush(Qt::NoBrush);
 
     if (m_type == Type::Highlighter)
     {
@@ -1306,24 +1338,12 @@ void PDFCreateFreehandCurveTool::drawPage(QPainter* painter,
         QColor color = pen.color();
         color.setAlphaF(HIGHLIGHTER_OPACITY);
         pen.setColor(color);
-        painter->setPen(qMove(pen));
-        painter->setBrush(Qt::NoBrush);
         painter->setCompositionMode(QPainter::CompositionMode_Multiply);
-
-        QPainterPath path(m_pickedPoints.front());
-        for (size_t i = 1; i < m_pickedPoints.size(); ++i)
-        {
-            path.lineTo(m_pickedPoints[i]);
-        }
-        painter->drawPath(path);
-        return;
     }
 
+    // The same smooth curve as the created ink annotation
     painter->setPen(qMove(pen));
-    for (size_t i = 1; i < m_pickedPoints.size(); ++i)
-    {
-        painter->drawLine(m_pickedPoints[i - 1], m_pickedPoints[i]);
-    }
+    painter->drawPath(PDFInkAnnotation::createSmoothPath(QPolygonF(QList<QPointF>(m_pickedPoints.cbegin(), m_pickedPoints.cend()))));
 }
 
 void PDFCreateFreehandCurveTool::mousePressEvent(QWidget* widget, QMouseEvent* event)
@@ -1333,14 +1353,15 @@ void PDFCreateFreehandCurveTool::mousePressEvent(QWidget* widget, QMouseEvent* e
 
     if (event->button() == Qt::LeftButton)
     {
-        // Try to perform pick point
+        // Try to perform pick point (subpixel position: the pen of a tablet is precise)
         QPointF pagePoint;
-        PDFInteger pageIndex = getProxy()->getPageUnderPoint(event->pos(), &pagePoint);
+        PDFInteger pageIndex = getProxy()->getPageUnderPoint(event->position(), &pagePoint);
         if (pageIndex != -1 &&    // We have picked some point on page
                 (m_pageIndex == -1 || m_pageIndex == pageIndex)) // We are under current page
         {
             m_pageIndex = pageIndex;
-            m_pickedPoints.push_back(pagePoint);
+            addPoint(pagePoint, false);
+            setEventCompressionSuspended(true);
         }
     }
     else if (event->button() == Qt::RightButton)
@@ -1360,12 +1381,12 @@ void PDFCreateFreehandCurveTool::mouseReleaseEvent(QWidget* widget, QMouseEvent*
     {
         // Try to perform pick point
         QPointF pagePoint;
-        PDFInteger pageIndex = getProxy()->getPageUnderPoint(event->pos(), &pagePoint);
+        PDFInteger pageIndex = getProxy()->getPageUnderPoint(event->position(), &pagePoint);
         if (pageIndex != -1 &&    // We have picked some point on page
                 (m_pageIndex == pageIndex)) // We are under current page
         {
             m_pageIndex = pageIndex;
-            m_pickedPoints.push_back(pagePoint);
+            addPoint(pagePoint, true);
 
             if (m_pickedPoints.size() >= 3)
             {
@@ -1394,10 +1415,10 @@ void PDFCreateFreehandCurveTool::mouseMoveEvent(QWidget* widget, QMouseEvent* ev
     {
         // Try to add point to the path
         QPointF pagePoint;
-        PDFInteger pageIndex = getProxy()->getPageUnderPoint(event->pos(), &pagePoint);
+        PDFInteger pageIndex = getProxy()->getPageUnderPoint(event->position(), &pagePoint);
         if (pageIndex == m_pageIndex)
         {
-            m_pickedPoints.push_back(pagePoint);
+            addPoint(pagePoint, false);
         }
 
         getProxy()->repaintNeeded();
@@ -1456,7 +1477,9 @@ void PDFCreateFreehandCurveTool::createAnnotation()
     }
     else
     {
-        const PDFObjectReference annotation = builder->createAnnotationPolyline(page, polygon, style.penWidth, Qt::black, style.strokeColor, author, QString(), QString(), AnnotationLineEnding::None, AnnotationLineEnding::None);
+        // inkpage: an ink annotation (not a polyline): it is drawn as a smooth curve,
+        // and it can hold several paths (the eraser cuts a stroke into pieces)
+        const PDFObjectReference annotation = builder->createAnnotationInk(page, polygon, style.penWidth, style.strokeColor, author, QString(), QString());
         builder->setAnnotationNoteLayer(annotation);
     }
     modifier.markAnnotationsChanged();
@@ -1471,6 +1494,7 @@ void PDFCreateFreehandCurveTool::resetTool()
 {
     m_pageIndex = -1;
     m_pickedPoints.clear();
+    setEventCompressionSuspended(false);
 }
 
 PDFCreateStampTool::PDFCreateStampTool(PDFDrawWidgetProxy* proxy, PDFToolManager* toolManager, QActionGroup* actionGroup, QObject* parent) :

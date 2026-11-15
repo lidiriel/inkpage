@@ -134,6 +134,8 @@ private slots:
     void imageAnnotationKeepsItsAppearance();
     void pastedImageBecomesImageAnnotation();
     void highlighterCreatesTranslucentInk();
+    void inkIsDrawnAsSmoothCurve();
+    void penKeepsEveryPreciseMove();
     void annotationIsHiddenWithItsLayer();
     void drawingToolsPutTheirAnnotationsInTheNoteLayer();
     void layerStatesFollowTheModifiedDocument();
@@ -3060,6 +3062,142 @@ void AnnotationSelectionTest::pastedImageBecomesImageAnnotation()
     const QRectF largeRectangle = PDFAnnotation::parse(&fixture.document->getStorage(), fixture.pageAnnotations().back())->getRectangle().normalized();
     QVERIFY(largeRectangle.width() <= 300.0 - 72.0 + 0.5);
     QVERIFY(std::abs(largeRectangle.width() / largeRectangle.height() - 2.0) < 0.01);
+}
+
+void AnnotationSelectionTest::inkIsDrawnAsSmoothCurve()
+{
+    // The curve goes through every point of the stroke
+    const QPolygonF stroke({ QPointF(10, 10), QPointF(20, 30), QPointF(40, 35), QPointF(60, 20), QPointF(70, 50) });
+    const QPainterPath path = PDFInkAnnotation::createSmoothPath(stroke);
+    QCOMPARE(path.elementCount(), 1 + 3 * (int(stroke.size()) - 1));
+    QCOMPARE(QPointF(path.elementAt(0)), stroke.front());
+    for (int i = 1; i < stroke.size(); ++i)
+    {
+        const QPainterPath::Element end = path.elementAt(3 * i);
+        QCOMPARE(QPointF(end), stroke[i]);
+    }
+
+    // Points on a line give the line, the curve does not bulge between them
+    const QPainterPath straight = PDFInkAnnotation::createSmoothPath(QPolygonF({ QPointF(10, 100), QPointF(50, 100), QPointF(90, 100), QPointF(130, 100) }));
+    QVERIFY(straight.boundingRect().height() < 1e-9);
+    QCOMPARE(straight.boundingRect().width(), 120.0);
+
+    // Two points: a line, one point: a dot
+    QCOMPARE(PDFInkAnnotation::createSmoothPath(QPolygonF({ QPointF(1, 1), QPointF(5, 1) })).elementCount(), 2);
+    QVERIFY(!PDFInkAnnotation::createSmoothPath(QPolygonF({ QPointF(1, 1) })).isEmpty());
+    QVERIFY(PDFInkAnnotation::createSmoothPath(QPolygonF()).isEmpty());
+
+    // The rendered stroke of an ink annotation is straight: nothing is drawn above it
+    PDFDocumentBuilder builder;
+    const PDFObjectReference page = builder.appendPage(QRectF(0, 0, 200, 200));
+    builder.createAnnotationInk(page, QPolygonF({ QPointF(20, 100), QPointF(100, 100), QPointF(180, 100) }), 2.0, Qt::black, "Title", QString(), QString());
+    const PDFDocument document = builder.build();
+
+    QImage image(200, 200, QImage::Format_RGB32);
+    image.fill(Qt::white);
+    PDFCMSManager cms(nullptr);
+    PDFFontCache fontCache(32, 32);
+    PDFOptionalContentActivity activity(&document, OCUsage::View, nullptr);
+    const PDFModifiedDocument modified(const_cast<PDFDocument*>(&document), &activity);
+    fontCache.setDocument(modified);
+    PDFAnnotationManager renderer(&fontCache, nullptr, &cms, &activity, PDFMeshQualitySettings(), PDFRenderer::getDefaultFeatures(), PDFAnnotationManager::Target::View, nullptr);
+    renderer.setDocument(modified);
+    const QTransform pageToDevice = PDFRenderer::createPagePointToDevicePointMatrix(document.getCatalog()->getPage(0), QRectF(0, 0, 200, 200));
+    {
+        QPainter painter(&image);
+        PDFTextLayoutGetter getter(nullptr, 0);
+        QList<PDFRenderError> errors;
+        renderer.drawPage(&painter, 0, nullptr, getter, pageToDevice, PDFColorConvertor(), errors);
+    }
+
+    auto pixel = [&](QPointF pagePoint) { return image.pixelColor(pageToDevice.map(pagePoint).toPoint()); };
+    QCOMPARE(pixel(QPointF(60, 100)), QColor(Qt::black));
+    QCOMPARE(pixel(QPointF(60, 105)), QColor(Qt::white));
+    QCOMPARE(pixel(QPointF(60, 95)), QColor(Qt::white));
+}
+
+void AnnotationSelectionTest::penKeepsEveryPreciseMove()
+{
+    PDFDocumentBuilder builder;
+    builder.appendPage(QRectF(0, 0, 200, 200));
+    SelectionFixture fixture(builder.build());
+    QObject::connect(&fixture.tools, &PDFToolManager::documentModified, &fixture.tools, [&fixture](PDFModifiedDocument modified)
+    {
+        fixture.document = modified;
+        fixture.apply(PDFModifiedDocument(fixture.document, nullptr, modified.getFlags()));
+    });
+
+    QAction action;
+    action.setCheckable(true);
+    PDFCreateFreehandCurveTool tool(fixture.widget.getDrawWidgetProxy(), &fixture.tools, &action, nullptr, PDFCreateFreehandCurveTool::Type::Pen);
+    tool.setDocument(PDFModifiedDocument(fixture.document, nullptr));
+    tool.setActive(true);
+
+    // Mouse events at subpixel positions (as the pen of a tablet gives them)
+    const QTransform pageToDevice = fixture.pageToDevice();
+    auto send = [&](QEvent::Type type, QPointF pagePoint)
+    {
+        const QPointF position = pageToDevice.map(pagePoint);
+        const Qt::MouseButton button = (type == QEvent::MouseMove) ? Qt::NoButton : Qt::LeftButton;
+        const Qt::MouseButtons buttons = (type == QEvent::MouseButtonRelease) ? Qt::MouseButtons(Qt::NoButton) : Qt::MouseButtons(Qt::LeftButton);
+        QMouseEvent event(type, position, fixture.widget.mapToGlobal(position), button, buttons, Qt::NoModifier);
+        switch (type)
+        {
+            case QEvent::MouseButtonPress:
+                tool.mousePressEvent(&fixture.widget, &event);
+                break;
+            case QEvent::MouseButtonRelease:
+                tool.mouseReleaseEvent(&fixture.widget, &event);
+                break;
+            default:
+                tool.mouseMoveEvent(&fixture.widget, &event);
+                break;
+        }
+    };
+
+    QCoreApplication::setAttribute(Qt::AA_CompressHighFrequencyEvents, true);
+    send(QEvent::MouseButtonPress, QPointF(20.05, 100.05));
+
+    // The mouse moves are not compressed while the stroke is drawn
+    QVERIFY(!QCoreApplication::testAttribute(Qt::AA_CompressHighFrequencyEvents));
+
+    // Moves of 0.1 pt: only the ones at least 0.3 pt from the previous kept point are added
+    for (int i = 1; i <= 10; ++i)
+    {
+        send(QEvent::MouseMove, QPointF(20.05 + 0.1 * i, 100.05));
+    }
+    std::vector<QPointF> points = tool.getPickedPoints();
+    QVERIFY(points.size() >= 3 && points.size() <= 5);
+    for (size_t i = 1; i < points.size(); ++i)
+    {
+        QVERIFY(QLineF(points[i - 1], points[i]).length() >= PDFCreateFreehandCurveTool::MINIMAL_POINT_DISTANCE - 1e-9);
+    }
+
+    // The points are not rounded to the pixels of the widget
+    QVERIFY(std::abs(points.front().x() - 20.05) < 1e-6);
+    QVERIFY(std::abs(points.front().y() - 100.05) < 1e-6);
+
+    for (PDFReal x = 30; x < 150; x += 10)
+    {
+        send(QEvent::MouseMove, QPointF(x, 100.05 + (x - 30) / 4.0));
+    }
+    send(QEvent::MouseButtonRelease, QPointF(150, 130));
+    QVERIFY(QCoreApplication::testAttribute(Qt::AA_CompressHighFrequencyEvents));
+
+    // An ink annotation, its appearance is made of curves with round ends
+    const std::vector<PDFObjectReference> annotations = fixture.pageAnnotations();
+    QCOMPARE(annotations.size(), size_t(1));
+    const PDFAnnotationPtr annotation = PDFAnnotation::parse(&fixture.document->getStorage(), annotations.front());
+    QCOMPARE(annotation->getType(), AnnotationType::Ink);
+
+    const PDFDictionary* appearance = fixture.document->getDictionaryFromObject(fixture.entry(annotations.front(), "AP"));
+    QVERIFY(appearance);
+    const PDFObject normalAppearance = fixture.document->getObject(appearance->get("N"));
+    QVERIFY(normalAppearance.isStream());
+    const QByteArray content = fixture.document->getDecodedStream(normalAppearance.getStream());
+    QVERIFY2(content.contains(" c\n") || content.contains(" c "), content.constData());
+    QVERIFY2(content.contains("1 J"), content.constData());
+    QVERIFY2(content.contains("1 j"), content.constData());
 }
 
 void AnnotationSelectionTest::annotationIsHiddenWithItsLayer()

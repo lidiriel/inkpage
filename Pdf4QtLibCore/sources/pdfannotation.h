@@ -1161,13 +1161,19 @@ private:
 };
 
 /// Ink annotation. Represents a path composed of disjoint polygons.
-class PDFInkAnnotation : public PDFMarkupAnnotation
+class PDF4QTLIBCORESHARED_EXPORT PDFInkAnnotation : public PDFMarkupAnnotation
 {
 public:
     inline explicit PDFInkAnnotation() = default;
 
     virtual AnnotationType getType() const override { return AnnotationType::Ink; }
     virtual void draw(AnnotationDrawParameters& parameters) const override;
+
+    /// Returns a smooth curve through the points of a stroke (Catmull-Rom spline made
+    /// of cubic Bezier curves). It goes through every point, so it keeps the shape
+    /// of the stroke drawn by the user without its corners.
+    /// \param points Points of the stroke
+    static QPainterPath createSmoothPath(const QPolygonF& points);
 
     const QPainterPath& getInkPath() const { return m_inkPath; }
 

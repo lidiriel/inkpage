@@ -326,7 +326,13 @@ public:
     /// is not nullptr, then point in page coordinate space is set here.
     /// \param point Point
     /// \param pagePoint Point in page coordinate system
-    PDFInteger getPageUnderPoint(QPoint point, QPointF* pagePoint) const;
+    PDFInteger getPageUnderPoint(QPoint point, QPointF* pagePoint) const { return getPageUnderPoint(QPointF(point), pagePoint); }
+
+    /// Same as above, for a point with a subpixel precision (pen of a tablet,
+    /// position of a mouse event)
+    /// \param point Point
+    /// \param pagePoint Point in page coordinate system
+    PDFInteger getPageUnderPoint(QPointF point, QPointF* pagePoint) const;
 
     /// Returns bounding box of pages, which are intersecting rectangle (even partially)
     /// \param rect Rectangle to test

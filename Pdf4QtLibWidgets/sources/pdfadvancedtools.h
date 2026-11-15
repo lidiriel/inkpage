@@ -28,6 +28,8 @@
 #include "pdfannotation.h"
 #include "pdfannotationstyle.h"
 
+#include <optional>
+
 class QActionGroup;
 
 namespace pdf
@@ -291,7 +293,7 @@ private:
 public:
     enum class Type
     {
-        Pen,        ///< Freehand curve (polyline annotation)
+        Pen,        ///< Freehand curve (ink annotation)
         Highlighter ///< Wide translucent stroke (ink annotation, multiply blend mode), like the highlighter of Xournal++
     };
 
@@ -300,6 +302,10 @@ public:
 
     /// Factor of the predefined pen widths of the style toolbar for the highlighter
     static constexpr PDFReal HIGHLIGHTER_PEN_WIDTH_SCALE = 5.0;
+
+    /// A point of the stroke closer than this distance (in points) to the previous
+    /// one is dropped (as Xournal++, PIXEL_MOTION_THRESHOLD)
+    static constexpr PDFReal MINIMAL_POINT_DISTANCE = 0.3;
 
     explicit PDFCreateFreehandCurveTool(PDFDrawWidgetProxy* proxy, PDFToolManager* toolManager, QAction* action, QObject* parent, Type type = Type::Pen);
 
@@ -322,8 +328,20 @@ public:
     QColor getStrokeColor() const;
     void setStrokeColor(const QColor& strokeColor);
 
+    /// Points of the stroke being drawn (page coordinates)
+    const std::vector<QPointF>& getPickedPoints() const { return m_pickedPoints; }
+
 private:
     void resetTool();
+
+    /// Adds a point to the stroke, unless it is too close to the previous one
+    /// \param pagePoint Point in page coordinates
+    /// \param force The point is added even if it is close (end of the stroke)
+    void addPoint(const QPointF& pagePoint, bool force);
+
+    /// The mouse moves are not compressed while a stroke is drawn: every move (every
+    /// sample of a tablet pen) gives a point. The compression is restored at the end.
+    void setEventCompressionSuspended(bool suspended);
     void updateCursor();
 
     /// Creates the annotation from the picked points
@@ -334,6 +352,7 @@ private:
     PDFAnnotationStyleManager* m_styleManager;
     PDFInteger m_pageIndex;
     std::vector<QPointF> m_pickedPoints;
+    std::optional<bool> m_compressionBeforeStroke;  ///< Compression of the events before the stroke (set while it is suspended)
 };
 
 /// Tool that creates 'stamp' annotations. Multiple types of stamps

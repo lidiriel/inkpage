@@ -3047,90 +3047,85 @@ void PDFCaretAnnotation::draw(AnnotationDrawParameters& parameters) const
     painter.fillPath(path, QBrush(parameters.colorConvertor.convert(getStrokeColor(), false, false), Qt::SolidPattern));
 }
 
+QPainterPath PDFInkAnnotation::createSmoothPath(const QPolygonF& points)
+{
+    QPainterPath path;
+    if (points.isEmpty())
+    {
+        return path;
+    }
+
+    path.moveTo(points.front());
+    const qsizetype count = points.size();
+    if (count == 1)
+    {
+        // A dot: a very short line, drawn as a dot by the round cap of the pen
+        path.lineTo(points.front() + QPointF(0.01, 0.0));
+        return path;
+    }
+
+    if (count == 2)
+    {
+        path.lineTo(points.back());
+        return path;
+    }
+
+    // Catmull-Rom spline: the tangent at a point is parallel to the line between its
+    // neighbours, the curve between two points is a cubic Bezier curve with the control
+    // points at one sixth of the tangents (the first and last points are repeated)
+    for (qsizetype i = 0; i + 1 < count; ++i)
+    {
+        const QPointF& p0 = points[qMax<qsizetype>(i - 1, 0)];
+        const QPointF& p1 = points[i];
+        const QPointF& p2 = points[i + 1];
+        const QPointF& p3 = points[qMin<qsizetype>(i + 2, count - 1)];
+        path.cubicTo(p1 + (p2 - p0) / 6.0, p2 - (p3 - p1) / 6.0, p2);
+    }
+
+    return path;
+}
+
 void PDFInkAnnotation::draw(AnnotationDrawParameters& parameters) const
 {
     QPainter& painter = *parameters.painter;
-    QPainterPath path = getInkPath();
+    const QPainterPath& inkPath = getInkPath();
 
-    painter.setPen(getPen(parameters.colorConvertor));
-    painter.setBrush(getBrush(parameters.colorConvertor));
+    // inkpage: a stroke has round ends and joins (like a pen) and it is never filled
+    QPen pen = getPen(parameters.colorConvertor);
+    pen.setCapStyle(Qt::RoundCap);
+    pen.setJoinStyle(Qt::RoundJoin);
+    painter.setPen(pen);
+    painter.setBrush(Qt::NoBrush);
     painter.setCompositionMode(getCompositionMode());
 
-    QPainterPath boundingPath;
-    QPainterPath currentPath;
-    const int elementCount = path.elementCount();
-    bool hasSpline = false;
-    for (int i = 0; i < elementCount; ++i)
+    QPainterPath path;
+    if (isDefinedByPath())
     {
-        QPainterPath::Element element = path.elementAt(i);
-        switch (element.type)
+        // The entry Path (PDF 2.0) defines the curves itself
+        path = inkPath;
+    }
+    else
+    {
+        // The ink list gives the points of the strokes (each one starts with a move),
+        // a smooth curve is drawn through them (like Xournal++)
+        QPolygonF stroke;
+        for (int i = 0, elementCount = inkPath.elementCount(); i < elementCount; ++i)
         {
-            case QPainterPath::MoveToElement:
+            const QPainterPath::Element element = inkPath.elementAt(i);
+            if (element.isMoveTo() && !stroke.isEmpty())
             {
-                // Reset the path
-                if (!currentPath.isEmpty())
-                {
-                    boundingPath.addPath(currentPath);
-                    painter.drawPath(currentPath);
-                    currentPath.clear();
-                }
-                currentPath.moveTo(element.x, element.y);
-                break;
+                path.addPath(createSmoothPath(stroke));
+                stroke.clear();
             }
-
-            case QPainterPath::LineToElement:
-            {
-                const QPointF p0 = currentPath.currentPosition();
-                const QPointF p1(element.x, element.y);
-
-                QLineF line(p0, p1);
-                QPointF normal = line.normalVector().p2() - p0;
-
-                // Jakub Melka: This computation should be clarified. We use second order Bezier curves.
-                // We must calculate single control point. Let B(t) is bezier curve of second order.
-                // Then second derivation is B''(t) = 2(p0 - 2*Pc + p1). Second derivation curve is its
-                // normal. So, we calculate normal vector of the line (which has norm equal to line length),
-                // then we get following formula:
-                //
-                // Pc = (p0 + p1) / 2 - B''(t) / 4
-                //
-                // So, for bezier curves of second order, second derivative is constant (which is not surprising,
-                // because second derivative of polynomial of order 2 is also a constant). Control point is then
-                // used to paint the path.
-                QPointF controlPoint = -normal * 0.25 + (p0 + p1) * 0.5;
-                currentPath.quadTo(controlPoint, p1);
-                break;
-            }
-
-            case QPainterPath::CurveToElement:
-            case QPainterPath::CurveToDataElement:
-                hasSpline = true;
-                break;
-
-            default:
-                Q_ASSERT(false);
-                break;
+            stroke << QPointF(element.x, element.y);
         }
-
-        // Jakub Melka: If we have a spline, then we don't do anything...
-        // Just copy the spline path.
-        if (hasSpline)
-        {
-            currentPath = path;
-            break;
-        }
+        path.addPath(createSmoothPath(stroke));
     }
 
-    // Reset the path
-    if (!currentPath.isEmpty())
-    {
-        boundingPath.addPath(currentPath);
-        painter.drawPath(currentPath);
-        currentPath.clear();
-    }
+    painter.drawPath(path);
 
-    const qreal penWidth = painter.pen().widthF();
-    parameters.boundingRectangle = boundingPath.boundingRect();
+    const qreal penWidth = pen.widthF();
+    parameters.boundingRectangle = path.boundingRect();
     parameters.boundingRectangle.adjust(-penWidth, -penWidth, penWidth, penWidth);
 }
 

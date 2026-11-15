@@ -1071,7 +1071,7 @@ std::vector<PDFInteger> PDFDrawWidgetProxy::getActivePages() const
     return activePages;
 }
 
-PDFInteger PDFDrawWidgetProxy::getPageUnderPoint(QPoint point, QPointF* pagePoint) const
+PDFInteger PDFDrawWidgetProxy::getPageUnderPoint(QPointF point, QPointF* pagePoint) const
 {
     // Iterate trough pages, place them and test, if they intersects with rectangle
     for (const LayoutItem& item : m_layout.items)
@@ -1079,12 +1079,14 @@ PDFInteger PDFDrawWidgetProxy::getPageUnderPoint(QPoint point, QPointF* pagePoin
         // The offsets m_horizontalOffset and m_verticalOffset are offsets to the
         // topleft point of the block. But block maybe doesn't start at (0, 0),
         // so we must also use translation from the block beginning.
-        QRect placedRect = item.pageRect.translated(m_horizontalOffset - m_layout.blockRect.left(), m_verticalOffset - m_layout.blockRect.top());
-        placedRect.adjust(0, 0, 1, 1);
-        if (placedRect.contains(point))
+        const QRect placedRect = item.pageRect.translated(m_horizontalOffset - m_layout.blockRect.left(), m_verticalOffset - m_layout.blockRect.top());
+        const QRect hitRect = placedRect.adjusted(0, 0, 1, 1);
+        if (QRectF(hitRect).contains(point))
         {
             if (pagePoint)
             {
+                // inkpage: the same matrix as the drawing of the page (see getSnapshot); the
+                // rectangle enlarged for the hit test moved the picked points up to a pixel
                 const PDFPage* page = m_controller->getDocument()->getCatalog()->getPage(item.pageIndex);
                 QTransform matrix = createPagePointToDevicePointMatrix(page, placedRect).inverted();
                 *pagePoint = matrix.map(point);
