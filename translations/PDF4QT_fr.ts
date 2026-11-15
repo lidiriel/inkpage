@@ -14,12 +14,12 @@
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfsettings.cpp" line="38"/>
         <source>Use custom directory for user settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser un dossier personnalisé pour les réglages de l'utilisateur.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfsettings.cpp" line="39"/>
         <source>path</source>
-        <translation type="unfinished"></translation>
+        <translation>chemin</translation>
     </message>
 </context>
 <context>
@@ -5958,12 +5958,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentsanitizer.cpp" line="841"/>
         <source>Page labels were removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les étiquettes de page ont été supprimées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentsanitizer.cpp" line="900"/>
         <source>Invisible text content streams sanitized: %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Flux de contenu de texte invisible nettoyés : %1.</translation>
     </message>
 </context>
 <context>
@@ -5971,37 +5971,37 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentsigner.cpp" line="371"/>
         <source>No document to be signed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun document à signer.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentsigner.cpp" line="374"/>
         <source>Failed to create digital signature.</source>
-        <translation type="unfinished">échec de la création de la signature numérique.</translation>
+        <translation>La création de la signature numérique a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentsigner.cpp" line="377"/>
         <source>Failed to write the signed document.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'écriture du document signé a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentsigner.cpp" line="380"/>
         <source>Failed to find the space reserved for the digital signature in the written document.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'espace réservé à la signature numérique n'a pas été trouvé dans le document écrit.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentsigner.cpp" line="383"/>
         <source>Digital signature does not fit into the space reserved for it.</source>
-        <translation type="unfinished"></translation>
+        <translation>La signature numérique ne tient pas dans l'espace qui lui est réservé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentsigner.cpp" line="386"/>
         <source>Digital signature of the created document could not be verified, the document was not saved.</source>
-        <translation type="unfinished"></translation>
+        <translation>La signature numérique du document créé n'a pas pu être vérifiée, le document n'a pas été enregistré.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentsigner.cpp" line="389"/>
         <source>The document already contains digital signatures, which cannot be preserved, so the document was not signed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le document contient déjà des signatures numériques qui ne peuvent pas être conservées, le document n'a donc pas été signé.</translation>
     </message>
 </context>
 <context>
@@ -6083,12 +6083,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentwriter.cpp" line="449"/>
         <source>Original document cannot be read, so it cannot be updated incrementally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le document d'origine ne peut pas être lu, il ne peut donc pas être mis à jour de façon incrémentale.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentwriter.cpp" line="456"/>
         <source>Cross-reference section of the original document was not found, so it cannot be updated incrementally.</source>
-        <translation type="unfinished"></translation>
+        <translation>La table des références croisées du document d'origine est introuvable, il ne peut donc pas être mis à jour de façon incrémentale.</translation>
     </message>
 </context>
 <context>
@@ -6697,17 +6697,17 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfobjecteditormodel.cpp" line="612"/>
         <source>Font</source>
-        <translation type="unfinished">Font</translation>
+        <translation>Police</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfobjecteditormodel.cpp" line="613"/>
         <source>Size</source>
-        <translation type="unfinished">Taille</translation>
+        <translation>Taille</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfobjecteditormodel.cpp" line="616"/>
         <source>Text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur du texte</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfobjecteditormodel.cpp" line="618"/>
@@ -7805,94 +7805,94 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="361"/>
         <source>Url &apos;%1&apos; of the timestamp authority is not valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'URL « %1 » de l'autorité d'horodatage n'est pas valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="403"/>
         <source>Timestamp authority &apos;%1&apos; cannot be contacted. %2</source>
-        <translation type="unfinished"></translation>
+        <translation>L'autorité d'horodatage « %1 » ne peut pas être contactée. %2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="409"/>
         <source>Timestamp authority &apos;%1&apos; answered with the http status code %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'autorité d'horodatage « %1 » a répondu avec le code d'état HTTP %2.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="415"/>
         <source>Timestamp authority &apos;%1&apos; answered with an empty response.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'autorité d'horodatage « %1 » a envoyé une réponse vide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="459"/>
         <source>Signature to be timestamped cannot be decoded.</source>
-        <translation type="unfinished"></translation>
+        <translation>La signature à horodater ne peut pas être décodée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="468"/>
         <source>Signature to be timestamped has no signer.</source>
-        <translation type="unfinished"></translation>
+        <translation>La signature à horodater n'a pas de signataire.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="483"/>
         <source>Timestamp cannot be added to the signature.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'horodatage ne peut pas être ajouté à la signature.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="490"/>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="500"/>
         <source>Timestamped signature cannot be encoded.</source>
-        <translation type="unfinished"></translation>
+        <translation>La signature horodatée ne peut pas être encodée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="517"/>
         <source>Url of the timestamp authority is not set.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'URL de l'autorité d'horodatage n'est pas définie.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="526"/>
         <source>Digest of the timestamped data cannot be calculated.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'empreinte des données horodatées ne peut pas être calculée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="538"/>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="555"/>
         <source>Timestamp request cannot be created.</source>
-        <translation type="unfinished"></translation>
+        <translation>La demande d'horodatage ne peut pas être créée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="561"/>
         <source>Timestamp request cannot be encoded.</source>
-        <translation type="unfinished"></translation>
+        <translation>La demande d'horodatage ne peut pas être encodée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="579"/>
         <source>Answer of the timestamp authority &apos;%1&apos; is not a timestamp response.</source>
-        <translation type="unfinished"></translation>
+        <translation>La réponse de l'autorité d'horodatage « %1 » n'est pas une réponse d'horodatage.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="588"/>
         <source>Timestamp authority &apos;%1&apos; rejected the timestamp request, status is %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'autorité d'horodatage « %1 » a refusé la demande d'horodatage, l'état est %2.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="596"/>
         <source>Timestamp authority &apos;%1&apos; did not answer with a timestamp token.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'autorité d'horodatage « %1 » n'a pas répondu avec un jeton d'horodatage.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="625"/>
         <source>Timestamp token of the authority &apos;%1&apos; does not belong to the timestamp request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le jeton d'horodatage de l'autorité « %1 » ne correspond pas à la demande d'horodatage.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="632"/>
         <source>Timestamp token of the authority &apos;%1&apos; cannot be encoded.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le jeton d'horodatage de l'autorité « %1 » ne peut pas être encodé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="642"/>
         <source>Timestamp token of the authority &apos;%1&apos; does not match the timestamped data.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le jeton d'horodatage de l'autorité « %1 » ne correspond pas aux données horodatées.</translation>
     </message>
 </context>
 <context>
@@ -8281,7 +8281,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfccittfaxdecoder.cpp" line="47"/>
         <source>Invalid number of columns (%1) of the CCITT image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de colonnes (%1) de l'image CCITT non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfccittfaxdecoder.cpp" line="154"/>
@@ -8595,353 +8595,353 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="38"/>
         <source>JBIG2 integer value out of range.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : valeur entière hors limites.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="48"/>
         <source>JBIG2 invalid refinement data length %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : longueur %1 des données d'affinage non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="780"/>
         <source>JBIG2 invalid symbol ID bit count %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : nombre de bits %1 de l'identifiant de symbole non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="928"/>
         <source>JBIG2 decoding work limit exceeded or invalid state.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : limite de travail du décodage dépassée ou état non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="942"/>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.h" line="155"/>
         <source>JBIG2 invalid arithmetic state.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : état arithmétique non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1044"/>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1082"/>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1547"/>
         <source>JBIG2 invalid referred segment count.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : nombre de segments référencés non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1053"/>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1065"/>
         <source>JBIG2 invalid retention padding bits.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : bits de remplissage de rétention non valides.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1090"/>
         <source>JBIG2 reference must precede its segment.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : une référence doit précéder son segment.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1178"/>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1219"/>
         <source>JBIG2 input size limit exceeded.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : limite de taille des données d'entrée dépassée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1242"/>
         <source>Unsupported JBIG2 file header flags (extended templates are not supported).</source>
-        <translation type="unfinished"></translation>
+        <translation>Indicateurs d'en-tête de fichier JBIG2 non pris en charge (les gabarits étendus ne sont pas pris en charge).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1251"/>
         <source>Unsupported JBIG2 file - expected one page (%1).</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier JBIG2 non pris en charge - une seule page attendue (%1).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1280"/>
         <source>JBIG2 segment count limit exceeded.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : limite du nombre de segments dépassée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1303"/>
         <source>JBIG2 extra data after random-access file segments.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : données supplémentaires après les segments d'un fichier à accès aléatoire.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1317"/>
         <source>JBIG2 file is missing its end-of-file segment.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : il manque au fichier son segment de fin de fichier.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1333"/>
         <source>JBIG2 unknown data length of the segment %1 - it is allowed for an immediate generic region only.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : longueur de données inconnue du segment %1 - elle n'est permise que pour une région générique immédiate.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1346"/>
         <source>JBIG2 invalid segment data length.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : longueur de données du segment non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1448"/>
         <source>JBIG2 duplicate segment, segment limit exceeded or data after EOF.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : segment en double, limite de segments dépassée ou données après la fin du fichier.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1452"/>
         <source>JBIG2 global segment is associated with a page.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : un segment global est associé à une page.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1460"/>
         <source>JBIG2 duplicate or unassociated page information; only one page is supported.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : informations de page en double ou non associées ; une seule page est prise en charge.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1467"/>
         <source>JBIG2 invalid page association or segment after end of page.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : association de page non valide ou segment après la fin de la page.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1473"/>
         <source>JBIG2 invalid segment page association.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : association du segment à une page non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1481"/>
         <source>JBIG2 intermediate region on a page which does not announce auxiliary buffers; the page flag is ignored.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : région intermédiaire sur une page qui n'annonce pas de tampons auxiliaires ; l'indicateur de la page est ignoré.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1486"/>
         <source>JBIG2 refinement region on a page which does not announce refinements; the page flag is ignored.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : région d'affinage sur une page qui n'annonce pas d'affinages ; l'indicateur de la page est ignoré.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1495"/>
         <source>JBIG2 duplicate segment reference.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : référence de segment en double.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1502"/>
         <source>JBIG2 invalid extension reference.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : référence d'extension non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1511"/>
         <source>JBIG2 invalid referred segment or reference across pages.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : segment référencé non valide ou référence entre pages.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1515"/>
         <source>JBIG2 reuses a non-retained segment; kept under the decoding memory limit for compatibility.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : réutilisation d'un segment non conservé ; gardé sous la limite de mémoire du décodage pour la compatibilité.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1538"/>
         <source>JBIG2 invalid referred segment type.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : type de segment référencé non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1612"/>
         <source>JBIG2 region crosses a stripe boundary.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : une région traverse une limite de bande.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1631"/>
         <source>JBIG2 region combination operator contradicts the page flags; the operator of the region is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : l'opérateur de combinaison de la région contredit les indicateurs de la page ; l'opérateur de la région est utilisé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1639"/>
         <source>JBIG2 unknown page height requires a final end-of-stripe segment.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : une hauteur de page inconnue exige un segment final de fin de bande.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1691"/>
         <source>JBIG2 symbol dictionary uses the text region decoding procedure for a single symbol instance aggregation.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : le dictionnaire de symboles utilise la procédure de décodage de région de texte pour une agrégation d'une seule instance de symbole.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1721"/>
         <source>JBIG2 maximum symbol count exceeded (%1 / %2 &gt; %3).</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : nombre maximal de symboles dépassé (%1 / %2 &gt; %3).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1764"/>
         <source>JBIG2 maximum combined symbol count exceeded.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : nombre maximal de symboles combinés dépassé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1771"/>
         <source>JBIG2 incompatible or unretained arithmetic coding context.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : contexte de codage arithmétique incompatible ou non conservé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1840"/>
         <source>JBIG2 invalid OOB capability of dictionary huffman table.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : capacité OOB de la table de Huffman du dictionnaire non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1948"/>
         <source>JBIG2 invalid symbol height.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : hauteur de symbole non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1975"/>
         <source>JBIG2 invalid symbol or collective bitmap width.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : largeur de symbole ou de bitmap collective non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="2010"/>
         <source>JBIG2 invalid number of symbol instances in the aggregation (%1).</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : nombre d'instances de symbole dans l'agrégation non valide (%1).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="2123"/>
         <source>JBIG2 empty symbol height class.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : classe de hauteur de symbole vide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="2133"/>
         <source>JBIG2 invalid collective bitmap data length.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : longueur des données de la bitmap collective non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="2185"/>
         <source>JBIG2 excessive export flag runs.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : séries d'indicateurs d'exportation excessives.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="2206"/>
         <source>JBIG2 invalid exported symbol count.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : nombre de symboles exportés non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="2448"/>
         <source>JBIG2 invalid text region huffman tables.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : tables de Huffman de la région de texte non valides.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="2617"/>
         <source>JBIG2 invalid pattern size (%1 x %2) in the pattern dictionary.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : taille de motif (%1 x %2) non valide dans le dictionnaire de motifs.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="2687"/>
         <source>JBIG2 invalid MMR halftone flags.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : indicateurs de demi-teinte MMR non valides.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="2707"/>
         <source>JBIG2 invalid halftone grid dimensions.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : dimensions de la grille de demi-teinte non valides.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="2941"/>
         <source>JBIG2 - malformed or unsupported generic region flags (extended templates are not supported).</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 - indicateurs de région générique incorrects ou non pris en charge (les gabarits étendus ne sont pas pris en charge).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="2991"/>
         <source>JBIG2 invalid actual generic region row count.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : nombre réel de lignes de la région générique non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3083"/>
         <source>JBIG2 refinement reference region metadata mismatch.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : métadonnées de la région de référence d'affinage incohérentes.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3150"/>
         <source>JBIG2 invalid page information flags or size.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : indicateurs ou taille des informations de page non valides.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3156"/>
         <source>JBIG2 invalid maximum stripe height.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : hauteur maximale de bande non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3202"/>
         <source>JBIG2 invalid end-of-stripe segment.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : segment de fin de bande non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3209"/>
         <source>JBIG2 invalid stripe end row.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : ligne de fin de bande non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3229"/>
         <source>JBIG2 end of file before end of page.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : fin du fichier avant la fin de la page.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3234"/>
         <source>JBIG2 end-of-file segment is incorrectly associated with the decoded page.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : le segment de fin de fichier est mal associé à la page décodée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3257"/>
         <source>JBIG2 invalid huffman table header.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : en-tête de table de Huffman non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3282"/>
         <source>JBIG2 unsupported huffman table size or code length.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : taille de table de Huffman ou longueur de code non prise en charge.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3379"/>
         <source>JBIG2 truncated MMR bitmap.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : bitmap MMR tronquée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3388"/>
         <source>JBIG2 missing MMR end-of-block marker.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : marqueur de fin de bloc MMR manquant.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3783"/>
         <source>JBIG2 maximum symbol instance count exceeded.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : nombre maximal d'instances de symbole dépassé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3840"/>
         <source>JBIG2 text region has more symbol instances, than defined in its header (%1).</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : la région de texte a plus d'instances de symbole que celles définies dans son en-tête (%1).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3852"/>
         <source>JBIG2 invalid symbol position within strip.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : position de symbole dans la bande non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3871"/>
         <source>JBIG2 invalid refinement indicator.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : indicateur d'affinage non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3910"/>
         <source>JBIG2 invalid size (%1 x %2) of a refined symbol instance bitmap.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : taille (%1 x %2) non valide de la bitmap d'une instance de symbole affinée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4052"/>
         <source>JBIG2 non-causal adaptive template pixel.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : pixel de gabarit adaptatif non causal.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4119"/>
         <source>JBIG2 invalid data length %1 of the segment %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : longueur de données %1 du segment %2 non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4129"/>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4446"/>
         <source>JBIG2 decoding work limit exceeded.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : limite de travail du décodage dépassée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4139"/>
         <source>JBIG2 cumulative decoding memory limit exceeded.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : limite cumulée de mémoire du décodage dépassée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4162"/>
@@ -8952,22 +8952,22 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4400"/>
         <source>JBIG2 invalid huffman code length or prefix.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : longueur de code ou préfixe de Huffman non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4472"/>
         <source>JBIG2 invalid huffman prefix.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : préfixe de Huffman non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4482"/>
         <source>JBIG2 maximum referenced symbol count exceeded.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : nombre maximal de symboles référencés dépassé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4505"/>
         <source>JBIG2 maximum referenced pattern count exceeded.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : nombre maximal de motifs référencés dépassé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4181"/>
@@ -8977,12 +8977,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4213"/>
         <source>JBIG2 maximum bitmap pixel count exceeded (%1 x %2 &gt; %3).</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : nombre maximal de pixels de bitmap dépassé (%1 x %2 &gt; %3).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4259"/>
         <source>JBIG2 expanded bitmap height out of range.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : hauteur de bitmap étendue hors limites.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4305"/>
@@ -8997,7 +8997,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4356"/>
         <source>JBIG2 unsupported huffman code length.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : longueur de code de Huffman non prise en charge.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4361"/>
@@ -9452,7 +9452,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfsignaturehandler.cpp" line="371"/>
         <source>Timestamp of the signature could not be verified, the time of the signing is not attested by a timestamp authority.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'horodatage de la signature n'a pas pu être vérifié, l'heure de la signature n'est pas attestée par une autorité d'horodatage.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfsignaturehandler.cpp" line="380"/>
@@ -9709,13 +9709,13 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfutils.cpp" line="94"/>
         <source>Invalid bit reader size or component length.</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille du lecteur de bits ou longueur de composante non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfutils.cpp" line="103"/>
         <location filename="../Pdf4QtLibCore/sources/pdfutils.cpp" line="130"/>
         <source>Invalid bit count %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de bits %1 non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfutils.cpp" line="116"/>
@@ -9731,12 +9731,12 @@ li.checked::marker { content: "\2612"; }
         <location filename="../Pdf4QtLibCore/sources/pdfutils.cpp" line="168"/>
         <location filename="../Pdf4QtLibCore/sources/pdfutils.cpp" line="175"/>
         <source>Can&apos;t skip %1 bytes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de sauter %1 octets.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfutils.cpp" line="223"/>
         <source>Invalid substream length %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Longueur de sous-flux %1 non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfutils.cpp" line="228"/>
@@ -10002,12 +10002,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="1361"/>
         <source>Transformation between color spaces failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>La transformation entre les espaces colorimétriques a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="1368"/>
         <source>CMS transformation between color spaces failed. Simplified fallback conversion was used.</source>
-        <translation type="unfinished"></translation>
+        <translation>La transformation CMS entre les espaces colorimétriques a échoué. Une conversion simplifiée de remplacement a été utilisée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="1460"/>
@@ -10213,7 +10213,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontentprocessor.cpp" line="1213"/>
         <source>Tiling pattern is too complex (%1 tiles) and it was not painted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le motif de pavage est trop complexe (%1 pavés) et il n'a pas été dessiné.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontentprocessor.cpp" line="1724"/>
@@ -10805,7 +10805,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdffont.cpp" line="2364"/>
         <source>System font &apos;%1&apos; is too large to be loaded by FreeType.</source>
-        <translation type="unfinished"></translation>
+        <translation>La police système « %1 » est trop grande pour être chargée par FreeType.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdffont.cpp" line="2499"/>
@@ -10945,7 +10945,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdffont.cpp" line="3513"/>
         <source>Font &apos;%1&apos; is not embedded, using substitute font for real text drawing.</source>
-        <translation type="unfinished"></translation>
+        <translation>La police « %1 » n'est pas intégrée, une police de substitution est utilisée pour dessiner le vrai texte.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdffont.cpp" line="3665"/>
@@ -10980,102 +10980,102 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="94"/>
         <source>Failed to normalize image for monochrome conversion.</source>
-        <translation type="unfinished"></translation>
+        <translation>La normalisation de l'image pour la conversion monochrome a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="100"/>
         <source>Failed to allocate intermediate image buffer.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'allocation du tampon d'image intermédiaire a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="146"/>
         <source>Cannot encode empty image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible d'encoder une image vide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="157"/>
         <source>Invalid target size for image encoding.</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille cible non valide pour l'encodage de l'image.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="193"/>
         <source>Selected compression supports only 1-bit monochrome images; the image is converted to monochrome.</source>
-        <translation type="unfinished"></translation>
+        <translation>La compression choisie ne prend en charge que les images monochromes à 1 bit ; l'image est convertie en monochrome.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="209"/>
         <source>Selected compression does not support 1-bit monochrome images; grayscale encoding will be used instead.</source>
-        <translation type="unfinished"></translation>
+        <translation>La compression choisie ne prend pas en charge les images monochromes à 1 bit ; un encodage en niveaux de gris sera utilisé à la place.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="284"/>
         <source>Failed to convert image to monochrome.</source>
-        <translation type="unfinished"></translation>
+        <translation>La conversion de l'image en monochrome a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="290"/>
         <source>Unexpected pixel format after monochrome conversion.</source>
-        <translation type="unfinished"></translation>
+        <translation>Format de pixel inattendu après la conversion monochrome.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="304"/>
         <source>Unsupported image color mode.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode de couleur d'image non pris en charge.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="310"/>
         <source>Image alpha channel was composited onto white background during encoding.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le canal alpha de l'image a été composé sur un fond blanc pendant l'encodage.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="448"/>
         <source>JPEG encoder supports only 8-bit grayscale or RGB images.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'encodeur JPEG ne prend en charge que les images 8 bits en niveaux de gris ou RVB.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="460"/>
         <source>Error writing JPEG image: %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur d'écriture de l'image JPEG : %1.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="606"/>
         <source>JPEG 2000 encoder supports only 8-bit grayscale or RGB images.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'encodeur JPEG 2000 ne prend en charge que les images 8 bits en niveaux de gris ou RVB.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="634"/>
         <source>Failed to allocate JPEG 2000 image structure.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'allocation de la structure d'image JPEG 2000 a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="674"/>
         <source>Failed to create JPEG 2000 encoder.</source>
-        <translation type="unfinished"></translation>
+        <translation>La création de l'encodeur JPEG 2000 a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="685"/>
         <source>Failed to setup JPEG 2000 encoder.</source>
-        <translation type="unfinished"></translation>
+        <translation>La configuration de l'encodeur JPEG 2000 a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="698"/>
         <source>Failed to create JPEG 2000 stream.</source>
-        <translation type="unfinished"></translation>
+        <translation>La création du flux JPEG 2000 a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="725"/>
         <source>JPEG 2000 encoder error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de l'encodeur JPEG 2000 : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="730"/>
         <source>JPEG 2000 encoder failed to write image.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'encodeur JPEG 2000 n'a pas pu écrire l'image.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="738"/>
         <source>JPEG 2000 warning: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Avertissement JPEG 2000 : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="784"/>
@@ -11155,12 +11155,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="1484"/>
         <source>Image of the size %1 x %2 is too large for the JBIG2 coding; the CCITT fax coding is used instead.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'image de taille %1 x %2 est trop grande pour le codage JBIG2 ; le codage fax CCITT est utilisé à la place.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="1537"/>
         <source>Encoded image stream is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le flux de l'image encodée est vide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontenteditorcontentstreambuilder.cpp" line="1114"/>
@@ -11192,27 +11192,27 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontenteditorcontentstreambuilder.cpp" line="1275"/>
         <source>Invalid boolean value &apos;%1&apos;. Valid values are 0, 1, true and false.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur booléenne « %1 » non valide. Les valeurs valides sont 0, 1, true et false.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontenteditorcontentstreambuilder.cpp" line="1308"/>
         <source>Color command requires attribute gray, attributes r, g, b, or attributes c, m, y, k.</source>
-        <translation type="unfinished"></translation>
+        <translation>La commande de couleur exige l'attribut gray, les attributs r, g, b, ou les attributs c, m, y, k.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontenteditorcontentstreambuilder.cpp" line="1348"/>
         <source>Space command requires one attribute - advance.</source>
-        <translation type="unfinished"></translation>
+        <translation>La commande d'espace exige un attribut : advance.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontenteditorcontentstreambuilder.cpp" line="1381"/>
         <source>Cannot encode character with cid &apos;%1&apos; using the current font.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible d'encoder le caractère de cid « %1 » avec la police actuelle.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontenteditorcontentstreambuilder.cpp" line="1390"/>
         <source>Character command requires one attribute - cid.</source>
-        <translation type="unfinished"></translation>
+        <translation>La commande de caractère exige un attribut : cid.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontenteditorcontentstreambuilder.cpp" line="1415"/>
@@ -11242,12 +11242,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontenteditorcontentstreambuilder.cpp" line="1672"/>
         <source>Font &apos;%1&apos; is invalid: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>La police « %1 » n'est pas valide : %2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontenteditorcontentstreambuilder.cpp" line="1721"/>
         <source>Failed to create fallback font &apos;%1&apos;: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>La création de la police de remplacement « %1 » a échoué : %2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfwidgetannotation.cpp" line="3488"/>
@@ -11292,7 +11292,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfccittfaxencoder.cpp" line="96"/>
         <source>Invalid bitonal image for the CCITT fax encoding.</source>
-        <translation type="unfinished"></translation>
+        <translation>Image bitonale non valide pour l'encodage fax CCITT.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagegeometry.cpp" line="385"/>
@@ -11300,130 +11300,130 @@ li.checked::marker { content: "\2612"; }
         <location filename="../Pdf4QtLibCore/sources/pdfpageorganizer.cpp" line="58"/>
         <location filename="../Pdf4QtLibCore/sources/pdfpageorganizer.cpp" line="814"/>
         <source>Invalid document.</source>
-        <translation type="unfinished">Le document est invalide.</translation>
+        <translation>Document non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagegeometry.cpp" line="501"/>
         <source>No target page box selected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune zone de page cible n'est choisie.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagegeometry.cpp" line="536"/>
         <source>Reference box on page %1 is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation>La zone de référence de la page %1 n'est pas valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagegeometry.cpp" line="555"/>
         <source>Target page size for page %1 is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation>La taille de page cible de la page %1 n'est pas valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagegeometry.cpp" line="565"/>
         <source>Margins for page %1 exceed target page size.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les marges de la page %1 dépassent la taille de page cible.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagegeometry.cpp" line="585"/>
         <source>Content scale for page %1 is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'échelle du contenu de la page %1 n'est pas valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.h" line="92"/>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.h" line="104"/>
         <source>JBIG2 arithmetic state limit exceeded.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : limite des états arithmétiques dépassée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.h" line="119"/>
         <source>JBIG2 incompatible arithmetic context size.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : taille de contexte arithmétique incompatible.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.h" line="130"/>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.h" line="140"/>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.h" line="151"/>
         <source>JBIG2 arithmetic context out of range.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : contexte arithmétique hors limites.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="108"/>
         <source>Invalid JBIG2 arithmetic encoder state or bit.</source>
-        <translation type="unfinished"></translation>
+        <translation>État ou bit de l'encodeur arithmétique JBIG2 non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="116"/>
         <source>Invalid JBIG2 arithmetic probability state.</source>
-        <translation type="unfinished"></translation>
+        <translation>État de probabilité arithmétique JBIG2 non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="176"/>
         <source>JBIG2 arithmetic encoder has already finished.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'encodeur arithmétique JBIG2 a déjà terminé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="275"/>
         <source>JBIG2 arithmetic output size limit exceeded.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : limite de taille de la sortie arithmétique dépassée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="366"/>
         <source>Invalid bitonal image for the JBIG2 encoding.</source>
-        <translation type="unfinished"></translation>
+        <translation>Image bitonale non valide pour l'encodage JBIG2.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="373"/>
         <source>Image of the size %1 x %2 is too large for the JBIG2 encoding, the maximum size is %3 x %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'image de taille %1 x %2 est trop grande pour l'encodage JBIG2, la taille maximale est %3 x %3.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="381"/>
         <source>Image exceeds the JBIG2 encoding resource limit.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'image dépasse la limite de ressources de l'encodage JBIG2.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="391"/>
         <source>Invalid JBIG2 generic region template %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gabarit de région générique JBIG2 %1 non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="402"/>
         <source>Invalid JBIG2 adaptive template pixel position A%1 = (%2, %3).</source>
-        <translation type="unfinished"></translation>
+        <translation>Position du pixel de gabarit adaptatif JBIG2 A%1 = (%2, %3) non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="449"/>
         <source>Invalid JBIG2 arithmetic context size for the selected template.</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille de contexte arithmétique JBIG2 non valide pour le gabarit choisi.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="456"/>
         <source>Invalid size (%1 x %2) of the JBIG2 skip bitmap, the image size is %3 x %4.</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille (%1 x %2) de la bitmap de saut JBIG2 non valide, la taille de l'image est %3 x %4.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="664"/>
         <source>JBIG2 encoded stream size limit exceeded.</source>
-        <translation type="unfinished"></translation>
+        <translation>JBIG2 : limite de taille du flux encodé dépassée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimageoptimizer.cpp" line="882"/>
         <source>Optimizing images...</source>
-        <translation type="unfinished"></translation>
+        <translation>Optimisation des images...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfbitonaldocumentcreator.cpp" line="204"/>
         <source>Converting images...</source>
-        <translation type="unfinished">Conversion d&apos;images...</translation>
+        <translation>Conversion des images...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfbitonaldocumentcreator.cpp" line="365"/>
         <source>Converting pages...</source>
-        <translation type="unfinished"></translation>
+        <translation>Conversion des pages...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfeditorfallbackfont.cpp" line="144"/>
         <source>Character &apos;%1&apos; (U+%2) is not available in any substitute font, an empty glyph is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le caractère « %1 » (U+%2) n'existe dans aucune police de substitution, un glyphe vide est utilisé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrconfiguration.cpp" line="100"/>
@@ -13557,82 +13557,82 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="298"/>
         <source>The page cannot be rendered for the analysis.</source>
-        <translation type="unfinished"></translation>
+        <translation>La page ne peut pas être rendue pour l'analyse.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="524"/>
         <source>%1 page(s) straightened</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 page(s) redressée(s)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="525"/>
         <source>%1 page(s) split</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 page(s) séparée(s)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="526"/>
         <source>%1 page(s) cropped</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 page(s) recadrée(s)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="528"/>
         <source>The document has %1 page(s).</source>
-        <translation type="unfinished"></translation>
+        <translation>Le document a %1 page(s).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="531"/>
         <source>OCR layer removed from %1 page(s).</source>
-        <translation type="unfinished"></translation>
+        <translation>Couche OCR supprimée de %1 page(s).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="535"/>
         <source>%1 page(s) with an OCR layer were not changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 page(s) avec une couche OCR n'ont pas été modifiées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="563"/>
         <source>The plan refers to the page %1, which is not a part of the document.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le plan fait référence à la page %1, qui ne fait pas partie du document.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="570"/>
         <source>The plan changes the order of the pages; the preparation of the scan keeps the order.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le plan change l'ordre des pages ; la préparation des numérisations garde l'ordre.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="577"/>
         <source>The angle of the deskew of the page %1 is out of the range +-%2 degrees.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'angle de redressement de la page %1 est hors de la plage de +-%2 degrés.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="585"/>
         <source>Every page of the document must have at least one output page; the preparation of the scan does not delete pages.</source>
-        <translation type="unfinished"></translation>
+        <translation>Chaque page du document doit avoir au moins une page de sortie ; la préparation des numérisations ne supprime pas de pages.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="620"/>
         <source>Page %1: the OCR layer cannot be removed (it was changed by another tool), the page is not changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Page %1 : la couche OCR ne peut pas être supprimée (elle a été modifiée par un autre outil), la page n'est pas modifiée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="630"/>
         <source>Page %1 is a part of the structure tree of a tagged document, it cannot be split.</source>
-        <translation type="unfinished"></translation>
+        <translation>La page %1 fait partie de l'arbre de structure d'un document balisé, elle ne peut pas être séparée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="652"/>
         <source>Page %1: the content has a closing operator without its opening operator, the page is not straightened.</source>
-        <translation type="unfinished"></translation>
+        <translation>Page %1 : le contenu a un opérateur de fermeture sans son opérateur d'ouverture, la page n'est pas redressée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="720"/>
         <source>The crop of the page %1 is outside of the page.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le recadrage de la page %1 est hors de la page.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="929"/>
         <source>Annotations of the straightened pages are not rotated.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les annotations des pages redressées ne sont pas tournées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfobject.cpp" line="274"/>
