@@ -36,6 +36,9 @@
 #include <QLabel>
 #include <QSpinBox>
 #include <QDockWidget>
+#include <QFileDialog>
+#include <QLineEdit>
+#include <QTimer>
 
 #include <memory>
 
@@ -64,6 +67,7 @@ private slots:
     void stickyNoteIsInInsertToolBar();
     void pageBackgrounds();
     void layersPage();
+    void openFromMenu();
 
 private:
     static QSettings settings();
@@ -452,6 +456,42 @@ void EditorMainWindowTest::layersPage()
 
     // Without layers, the page stays available (a layer can be created)
     QVERIFY(!sidebar->isEmpty(PDFSidebarWidget::OptionalContent));
+}
+
+void EditorMainWindowTest::openFromMenu()
+{
+    // File > Open (the file dialog) opens the document; the action was also connected
+    // to empty functions and it crashed with std::bad_function_call
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    const QString fileName = directory.filePath("open.pdf");
+    {
+        pdf::PDFDocumentBuilder builder;
+        builder.appendPage(QRectF(0, 0, 595, 842));
+        const pdf::PDFDocument document = builder.build();
+        pdf::PDFDocumentWriter writer(nullptr);
+        QVERIFY(writer.write(fileName, &document, false));
+    }
+    PDFEditorMainWindow window;
+    window.show();
+    QTimer::singleShot(500, [&]()
+    {
+        QFileDialog* dialog = qobject_cast<QFileDialog*>(QApplication::activeModalWidget());
+        QLineEdit* fileNameEdit = dialog ? dialog->findChild<QLineEdit*>("fileNameEdit") : nullptr;
+        if (fileNameEdit)
+        {
+            // The path is typed in the dialog and confirmed by Enter
+            fileNameEdit->setText(fileName);
+            QTest::keyClick(fileNameEdit, Qt::Key_Return);
+        }
+        else if (dialog)
+        {
+            dialog->reject();
+        }
+    });
+    window.findChild<QAction*>("actionOpen")->trigger();
+    QTRY_VERIFY(window.getProgramController()->getDocument());
+    QCOMPARE(window.getProgramController()->getDocument()->getCatalog()->getPageCount(), size_t(1));
 }
 
 QTEST_MAIN(EditorMainWindowTest)

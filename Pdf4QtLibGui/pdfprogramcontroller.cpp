@@ -550,9 +550,12 @@ void PDFProgramController::initialize(Features features,
         connect(action, &QAction::triggered, this, &PDFProgramController::onActionCreateBitonalDocumentTriggered);
     }
 
-    // Organization of the pages
-    const std::array<std::pair<PDFActionManager::Action, std::function<void()>>, 10> pageActions =
-    {{
+    // Organization of the pages. A list (not an array of a fixed size): the array was larger than
+    // its items, the missing items were the action 0 (Open) with an empty function, so the Open
+    // action crashed (std::bad_function_call).
+    using PageAction = std::pair<PDFActionManager::Action, std::function<void()>>;
+    const std::vector<PageAction> pageActions =
+    {
         { PDFActionManager::PageAddBlank, [this]() { performPageOperation(&pdf::PDFPageOrganizer::addBlankPage, 1); } },
         { PDFActionManager::PageInsertBlank, [this]() { performPageOperation(&pdf::PDFPageOrganizer::insertBlankPage, 0); } },
         { PDFActionManager::PageDuplicate, [this]() { performPageOperation(&pdf::PDFPageOrganizer::duplicatePage, 1); } },
@@ -578,7 +581,7 @@ void PDFProgramController::initialize(Features features,
                 performPageOperation(operation, 1);
             }
         },
-    }};
+    };
 
     // The background actions (also Plain and Ruled) are in two action groups, the data
     // of an action is the background
@@ -595,7 +598,9 @@ void PDFProgramController::initialize(Features features,
 
     for (const auto& pageAction : pageActions)
     {
-        if (QAction* action = m_actionManager->getAction(pageAction.first))
+        Q_ASSERT(pageAction.second);
+        QAction* action = pageAction.second ? m_actionManager->getAction(pageAction.first) : nullptr;
+        if (action)
         {
             connect(action, &QAction::triggered, this, pageAction.second);
         }
