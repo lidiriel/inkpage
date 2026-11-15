@@ -145,9 +145,6 @@ Pdf4QtLibGui/resources/outline.svg
 Pdf4QtLibGui/resources/sidebar-annotations.svg
     from: Numix icon theme (Debian), 24/actions/stock_notes.svg
     license: GPL-3.0-or-later (Numix, Satyajit Sahoo)
-Pdf4QtLibGui/resources/sidebar-outline.svg
-    from: Numix icon theme (Debian), 24/places/user-bookmarks.svg
-    license: GPL-3.0-or-later (Numix, Satyajit Sahoo)
 Pdf4QtLibGui/resources/web.svg
     from: Numix icon theme (Debian), 22/actions/internet-services.svg -> stock_timezone.svg
     license: GPL-3.0-or-later (Numix, Satyajit Sahoo)
@@ -214,6 +211,9 @@ Pdf4QtLibGui/resources/quit.svg
 
 Xournal++
 ---------
+Pdf4QtLibGui/resources/sidebar-outline.svg
+    from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-sidebar-index.svg
+    license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
 Pdf4QtLibGui/resources/insert-image.svg
     from: Xournal++, ui/iconsColor-dark/hicolor/scalable/actions/xopp-tool-image.svg
     license: GPL-3.0-or-later (Xournal++ colour icons, Nararyans R.I.)
