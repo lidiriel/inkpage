@@ -100,7 +100,8 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     m_advancedFindDockWidget(nullptr),
     m_pageNumberSpinBox(nullptr),
     m_pageNumberLabel(nullptr),
-    m_sidebarPageLabel(nullptr),
+    m_sidebarPageSpinBox(nullptr),
+    m_sidebarPageCountLabel(nullptr),
     m_pageZoomSpinBox(nullptr),
     m_toolBarPositionMenu(nullptr),
     m_toolBarsTopAction(nullptr),
@@ -252,7 +253,7 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     m_pageNumberLabel->setObjectName("pageNumberLabel");
     m_pageNumberSpinBox->setFixedWidth(pdf::PDFWidgetUtils::scaleDPI_x(m_pageNumberSpinBox, 80));
     m_pageNumberSpinBox->setAlignment(Qt::AlignCenter);
-    connect(m_pageNumberSpinBox, &QSpinBox::editingFinished, this, &PDFEditorMainWindow::onPageNumberSpinboxEditingFinished);
+    connect(m_pageNumberSpinBox, &QSpinBox::editingFinished, this, [this]() { onPageNumberSpinboxEditingFinished(m_pageNumberSpinBox); });
 
     for (QAction* action : m_actionManager->getActionGroup(PDFActionManager::CreateStampGroup)->actions())
     {
@@ -406,19 +407,19 @@ void PDFEditorMainWindow::onActionQuitTriggered()
     close();
 }
 
-void PDFEditorMainWindow::onPageNumberSpinboxEditingFinished()
+void PDFEditorMainWindow::onPageNumberSpinboxEditingFinished(QSpinBox* spinBox)
 {
     if (m_isLoadingUI)
     {
         return;
     }
 
-    if (m_pageNumberSpinBox->hasFocus())
+    if (spinBox->hasFocus())
     {
         m_programController->getPdfWidget()->setFocus();
     }
 
-    m_programController->getPdfWidget()->getDrawWidgetProxy()->goToPage(m_pageNumberSpinBox->value() - 1);
+    m_programController->getPdfWidget()->getDrawWidgetProxy()->goToPage(spinBox->value() - 1);
 }
 
 void PDFEditorMainWindow::onPageZoomSpinboxEditingFinished()
@@ -519,7 +520,7 @@ void PDFEditorMainWindow::updateUI(bool fullUpdate)
     }
 
     m_pageZoomSpinBox->setValue(m_programController->getPdfWidget()->getDrawWidgetProxy()->getZoom() * 100);
-    updateSidebarPageLabel();
+    updateSidebarPageNumber();
 }
 
 QMenu* PDFEditorMainWindow::addToolMenu(QString name, pdf::PDFPlugin::PluginMenuLocation location)
@@ -846,11 +847,15 @@ void PDFEditorMainWindow::initializeSidebarTitleBar()
     titleBar->setIconSize(pdf::PDFWidgetUtils::scaleDPI(this, QSize(16, 16)));
     titleBar->addAction(ui->actionGoToDocumentStart);
     titleBar->addAction(ui->actionGoToPreviousPage);
-    m_sidebarPageLabel = new QLabel(titleBar);
-    m_sidebarPageLabel->setObjectName("sidebarPageLabel");
-    m_sidebarPageLabel->setAlignment(Qt::AlignCenter);
-    m_sidebarPageLabel->setContentsMargins(pdf::PDFWidgetUtils::scaleDPI_x(this, 4), 0, pdf::PDFWidgetUtils::scaleDPI_x(this, 4), 0);
-    titleBar->addWidget(m_sidebarPageLabel);
+    m_sidebarPageSpinBox = new QSpinBox(titleBar);
+    m_sidebarPageSpinBox->setObjectName("sidebarPageSpinBox");
+    m_sidebarPageSpinBox->setFixedWidth(pdf::PDFWidgetUtils::scaleDPI_x(m_sidebarPageSpinBox, 64));
+    m_sidebarPageSpinBox->setAlignment(Qt::AlignCenter);
+    connect(m_sidebarPageSpinBox, &QSpinBox::editingFinished, this, [this]() { onPageNumberSpinboxEditingFinished(m_sidebarPageSpinBox); });
+    titleBar->addWidget(m_sidebarPageSpinBox);
+    m_sidebarPageCountLabel = new QLabel(titleBar);
+    m_sidebarPageCountLabel->setObjectName("sidebarPageCountLabel");
+    titleBar->addWidget(m_sidebarPageCountLabel);
     titleBar->addAction(ui->actionGoToNextPage);
     titleBar->addAction(ui->actionGoToDocumentEnd);
 
@@ -870,24 +875,21 @@ void PDFEditorMainWindow::initializeSidebarTitleBar()
     connect(closeAction, &QAction::triggered, m_sidebarDockWidget, &QDockWidget::close);
 
     m_sidebarDockWidget->setTitleBarWidget(titleBar);
-    updateSidebarPageLabel();
+    updateSidebarPageNumber();
 }
 
-void PDFEditorMainWindow::updateSidebarPageLabel()
+void PDFEditorMainWindow::updateSidebarPageNumber()
 {
-    if (!m_sidebarPageLabel)
+    if (!m_sidebarPageSpinBox)
     {
         return;
     }
 
-    if (m_programController && m_programController->getDocument())
-    {
-        m_sidebarPageLabel->setText(tr("%1 / %2").arg(m_pageNumberSpinBox->value()).arg(m_pageNumberSpinBox->maximum()));
-    }
-    else
-    {
-        m_sidebarPageLabel->setText(QString());
-    }
+    pdf::PDFTemporaryValueChange guard(&m_isLoadingUI, true);
+    m_sidebarPageSpinBox->setRange(m_pageNumberSpinBox->minimum(), m_pageNumberSpinBox->maximum());
+    m_sidebarPageSpinBox->setValue(m_pageNumberSpinBox->value());
+    m_sidebarPageSpinBox->setEnabled(m_pageNumberSpinBox->isEnabled());
+    m_sidebarPageCountLabel->setText(m_pageNumberLabel->text());
 }
 
 void PDFEditorMainWindow::initializeStatusBarAction()

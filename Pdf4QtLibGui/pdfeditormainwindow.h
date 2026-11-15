@@ -107,7 +107,8 @@ private:
     void onThumbnailContextMenuRequested(pdf::PDFInteger pageIndex, QPoint globalPosition);
     void onActionQuitTriggered();
 
-    void onPageNumberSpinboxEditingFinished();
+    /// Goes to the page entered in the spin box (navigation toolbar or sidebar)
+    void onPageNumberSpinboxEditingFinished(QSpinBox* spinBox);
     void onPageZoomSpinboxEditingFinished();
 
     void onProgressStarted(pdf::ProgressStartupInfo info);
@@ -137,8 +138,9 @@ private:
     /// actions, followed by the float and close buttons of the dock widget
     void initializeSidebarTitleBar();
 
-    /// Shows the current page and the page count in the title bar of the sidebar
-    void updateSidebarPageLabel();
+    /// Copies the state of the page number spin box of the navigation toolbar
+    /// (current page, page count) to the one in the title bar of the sidebar
+    void updateSidebarPageNumber();
 
     /// Returns the text of the menu entry of the background
     static QString getBackgroundText(pdf::PDFPageOrganizer::Background background);
@@ -167,7 +169,8 @@ private:
     QDockWidget* m_advancedFindDockWidget;
     QSpinBox* m_pageNumberSpinBox;
     QLabel* m_pageNumberLabel;
-    QLabel* m_sidebarPageLabel;
+    QSpinBox* m_sidebarPageSpinBox;
+    QLabel* m_sidebarPageCountLabel;
     QDoubleSpinBox* m_pageZoomSpinBox;
     QMenu* m_toolBarPositionMenu;
     QAction* m_toolBarsTopAction;

@@ -30,6 +30,7 @@
 #include <QDoubleSpinBox>
 #include <QMenu>
 #include <QLabel>
+#include <QSpinBox>
 #include <QDockWidget>
 
 using namespace pdfviewer;
@@ -182,14 +183,18 @@ void EditorMainWindowTest::sidebarTitleBarHasNavigation()
     }
     QCOMPARE(names, (QStringList{ "actionGoToDocumentStart", "actionGoToPreviousPage", "actionGoToNextPage", "actionGoToDocumentEnd", "actionSidebarFloat", "actionSidebarClose" }));
 
-    // The page number is between the previous and next page arrows
-    QLabel* pageLabel = titleBar->findChild<QLabel*>("sidebarPageLabel");
-    QVERIFY(pageLabel);
+    // The page number is between the previous and next page arrows, as in the navigation toolbar
+    QSpinBox* pageSpinBox = titleBar->findChild<QSpinBox*>("sidebarPageSpinBox");
+    QLabel* pageCountLabel = titleBar->findChild<QLabel*>("sidebarPageCountLabel");
+    QVERIFY(pageSpinBox);
+    QVERIFY(pageCountLabel);
     const QList<QAction*> actions = titleBar->actions();
     QCOMPARE(actions[1]->objectName(), QString("actionGoToPreviousPage"));
-    QCOMPARE(titleBar->widgetForAction(actions[2]), pageLabel);
-    QCOMPARE(actions[3]->objectName(), QString("actionGoToNextPage"));
-    QVERIFY(pageLabel->text().isEmpty());
+    QCOMPARE(titleBar->widgetForAction(actions[2]), pageSpinBox);
+    QCOMPARE(titleBar->widgetForAction(actions[3]), pageCountLabel);
+    QCOMPARE(actions[4]->objectName(), QString("actionGoToNextPage"));
+    QVERIFY(!pageSpinBox->isEnabled());
+    QVERIFY(pageCountLabel->text().isEmpty());
 
     // The buttons of the title bar replace the float and close buttons of the dock widget
     window.show();
@@ -219,9 +224,19 @@ void EditorMainWindowTest::sidebarTitleBarHasNavigation()
     PDFProgramController* controller = window.getProgramController();
     controller->openDocument(fileName);
     QTRY_VERIFY(controller->getDocument());
-    QTRY_COMPARE(pageLabel->text(), QString("1 / 3"));
+    QSpinBox* toolBarSpinBox = window.findChild<QSpinBox*>("pageNumberSpinBox");
+    QTRY_VERIFY(pageSpinBox->isEnabled());
+    QCOMPARE(pageSpinBox->value(), 1);
+    QCOMPARE(pageSpinBox->maximum(), 3);
+    QCOMPARE(pageCountLabel->text(), window.findChild<QLabel*>("pageNumberLabel")->text());
     window.findChild<QAction*>("actionGoToDocumentEnd")->trigger();
-    QTRY_COMPARE(pageLabel->text(), QString("3 / 3"));
+    QTRY_COMPARE(pageSpinBox->value(), 3);
+
+    // A page entered in the sidebar is shown, and the navigation toolbar follows
+    pageSpinBox->setValue(2);
+    Q_EMIT pageSpinBox->editingFinished();
+    QTRY_COMPARE(toolBarSpinBox->value(), 2);
+    QCOMPARE(pageSpinBox->value(), 2);
 
     // Closed before its destruction, as in the application (the window is active)
     window.close();
