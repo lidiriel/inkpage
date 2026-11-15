@@ -29,6 +29,7 @@
 #include <QToolButton>
 #include <QDoubleSpinBox>
 #include <QMenu>
+#include <QDockWidget>
 
 using namespace pdfviewer;
 
@@ -51,6 +52,7 @@ private slots:
     void statusBarVisibilityIsRemembered();
     void zoomIsInStatusBar();
     void navigationToolBar();
+    void sidebarTitleBarHasNavigation();
     void stickyNoteIsInInsertToolBar();
     void pageBackgrounds();
 
@@ -158,6 +160,40 @@ void EditorMainWindowTest::navigationToolBar()
     QVERIFY(!window.toolBarBreak(navigationToolBar));
     QVERIFY(window.toolBarBreak(pagesToolBar));
     QVERIFY(!mainToolBar->actions().contains(window.findChild<QAction*>("actionGoToNextPage")));
+}
+
+void EditorMainWindowTest::sidebarTitleBarHasNavigation()
+{
+    PDFEditorMainWindow window;
+    QDockWidget* sidebar = window.findChild<QDockWidget*>("SidebarDockWidget");
+    QVERIFY(sidebar);
+    QToolBar* titleBar = qobject_cast<QToolBar*>(sidebar->titleBarWidget());
+    QVERIFY(titleBar);
+    QCOMPARE(titleBar->objectName(), QString("SidebarTitleBar"));
+
+    QStringList names;
+    for (QAction* action : titleBar->actions())
+    {
+        if (!action->objectName().isEmpty())
+        {
+            names << action->objectName();
+        }
+    }
+    QCOMPARE(names, (QStringList{ "actionGoToDocumentStart", "actionGoToPreviousPage", "actionGoToNextPage", "actionGoToDocumentEnd", "actionSidebarFloat", "actionSidebarClose" }));
+
+    // The buttons of the title bar replace the float and close buttons of the dock widget
+    window.show();
+    sidebar->show();
+    QVERIFY(QTest::qWaitForWindowExposed(&window));
+    titleBar->findChild<QAction*>("actionSidebarFloat")->trigger();
+    QVERIFY(sidebar->isFloating());
+    titleBar->findChild<QAction*>("actionSidebarFloat")->trigger();
+    QVERIFY(!sidebar->isFloating());
+    titleBar->findChild<QAction*>("actionSidebarClose")->trigger();
+    QVERIFY(!sidebar->isVisible());
+
+    // Closed before its destruction, as in the application (the window is active)
+    window.close();
 }
 
 void EditorMainWindowTest::stickyNoteIsInInsertToolBar()

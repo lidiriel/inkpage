@@ -133,6 +133,10 @@ private:
     /// Places the zoom actions and the zoom spin box at the right side of the status bar
     void initializeStatusBarZoom();
 
+    /// Replaces the title of the sidebar by a small toolbar with the navigation
+    /// actions, followed by the float and close buttons of the dock widget
+    void initializeSidebarTitleBar();
+
     /// Returns the text of the menu entry of the background
     static QString getBackgroundText(pdf::PDFPageOrganizer::Background background);
 

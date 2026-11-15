@@ -74,6 +74,7 @@
 #include <QToolBar>
 #include <QSettings>
 #include <QStatusBar>
+#include <QStyle>
 
 #include <algorithm>
 
@@ -310,6 +311,7 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     m_sidebarDockWidget->setWidget(m_sidebarWidget);
     addDockWidget(Qt::LeftDockWidgetArea, m_sidebarDockWidget);
     m_sidebarDockWidget->hide();
+    initializeSidebarTitleBar();
     connect(m_sidebarWidget, &PDFSidebarWidget::actionTriggered, m_programController, &PDFProgramController::onActionTriggered);
     connect(m_sidebarWidget, &PDFSidebarWidget::documentModified, m_programController, &PDFProgramController::onDocumentModified);
     connect(m_sidebarWidget, &PDFSidebarWidget::sidebarVisibilityRequested, this, &PDFEditorMainWindow::onSidebarVisibilityRequested);
@@ -831,6 +833,36 @@ void PDFEditorMainWindow::initializeStatusBarZoom()
     addButton(ui->actionFitHeight);
 
     statusBar()->addPermanentWidget(zoomWidget);
+}
+
+void PDFEditorMainWindow::initializeSidebarTitleBar()
+{
+    QToolBar* titleBar = new QToolBar(m_sidebarDockWidget);
+    titleBar->setObjectName("SidebarTitleBar");
+    titleBar->setMovable(false);
+    titleBar->setFloatable(false);
+    titleBar->setIconSize(pdf::PDFWidgetUtils::scaleDPI(this, QSize(16, 16)));
+    titleBar->addAction(ui->actionGoToDocumentStart);
+    titleBar->addAction(ui->actionGoToPreviousPage);
+    titleBar->addAction(ui->actionGoToNextPage);
+    titleBar->addAction(ui->actionGoToDocumentEnd);
+
+    // The empty area keeps the dock widget movable: the mouse events not used
+    // by the buttons are passed to the dock widget, which then starts dragging
+    QWidget* spacer = new QWidget(titleBar);
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    titleBar->addWidget(spacer);
+
+    QAction* floatAction = titleBar->addAction(style()->standardIcon(QStyle::SP_TitleBarNormalButton), tr("Detach the sidebar"));
+    floatAction->setObjectName("actionSidebarFloat");
+    connect(floatAction, &QAction::triggered, m_sidebarDockWidget, [this]() { m_sidebarDockWidget->setFloating(!m_sidebarDockWidget->isFloating()); });
+    connect(m_sidebarDockWidget, &QDockWidget::topLevelChanged, floatAction, [floatAction](bool floating) { floatAction->setText(floating ? tr("Attach the sidebar") : tr("Detach the sidebar")); });
+
+    QAction* closeAction = titleBar->addAction(style()->standardIcon(QStyle::SP_TitleBarCloseButton), tr("Close the sidebar"));
+    closeAction->setObjectName("actionSidebarClose");
+    connect(closeAction, &QAction::triggered, m_sidebarDockWidget, &QDockWidget::close);
+
+    m_sidebarDockWidget->setTitleBarWidget(titleBar);
 }
 
 void PDFEditorMainWindow::initializeStatusBarAction()
