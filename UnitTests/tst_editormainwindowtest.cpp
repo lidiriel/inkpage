@@ -265,6 +265,12 @@ void EditorMainWindowTest::stickyNoteIsInInsertToolBar()
 
     QToolBar* mainToolBar = window.findChild<QToolBar*>("mainToolBar");
     QVERIFY(!mainToolBar->findChild<QToolButton*>("insertStickyNoteButton"));
+
+    // Optimize Images is in the Tools menu only, not in the standard toolbar
+    QAction* optimizeImages = window.findChild<QAction*>("actionOptimizeImages");
+    QVERIFY(optimizeImages);
+    QVERIFY(!mainToolBar->actions().contains(optimizeImages));
+    QVERIFY(!optimizeImages->associatedObjects().isEmpty());
 }
 
 void EditorMainWindowTest::pageBackgrounds()
