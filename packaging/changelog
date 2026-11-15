@@ -1,3 +1,22 @@
+inkpage (0.3.0) unstable; urgency=medium
+
+  * Layers (PDF optional content groups): Layers page of the sidebar with
+    show, print and active layer switches, create, rename, delete and
+    order the layers; new drawings and inline texts go in the active
+    layer; page backgrounds in a Background layer.
+  * Eraser and stroke eraser, like Xournal++ (shapes are converted to ink).
+  * Freehand pen: every mouse or tablet sample, smooth curve, ink
+    annotation, the pen stays active.
+  * Inline text: edited in place on double click, frame fits the text;
+    font button and font window in the style toolbar.
+  * Sidebar navigation toolbar, new icons (sticky notes, zoom, bookmarks,
+    select table, layers, eraser).
+  * French translation of the interface and of the messages.
+  * Fixes: check marks of form check boxes (ZapfDingbats substitute font),
+    the page content editor keeps the page background.
+
+ -- Ludovic Mercier <ludovic@scilink.net>  Sun, 15 Nov 2026 22:01:19 +0100
+
 inkpage (0.2.0) unstable; urgency=medium
 
   * First Debian package.
