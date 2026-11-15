@@ -145,11 +145,14 @@
             </size>
            </property>
            <property name="text">
-            <string>Visibility</string>
+            <string>Layers</string>
+           </property>
+           <property name="toolTip">
+            <string>Layers - show, hide, print, create and order the layers; the new drawings go in the active layer (bold)</string>
            </property>
            <property name="icon">
             <iconset resource="pdf4qtlibgui.qrc">
-             <normaloff>:/resources/sidebar-visibility.svg</normaloff>:/resources/sidebar-visibility.svg</iconset>
+             <normaloff>:/resources/sidebar-layers.svg</normaloff>:/resources/sidebar-layers.svg</iconset>
            </property>
            <property name="iconSize">
             <size>

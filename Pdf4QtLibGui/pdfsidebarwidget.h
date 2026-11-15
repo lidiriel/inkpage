@@ -30,6 +30,8 @@
 #include <QWidget>
 #include <QAbstractItemDelegate>
 
+#include <functional>
+
 class QAction;
 class QPushButton;
 class QToolButton;
@@ -50,6 +52,7 @@ class PDFCertificateInfo;
 class PDFDrawWidgetProxy;
 class PDFCertificateStore;
 class PDFModifiedDocument;
+class PDFDocumentBuilder;
 class PDFThumbnailsItemModel;
 class PDFOutlineTreeItemModel;
 class PDFOptionalContentActivity;
@@ -119,6 +122,35 @@ public:
     /// outline items can be created without leaving the page being read.
     QAction* getOutlineNewItemAction() const { return m_outlineActionInsert; }
 
+    // inkpage: operations of the Layers page (the layers are optional content groups of
+    // the document). Each operation changing the document is one modification (undo step).
+
+    /// Creates a layer at the top of the list, it becomes the active layer
+    /// \param name Name of the layer
+    /// \returns The new layer, or an invalid reference, if the document cannot be modified
+    pdf::PDFObjectReference createLayer(const QString& name);
+
+    /// Renames the layer
+    bool renameLayer(pdf::PDFObjectReference layer, const QString& name);
+
+    /// Deletes the layer with its objects (annotations), or moves its objects into another layer
+    /// \param layer Layer
+    /// \param deleteObjects Delete the objects of the layer (otherwise they are moved)
+    /// \param targetLayer Layer, which gets the objects (when they are not deleted)
+    bool deleteLayer(pdf::PDFObjectReference layer, bool deleteObjects, pdf::PDFObjectReference targetLayer = pdf::PDFObjectReference());
+
+    /// Moves the layer up (\p delta < 0) or down in the list; the top layer is drawn above the others
+    bool moveLayer(pdf::PDFObjectReference layer, int delta);
+
+    /// Sets, if the layer is printed
+    bool setLayerPrinted(pdf::PDFObjectReference layer, bool printed);
+
+    /// Shows or hides the layer (the view only, the document is not changed)
+    void setLayerVisible(pdf::PDFObjectReference layer, bool visible);
+
+    /// Sets the active layer, in which the new drawings and texts are created
+    void setActiveLayer(pdf::PDFObjectReference layer);
+
 signals:
     void actionTriggered(const pdf::PDFAction* action);
     void documentModified(pdf::PDFModifiedDocument document);
@@ -160,6 +192,17 @@ private:
     void onNotesItemClicked(const QModelIndex& index);
     void onNotesSelectionChanged();
     void onAnnotationSelectionChanged();
+
+    // Layers page (inkpage)
+    void createLayerActions();
+    void updateLayerActions();
+    bool isLayerModificationAllowed() const;
+    pdf::PDFObjectReference getCurrentLayer() const;
+    bool modifyLayers(const std::function<bool(pdf::PDFDocumentBuilder*)>& modification, bool isAnnotationChanged);
+    void onLayerClicked(const QModelIndex& index);
+    void onLayerContextMenuRequested(const QPoint& pos);
+    void onNewLayerTriggered();
+    void onDeleteLayerTriggered();
 
     // Outline item actions (created once, shared between the context menu and,
     // once registered with the action manager, keyboard shortcuts)
@@ -235,6 +278,11 @@ private:
     QSortFilterProxyModel* m_outlineSortProxyTreeModel;
     pdf::PDFThumbnailsItemModel* m_thumbnailsModel;
     pdf::PDFOptionalContentTreeItemModel* m_optionalContentTreeModel;
+    QAction* m_layerNewAction = nullptr;
+    QAction* m_layerRenameAction = nullptr;
+    QAction* m_layerDeleteAction = nullptr;
+    QAction* m_layerMoveUpAction = nullptr;
+    QAction* m_layerMoveDownAction = nullptr;
     PDFBookmarkItemModel* m_bookmarkItemModel;
     QStandardItemModel* m_notesTreeModel;
     QSortFilterProxyModel* m_notesSortProxyTreeModel;

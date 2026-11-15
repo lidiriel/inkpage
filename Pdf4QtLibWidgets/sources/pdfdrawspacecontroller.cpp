@@ -1071,6 +1071,12 @@ std::vector<PDFInteger> PDFDrawWidgetProxy::getActivePages() const
     return activePages;
 }
 
+PDFObjectReference PDFDrawWidgetProxy::getActiveLayer() const
+{
+    const PDFOptionalContentActivity* activity = getOptionalContentActivity();
+    return activity ? activity->getActiveLayer() : PDFObjectReference();
+}
+
 PDFInteger PDFDrawWidgetProxy::getPageUnderPoint(QPointF point, QPointF* pagePoint) const
 {
     // Iterate trough pages, place them and test, if they intersects with rectangle

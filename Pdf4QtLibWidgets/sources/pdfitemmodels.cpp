@@ -27,6 +27,7 @@
 #include "pdfwidgetutils.h"
 
 #include <QFont>
+#include <QPainter>
 #include <QStyle>
 #include <QApplication>
 #include <QMimeDatabase>
@@ -145,13 +146,100 @@ Qt::ItemFlags PDFTreeItemModel::flags(const QModelIndex& index) const
 
 void PDFOptionalContentTreeItemModel::setActivity(PDFOptionalContentActivity* activity)
 {
+    if (m_activity == activity)
+    {
+        return;
+    }
+
+    if (m_activity)
+    {
+        disconnect(m_activity, nullptr, this, nullptr);
+    }
+
     m_activity = activity;
+
+    if (m_activity)
+    {
+        connect(m_activity, &PDFOptionalContentActivity::optionalContentGroupStateChanged, this, &PDFOptionalContentTreeItemModel::onActivityChanged);
+        connect(m_activity, &PDFOptionalContentActivity::activeLayerChanged, this, &PDFOptionalContentTreeItemModel::onActivityChanged);
+        connect(m_activity, &QObject::destroyed, this, [this]() { m_activity = nullptr; });
+    }
+
+    onActivityChanged();
+}
+
+void PDFOptionalContentTreeItemModel::setDocument(const PDFModifiedDocument& document)
+{
+    if (m_document != document)
+    {
+        m_document = document;
+        update();
+    }
+}
+
+void PDFOptionalContentTreeItemModel::setIcons(QIcon visibleIcon, QIcon printIcon)
+{
+    m_visibleIcon = qMove(visibleIcon);
+    m_printIcon = qMove(printIcon);
+}
+
+void PDFOptionalContentTreeItemModel::onActivityChanged()
+{
+    // The icons and the fonts of the items are changed, not the items
+    Q_EMIT layoutAboutToBeChanged();
+    Q_EMIT layoutChanged();
+}
+
+PDFObjectReference PDFOptionalContentTreeItemModel::getLayer(const QModelIndex& index) const
+{
+    if (!index.isValid())
+    {
+        return PDFObjectReference();
+    }
+
+    return static_cast<const PDFOptionalContentTreeItem*>(index.internalPointer())->getReference();
+}
+
+QModelIndex PDFOptionalContentTreeItemModel::findIndex(const QModelIndex& parent, PDFObjectReference layer, int column) const
+{
+    for (int row = 0, count = rowCount(parent); row < count; ++row)
+    {
+        const QModelIndex childIndex = index(row, NameColumn, parent);
+        if (getLayer(childIndex) == layer)
+        {
+            return index(row, column, parent);
+        }
+
+        const QModelIndex foundIndex = findIndex(childIndex, layer, column);
+        if (foundIndex.isValid())
+        {
+            return foundIndex;
+        }
+    }
+
+    return QModelIndex();
+}
+
+QModelIndex PDFOptionalContentTreeItemModel::getIndex(PDFObjectReference layer, int column) const
+{
+    return layer.isValid() ? findIndex(QModelIndex(), layer, column) : QModelIndex();
+}
+
+bool PDFOptionalContentTreeItemModel::isLayerVisible(PDFObjectReference layer) const
+{
+    return !m_activity || m_activity->getState(layer) != OCState::OFF;
+}
+
+bool PDFOptionalContentTreeItemModel::isLayerPrinted(PDFObjectReference layer) const
+{
+    const PDFOptionalContentProperties* properties = m_document ? m_document->getCatalog()->getOptionalContentProperties() : nullptr;
+    return !properties || !properties->hasOptionalContentGroup(layer) || properties->getOptionalContentGroup(layer).getUsagePrintState() != OCState::OFF;
 }
 
 int PDFOptionalContentTreeItemModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
-    return 1;
+    return ColumnCount;
 }
 
 QVariant PDFOptionalContentTreeItemModel::data(const QModelIndex& index, int role) const
@@ -162,37 +250,117 @@ QVariant PDFOptionalContentTreeItemModel::data(const QModelIndex& index, int rol
     }
 
     const PDFOptionalContentTreeItem* item = static_cast<const PDFOptionalContentTreeItem*>(index.internalPointer());
-    switch (role)
+    const PDFObjectReference layer = item->getReference();
+    const bool isLayer = layer.isValid();
+
+    auto getIcon = [](const QIcon& icon, bool enabled) -> QVariant
     {
-        case Qt::DisplayRole:
-            return item->getText();
-
-        case Qt::CheckStateRole:
+        if (icon.isNull())
         {
-            if (item->getReference() != PDFObjectReference())
+            return QVariant();
+        }
+
+        if (enabled)
+        {
+            return icon;
+        }
+
+        // The icon of a hidden (not printed) layer is gray and faint
+        const QPixmap disabledPixmap = icon.pixmap(QSize(16, 16), QIcon::Disabled);
+        QPixmap pixmap(disabledPixmap.size());
+        pixmap.setDevicePixelRatio(disabledPixmap.devicePixelRatio());
+        pixmap.fill(Qt::transparent);
+        QPainter painter(&pixmap);
+        painter.setOpacity(0.3);
+        painter.drawPixmap(0, 0, disabledPixmap);
+        painter.end();
+        return QIcon(pixmap);
+    };
+
+    switch (index.column())
+    {
+        case VisibleColumn:
+        {
+            if (!isLayer)
             {
-                if (m_activity)
-                {
-                    switch (m_activity->getState(item->getReference()))
-                    {
-                        case OCState::ON:
-                            return Qt::Checked;
-                        case OCState::OFF:
-                            return Qt::Unchecked;
-                        case OCState::Unknown:
-                            return Qt::PartiallyChecked;
-
-                        default:
-                        {
-                            Q_ASSERT(false);
-                            break;
-                        }
-                    }
-                }
-
-                return Qt::PartiallyChecked;
+                break;
             }
 
+            const bool isVisible = isLayerVisible(layer);
+            if (role == Qt::DecorationRole)
+            {
+                return getIcon(m_visibleIcon, isVisible);
+            }
+            if (role == Qt::ToolTipRole)
+            {
+                return isVisible ? tr("Shown - click to hide the layer") : tr("Hidden - click to show the layer");
+            }
+            if (role == Qt::AccessibleTextRole)
+            {
+                return isVisible ? tr("Shown") : tr("Hidden");
+            }
+            break;
+        }
+
+        case PrintColumn:
+        {
+            if (!isLayer)
+            {
+                break;
+            }
+
+            const bool isPrinted = isLayerPrinted(layer);
+            if (role == Qt::DecorationRole)
+            {
+                return getIcon(m_printIcon, isPrinted);
+            }
+            if (role == Qt::ToolTipRole)
+            {
+                return isPrinted ? tr("Printed - click to print the document without the layer") : tr("Not printed - click to print the layer");
+            }
+            if (role == Qt::AccessibleTextRole)
+            {
+                return isPrinted ? tr("Printed") : tr("Not printed");
+            }
+            break;
+        }
+
+        case NameColumn:
+        {
+            const bool isActive = isLayer && m_activity && m_activity->getActiveLayer() == layer;
+            switch (role)
+            {
+                case Qt::DisplayRole:
+                case Qt::EditRole:
+                    return item->getText();
+
+                case Qt::FontRole:
+                {
+                    if (isActive)
+                    {
+                        QFont font;
+                        font.setBold(true);
+                        return font;
+                    }
+                    break;
+                }
+
+                case Qt::ToolTipRole:
+                {
+                    if (isActive)
+                    {
+                        return tr("Active layer - the new drawings and texts are created in this layer");
+                    }
+                    if (isLayer)
+                    {
+                        return tr("Click to make it the active layer (the new drawings and texts are created in the active layer)");
+                    }
+                    break;
+                }
+
+                default:
+                    break;
+            }
             break;
         }
 
@@ -310,11 +478,15 @@ Qt::ItemFlags PDFOptionalContentTreeItemModel::flags(const QModelIndex& index) c
     const PDFOptionalContentTreeItem* item = static_cast<const PDFOptionalContentTreeItem*>(index.internalPointer());
     if (item->getReference() != PDFObjectReference())
     {
-        flags = flags | Qt::ItemIsUserCheckable | Qt::ItemNeverHasChildren;
+        flags = flags | Qt::ItemNeverHasChildren;
 
         if (item->isLocked())
         {
             flags &= ~Qt::ItemIsEnabled;
+        }
+        else if (m_editable && index.column() == NameColumn)
+        {
+            flags |= Qt::ItemIsEditable;
         }
     }
 
@@ -337,20 +509,18 @@ QString PDFOptionalContentTreeItem::getText() const
 
 bool PDFOptionalContentTreeItemModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-    if (!index.isValid())
+    if (!index.isValid() || index.column() != NameColumn || role != Qt::EditRole)
     {
         return false;
     }
 
-    if (m_activity && role == Qt::CheckStateRole)
+    // The name is changed in the document, the model is updated with the modified document
+    const PDFObjectReference layer = getLayer(index);
+    const QString name = value.toString().trimmed();
+    if (layer.isValid() && !name.isEmpty() && name != data(index, Qt::DisplayRole).toString())
     {
-        const PDFOptionalContentTreeItem* item = static_cast<const PDFOptionalContentTreeItem*>(index.internalPointer());
-        if (item->getReference() != PDFObjectReference() && !item->isLocked())
-        {
-            Qt::CheckState newState = static_cast<Qt::CheckState>(value.toInt());
-            m_activity->setState(item->getReference(), (newState == Qt::Checked) ? OCState::ON : OCState::OFF);
-            return true;
-        }
+        Q_EMIT layerRenamed(layer, name);
+        return true;
     }
 
     return false;

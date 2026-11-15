@@ -19,6 +19,10 @@
 #include "pdfdocumentbuilder.h"
 #include "pdfdocumentwriter.h"
 #include "pdfpageorganizer.h"
+#include "pdfsidebarwidget.h"
+#include "pdfdrawwidget.h"
+#include "pdfdrawspacecontroller.h"
+#include "pdfoptionalcontent.h"
 
 #include <QtTest>
 #include <QAction>
@@ -57,6 +61,7 @@ private slots:
     void sidebarTitleBarHasNavigation();
     void stickyNoteIsInInsertToolBar();
     void pageBackgrounds();
+    void layersPage();
 
 private:
     static QSettings settings();
@@ -335,6 +340,93 @@ void EditorMainWindowTest::pageBackgrounds()
 
     plain->trigger();
     QCOMPARE(pdf::PDFPageOrganizer::getBackground(controller->getDocument(), 0), pdf::PDFPageOrganizer::Background::Plain);
+}
+
+void EditorMainWindowTest::layersPage()
+{
+    // A document with a square in the note layer
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    const QString fileName = directory.filePath("layers.pdf");
+    pdf::PDFObjectReference square;
+    {
+        pdf::PDFDocumentBuilder builder;
+        const pdf::PDFObjectReference page = builder.appendPage(QRectF(0, 0, 595, 842));
+        square = builder.createAnnotationSquare(page, QRectF(50, 50, 100, 100), 1.0, Qt::black, Qt::black, "Title", QString(), QString());
+        builder.setAnnotationNoteLayer(square);
+        const pdf::PDFDocument document = builder.build();
+        pdf::PDFDocumentWriter writer(nullptr);
+        QVERIFY(writer.write(fileName, &document, false));
+    }
+
+    PDFEditorMainWindow window;
+    PDFProgramController* controller = window.getProgramController();
+    controller->openDocument(fileName);
+    QTRY_VERIFY(controller->getDocument());
+
+    PDFSidebarWidget* sidebar = window.findChild<PDFSidebarWidget*>();
+    QVERIFY(sidebar);
+    QVERIFY(!sidebar->isEmpty(PDFSidebarWidget::OptionalContent));
+    QToolBar* layersToolBar = sidebar->findChild<QToolBar*>("layersToolBar");
+    QVERIFY(layersToolBar);
+    QStringList toolBarActions;
+    for (QAction* action : layersToolBar->actions())
+    {
+        if (!action->isSeparator())
+        {
+            toolBarActions << action->objectName();
+        }
+    }
+    QCOMPARE(toolBarActions, (QStringList{ "actionLayerNew", "actionLayerDelete", "actionLayerMoveUp", "actionLayerMoveDown" }));
+
+    pdf::PDFDrawWidgetProxy* proxy = controller->getPdfWidget()->getDrawWidgetProxy();
+    auto layers = [controller]() { return pdf::PDFDocumentBuilder(controller->getDocument()).getOptionalContentGroupsInOrder(); };
+    auto properties = [controller]() { return controller->getDocument()->getCatalog()->getOptionalContentProperties(); };
+    const pdf::PDFObjectReference notes = properties()->findOptionalContentGroup("Notes");
+    QVERIFY(notes.isValid());
+    QCOMPARE(proxy->getActiveLayer(), notes);
+
+    // A new layer is at the top, it is the active layer
+    const pdf::PDFObjectReference answers = sidebar->createLayer("Answers");
+    QVERIFY(answers.isValid());
+    QCOMPARE(layers(), (std::vector<pdf::PDFObjectReference>{ answers, notes }));
+    QCOMPARE(proxy->getActiveLayer(), answers);
+
+    // Moved down, renamed, not printed, hidden
+    QVERIFY(sidebar->moveLayer(answers, 1));
+    QCOMPARE(layers(), (std::vector<pdf::PDFObjectReference>{ notes, answers }));
+    QVERIFY(!sidebar->moveLayer(answers, 1));
+    QVERIFY(sidebar->renameLayer(answers, "Solutions"));
+    QCOMPARE(properties()->getOptionalContentGroup(answers).getName(), QString("Solutions"));
+    QVERIFY(sidebar->setLayerPrinted(answers, false));
+    QVERIFY(!pdf::PDFDocumentBuilder(controller->getDocument()).isOptionalContentGroupPrinted(answers));
+    sidebar->setLayerVisible(answers, false);
+    QCOMPARE(proxy->getOptionalContentActivity()->getState(answers), pdf::OCState::OFF);
+    QCOMPARE(proxy->getActiveLayer(), answers);
+
+    // The note layer is deleted, its square moves to the other layer
+    QVERIFY(!sidebar->deleteLayer(notes, false, notes));
+    QVERIFY(sidebar->deleteLayer(notes, false, answers));
+    QCOMPARE(layers(), (std::vector<pdf::PDFObjectReference>{ answers }));
+    const pdf::PDFAnnotationPtr annotation = pdf::PDFAnnotation::parse(&controller->getDocument()->getStorage(), square);
+    QCOMPARE(annotation->getOptionalContent(), answers);
+
+    // Each operation is an undo step
+    window.findChild<QAction*>("actionUndo")->trigger();
+    QCOMPARE(layers(), (std::vector<pdf::PDFObjectReference>{ notes, answers }));
+
+    // After the undo, the square is in the note layer again: deleting the other layer
+    // (without objects) keeps it, deleting the note layer with its objects deletes it
+    QCOMPARE(pdf::PDFAnnotation::parse(&controller->getDocument()->getStorage(), square)->getOptionalContent(), notes);
+    QVERIFY(sidebar->deleteLayer(answers, true));
+    QCOMPARE(layers(), (std::vector<pdf::PDFObjectReference>{ notes }));
+    QCOMPARE(controller->getDocument()->getCatalog()->getPage(0)->getAnnotations(), (std::vector<pdf::PDFObjectReference>{ square }));
+    QVERIFY(sidebar->deleteLayer(notes, true));
+    QVERIFY(controller->getDocument()->getCatalog()->getPage(0)->getAnnotations().empty());
+    QVERIFY(!properties()->isValid());
+
+    // Without layers, the page stays available (a layer can be created)
+    QVERIFY(!sidebar->isEmpty(PDFSidebarWidget::OptionalContent));
 }
 
 QTEST_MAIN(EditorMainWindowTest)

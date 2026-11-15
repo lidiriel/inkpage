@@ -101,7 +101,7 @@ class PDF4QTLIBWIDGETSSHARED_EXPORT PDFTreeItemModel : public QAbstractItemModel
 public:
     explicit PDFTreeItemModel(QObject* parent);
 
-    void setDocument(const PDFModifiedDocument& document);
+    virtual void setDocument(const PDFModifiedDocument& document);
 
     bool isEmpty() const;
 
@@ -139,10 +139,22 @@ private:
     bool m_locked; ///< Node is locked (user can't change it)
 };
 
+/// Layers of the document (optional content groups) in the order of the list of the
+/// document. inkpage: each layer has three columns - an eye (the layer is shown), a
+/// printer (the layer is printed) and its name; the active layer (in which the new
+/// annotations are created) has its name in bold.
 class PDF4QTLIBWIDGETSSHARED_EXPORT PDFOptionalContentTreeItemModel : public PDFTreeItemModel
 {
     Q_OBJECT
 public:
+    enum Column
+    {
+        VisibleColumn,
+        PrintColumn,
+        NameColumn,
+        ColumnCount
+    };
+
     inline explicit PDFOptionalContentTreeItemModel(QObject* parent) :
         PDFTreeItemModel(parent),
         m_activity(nullptr)
@@ -152,14 +164,49 @@ public:
 
     void setActivity(PDFOptionalContentActivity* activity);
 
+    /// inkpage: the layers are updated with every modification of the document (a layer
+    /// is created, renamed, moved... by a modification, not by a reset of the document)
+    virtual void setDocument(const PDFModifiedDocument& document) override;
+
+    /// Sets the icons of the columns of the eye and of the printer (they are grayed,
+    /// when the layer is hidden or not printed)
+    void setIcons(QIcon visibleIcon, QIcon printIcon);
+
+    /// Sets, if the names of the layers can be edited (see \ref layerRenamed)
+    void setEditable(bool editable) { m_editable = editable; }
+
+    /// Returns the layer of the index (an invalid reference for a group of layers)
+    PDFObjectReference getLayer(const QModelIndex& index) const;
+
+    /// Returns the index of the layer in the column (an invalid index, if not found)
+    QModelIndex getIndex(PDFObjectReference layer, int column = NameColumn) const;
+
+    /// Returns true, if the layer is shown
+    bool isLayerVisible(PDFObjectReference layer) const;
+
+    /// Returns true, if the layer is printed (the print state of its usage)
+    bool isLayerPrinted(PDFObjectReference layer) const;
+
     virtual int columnCount(const QModelIndex& parent) const override;
     virtual QVariant data(const QModelIndex& index, int role) const override;
     virtual void update() override;
     virtual Qt::ItemFlags flags(const QModelIndex& index) const override;
     virtual bool setData(const QModelIndex& index, const QVariant& value, int role) override;
 
+signals:
+    /// The user has edited the name of the layer (the document is not changed by the model)
+    void layerRenamed(PDFObjectReference layer, QString name);
+
 private:
+    /// The data of the items has changed (state of a layer, active layer)
+    void onActivityChanged();
+
+    QModelIndex findIndex(const QModelIndex& parent, PDFObjectReference layer, int column) const;
+
     PDFOptionalContentActivity* m_activity;
+    QIcon m_visibleIcon;
+    QIcon m_printIcon;
+    bool m_editable = false;
 };
 
 class PDFOutlineTreeItem : public PDFTreeItem

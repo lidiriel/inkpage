@@ -357,6 +357,10 @@ public:
     PDFFontCache* getFontCache() const { return m_controller->getFontCache(); }
     const PDFICCProfileCache* getIccProfileCache() const { return m_controller->getIccProfileCache(); }
     const PDFOptionalContentActivity* getOptionalContentActivity() const { return m_controller->getOptionalContentActivity(); }
+
+    /// Returns the active layer, in which the new annotations of the user are created
+    /// (see PDFOptionalContentActivity::getActiveLayer), or an invalid reference
+    PDFObjectReference getActiveLayer() const;
     PDFRenderer::Features getFeatures() const;
     const PDFMeshQualitySettings& getMeshQualitySettings() const { return m_meshQualitySettings; }
     PDFAsynchronousPageCompiler* getCompiler() const { return m_compiler; }

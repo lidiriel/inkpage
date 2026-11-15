@@ -26,6 +26,9 @@
 #include "pdfobject.h"
 #include "pdfdocument.h"
 #include "pdfannotation.h"
+#include "pdfoptionalcontent.h"
+
+#include <functional>
 
 class QBuffer;
 class QPdfWriter;
@@ -1674,7 +1677,8 @@ public:
 
     /// Creates a layer (optional content group) and adds it to the optional
     /// content properties of the catalog, which are created if missing. The layer
-    /// is appended to the list of layers shown to the user (Order). Its view
+    /// is put at the top of the list of layers shown to the user (Order), the top
+    /// layer is drawn above the others (see \ref reorderAnnotationsByLayers). Its view
     /// and print states are written in its usage and applied by the automatic
     /// states (AS) of the default configuration.
     /// \param name Name of the layer shown to the user
@@ -1690,6 +1694,51 @@ public:
     /// \param name Name of the layer
     PDFObjectReference findOptionalContentGroup(QString name) const;
 
+    /// Returns the layers in the order of the list shown to the user (Order of the default
+    /// configuration, the groups of the list are flattened), the top layer first. Layers,
+    /// which are not in the list, follow in the order of the catalog.
+    std::vector<PDFObjectReference> getOptionalContentGroupsInOrder() const;
+
+    /// Renames the layer
+    /// \param optionalContentGroup Layer (optional content group)
+    /// \param name New name
+    void setOptionalContentGroupName(PDFObjectReference optionalContentGroup, QString name);
+
+    /// Sets, if the layer is printed: the print state of its usage, applied by the
+    /// automatic states (AS) of the default configuration for the print event
+    /// \param optionalContentGroup Layer (optional content group)
+    /// \param printed Is the layer printed?
+    void setOptionalContentGroupPrinted(PDFObjectReference optionalContentGroup, bool printed);
+
+    /// Returns true, if the layer is printed (see \ref setOptionalContentGroupPrinted)
+    /// \param optionalContentGroup Layer (optional content group)
+    bool isOptionalContentGroupPrinted(PDFObjectReference optionalContentGroup) const;
+
+    /// Removes the layer from the optional content properties (list of the layers, the
+    /// default configuration). The objects of the layer are not changed (see the
+    /// functions working with the annotations of a layer).
+    /// \param optionalContentGroup Layer (optional content group)
+    void removeOptionalContentGroup(PDFObjectReference optionalContentGroup);
+
+    /// Moves the layer up (\p delta < 0) or down in the list of the layers shown to
+    /// the user, and reorders the annotations of the pages, so the layers are drawn in
+    /// the order of the list (see \ref reorderAnnotationsByLayers)
+    /// \param optionalContentGroup Layer (optional content group)
+    /// \param delta Number of places (negative up, positive down)
+    /// \returns true, if the layer has been moved
+    bool moveOptionalContentGroup(PDFObjectReference optionalContentGroup, int delta);
+
+    /// Reorders the annotations of the pages: the annotations of a layer are drawn above
+    /// the annotations of the layers below it in the list (the order of the annotations
+    /// of a page is their drawing order). An annotation, which is not in a layer of the
+    /// list, keeps its place; the annotations of the same layer keep their order.
+    void reorderAnnotationsByLayers();
+
+    /// Returns the annotations of the pages, which are in the layer (entry OC)
+    /// \param optionalContentGroup Layer (optional content group)
+    /// \returns Pairs of a page and an annotation
+    std::vector<std::pair<PDFObjectReference, PDFObjectReference>> getOptionalContentGroupAnnotations(PDFObjectReference optionalContentGroup) const;
+
     /// Puts the annotation in a layer (entry OC): the annotation is shown only
     /// when the layer is shown. An invalid reference removes the annotation from its layer.
     /// \param annotation Annotation
@@ -1698,13 +1747,15 @@ public:
                                       PDFObjectReference optionalContentGroup);
 
     /// Name of the layer of the notes drawn by the user
-    static constexpr const char* NOTE_LAYER_NAME = "Notes";
+    static constexpr const char* NOTE_LAYER_NAME = PDFOptionalContentProperties::NOTE_LAYER_NAME;
 
-    /// Puts a new annotation of the user (drawing, inline text) in the note layer,
+    /// Puts a new annotation of the user (drawing, inline text) in the active layer. When
+    /// it is not given (or it does not exist), the annotation is put in the note layer,
     /// which is created if the document has none.
     /// \param annotation Annotation
-    /// \returns Reference to the note layer
-    PDFObjectReference setAnnotationNoteLayer(PDFObjectReference annotation);
+    /// \param activeLayer Active layer (see PDFOptionalContentActivity::getActiveLayer)
+    /// \returns Reference to the layer of the annotation
+    PDFObjectReference setAnnotationNoteLayer(PDFObjectReference annotation, PDFObjectReference activeLayer = PDFObjectReference());
 
     /// Creates signature dictionary of a digital signature, the type of the
     /// created dictionary is Sig. Use the overload with the type to create
@@ -1734,6 +1785,10 @@ public:
     static QByteArray formatPDFReal(PDFReal value);
 
 private:
+    /// Changes the optional content properties of the catalog and their default
+    /// configuration (D); both are created, if they do not exist
+    void modifyOptionalContentProperties(const std::function<void(PDFDictionaryBuilder& properties, PDFDictionaryBuilder& configuration)>& modifier);
+
     static void appendPDFPoint(QByteArray& data, const QPointF& point);
     static QColor getAnnotationDrawColor(const std::vector<PDFReal>& color, PDFReal opacity);
     static QByteArray getBlendModeNameForAppearance(BlendMode blendMode);

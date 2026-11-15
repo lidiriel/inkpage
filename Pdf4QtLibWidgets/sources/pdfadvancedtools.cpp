@@ -519,7 +519,7 @@ void PDFCreateFreeTextTool::onRectanglePicked(PDFInteger pageIndex, QRectF pageR
     QString author = PDFAuthorSettings::getAuthorName();
     PDFObjectReference page = getDocument()->getCatalog()->getPage(pageIndex)->getPageReference();
     const PDFObjectReference annotation = modifier.getBuilder()->createAnnotationFreeText(page, pageRectangle, author, QString(), text, m_style, m_autoResizeToContents);
-    modifier.getBuilder()->setAnnotationNoteLayer(annotation);
+    modifier.getBuilder()->setAnnotationNoteLayer(annotation, getProxy()->getActiveLayer());
     modifier.markAnnotationsChanged();
 
     if (modifier.finalize())
@@ -704,7 +704,7 @@ void PDFCreateLineTypeTool::finishDefinition()
                 QString author = PDFAuthorSettings::getAuthorName();
                 PDFObjectReference page = getDocument()->getCatalog()->getPage(m_pickTool->getPageIndex())->getPageReference();
                 const PDFObjectReference annotation = modifier.getBuilder()->createAnnotationLine(page, QRectF(), pickedPoints.front(), pickedPoints.back(), penWidth, fillColor, strokeColor, author, QString(), QString(), AnnotationLineEnding::None, AnnotationLineEnding::None);
-                modifier.getBuilder()->setAnnotationNoteLayer(annotation);
+                modifier.getBuilder()->setAnnotationNoteLayer(annotation, getProxy()->getActiveLayer());
                 modifier.markAnnotationsChanged();
 
                 if (modifier.finalize())
@@ -732,7 +732,7 @@ void PDFCreateLineTypeTool::finishDefinition()
                 QString author = PDFAuthorSettings::getAuthorName();
                 PDFObjectReference page = getDocument()->getCatalog()->getPage(m_pickTool->getPageIndex())->getPageReference();
                 const PDFObjectReference annotation = modifier.getBuilder()->createAnnotationPolyline(page, polygon, penWidth, fillColor, strokeColor, author, QString(), QString(), AnnotationLineEnding::None, AnnotationLineEnding::None);
-                modifier.getBuilder()->setAnnotationNoteLayer(annotation);
+                modifier.getBuilder()->setAnnotationNoteLayer(annotation, getProxy()->getActiveLayer());
                 modifier.markAnnotationsChanged();
 
                 if (modifier.finalize())
@@ -764,7 +764,7 @@ void PDFCreateLineTypeTool::finishDefinition()
                 QString author = PDFAuthorSettings::getAuthorName();
                 PDFObjectReference page = getDocument()->getCatalog()->getPage(m_pickTool->getPageIndex())->getPageReference();
                 PDFObjectReference annotation = modifier.getBuilder()->createAnnotationPolygon(page, polygon, penWidth, fillColor, strokeColor, author, QString(), QString());
-                modifier.getBuilder()->setAnnotationNoteLayer(annotation);
+                modifier.getBuilder()->setAnnotationNoteLayer(annotation, getProxy()->getActiveLayer());
                 if (fillColor.isValid())
                 {
                     modifier.getBuilder()->setAnnotationFillOpacity(annotation, fillColor.alphaF());
@@ -798,7 +798,7 @@ void PDFCreateLineTypeTool::finishDefinition()
                 QString author = PDFAuthorSettings::getAuthorName();
                 PDFObjectReference page = getDocument()->getCatalog()->getPage(m_pickTool->getPageIndex())->getPageReference();
                 PDFObjectReference annotation = modifier.getBuilder()->createAnnotationPolygon(page, polygon, penWidth, fillColor, strokeColor, author, QString(), QString());
-                modifier.getBuilder()->setAnnotationNoteLayer(annotation);
+                modifier.getBuilder()->setAnnotationNoteLayer(annotation, getProxy()->getActiveLayer());
                 if (fillColor.isValid())
                 {
                     modifier.getBuilder()->setAnnotationFillOpacity(annotation, fillColor.alphaF());
@@ -1201,7 +1201,7 @@ void PDFCreateEllipseTool::onRectanglePicked(PDFInteger pageIndex, QRectF pageRe
     const PDFAnnotationStyle& style = m_styleManager->getStyle();
     const QColor fillColor = getAnnotationFillColor(style);
     PDFObjectReference annotation = modifier.getBuilder()->createAnnotationCircle(page, pageRectangle, style.penWidth, fillColor, style.strokeColor, author, QString(), QString());
-    modifier.getBuilder()->setAnnotationNoteLayer(annotation);
+    modifier.getBuilder()->setAnnotationNoteLayer(annotation, getProxy()->getActiveLayer());
     if (fillColor.isValid())
     {
         modifier.getBuilder()->setAnnotationFillOpacity(annotation, fillColor.alphaF());
@@ -1468,7 +1468,7 @@ void PDFCreateFreehandCurveTool::createAnnotation()
         // the translucent segments would be darker where they overlap). The multiply
         // blend mode keeps the text below the stroke black, like a highlighter pen.
         PDFObjectReference annotation = builder->createAnnotationInk(page, polygon, style.penWidth, style.strokeColor, author, QString(), QString());
-        builder->setAnnotationNoteLayer(annotation);
+        builder->setAnnotationNoteLayer(annotation, getProxy()->getActiveLayer());
         builder->setAnnotationOpacity(annotation, HIGHLIGHTER_OPACITY);
         builder->setAnnotationBlendMode(annotation, BlendMode::Multiply);
         builder->updateAnnotationAppearanceStreams(annotation);
@@ -1478,7 +1478,7 @@ void PDFCreateFreehandCurveTool::createAnnotation()
         // inkpage: an ink annotation (not a polyline): it is drawn as a smooth curve,
         // and it can hold several paths (the eraser cuts a stroke into pieces)
         const PDFObjectReference annotation = builder->createAnnotationInk(page, polygon, style.penWidth, style.strokeColor, author, QString(), QString());
-        builder->setAnnotationNoteLayer(annotation);
+        builder->setAnnotationNoteLayer(annotation, getProxy()->getActiveLayer());
     }
     modifier.markAnnotationsChanged();
 
@@ -1573,20 +1573,13 @@ void PDFEraserTool::startErasing(PDFInteger pageIndex, const QPointF& pagePoint)
         return;
     }
 
-    // The active layer is the note layer (see PDFDocumentBuilder::setAnnotationNoteLayer),
-    // its annotations are erased only when it is visible
+    // The annotations of the active layer are erased (see PDFOptionalContentActivity::getActiveLayer,
+    // the note layer, when no layer has been chosen), only when the layer is visible
     const PDFOptionalContentProperties* properties = document->getCatalog()->getOptionalContentProperties();
-    PDFObjectReference layer;
-    if (properties && properties->isValid())
+    PDFObjectReference layer = getProxy()->getActiveLayer();
+    if (!layer.isValid() && properties && properties->isValid())
     {
-        for (const PDFObjectReference& reference : properties->getAllOptionalContentGroups())
-        {
-            if (properties->getOptionalContentGroup(reference).getName() == QLatin1String(PDFDocumentBuilder::NOTE_LAYER_NAME))
-            {
-                layer = reference;
-                break;
-            }
-        }
+        layer = properties->findOptionalContentGroup(QString::fromLatin1(PDFOptionalContentProperties::NOTE_LAYER_NAME));
     }
 
     const PDFOptionalContentActivity* activity = getProxy()->getOptionalContentActivity();

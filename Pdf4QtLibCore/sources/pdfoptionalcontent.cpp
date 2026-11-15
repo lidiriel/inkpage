@@ -413,6 +413,30 @@ void PDFOptionalContentActivity::setDocument(const PDFDocument* document)
     }
 }
 
+PDFObjectReference PDFOptionalContentActivity::getActiveLayer() const
+{
+    if (!m_properties || !m_properties->isValid())
+    {
+        return PDFObjectReference();
+    }
+
+    if (m_activeLayer.isValid() && m_properties->hasOptionalContentGroup(m_activeLayer))
+    {
+        return m_activeLayer;
+    }
+
+    return m_properties->findOptionalContentGroup(QString::fromLatin1(PDFOptionalContentProperties::NOTE_LAYER_NAME));
+}
+
+void PDFOptionalContentActivity::setActiveLayer(PDFObjectReference layer)
+{
+    if (m_activeLayer != layer)
+    {
+        m_activeLayer = layer;
+        Q_EMIT activeLayerChanged();
+    }
+}
+
 void PDFOptionalContentActivity::setState(PDFObjectReference ocg, OCState state, bool preserveRadioButtons)
 {
     auto it = m_states.find(ocg);

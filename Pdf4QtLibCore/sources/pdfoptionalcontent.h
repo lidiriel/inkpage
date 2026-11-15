@@ -194,14 +194,28 @@ public:
     /// Returns the properties of optional content
     const PDFOptionalContentProperties* getProperties() const { return m_properties; }
 
+    /// Returns the active layer, in which the new annotations of the user are created:
+    /// the layer chosen by \ref setActiveLayer, if it exists in the document, otherwise
+    /// the note layer (PDFOptionalContentProperties::NOTE_LAYER_NAME), if it exists,
+    /// otherwise an invalid reference (the note layer is created with the first annotation)
+    PDFObjectReference getActiveLayer() const;
+
+    /// Sets the active layer (see \ref getActiveLayer)
+    /// \param layer Optional content group
+    void setActiveLayer(PDFObjectReference layer);
+
 signals:
     void optionalContentGroupStateChanged(PDFObjectReference ocg, OCState state);
+
+    /// Emitted, when another layer becomes the active layer
+    void activeLayerChanged();
 
 private:
     const PDFDocument* m_document;
     const PDFOptionalContentProperties* m_properties;
     OCUsage m_usage;
     std::map<PDFObjectReference, OCState> m_states;
+    PDFObjectReference m_activeLayer;
 };
 
 /// Configuration of optional content configuration.
@@ -342,6 +356,27 @@ public:
 
     /// Returns true, if optional content group exists
     bool hasOptionalContentGroup(PDFObjectReference reference) const { return m_optionalContentGroups.count(reference); }
+
+    /// Name of the layer, in which the notes of the user are created, when no other
+    /// layer has been chosen (see PDFOptionalContentActivity::getActiveLayer)
+    static constexpr const char* NOTE_LAYER_NAME = "Notes";
+
+    /// Returns the first optional content group (layer) with the name, or an invalid
+    /// reference, if there is none
+    /// \param name Name of the layer
+    PDFObjectReference findOptionalContentGroup(const QString& name) const
+    {
+        for (const PDFObjectReference& reference : m_allOptionalContentGroups)
+        {
+            auto it = m_optionalContentGroups.find(reference);
+            if (it != m_optionalContentGroups.cend() && it->second.getName() == name)
+            {
+                return reference;
+            }
+        }
+
+        return PDFObjectReference();
+    }
 
 private:
     std::vector<PDFObjectReference> m_allOptionalContentGroups;

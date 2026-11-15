@@ -40,6 +40,10 @@
 #include "pdfwidgetannotation.h"
 
 #include <QMenu>
+#include <QHeaderView>
+#include <QInputDialog>
+#include <QLineEdit>
+#include <QToolBar>
 #include <QAction>
 #include <QFileDialog>
 #include <QStandardPaths>
@@ -143,10 +147,29 @@ PDFSidebarWidget::PDFSidebarWidget(pdf::PDFDrawWidgetProxy* proxy,
     connect(ui->thumbnailsListView, &QListView::customContextMenuRequested, this, &PDFSidebarWidget::onThumbnailsCustomContextMenuRequested);
     onThumbnailsSizeChanged(ui->thumbnailsSizeSlider->value());
 
-    // Optional content
+    // Optional content - inkpage: the Layers page, each layer has an eye (shown), a printer
+    // (printed) and its name; a click on the name makes the layer the active layer
     ui->optionalContentTreeView->header()->hide();
     m_optionalContentTreeModel = new pdf::PDFOptionalContentTreeItemModel(this);
+    m_optionalContentTreeModel->setIcons(QIcon(":/resources/sidebar-visibility.svg"), QIcon(":/resources/print.svg"));
     ui->optionalContentTreeView->setModel(m_optionalContentTreeModel);
+    ui->optionalContentTreeView->header()->setStretchLastSection(true);
+    ui->optionalContentTreeView->header()->setSectionResizeMode(pdf::PDFOptionalContentTreeItemModel::VisibleColumn, QHeaderView::ResizeToContents);
+    ui->optionalContentTreeView->header()->setSectionResizeMode(pdf::PDFOptionalContentTreeItemModel::PrintColumn, QHeaderView::ResizeToContents);
+    ui->optionalContentTreeView->setRootIsDecorated(false);
+    ui->optionalContentTreeView->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->optionalContentTreeView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->optionalContentTreeView->setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::EditKeyPressed);
+    ui->optionalContentTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->optionalContentTreeView, &QTreeView::clicked, this, &PDFSidebarWidget::onLayerClicked);
+    connect(ui->optionalContentTreeView, &QTreeView::customContextMenuRequested, this, &PDFSidebarWidget::onLayerContextMenuRequested);
+    connect(ui->optionalContentTreeView->selectionModel(), &QItemSelectionModel::currentChanged, this, &PDFSidebarWidget::updateLayerActions);
+    connect(m_optionalContentTreeModel, &pdf::PDFOptionalContentTreeItemModel::layerRenamed, this, [this](pdf::PDFObjectReference layer, QString name)
+    {
+        // The document is changed after the editor of the name is closed (the model is reset)
+        QMetaObject::invokeMethod(this, [this, layer, name]() { renameLayer(layer, name); }, Qt::QueuedConnection);
+    });
+    createLayerActions();
 
     // Attachments
     ui->attachmentsTreeView->header()->hide();
@@ -241,9 +264,11 @@ void PDFSidebarWidget::setDocument(const pdf::PDFModifiedDocument& document, con
     m_thumbnailsModel->setDocument(document);
 
     // Update optional content
+    m_optionalContentTreeModel->setEditable(isLayerModificationAllowed());
     m_optionalContentTreeModel->setDocument(document);
     m_optionalContentTreeModel->setActivity(m_optionalContentActivity);
     ui->optionalContentTreeView->expandAll();
+    updateLayerActions();
 
     // Update attachments
     m_attachmentsTreeModel->setDocument(document);
@@ -344,7 +369,8 @@ bool PDFSidebarWidget::isEmpty(Page page) const
             return m_thumbnailsModel->isEmpty();
 
         case OptionalContent:
-            return m_optionalContentTreeModel->isEmpty();
+            // inkpage: layers can be created in a document without layers
+            return m_optionalContentTreeModel->isEmpty() && !isLayerModificationAllowed();
 
         case Attachments:
             return m_attachmentsTreeModel->isEmpty();
@@ -2031,6 +2057,355 @@ void PDFSidebarWidget::onNotesItemClicked(const QModelIndex& index)
         {
             pdf::PDFInteger pageIndex = m_markupAnnotations[i].second;
             m_proxy->goToPage(pageIndex);
+        }
+    }
+}
+
+
+bool PDFSidebarWidget::isLayerModificationAllowed() const
+{
+    return m_document && m_outlineTreeModel->isEditable() &&
+           m_document->getStorage().getSecurityHandler()->isAllowed(pdf::PDFSecurityHandler::Permission::ModifyInteractiveItems);
+}
+
+pdf::PDFObjectReference PDFSidebarWidget::getCurrentLayer() const
+{
+    const pdf::PDFObjectReference layer = m_optionalContentTreeModel->getLayer(ui->optionalContentTreeView->currentIndex());
+    return layer.isValid() ? layer : (m_optionalContentActivity ? m_optionalContentActivity->getActiveLayer() : pdf::PDFObjectReference());
+}
+
+void PDFSidebarWidget::createLayerActions()
+{
+    m_layerNewAction = new QAction(QIcon(":/resources/layer-add.svg"), tr("New Layer..."), this);
+    m_layerNewAction->setObjectName("actionLayerNew");
+    m_layerNewAction->setToolTip(tr("Create a new layer at the top, the new drawings and texts go in it"));
+    m_layerRenameAction = new QAction(tr("Rename Layer"), this);
+    m_layerRenameAction->setObjectName("actionLayerRename");
+    m_layerDeleteAction = new QAction(QIcon(":/resources/layer-remove.svg"), tr("Delete Layer..."), this);
+    m_layerDeleteAction->setObjectName("actionLayerDelete");
+    m_layerDeleteAction->setToolTip(tr("Delete the layer, with its objects or moving them to another layer"));
+    m_layerMoveUpAction = new QAction(QIcon(":/resources/page-move-up.svg"), tr("Move Layer Up"), this);
+    m_layerMoveUpAction->setObjectName("actionLayerMoveUp");
+    m_layerMoveUpAction->setToolTip(tr("Move the layer up: its objects are drawn above the objects of the layer below"));
+    m_layerMoveDownAction = new QAction(QIcon(":/resources/page-move-down.svg"), tr("Move Layer Down"), this);
+    m_layerMoveDownAction->setObjectName("actionLayerMoveDown");
+    m_layerMoveDownAction->setToolTip(tr("Move the layer down: its objects are drawn below the objects of the layer above"));
+
+    connect(m_layerNewAction, &QAction::triggered, this, &PDFSidebarWidget::onNewLayerTriggered);
+    connect(m_layerDeleteAction, &QAction::triggered, this, &PDFSidebarWidget::onDeleteLayerTriggered);
+    connect(m_layerRenameAction, &QAction::triggered, this, [this]()
+    {
+        const QModelIndex index = m_optionalContentTreeModel->getIndex(getCurrentLayer(), pdf::PDFOptionalContentTreeItemModel::NameColumn);
+        if (index.isValid())
+        {
+            ui->optionalContentTreeView->setCurrentIndex(index);
+            ui->optionalContentTreeView->edit(index);
+        }
+    });
+    connect(m_layerMoveUpAction, &QAction::triggered, this, [this]() { moveLayer(getCurrentLayer(), -1); });
+    connect(m_layerMoveDownAction, &QAction::triggered, this, [this]() { moveLayer(getCurrentLayer(), 1); });
+
+    QToolBar* toolBar = new QToolBar(ui->optionalContentPage);
+    toolBar->setObjectName("layersToolBar");
+    toolBar->setIconSize(pdf::PDFWidgetUtils::scaleDPI(this, QSize(16, 16)));
+    toolBar->addAction(m_layerNewAction);
+    toolBar->addAction(m_layerDeleteAction);
+    toolBar->addSeparator();
+    toolBar->addAction(m_layerMoveUpAction);
+    toolBar->addAction(m_layerMoveDownAction);
+    ui->optionalContentPageLayout->insertWidget(0, toolBar);
+}
+
+void PDFSidebarWidget::updateLayerActions()
+{
+    if (!m_layerNewAction)
+    {
+        return;
+    }
+
+    const bool isModificationAllowed = isLayerModificationAllowed();
+    const pdf::PDFObjectReference layer = getCurrentLayer();
+    const QModelIndex index = m_optionalContentTreeModel->getIndex(layer);
+    const bool hasLayer = isModificationAllowed && index.isValid();
+
+    m_layerNewAction->setEnabled(isModificationAllowed);
+    m_layerRenameAction->setEnabled(hasLayer);
+    m_layerDeleteAction->setEnabled(hasLayer);
+    m_layerMoveUpAction->setEnabled(hasLayer && index.row() > 0);
+    m_layerMoveDownAction->setEnabled(hasLayer && index.row() + 1 < m_optionalContentTreeModel->rowCount(index.parent()));
+}
+
+bool PDFSidebarWidget::modifyLayers(const std::function<bool(pdf::PDFDocumentBuilder*)>& modification, bool isAnnotationChanged)
+{
+    if (!isLayerModificationAllowed())
+    {
+        return false;
+    }
+
+    pdf::PDFDocumentBuilder builder(m_document);
+    if (!modification(&builder))
+    {
+        return false;
+    }
+
+    pdf::PDFDocumentPointer pointer(new pdf::PDFDocument(builder.build()));
+    pdf::PDFModifiedDocument::ModificationFlags flags = pdf::PDFModifiedDocument::None;
+    if (isAnnotationChanged)
+    {
+        flags.setFlag(pdf::PDFModifiedDocument::Annotation);
+        flags.setFlag(pdf::PDFModifiedDocument::PageContents);
+    }
+    pdf::PDFModifiedDocument document(qMove(pointer), m_optionalContentActivity, flags);
+    Q_EMIT documentModified(qMove(document));
+    return true;
+}
+
+pdf::PDFObjectReference PDFSidebarWidget::createLayer(const QString& name)
+{
+    pdf::PDFObjectReference layer;
+    const QString layerName = name.trimmed();
+    if (layerName.isEmpty())
+    {
+        return layer;
+    }
+
+    modifyLayers([&](pdf::PDFDocumentBuilder* builder)
+    {
+        layer = builder->createOptionalContentGroup(layerName);
+        return true;
+    }, false);
+
+    if (layer.isValid())
+    {
+        setActiveLayer(layer);
+        ui->optionalContentTreeView->setCurrentIndex(m_optionalContentTreeModel->getIndex(layer));
+    }
+
+    return layer;
+}
+
+bool PDFSidebarWidget::renameLayer(pdf::PDFObjectReference layer, const QString& name)
+{
+    const QString layerName = name.trimmed();
+    return layer.isValid() && !layerName.isEmpty() && modifyLayers([&](pdf::PDFDocumentBuilder* builder)
+    {
+        builder->setOptionalContentGroupName(layer, layerName);
+        return true;
+    }, false);
+}
+
+bool PDFSidebarWidget::deleteLayer(pdf::PDFObjectReference layer, bool deleteObjects, pdf::PDFObjectReference targetLayer)
+{
+    if (!layer.isValid() || (!deleteObjects && (!targetLayer.isValid() || targetLayer == layer)))
+    {
+        return false;
+    }
+
+    return modifyLayers([&](pdf::PDFDocumentBuilder* builder)
+    {
+        const std::vector<pdf::PDFObjectReference> layers = builder->getOptionalContentGroupsInOrder();
+        if (std::find(layers.cbegin(), layers.cend(), layer) == layers.cend() ||
+            (!deleteObjects && std::find(layers.cbegin(), layers.cend(), targetLayer) == layers.cend()))
+        {
+            return false;
+        }
+
+        for (const auto& [page, annotation] : builder->getOptionalContentGroupAnnotations(layer))
+        {
+            if (deleteObjects)
+            {
+                builder->removeAnnotation(page, annotation);
+            }
+            else
+            {
+                builder->setAnnotationOptionalContent(annotation, targetLayer);
+            }
+        }
+
+        builder->removeOptionalContentGroup(layer);
+        if (!deleteObjects)
+        {
+            // The moved objects are drawn at the place of their new layer
+            builder->reorderAnnotationsByLayers();
+        }
+        return true;
+    }, true);
+}
+
+bool PDFSidebarWidget::moveLayer(pdf::PDFObjectReference layer, int delta)
+{
+    const bool isMoved = layer.isValid() && modifyLayers([&](pdf::PDFDocumentBuilder* builder) { return builder->moveOptionalContentGroup(layer, delta); }, true);
+    if (isMoved)
+    {
+        ui->optionalContentTreeView->setCurrentIndex(m_optionalContentTreeModel->getIndex(layer));
+    }
+    return isMoved;
+}
+
+bool PDFSidebarWidget::setLayerPrinted(pdf::PDFObjectReference layer, bool printed)
+{
+    return layer.isValid() && modifyLayers([&](pdf::PDFDocumentBuilder* builder)
+    {
+        builder->setOptionalContentGroupPrinted(layer, printed);
+        return true;
+    }, false);
+}
+
+void PDFSidebarWidget::setLayerVisible(pdf::PDFObjectReference layer, bool visible)
+{
+    if (m_optionalContentActivity && layer.isValid())
+    {
+        m_optionalContentActivity->setState(layer, visible ? pdf::OCState::ON : pdf::OCState::OFF);
+    }
+}
+
+void PDFSidebarWidget::setActiveLayer(pdf::PDFObjectReference layer)
+{
+    if (m_optionalContentActivity)
+    {
+        m_optionalContentActivity->setActiveLayer(layer);
+    }
+    updateLayerActions();
+}
+
+void PDFSidebarWidget::onLayerClicked(const QModelIndex& index)
+{
+    const pdf::PDFObjectReference layer = m_optionalContentTreeModel->getLayer(index);
+    if (!layer.isValid() || !index.flags().testFlag(Qt::ItemIsEnabled))
+    {
+        return;
+    }
+
+    switch (index.column())
+    {
+        case pdf::PDFOptionalContentTreeItemModel::VisibleColumn:
+            setLayerVisible(layer, !m_optionalContentTreeModel->isLayerVisible(layer));
+            break;
+
+        case pdf::PDFOptionalContentTreeItemModel::PrintColumn:
+        {
+            // The document is changed after the click is processed (the model is reset)
+            const bool printed = !m_optionalContentTreeModel->isLayerPrinted(layer);
+            QMetaObject::invokeMethod(this, [this, layer, printed]() { setLayerPrinted(layer, printed); }, Qt::QueuedConnection);
+            break;
+        }
+
+        default:
+            setActiveLayer(layer);
+            break;
+    }
+}
+
+void PDFSidebarWidget::onLayerContextMenuRequested(const QPoint& pos)
+{
+    const QModelIndex index = ui->optionalContentTreeView->indexAt(pos);
+    const pdf::PDFObjectReference layer = m_optionalContentTreeModel->getLayer(index);
+    if (index.isValid())
+    {
+        ui->optionalContentTreeView->setCurrentIndex(index);
+    }
+    updateLayerActions();
+
+    QMenu menu(this);
+    if (layer.isValid())
+    {
+        QAction* activeAction = menu.addAction(tr("Active Layer"), this, [this, layer]() { setActiveLayer(layer); });
+        activeAction->setCheckable(true);
+        activeAction->setChecked(m_optionalContentActivity && m_optionalContentActivity->getActiveLayer() == layer);
+
+        QAction* visibleAction = menu.addAction(tr("Show"), this, [this, layer](bool checked) { setLayerVisible(layer, checked); });
+        visibleAction->setCheckable(true);
+        visibleAction->setChecked(m_optionalContentTreeModel->isLayerVisible(layer));
+
+        QAction* printAction = menu.addAction(tr("Print"), this, [this, layer](bool checked) { setLayerPrinted(layer, checked); });
+        printAction->setCheckable(true);
+        printAction->setChecked(m_optionalContentTreeModel->isLayerPrinted(layer));
+        printAction->setEnabled(isLayerModificationAllowed());
+        menu.addSeparator();
+    }
+
+    menu.addAction(m_layerNewAction);
+    if (layer.isValid())
+    {
+        menu.addAction(m_layerRenameAction);
+        menu.addAction(m_layerDeleteAction);
+        menu.addSeparator();
+        menu.addAction(m_layerMoveUpAction);
+        menu.addAction(m_layerMoveDownAction);
+    }
+    menu.exec(ui->optionalContentTreeView->viewport()->mapToGlobal(pos));
+}
+
+void PDFSidebarWidget::onNewLayerTriggered()
+{
+    if (!isLayerModificationAllowed())
+    {
+        return;
+    }
+
+    const int layerCount = m_document->getCatalog()->getOptionalContentProperties()->isValid() ? int(m_document->getCatalog()->getOptionalContentProperties()->getAllOptionalContentGroups().size()) : 0;
+    bool ok = false;
+    const QString name = QInputDialog::getText(this, tr("New Layer"), tr("Name of the layer:"), QLineEdit::Normal, tr("Layer %1").arg(layerCount + 1), &ok);
+    if (ok)
+    {
+        createLayer(name);
+    }
+}
+
+void PDFSidebarWidget::onDeleteLayerTriggered()
+{
+    const pdf::PDFObjectReference layer = getCurrentLayer();
+    const QModelIndex index = m_optionalContentTreeModel->getIndex(layer);
+    if (!isLayerModificationAllowed() || !index.isValid())
+    {
+        return;
+    }
+
+    const QString name = index.data(Qt::DisplayRole).toString();
+    pdf::PDFDocumentBuilder builder(m_document);
+    const size_t objectCount = builder.getOptionalContentGroupAnnotations(layer).size();
+
+    if (objectCount == 0)
+    {
+        if (QMessageBox::question(this, tr("Delete Layer"), tr("Delete the layer '%1'?").arg(name)) == QMessageBox::Yes)
+        {
+            deleteLayer(layer, true);
+        }
+        return;
+    }
+
+    // The objects are deleted with the layer, or moved to another layer
+    QStringList otherNames;
+    std::vector<pdf::PDFObjectReference> otherLayers;
+    for (const pdf::PDFObjectReference& otherLayer : builder.getOptionalContentGroupsInOrder())
+    {
+        const QModelIndex otherIndex = m_optionalContentTreeModel->getIndex(otherLayer);
+        if (otherLayer != layer && otherIndex.isValid())
+        {
+            otherLayers.push_back(otherLayer);
+            otherNames << otherIndex.data(Qt::DisplayRole).toString();
+        }
+    }
+
+    QMessageBox messageBox(QMessageBox::Question, tr("Delete Layer"),
+                           tr("The layer '%1' contains %n object(s). Delete them with the layer, or move them to another layer?", nullptr, int(objectCount)).arg(name),
+                           QMessageBox::Cancel, this);
+    QPushButton* deleteButton = messageBox.addButton(tr("Delete Objects"), QMessageBox::DestructiveRole);
+    QPushButton* moveButton = otherLayers.empty() ? nullptr : messageBox.addButton(tr("Move to Layer..."), QMessageBox::AcceptRole);
+    messageBox.exec();
+
+    if (messageBox.clickedButton() == deleteButton)
+    {
+        deleteLayer(layer, true);
+    }
+    else if (moveButton && messageBox.clickedButton() == moveButton)
+    {
+        bool ok = false;
+        const QString targetName = QInputDialog::getItem(this, tr("Delete Layer"), tr("Move the objects to the layer:"), otherNames, 0, false, &ok);
+        const qsizetype targetIndex = otherNames.indexOf(targetName);
+        if (ok && targetIndex >= 0)
+        {
+            deleteLayer(layer, false, otherLayers[targetIndex]);
         }
     }
 }

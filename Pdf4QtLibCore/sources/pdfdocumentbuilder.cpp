@@ -2935,6 +2935,39 @@ void PDFDocumentBuilder::setAnnotationBlendMode(PDFObjectReference annotation,
     mergeTo(annotation, annotationObject);
 }
 
+void PDFDocumentBuilder::modifyOptionalContentProperties(const std::function<void(PDFDictionaryBuilder& properties, PDFDictionaryBuilder& configuration)>& modifier)
+{
+    const PDFDictionary* catalog = m_storage.getDictionaryFromObject(m_storage.getObjectByReference(getCatalogReference()));
+    const PDFObject propertiesObject = catalog ? catalog->get("OCProperties") : PDFObject();
+    const PDFDictionary* existingProperties = m_storage.getDictionaryFromObject(propertiesObject);
+    PDFDictionaryBuilder properties = existingProperties ? PDFDictionaryBuilder(*existingProperties) : PDFDictionaryBuilder();
+
+    const PDFObject configurationObject = properties.get("D");
+    const PDFDictionary* existingConfiguration = m_storage.getDictionaryFromObject(configurationObject);
+    PDFDictionaryBuilder configuration = existingConfiguration ? PDFDictionaryBuilder(*existingConfiguration) : PDFDictionaryBuilder();
+
+    modifier(properties, configuration);
+
+    if (existingConfiguration && configurationObject.isReference())
+    {
+        setObject(configurationObject.getReference(), PDFObject::createDictionary(std::move(configuration)));
+    }
+    else
+    {
+        properties.setEntry(PDFInplaceOrMemoryString("D"), PDFObject::createDictionary(std::move(configuration)));
+    }
+
+    PDFObject updatedProperties = PDFObject::createDictionary(std::move(properties));
+    if (existingProperties && propertiesObject.isReference())
+    {
+        setObject(propertiesObject.getReference(), std::move(updatedProperties));
+    }
+    else
+    {
+        setCatalogOptionalContentProperties(addObject(std::move(updatedProperties)));
+    }
+}
+
 PDFObjectReference PDFDocumentBuilder::createOptionalContentGroup(QString name,
                                                                 bool visible,
                                                                 bool printed)
@@ -2979,95 +3012,83 @@ PDFObjectReference PDFDocumentBuilder::createOptionalContentGroup(QString name,
         dictionary.setEntry(PDFInplaceOrMemoryString(key), PDFObject::createArray(std::move(array)));
     };
 
-    const PDFDictionary* catalog = m_storage.getDictionaryFromObject(m_storage.getObjectByReference(getCatalogReference()));
-    const PDFObject propertiesObject = catalog ? catalog->get("OCProperties") : PDFObject();
-    const PDFDictionary* existingProperties = m_storage.getDictionaryFromObject(propertiesObject);
-    PDFDictionaryBuilder properties = existingProperties ? PDFDictionaryBuilder(*existingProperties) : PDFDictionaryBuilder();
-    appendToArray(properties, "OCGs", groupObject);
-
-    // Default configuration: the layer is listed (Order), hidden if needed (OFF),
-    // and the view and print usages are applied automatically (AS)
-    const PDFDictionary* existingConfiguration = m_storage.getDictionaryFromObject(properties.get("D"));
-    PDFDictionaryBuilder configuration = existingConfiguration ? PDFDictionaryBuilder(*existingConfiguration) : PDFDictionaryBuilder();
-    appendToArray(configuration, "Order", groupObject);
-    if (!visible)
+    modifyOptionalContentProperties([&](PDFDictionaryBuilder& properties, PDFDictionaryBuilder& configuration)
     {
-        appendToArray(configuration, "OFF", groupObject);
-    }
+        appendToArray(properties, "OCGs", groupObject);
 
-    PDFArrayBuilder automaticStates;
-    bool hasViewEvent = false;
-    bool hasPrintEvent = false;
-    const PDFObject automaticStatesObject = m_storage.getObject(configuration.get("AS"));
-    if (const PDFArray* existingAutomaticStates = automaticStatesObject.isArray() ? automaticStatesObject.getArray() : nullptr)
-    {
-        for (size_t i = 0; i < existingAutomaticStates->getCount(); ++i)
+        // The new layer is at the top of the list shown to the user (Order), it is hidden
+        // if needed (OFF), and the view and print usages are applied automatically (AS)
+        const PDFObject orderObject = m_storage.getObject(configuration.get("Order"));
+        PDFArrayBuilder order;
+        order.appendItem(groupObject);
+        if (const PDFArray* existingOrder = orderObject.isArray() ? orderObject.getArray() : nullptr)
         {
-            const PDFObject usageObject = existingAutomaticStates->getItem(i);
-            const PDFDictionary* usage = m_storage.getDictionaryFromObject(usageObject);
-            if (!usage)
+            for (size_t i = 0; i < existingOrder->getCount(); ++i)
             {
-                automaticStates.appendItem(usageObject);
-                continue;
+                order.appendItem(existingOrder->getItem(i));
             }
-
-            const PDFObject event = m_storage.getObject(usage->get("Event"));
-            const bool isView = event.isName() && event.getString() == "View";
-            const bool isPrint = event.isName() && event.getString() == "Print";
-            hasViewEvent = hasViewEvent || isView;
-            hasPrintEvent = hasPrintEvent || isPrint;
-
-            PDFDictionaryBuilder updatedUsage(*usage);
-            if (isView || isPrint)
-            {
-                appendToArray(updatedUsage, "OCGs", groupObject);
-            }
-            automaticStates.appendItem(PDFObject::createDictionary(std::move(updatedUsage)));
         }
-    }
+        configuration.setEntry(PDFInplaceOrMemoryString("Order"), PDFObject::createArray(std::move(order)));
 
-    auto appendAutomaticState = [&automaticStates, &groupObject](const char* event)
-    {
-        PDFArrayBuilder groups;
-        groups.appendItem(groupObject);
-        PDFArrayBuilder category;
-        category.appendItem(PDFObject::createName(QByteArray(event)));
-        PDFDictionaryBuilder usage;
-        usage.setEntry(PDFInplaceOrMemoryString("Event"), PDFObject::createName(QByteArray(event)));
-        usage.setEntry(PDFInplaceOrMemoryString("OCGs"), PDFObject::createArray(std::move(groups)));
-        usage.setEntry(PDFInplaceOrMemoryString("Category"), PDFObject::createArray(std::move(category)));
-        automaticStates.appendItem(PDFObject::createDictionary(std::move(usage)));
-    };
+        if (!visible)
+        {
+            appendToArray(configuration, "OFF", groupObject);
+        }
 
-    if (!hasViewEvent)
-    {
-        appendAutomaticState("View");
-    }
-    if (!hasPrintEvent)
-    {
-        appendAutomaticState("Print");
-    }
-    configuration.setEntry(PDFInplaceOrMemoryString("AS"), PDFObject::createArray(std::move(automaticStates)));
+        PDFArrayBuilder automaticStates;
+        bool hasViewEvent = false;
+        bool hasPrintEvent = false;
+        const PDFObject automaticStatesObject = m_storage.getObject(configuration.get("AS"));
+        if (const PDFArray* existingAutomaticStates = automaticStatesObject.isArray() ? automaticStatesObject.getArray() : nullptr)
+        {
+            for (size_t i = 0; i < existingAutomaticStates->getCount(); ++i)
+            {
+                const PDFObject usageObject = existingAutomaticStates->getItem(i);
+                const PDFDictionary* usage = m_storage.getDictionaryFromObject(usageObject);
+                if (!usage)
+                {
+                    automaticStates.appendItem(usageObject);
+                    continue;
+                }
 
-    const PDFObject configurationObject = properties.get("D");
-    if (existingConfiguration && configurationObject.isReference())
-    {
-        setObject(configurationObject.getReference(), PDFObject::createDictionary(std::move(configuration)));
-    }
-    else
-    {
-        properties.setEntry(PDFInplaceOrMemoryString("D"), PDFObject::createDictionary(std::move(configuration)));
-    }
+                const PDFObject event = m_storage.getObject(usage->get("Event"));
+                const bool isView = event.isName() && event.getString() == "View";
+                const bool isPrint = event.isName() && event.getString() == "Print";
+                hasViewEvent = hasViewEvent || isView;
+                hasPrintEvent = hasPrintEvent || isPrint;
 
-    PDFObject updatedProperties = PDFObject::createDictionary(std::move(properties));
-    if (existingProperties && propertiesObject.isReference())
-    {
-        setObject(propertiesObject.getReference(), std::move(updatedProperties));
-    }
-    else
-    {
-        setCatalogOptionalContentProperties(addObject(std::move(updatedProperties)));
-    }
+                PDFDictionaryBuilder updatedUsage(*usage);
+                if (isView || isPrint)
+                {
+                    appendToArray(updatedUsage, "OCGs", groupObject);
+                }
+                automaticStates.appendItem(PDFObject::createDictionary(std::move(updatedUsage)));
+            }
+        }
+
+        auto appendAutomaticState = [&automaticStates, &groupObject](const char* event)
+        {
+            PDFArrayBuilder groups;
+            groups.appendItem(groupObject);
+            PDFArrayBuilder category;
+            category.appendItem(PDFObject::createName(QByteArray(event)));
+            PDFDictionaryBuilder usage;
+            usage.setEntry(PDFInplaceOrMemoryString("Event"), PDFObject::createName(QByteArray(event)));
+            usage.setEntry(PDFInplaceOrMemoryString("OCGs"), PDFObject::createArray(std::move(groups)));
+            usage.setEntry(PDFInplaceOrMemoryString("Category"), PDFObject::createArray(std::move(category)));
+            automaticStates.appendItem(PDFObject::createDictionary(std::move(usage)));
+        };
+
+        if (!hasViewEvent)
+        {
+            appendAutomaticState("View");
+        }
+        if (!hasPrintEvent)
+        {
+            appendAutomaticState("Print");
+        }
+        configuration.setEntry(PDFInplaceOrMemoryString("AS"), PDFObject::createArray(std::move(automaticStates)));
+    });
 
     return group;
 }
@@ -3094,6 +3115,411 @@ PDFObjectReference PDFDocumentBuilder::findOptionalContentGroup(QString name) co
     return PDFObjectReference();
 }
 
+std::vector<PDFObjectReference> PDFDocumentBuilder::getOptionalContentGroupsInOrder() const
+{
+    PDFDocumentDataLoaderDecorator loader(&m_storage);
+    const PDFDictionary* catalog = m_storage.getDictionaryFromObject(m_storage.getObjectByReference(getCatalogReference()));
+    const PDFDictionary* properties = catalog ? m_storage.getDictionaryFromObject(catalog->get("OCProperties")) : nullptr;
+    if (!properties)
+    {
+        return { };
+    }
+
+    const std::vector<PDFObjectReference> groups = loader.readReferenceArrayFromDictionary(properties, "OCGs");
+    const std::set<PDFObjectReference> groupSet(groups.cbegin(), groups.cend());
+    const PDFDictionary* configuration = m_storage.getDictionaryFromObject(properties->get("D"));
+
+    // The list can contain groups of layers (nested arrays, a group can start with its name)
+    std::vector<PDFObjectReference> result;
+    std::set<PDFObjectReference> usedReferences;
+    std::function<void(const PDFObject&)> addItems = [&](const PDFObject& object)
+    {
+        if (object.isReference())
+        {
+            const PDFObjectReference reference = object.getReference();
+            if (groupSet.count(reference))
+            {
+                if (std::find(result.cbegin(), result.cend(), reference) == result.cend())
+                {
+                    result.push_back(reference);
+                }
+                return;
+            }
+
+            if (!usedReferences.insert(reference).second)
+            {
+                // Cyclic references
+                return;
+            }
+        }
+
+        const PDFObject dereferencedObject = m_storage.getObject(object);
+        if (const PDFArray* array = dereferencedObject.isArray() ? dereferencedObject.getArray() : nullptr)
+        {
+            for (size_t i = 0; i < array->getCount(); ++i)
+            {
+                addItems(array->getItem(i));
+            }
+        }
+    };
+
+    if (configuration)
+    {
+        addItems(configuration->get("Order"));
+    }
+
+    for (const PDFObjectReference& group : groups)
+    {
+        if (std::find(result.cbegin(), result.cend(), group) == result.cend())
+        {
+            result.push_back(group);
+        }
+    }
+
+    return result;
+}
+
+void PDFDocumentBuilder::setOptionalContentGroupName(PDFObjectReference optionalContentGroup, QString name)
+{
+    PDFObjectFactory objectBuilder;
+    objectBuilder.beginDictionary();
+    objectBuilder.beginDictionaryItem("Name");
+    objectBuilder << name;
+    objectBuilder.endDictionaryItem();
+    objectBuilder.endDictionary();
+    mergeTo(optionalContentGroup, objectBuilder.takeObject());
+}
+
+bool PDFDocumentBuilder::isOptionalContentGroupPrinted(PDFObjectReference optionalContentGroup) const
+{
+    const PDFDictionary* group = m_storage.getDictionaryFromObject(m_storage.getObjectByReference(optionalContentGroup));
+    const PDFDictionary* usage = group ? m_storage.getDictionaryFromObject(group->get("Usage")) : nullptr;
+    const PDFDictionary* print = usage ? m_storage.getDictionaryFromObject(usage->get("Print")) : nullptr;
+    const PDFObject state = print ? m_storage.getObject(print->get("PrintState")) : PDFObject();
+    return !(state.isName() && state.getString() == "OFF");
+}
+
+void PDFDocumentBuilder::setOptionalContentGroupPrinted(PDFObjectReference optionalContentGroup, bool printed)
+{
+    // The print state of the usage of the layer
+    const PDFDictionary* group = m_storage.getDictionaryFromObject(m_storage.getObjectByReference(optionalContentGroup));
+    if (!group)
+    {
+        return;
+    }
+
+    const PDFDictionary* existingUsage = m_storage.getDictionaryFromObject(group->get("Usage"));
+    PDFDictionaryBuilder usage = existingUsage ? PDFDictionaryBuilder(*existingUsage) : PDFDictionaryBuilder();
+    const PDFDictionary* existingPrint = m_storage.getDictionaryFromObject(usage.get("Print"));
+    PDFDictionaryBuilder print = existingPrint ? PDFDictionaryBuilder(*existingPrint) : PDFDictionaryBuilder();
+    print.setEntry(PDFInplaceOrMemoryString("PrintState"), PDFObject::createName(QByteArray(printed ? "ON" : "OFF")));
+    usage.setEntry(PDFInplaceOrMemoryString("Print"), PDFObject::createDictionary(std::move(print)));
+    PDFDictionaryBuilder updatedGroup(*group);
+    updatedGroup.setEntry(PDFInplaceOrMemoryString("Usage"), PDFObject::createDictionary(std::move(usage)));
+    setObject(optionalContentGroup, PDFObject::createDictionary(std::move(updatedGroup)));
+
+    // The print usage is applied by the automatic states of the print event, the layer
+    // is added to them (a layer of another application may not be there)
+    const PDFObject groupObject = PDFObject::createReference(optionalContentGroup);
+    modifyOptionalContentProperties([&](PDFDictionaryBuilder&, PDFDictionaryBuilder& configuration)
+    {
+        PDFArrayBuilder automaticStates;
+        bool hasPrintEvent = false;
+        const PDFObject automaticStatesObject = m_storage.getObject(configuration.get("AS"));
+        if (const PDFArray* existingAutomaticStates = automaticStatesObject.isArray() ? automaticStatesObject.getArray() : nullptr)
+        {
+            for (size_t i = 0; i < existingAutomaticStates->getCount(); ++i)
+            {
+                const PDFObject usageObject = existingAutomaticStates->getItem(i);
+                const PDFDictionary* usageApplication = m_storage.getDictionaryFromObject(usageObject);
+                const PDFObject event = usageApplication ? m_storage.getObject(usageApplication->get("Event")) : PDFObject();
+                if (!event.isName() || event.getString() != "Print")
+                {
+                    automaticStates.appendItem(usageObject);
+                    continue;
+                }
+
+                hasPrintEvent = true;
+                PDFDictionaryBuilder updatedUsage(*usageApplication);
+                const PDFObject groupsObject = m_storage.getObject(updatedUsage.get("OCGs"));
+                PDFArrayBuilder groups = groupsObject.isArray() ? PDFArrayBuilder(*groupsObject.getArray()) : PDFArrayBuilder();
+                bool isInGroups = false;
+                for (size_t j = 0; j < groups.getCount(); ++j)
+                {
+                    const PDFObject& item = groups.getItem(j);
+                    isInGroups = isInGroups || (item.isReference() && item.getReference() == optionalContentGroup);
+                }
+                if (!isInGroups)
+                {
+                    groups.appendItem(groupObject);
+                }
+                updatedUsage.setEntry(PDFInplaceOrMemoryString("OCGs"), PDFObject::createArray(std::move(groups)));
+                automaticStates.appendItem(PDFObject::createDictionary(std::move(updatedUsage)));
+            }
+        }
+
+        if (!hasPrintEvent)
+        {
+            PDFArrayBuilder groups;
+            groups.appendItem(groupObject);
+            PDFArrayBuilder category;
+            category.appendItem(PDFObject::createName(QByteArray("Print")));
+            PDFDictionaryBuilder usageApplication;
+            usageApplication.setEntry(PDFInplaceOrMemoryString("Event"), PDFObject::createName(QByteArray("Print")));
+            usageApplication.setEntry(PDFInplaceOrMemoryString("OCGs"), PDFObject::createArray(std::move(groups)));
+            usageApplication.setEntry(PDFInplaceOrMemoryString("Category"), PDFObject::createArray(std::move(category)));
+            automaticStates.appendItem(PDFObject::createDictionary(std::move(usageApplication)));
+        }
+
+        configuration.setEntry(PDFInplaceOrMemoryString("AS"), PDFObject::createArray(std::move(automaticStates)));
+    });
+}
+
+void PDFDocumentBuilder::removeOptionalContentGroup(PDFObjectReference optionalContentGroup)
+{
+    // Removes the layer from an array, the nested arrays too (groups of the list of
+    // layers, radio button groups); a referenced nested array is written inline
+    std::set<PDFObjectReference> usedReferences;
+    std::function<PDFObject(const PDFObject&)> removeFromArray = [&](const PDFObject& object) -> PDFObject
+    {
+        if (object.isReference() && !usedReferences.insert(object.getReference()).second)
+        {
+            return object;
+        }
+
+        const PDFObject dereferencedObject = m_storage.getObject(object);
+        const PDFArray* array = dereferencedObject.isArray() ? dereferencedObject.getArray() : nullptr;
+        if (!array)
+        {
+            return object;
+        }
+
+        PDFArrayBuilder result;
+        for (size_t i = 0; i < array->getCount(); ++i)
+        {
+            const PDFObject& item = array->getItem(i);
+            if (item.isReference() && item.getReference() == optionalContentGroup)
+            {
+                continue;
+            }
+            result.appendItem(m_storage.getObject(item).isArray() ? removeFromArray(item) : item);
+        }
+        return PDFObject::createArray(std::move(result));
+    };
+
+    auto removeFromEntry = [&](PDFDictionaryBuilder& dictionary, const char* key)
+    {
+        if (!dictionary.get(key).isNull())
+        {
+            usedReferences.clear();
+            dictionary.setEntry(PDFInplaceOrMemoryString(key), removeFromArray(dictionary.get(key)));
+        }
+    };
+
+    modifyOptionalContentProperties([&](PDFDictionaryBuilder& properties, PDFDictionaryBuilder& configuration)
+    {
+        removeFromEntry(properties, "OCGs");
+        for (const char* key : { "Order", "ON", "OFF", "Locked", "RBGroups" })
+        {
+            removeFromEntry(configuration, key);
+        }
+
+        const PDFObject automaticStatesObject = m_storage.getObject(configuration.get("AS"));
+        if (const PDFArray* automaticStates = automaticStatesObject.isArray() ? automaticStatesObject.getArray() : nullptr)
+        {
+            PDFArrayBuilder updatedAutomaticStates;
+            for (size_t i = 0; i < automaticStates->getCount(); ++i)
+            {
+                const PDFObject usageObject = automaticStates->getItem(i);
+                if (const PDFDictionary* usage = m_storage.getDictionaryFromObject(usageObject))
+                {
+                    PDFDictionaryBuilder updatedUsage(*usage);
+                    removeFromEntry(updatedUsage, "OCGs");
+                    updatedAutomaticStates.appendItem(PDFObject::createDictionary(std::move(updatedUsage)));
+                }
+                else
+                {
+                    updatedAutomaticStates.appendItem(usageObject);
+                }
+            }
+            configuration.setEntry(PDFInplaceOrMemoryString("AS"), PDFObject::createArray(std::move(updatedAutomaticStates)));
+        }
+    });
+}
+
+bool PDFDocumentBuilder::moveOptionalContentGroup(PDFObjectReference optionalContentGroup, int delta)
+{
+    const PDFDictionary* catalog = m_storage.getDictionaryFromObject(m_storage.getObjectByReference(getCatalogReference()));
+    const PDFDictionary* properties = catalog ? m_storage.getDictionaryFromObject(catalog->get("OCProperties")) : nullptr;
+    const PDFDictionary* configuration = properties ? m_storage.getDictionaryFromObject(properties->get("D")) : nullptr;
+    if (!configuration || delta == 0)
+    {
+        return false;
+    }
+
+    // The layer is moved in the array (of the list, or of a group of the list), which contains it
+    bool isMoved = false;
+    std::set<PDFObjectReference> usedReferences;
+    std::function<PDFObject(const PDFObject&)> move = [&](const PDFObject& object) -> PDFObject
+    {
+        if (object.isReference() && !usedReferences.insert(object.getReference()).second)
+        {
+            return object;
+        }
+
+        const PDFObject dereferencedObject = m_storage.getObject(object);
+        const PDFArray* array = dereferencedObject.isArray() ? dereferencedObject.getArray() : nullptr;
+        if (!array)
+        {
+            return object;
+        }
+
+        std::vector<PDFObject> items;
+        for (size_t i = 0; i < array->getCount(); ++i)
+        {
+            items.push_back(array->getItem(i));
+        }
+
+        auto it = std::find_if(items.begin(), items.end(), [optionalContentGroup](const PDFObject& item) { return item.isReference() && item.getReference() == optionalContentGroup; });
+        if (it != items.end())
+        {
+            // The first item of a group can be its name, it stays the first
+            const int firstIndex = (!items.empty() && m_storage.getObject(items.front()).isString()) ? 1 : 0;
+            const int index = int(std::distance(items.begin(), it));
+            const int newIndex = index + delta;
+            if (newIndex < firstIndex || newIndex >= int(items.size()))
+            {
+                return object;
+            }
+
+            PDFObject item = *it;
+            items.erase(it);
+            items.insert(items.begin() + newIndex, item);
+            isMoved = true;
+        }
+        else
+        {
+            for (PDFObject& item : items)
+            {
+                if (!isMoved && m_storage.getObject(item).isArray())
+                {
+                    item = move(item);
+                }
+            }
+
+            if (!isMoved)
+            {
+                return object;
+            }
+        }
+
+        PDFArrayBuilder result;
+        for (const PDFObject& item : items)
+        {
+            result.appendItem(item);
+        }
+        return PDFObject::createArray(std::move(result));
+    };
+
+    PDFObject order = move(configuration->get("Order"));
+    if (!isMoved)
+    {
+        return false;
+    }
+
+    modifyOptionalContentProperties([&](PDFDictionaryBuilder&, PDFDictionaryBuilder& updatedConfiguration)
+    {
+        updatedConfiguration.setEntry(PDFInplaceOrMemoryString("Order"), std::move(order));
+    });
+    reorderAnnotationsByLayers();
+    return true;
+}
+
+void PDFDocumentBuilder::reorderAnnotationsByLayers()
+{
+    // The top layer of the list is drawn last (above the other layers)
+    const std::vector<PDFObjectReference> layers = getOptionalContentGroupsInOrder();
+    std::map<PDFObjectReference, size_t> ranks;
+    for (size_t i = 0; i < layers.size(); ++i)
+    {
+        ranks[layers[i]] = layers.size() - i;
+    }
+
+    PDFDocumentDataLoaderDecorator loader(&m_storage);
+    for (const PDFObjectReference& page : getPages())
+    {
+        const PDFDictionary* pageDictionary = m_storage.getDictionaryFromObject(m_storage.getObjectByReference(page));
+        if (!pageDictionary)
+        {
+            continue;
+        }
+
+        std::vector<PDFObjectReference> annotations = loader.readReferenceArrayFromDictionary(pageDictionary, "Annots");
+
+        // The places of the annotations of the layers, the other annotations stay
+        std::vector<size_t> places;
+        std::vector<std::pair<size_t, PDFObjectReference>> layerAnnotations;
+        for (size_t i = 0; i < annotations.size(); ++i)
+        {
+            const PDFDictionary* annotationDictionary = m_storage.getDictionaryFromObject(m_storage.getObjectByReference(annotations[i]));
+            const PDFObject& optionalContent = annotationDictionary ? annotationDictionary->get("OC") : PDFObject();
+            auto it = optionalContent.isReference() ? ranks.find(optionalContent.getReference()) : ranks.end();
+            if (it != ranks.end())
+            {
+                places.push_back(i);
+                layerAnnotations.emplace_back(it->second, annotations[i]);
+            }
+        }
+
+        std::stable_sort(layerAnnotations.begin(), layerAnnotations.end(), [](const auto& left, const auto& right) { return left.first < right.first; });
+
+        bool isChanged = false;
+        for (size_t i = 0; i < places.size(); ++i)
+        {
+            isChanged = isChanged || annotations[places[i]] != layerAnnotations[i].second;
+            annotations[places[i]] = layerAnnotations[i].second;
+        }
+
+        if (isChanged)
+        {
+            PDFObjectFactory factory;
+            factory.beginDictionary();
+            factory.beginDictionaryItem("Annots");
+            factory << annotations;
+            factory.endDictionaryItem();
+            factory.endDictionary();
+            mergeTo(page, factory.takeObject());
+        }
+    }
+}
+
+std::vector<std::pair<PDFObjectReference, PDFObjectReference>> PDFDocumentBuilder::getOptionalContentGroupAnnotations(PDFObjectReference optionalContentGroup) const
+{
+    std::vector<std::pair<PDFObjectReference, PDFObjectReference>> result;
+
+    PDFDocumentDataLoaderDecorator loader(&m_storage);
+    for (const PDFObjectReference& page : getPages())
+    {
+        const PDFDictionary* pageDictionary = m_storage.getDictionaryFromObject(m_storage.getObjectByReference(page));
+        if (!pageDictionary)
+        {
+            continue;
+        }
+
+        for (const PDFObjectReference& annotation : loader.readReferenceArrayFromDictionary(pageDictionary, "Annots"))
+        {
+            const PDFDictionary* annotationDictionary = m_storage.getDictionaryFromObject(m_storage.getObjectByReference(annotation));
+            const PDFObject& optionalContent = annotationDictionary ? annotationDictionary->get("OC") : PDFObject();
+            if (optionalContent.isReference() && optionalContent.getReference() == optionalContentGroup)
+            {
+                result.emplace_back(page, annotation);
+            }
+        }
+    }
+
+    return result;
+}
+
 void PDFDocumentBuilder::setAnnotationOptionalContent(PDFObjectReference annotation,
                                                       PDFObjectReference optionalContentGroup)
 {
@@ -3115,13 +3541,27 @@ void PDFDocumentBuilder::setAnnotationOptionalContent(PDFObjectReference annotat
     mergeTo(annotation, annotationObject);
 }
 
-PDFObjectReference PDFDocumentBuilder::setAnnotationNoteLayer(PDFObjectReference annotation)
+PDFObjectReference PDFDocumentBuilder::setAnnotationNoteLayer(PDFObjectReference annotation, PDFObjectReference activeLayer)
 {
-    const QString name = QString::fromLatin1(NOTE_LAYER_NAME);
-    PDFObjectReference layer = findOptionalContentGroup(name);
+    // The active layer, when it is a layer of the document
+    PDFObjectReference layer;
+    if (activeLayer.isValid())
+    {
+        const std::vector<PDFObjectReference> layers = getOptionalContentGroupsInOrder();
+        if (std::find(layers.cbegin(), layers.cend(), activeLayer) != layers.cend())
+        {
+            layer = activeLayer;
+        }
+    }
+
     if (!layer.isValid())
     {
-        layer = createOptionalContentGroup(name);
+        const QString name = QString::fromLatin1(NOTE_LAYER_NAME);
+        layer = findOptionalContentGroup(name);
+        if (!layer.isValid())
+        {
+            layer = createOptionalContentGroup(name);
+        }
     }
 
     setAnnotationOptionalContent(annotation, layer);

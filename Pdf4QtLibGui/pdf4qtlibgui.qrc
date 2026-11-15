@@ -71,6 +71,9 @@
         <file>resources/annot-highlighter.svg</file>
         <file>resources/annot-eraser.svg</file>
         <file>resources/annot-stroke-eraser.svg</file>
+        <file>resources/sidebar-layers.svg</file>
+        <file>resources/layer-add.svg</file>
+        <file>resources/layer-remove.svg</file>
         <file>resources/annot-inline-text.svg</file>
         <file>resources/annot-polygon.svg</file>
         <file>resources/annot-polyline.svg</file>

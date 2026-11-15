@@ -33,6 +33,7 @@
 #include "pdfobjecteditormodel.h"
 #include "pdffile.h"
 #include "pdfadvancedtools.h"
+#include "pdfitemmodels.h"
 
 #include <QtTest>
 #include <QAction>
@@ -142,6 +143,9 @@ private slots:
     void annotationIsHiddenWithItsLayer();
     void drawingToolsPutTheirAnnotationsInTheNoteLayer();
     void layerStatesFollowTheModifiedDocument();
+    void layersAreRenamedPrintedMovedAndRemoved();
+    void activeLayerGetsTheNewAnnotations();
+    void layerModelShowsTheLayers();
     void colorOfInlineTextChangesItsText();
     void attachedFileIsReplaced();
     void pointSnapsToOtherAnnotation();
@@ -3568,6 +3572,203 @@ void AnnotationSelectionTest::drawingToolsPutTheirAnnotationsInTheNoteLayer()
         const PDFAnnotationPtr annotation = PDFAnnotation::parse(&fixture.document->getStorage(), reference);
         QCOMPARE(annotation->getOptionalContent(), notes);
     }
+}
+
+void AnnotationSelectionTest::layersAreRenamedPrintedMovedAndRemoved()
+{
+    PDFDocumentBuilder builder;
+    const PDFObjectReference page = builder.appendPage(QRectF(0, 0, 200, 200));
+    const PDFObjectReference notes = builder.createOptionalContentGroup("Notes");
+    const PDFObjectReference answers = builder.createOptionalContentGroup("Answers");
+    const PDFObjectReference drafts = builder.createOptionalContentGroup("Drafts");
+
+    // A new layer is at the top of the list
+    QCOMPARE(builder.getOptionalContentGroupsInOrder(), (std::vector<PDFObjectReference>{ drafts, answers, notes }));
+
+    auto square = [&](PDFObjectReference layer)
+    {
+        const PDFObjectReference annotation = builder.createAnnotationSquare(page, QRectF(10, 10, 20, 20), 1.0, Qt::black, Qt::black, "Title", QString(), QString());
+        if (layer.isValid())
+        {
+            builder.setAnnotationOptionalContent(annotation, layer);
+        }
+        return annotation;
+    };
+    const PDFObjectReference inNotes = square(notes);
+    const PDFObjectReference inDrafts = square(drafts);
+    const PDFObjectReference withoutLayer = square(PDFObjectReference());
+    const PDFObjectReference inAnswers = square(answers);
+    QCOMPARE(builder.getOptionalContentGroupAnnotations(notes), (std::vector<std::pair<PDFObjectReference, PDFObjectReference>>{ { page, inNotes } }));
+
+    auto annotations = [&builder, page]()
+    {
+        const PDFDocument document = builder.build();
+        return document.getCatalog()->getPage(0)->getAnnotations();
+    };
+    Q_UNUSED(page);
+
+    // The annotations are drawn in the order of the layers (the top layer last), the
+    // annotation without a layer keeps its place
+    builder.reorderAnnotationsByLayers();
+    QCOMPARE(annotations(), (std::vector<PDFObjectReference>{ inNotes, inAnswers, withoutLayer, inDrafts }));
+
+    // The bottom layer is moved to the top: its annotation is drawn last
+    QVERIFY(builder.moveOptionalContentGroup(notes, -2));
+    QCOMPARE(builder.getOptionalContentGroupsInOrder(), (std::vector<PDFObjectReference>{ notes, drafts, answers }));
+    QCOMPARE(annotations(), (std::vector<PDFObjectReference>{ inAnswers, inDrafts, withoutLayer, inNotes }));
+    QVERIFY(!builder.moveOptionalContentGroup(notes, -1));
+    QVERIFY(!builder.moveOptionalContentGroup(answers, 1));
+    QVERIFY(builder.moveOptionalContentGroup(answers, -1));
+    QCOMPARE(builder.getOptionalContentGroupsInOrder(), (std::vector<PDFObjectReference>{ notes, answers, drafts }));
+
+    // Renamed, not printed (shown in the view)
+    builder.setOptionalContentGroupName(answers, "Solutions");
+    QVERIFY(builder.isOptionalContentGroupPrinted(answers));
+    builder.setOptionalContentGroupPrinted(answers, false);
+    QVERIFY(!builder.isOptionalContentGroupPrinted(answers));
+    {
+        const PDFDocument document = builder.build();
+        const PDFOptionalContentProperties* properties = document.getCatalog()->getOptionalContentProperties();
+        QCOMPARE(properties->getOptionalContentGroup(answers).getName(), QString("Solutions"));
+        PDFOptionalContentActivity printActivity(&document, OCUsage::Print, nullptr);
+        QCOMPARE(printActivity.getState(answers), OCState::OFF);
+        QCOMPARE(printActivity.getState(notes), OCState::ON);
+        PDFOptionalContentActivity viewActivity(&document, OCUsage::View, nullptr);
+        QCOMPARE(viewActivity.getState(answers), OCState::ON);
+    }
+    builder.setOptionalContentGroupPrinted(answers, true);
+    QVERIFY(builder.isOptionalContentGroupPrinted(answers));
+
+    // Removed from the list and from the configuration, the other layers stay
+    builder.removeOptionalContentGroup(drafts);
+    QCOMPARE(builder.getOptionalContentGroupsInOrder(), (std::vector<PDFObjectReference>{ notes, answers }));
+    const PDFDocument document = builder.build();
+    const PDFOptionalContentProperties* properties = document.getCatalog()->getOptionalContentProperties();
+    QVERIFY(properties->isValid());
+    QVERIFY(!properties->hasOptionalContentGroup(drafts));
+    for (const PDFOptionalContentConfiguration::UsageApplication& usage : properties->getDefaultConfiguration().getUsageApplications())
+    {
+        QVERIFY(std::find(usage.optionalContentGroups.cbegin(), usage.optionalContentGroups.cend(), drafts) == usage.optionalContentGroups.cend());
+    }
+    QCOMPARE(properties->findOptionalContentGroup("Solutions"), answers);
+}
+
+void AnnotationSelectionTest::activeLayerGetsTheNewAnnotations()
+{
+    PDFDocumentBuilder builder;
+    builder.appendPage(QRectF(0, 0, 200, 200));
+    const PDFObjectReference notes = builder.createOptionalContentGroup("Notes");
+    const PDFObjectReference answers = builder.createOptionalContentGroup("Answers");
+    SelectionFixture fixture(builder.build());
+
+    // Without a choice, the active layer is the note layer
+    PDFOptionalContentActivity activity(fixture.document.data(), OCUsage::View, nullptr);
+    QCOMPARE(activity.getActiveLayer(), notes);
+    QSignalSpy activeLayerChanged(&activity, &PDFOptionalContentActivity::activeLayerChanged);
+    activity.setActiveLayer(answers);
+    QCOMPARE(activity.getActiveLayer(), answers);
+    QCOMPARE(activeLayerChanged.count(), 1);
+
+    fixture.apply(PDFModifiedDocument());
+    fixture.apply(PDFModifiedDocument(fixture.document, &activity));
+    QCOMPARE(fixture.widget.getDrawWidgetProxy()->getActiveLayer(), answers);
+
+    // The pen draws in the active layer
+    QAction action;
+    action.setCheckable(true);
+    PDFCreateFreehandCurveTool tool(fixture.widget.getDrawWidgetProxy(), &fixture.tools, &action, nullptr, PDFCreateFreehandCurveTool::Type::Pen);
+    QObject::connect(&fixture.tools, &PDFToolManager::documentModified, &tool, [&](PDFModifiedDocument modified)
+    {
+        fixture.document = modified;
+        activity.setDocument(fixture.document.data());
+        fixture.apply(PDFModifiedDocument(fixture.document, &activity, modified.getFlags()));
+        tool.setDocument(PDFModifiedDocument(fixture.document, &activity, modified.getFlags()));
+    });
+    tool.setDocument(PDFModifiedDocument(fixture.document, &activity));
+    tool.setActive(true);
+
+    auto drawStroke = [&](PDFReal y)
+    {
+        const QPoint start = fixture.device(QPointF(20, y));
+        QMouseEvent press(QEvent::MouseButtonPress, start, fixture.widget.mapToGlobal(start), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+        tool.mousePressEvent(&fixture.widget, &press);
+        for (PDFReal x = 30; x <= 120; x += 10)
+        {
+            const QPoint point = fixture.device(QPointF(x, y));
+            QMouseEvent move(QEvent::MouseMove, point, fixture.widget.mapToGlobal(point), Qt::NoButton, Qt::LeftButton, Qt::NoModifier);
+            tool.mouseMoveEvent(&fixture.widget, &move);
+        }
+        const QPoint end = fixture.device(QPointF(130, y));
+        QMouseEvent release(QEvent::MouseButtonRelease, end, fixture.widget.mapToGlobal(end), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+        tool.mouseReleaseEvent(&fixture.widget, &release);
+    };
+
+    drawStroke(100);
+    QCOMPARE(fixture.pageAnnotations().size(), size_t(1));
+    QCOMPARE(PDFAnnotation::parse(&fixture.document->getStorage(), fixture.pageAnnotations().back())->getOptionalContent(), answers);
+
+    // The active layer does not exist any more (another document): the note layer is used
+    activity.setActiveLayer(PDFObjectReference(9999, 0));
+    QCOMPARE(activity.getActiveLayer(), notes);
+    drawStroke(150);
+    QCOMPARE(PDFAnnotation::parse(&fixture.document->getStorage(), fixture.pageAnnotations().back())->getOptionalContent(), notes);
+
+    tool.setActive(false);
+    fixture.apply(PDFModifiedDocument());
+}
+
+void AnnotationSelectionTest::layerModelShowsTheLayers()
+{
+    PDFDocumentBuilder builder;
+    builder.appendPage(QRectF(0, 0, 200, 200));
+    const PDFObjectReference notes = builder.createOptionalContentGroup("Notes");
+    const PDFObjectReference answers = builder.createOptionalContentGroup("Answers", true, false);
+    const PDFDocument document = builder.build();
+    PDFOptionalContentActivity activity(&document, OCUsage::View, nullptr);
+
+    QImage image(16, 16, QImage::Format_ARGB32);
+    image.fill(Qt::red);
+    const QIcon icon(QPixmap::fromImage(image));
+
+    PDFOptionalContentTreeItemModel model(nullptr);
+    model.setIcons(icon, icon);
+    model.setEditable(true);
+    model.setDocument(PDFModifiedDocument(const_cast<PDFDocument*>(&document), &activity));
+    model.setActivity(&activity);
+
+    // Columns: eye, printer, name; the top layer first
+    QCOMPARE(model.columnCount(QModelIndex()), 3);
+    QCOMPARE(model.rowCount(QModelIndex()), 2);
+    QCOMPARE(model.getLayer(model.index(0, 0, QModelIndex())), answers);
+    QCOMPARE(model.getIndex(notes).row(), 1);
+    QCOMPARE(model.getIndex(notes).column(), int(PDFOptionalContentTreeItemModel::NameColumn));
+    QCOMPARE(model.getIndex(notes, PDFOptionalContentTreeItemModel::VisibleColumn).data(Qt::DisplayRole), QVariant());
+    QCOMPARE(model.getIndex(notes).data(Qt::DisplayRole).toString(), QString("Notes"));
+
+    // The active layer is bold
+    QVERIFY(model.getIndex(notes).data(Qt::FontRole).value<QFont>().bold());
+    QVERIFY(!model.getIndex(answers).data(Qt::FontRole).isValid());
+    activity.setActiveLayer(answers);
+    QVERIFY(model.getIndex(answers).data(Qt::FontRole).value<QFont>().bold());
+
+    // Shown and printed
+    QVERIFY(model.isLayerVisible(answers));
+    QVERIFY(!model.isLayerPrinted(answers));
+    QVERIFY(model.isLayerPrinted(notes));
+    QCOMPARE(model.getIndex(answers, PDFOptionalContentTreeItemModel::PrintColumn).data(Qt::AccessibleTextRole).toString(), QString("Not printed"));
+    activity.setState(answers, OCState::OFF);
+    QVERIFY(!model.isLayerVisible(answers));
+    QCOMPARE(model.getIndex(answers, PDFOptionalContentTreeItemModel::VisibleColumn).data(Qt::AccessibleTextRole).toString(), QString("Hidden"));
+    QVERIFY(!model.getIndex(answers, PDFOptionalContentTreeItemModel::VisibleColumn).data(Qt::DecorationRole).isNull());
+
+    // The name is edited in the name column only; the document is changed by the receiver of the signal
+    QVERIFY(model.flags(model.getIndex(notes)).testFlag(Qt::ItemIsEditable));
+    QVERIFY(!model.flags(model.getIndex(notes, PDFOptionalContentTreeItemModel::VisibleColumn)).testFlag(Qt::ItemIsEditable));
+    QSignalSpy renamed(&model, &PDFOptionalContentTreeItemModel::layerRenamed);
+    QVERIFY(model.setData(model.getIndex(notes), "Homework", Qt::EditRole));
+    QCOMPARE(renamed.count(), 1);
+    QCOMPARE(renamed.front().at(1).toString(), QString("Homework"));
+    QVERIFY(!model.setData(model.getIndex(notes), "  ", Qt::EditRole));
 }
 
 void AnnotationSelectionTest::layerStatesFollowTheModifiedDocument()
