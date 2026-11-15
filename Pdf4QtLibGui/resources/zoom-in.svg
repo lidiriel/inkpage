@@ -1,13 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Vrstva_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
-<g>
-	<path fill="none" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M9.2,11.7h5.001"/>
-	<path fill="none" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M11.701,14.2v-5"/>
-	<path fill="none" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M11.5,21
-		c5.247,0,9.5-4.254,9.5-9.5C21,6.253,16.746,2,11.5,2C6.253,2,2,6.253,2,11.5C2,16.746,6.253,21,11.5,21z"/>
-	<path fill="none" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M22,22l-2-2"/>
-</g>
+<!-- inkpage icon: Numix icon theme (Debian), 32/actions/zoom-in.svg. License: GPL-3.0-or-later (Numix, Satyajit Sahoo). See 3rdparty_licenses/icons_origin.txt -->
+<svg width="32" xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 0 32 32" xmlns:xlink="http://www.w3.org/1999/xlink">
+<path style="fill:#268bd2" d="M 6.308594 2 L 25.691406 2 C 28.070312 2 30 3.929688 30 6.308594 L 30 25.691406 C 30 28.070312 28.070312 30 25.691406 30 L 6.308594 30 C 3.929688 30 2 28.070312 2 25.691406 L 2 6.308594 C 2 3.929688 3.929688 2 6.308594 2 Z "/>
+<path style="fill:#fff;fill-opacity:.902" d="M 12 6 L 12 12 L 6 12 L 6 20 L 12 20 L 12 26 L 20 26 L 20 20 L 26 20 L 26 12 L 20 12 L 20 6 Z M 14 8 L 18 8 L 18 14 L 24 14 L 24 18 L 18 18 L 18 24 L 14 24 L 14 18 L 8 18 L 8 14 L 14 14 Z "/>
 </svg>

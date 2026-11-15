@@ -130,6 +130,21 @@ Pdf4QtLibGui/resources/shortcuts.png
 
 Numix icon theme
 ----------------
+Pdf4QtLibGui/resources/zoom-in.svg
+    from: Numix icon theme (Debian), 32/actions/zoom-in.svg
+    license: GPL-3.0-or-later (Numix, Satyajit Sahoo)
+Pdf4QtLibGui/resources/zoom-out.svg
+    from: Numix icon theme (Debian), 32/actions/zoom-out.svg
+    license: GPL-3.0-or-later (Numix, Satyajit Sahoo)
+Pdf4QtLibGui/resources/zoom-fit.svg
+    from: Numix icon theme (Debian), 32/actions/zoom-fit-best.svg
+    license: GPL-3.0-or-later (Numix, Satyajit Sahoo)
+Pdf4QtLibGui/resources/zoom-fit-horizontal.svg
+    from: Numix icon theme (Debian), 32/actions/zoom-fit-width.svg
+    license: GPL-3.0-or-later (Numix, Satyajit Sahoo)
+Pdf4QtLibGui/resources/zoom-fit-vertical.svg
+    from: Numix icon theme (Debian), 32/actions/zoom-fit-height.svg
+    license: GPL-3.0-or-later (Numix, Satyajit Sahoo)
 Pdf4QtLibGui/resources/find-next.svg
     from: Numix icon theme (Debian), 24/actions/go-next.svg
     license: GPL-3.0-or-later (Numix, Satyajit Sahoo)
