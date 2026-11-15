@@ -67,9 +67,10 @@ public:
 
 private:
     static constexpr int MARGIN = 6;
-    static constexpr int ICON_SIZE = 32;
+    static constexpr int ICON_SIZE = 16;
 
-    void drawStar(QPainter& painter, const QPointF& center, double size, const QColor& color) const;
+    /// Draws the star of a bookmark (the star of the Bookmarks button of the sidebar, in black)
+    void drawStar(QPainter& painter, const QRect& rectangle) const;
 
     QString getPageText(const PDFBookmarkManager::Bookmark& bookmark) const;
 

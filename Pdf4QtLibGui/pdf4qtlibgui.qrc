@@ -76,6 +76,7 @@
         <file>resources/layer-remove.svg</file>
         <file>resources/sticky-note-comment.svg</file>
         <file>resources/sticky-note-note.svg</file>
+        <file>resources/bookmark-item.svg</file>
         <file>resources/annot-inline-text.svg</file>
         <file>resources/annot-polygon.svg</file>
         <file>resources/annot-polyline.svg</file>

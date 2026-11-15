@@ -109,18 +109,12 @@ void PDFBookmarkItemDelegate::paint(QPainter* painter,
     QRect rect = options.rect;
     rect.marginsRemoved(QMargins(margin, margin, margin, margin));
 
-    QColor color = bookmark.isAuto ? QColor(0, 123, 255) : QColor(255, 159, 0);
-
-    if (options.state.testFlag(QStyle::State_Selected))
-    {
-        color = Qt::yellow;
-    }
-
+    // inkpage: a small black star, the star of the Bookmarks button of the sidebar
     QRect iconRect = rect;
     iconRect.setWidth(iconSize);
     iconRect.setHeight(iconSize);
-    iconRect.moveCenter(QPoint(rect.left() + iconSize / 2, rect.center().y()));
-    drawStar(*painter, iconRect.center(), iconRect.width() * 0.5, color);
+    iconRect.moveCenter(QPoint(rect.left() + margin + iconSize / 2, rect.center().y()));
+    drawStar(*painter, iconRect);
 
     QRect textRect = rect;
     textRect.setLeft(iconRect.right() + margin);
@@ -158,34 +152,10 @@ QSize PDFBookmarkItemDelegate::sizeHint(const QStyleOptionViewItem& option, cons
     return QSize(requiredWidth, requiredHeight);
 }
 
-void PDFBookmarkItemDelegate::drawStar(QPainter& painter, const QPointF& center, double size, const QColor& color) const
+void PDFBookmarkItemDelegate::drawStar(QPainter& painter, const QRect& rectangle) const
 {
-    pdf::PDFPainterStateGuard guard(&painter);
-
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(color);
-
-    QPainterPath path;
-    double angle = M_PI / 5;
-    double phase = -M_PI / 10;
-
-    for (int i = 0; i < 10; ++i)
-    {
-        double radius = (i % 2 == 0) ? size : size / 2.5;
-        QPointF point(radius * cos(i * angle + phase), radius * sin(i * angle + phase));
-        point += center;
-
-        if (i == 0)
-        {
-            path.moveTo(point);
-        }
-        else
-        {
-            path.lineTo(point);
-        }
-    }
-    path.closeSubpath();
-    painter.drawPath(path);
+    static const QIcon starIcon(":/resources/bookmark-item.svg");
+    starIcon.paint(&painter, rectangle);
 }
 
 QString PDFBookmarkItemDelegate::getPageText(const PDFBookmarkManager::Bookmark& bookmark) const
