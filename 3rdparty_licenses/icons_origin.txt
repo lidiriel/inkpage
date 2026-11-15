@@ -160,6 +160,9 @@ Pdf4QtLibGui/resources/encryption.svg
 
 Papirus icon theme
 ------------------
+Pdf4QtLibGui/resources/outline-item.svg
+    from: Papirus icon theme (Debian), 16x16/actions/bookmark.svg -> bookmarks.svg
+    license: GPL-3.0-only (Papirus, Alexey Varfolomeev)
 Pdf4QtLibGui/resources/bubble.svg
     from: Papirus icon theme (Debian), 32x32/apps/indicator-stickynotes.svg -> mynotes.svg
     license: GPL-3.0-only (Papirus, Alexey Varfolomeev)

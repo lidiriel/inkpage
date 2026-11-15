@@ -92,8 +92,8 @@ PDFSidebarWidget::PDFSidebarWidget(pdf::PDFDrawWidgetProxy* proxy,
 {
     ui->setupUi(this);
 
-    // Outline
-    QIcon outlineIcon(":/resources/outline.svg");
+    // Outline (inkpage: the items have their own icon, outline.svg is the icon of New Outline Item)
+    QIcon outlineIcon(":/resources/outline-item.svg");
     m_outlineTreeModel = new pdf::PDFOutlineTreeItemModel(qMove(outlineIcon), editableOutline, this);
     m_outlineSortProxyTreeModel = new QSortFilterProxyModel(this);
     m_outlineSortProxyTreeModel->setFilterKeyColumn(0);

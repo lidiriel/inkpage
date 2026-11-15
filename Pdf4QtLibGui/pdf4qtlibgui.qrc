@@ -115,6 +115,7 @@
         <file>resources/sidebar-visibility.svg</file>
         <file>resources/sidebar-annotations.svg</file>
         <file>resources/outline.svg</file>
+        <file>resources/outline-item.svg</file>
         <file>resources/sidebar-favourites.svg</file>
         <file>resources/bookmark.svg</file>
         <file>resources/bookmark-next.svg</file>
