@@ -179,6 +179,10 @@ Pdf4QtLibGui/resources/bookmark-item.svg
     from: Papirus icon theme (Debian), 32x32/places/folder-bookmark.svg -> user-bookmarks.svg
           (the star of sidebar-favourites.svg in black, by inkpage)
     license: GPL-3.0-only (Papirus, Alexey Varfolomeev)
+Pdf4QtLibGui/resources/select-table.svg
+    from: Papirus icon theme (Debian), 24x24/actions/table.svg
+          (translucent yellow selection rectangle added by inkpage, like select-text.svg)
+    license: GPL-3.0-only (Papirus, Alexey Varfolomeev)
 Pdf4QtLibGui/resources/sticky-note-comment.svg
     from: Papirus icon theme (Debian), 24x24/actions/edit-comment.svg -> dialog-messages.svg
     license: GPL-3.0-only (Papirus, Alexey Varfolomeev)
