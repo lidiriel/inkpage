@@ -2946,6 +2946,7 @@ void PDFProgramController::onActionOptionsTriggered()
     PDFViewerSettingsDialog dialog(m_settings->getSettings(), m_settings->getColorManagementSystemSettings(),
                                    otherSettings, m_certificateStore, m_actionManager->getActions(), m_CMSManager,
                                    m_enabledPlugins, m_plugins, m_mainWindow);
+    dialog.setToolBarManager(m_mainWindowInterface ? m_mainWindowInterface->getToolBarManager() : nullptr, m_mainWindow->menuBar());
     if (dialog.exec() == QDialog::Accepted)
     {
         const bool pluginsChanged = m_enabledPlugins != dialog.getEnabledPlugins();

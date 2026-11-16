@@ -29,6 +29,7 @@
 #include <QDialog>
 
 class QListWidgetItem;
+class QMenuBar;
 
 namespace Ui
 {
@@ -37,6 +38,9 @@ class PDFViewerSettingsDialog;
 
 namespace pdfviewer
 {
+
+class PDFToolBarManager;
+class PDFToolBarsSettingsWidget;
 
 class PDFViewerSettingsDialog : public QDialog
 {
@@ -85,8 +89,15 @@ public:
         FormSettings,
         SignatureSettings,
         PluginsSettings,
-        OCRSettings
+        OCRSettings,
+        ToolBarSettings
     };
+
+    /// Adds the page "UI - Toolbars", which edits the content of the toolbars
+    /// of the manager. The edited content is applied when the dialog is accepted.
+    /// \param manager Toolbar manager
+    /// \param menuBar Menu bar, its menus are the categories of the actions
+    void setToolBarManager(PDFToolBarManager* manager, const QMenuBar* menuBar);
 
     const PDFViewerSettings::Settings& getSettings() const { return m_settings; }
     const pdf::PDFCMSSettings& getCMSSettings() const { return m_cmsSettings; }
@@ -137,6 +148,8 @@ private:
     pdf::PDFCertificateStore m_certificateStore;
     QStringList m_enabledPlugins;
     pdf::PDFPluginInfos m_plugins;
+    QWidget* m_toolBarsPage;
+    PDFToolBarsSettingsWidget* m_toolBarsWidget;
 };
 
 }   // namespace pdfviewer

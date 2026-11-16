@@ -24,6 +24,7 @@
 #include "pdfdrawspacecontroller.h"
 #include "pdfoptionalcontent.h"
 #include "pdftoolbarmanager.h"
+#include "pdftoolbarssettingswidget.h"
 
 #include <QtTest>
 #include <QAction>
@@ -41,6 +42,11 @@
 #include <QFileDialog>
 #include <QLineEdit>
 #include <QTimer>
+#include <QComboBox>
+#include <QDialog>
+#include <QDialogButtonBox>
+#include <QListWidget>
+#include <QPushButton>
 
 #include <memory>
 
@@ -68,6 +74,7 @@ private slots:
     void sidebarTitleBarHasNavigation();
     void stickyNoteIsInInsertToolBar();
     void customizedToolBarsAreRestored();
+    void toolBarsPageOfOptions();
     void pageBackgrounds();
     void layersPage();
     void openFromMenu();
@@ -342,6 +349,79 @@ void EditorMainWindowTest::customizedToolBarsAreRestored()
 
     QSettings toolBarSettings = settings();
     toolBarSettings.remove("ToolBars");
+}
+
+void EditorMainWindowTest::toolBarsPageOfOptions()
+{
+    PDFEditorMainWindow window;
+    window.show();
+    QVERIFY(QTest::qWaitForWindowExposed(&window));
+
+    QStringList pageNames;
+    QStringList categoryNames;
+    bool hasBackground = false;
+    QTimer::singleShot(500, [&]()
+    {
+        QDialog* dialog = qobject_cast<QDialog*>(QApplication::activeModalWidget());
+        if (!dialog)
+        {
+            return;
+        }
+
+        QListWidget* pages = dialog->findChild<QListWidget*>("optionsPagesWidget");
+        for (int i = 0; pages && i < pages->count(); ++i)
+        {
+            pageNames << pages->item(i)->text();
+        }
+
+        PDFToolBarsSettingsWidget* widget = dialog->findChild<PDFToolBarsSettingsWidget*>();
+        if (!widget)
+        {
+            dialog->reject();
+            return;
+        }
+
+        QComboBox* categories = widget->findChild<QComboBox*>("toolBarsCategoryComboBox");
+        for (int i = 0; i < categories->count(); ++i)
+        {
+            categoryNames << categories->itemText(i);
+        }
+
+        // The background submenu of the Pages menu can be put in a toolbar
+        QListWidget* available = widget->findChild<QListWidget*>("toolBarsAvailableList");
+        for (int i = 0; i < available->count(); ++i)
+        {
+            hasBackground = hasBackground || available->item(i)->data(Qt::UserRole).toString() == "actionPageBackground";
+        }
+
+        // Pages toolbar: the first item is removed, then OK
+        QComboBox* toolBars = widget->findChild<QComboBox*>("toolBarsToolBarComboBox");
+        toolBars->setCurrentIndex(toolBars->findText("Pages"));
+        QListWidget* toolBarList = widget->findChild<QListWidget*>("toolBarsToolBarList");
+        toolBarList->setCurrentRow(0);
+        widget->findChild<QPushButton*>("toolBarsRemoveButton")->click();
+        dialog->findChild<QDialogButtonBox*>()->button(QDialogButtonBox::Ok)->click();
+    });
+    window.findChild<QAction*>("actionOptions")->trigger();
+
+    const qsizetype generalIndex = pageNames.indexOf("UI - General");
+    QVERIFY(generalIndex >= 0);
+    QCOMPARE(pageNames.value(generalIndex + 1), QString("UI - Toolbars"));
+    QVERIFY(categoryNames.contains("Pages > Background"));
+    QVERIFY(categoryNames.contains("Other Items"));
+    QCOMPARE(categoryNames.value(0), QString("All"));
+    QVERIFY(hasBackground);
+
+    // Applied and stored
+    QToolBar* pagesToolBar = window.findChild<QToolBar*>("PagesToolBar");
+    QStringList expectedLayout = window.getToolBarManager()->getDefaultLayout(pagesToolBar);
+    expectedLayout.removeFirst();
+    QCOMPARE(PDFToolBarManager::getLayout(pagesToolBar), expectedLayout);
+    QSettings toolBarSettings = settings();
+    QCOMPARE(toolBarSettings.value("ToolBars/PagesToolBar").toString(), expectedLayout.join(';'));
+    toolBarSettings.remove("ToolBars");
+
+    window.close();
 }
 
 void EditorMainWindowTest::pageBackgrounds()

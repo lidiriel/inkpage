@@ -63,6 +63,7 @@ class PDFUndoRedoManager;
 class PDFRecentFileManager;
 class PDFActionComboBox;
 class PDFFullscreenWidget;
+class PDFToolBarManager;
 
 class IMainWindow
 {
@@ -76,6 +77,9 @@ public:
     virtual void setDocument(const pdf::PDFModifiedDocument& document) = 0;
     virtual void adjustToolbar(QToolBar* toolbar) = 0;
     virtual pdf::PDFTextSelection getSelectedText() const = 0;
+
+    /// Returns the manager of the customizable toolbars (nullptr, if none)
+    virtual PDFToolBarManager* getToolBarManager() const { return nullptr; }
 };
 
 class PDF4QTLIBGUILIBSHARED_EXPORT PDFActionManager : public QObject

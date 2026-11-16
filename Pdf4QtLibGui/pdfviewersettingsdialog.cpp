@@ -25,6 +25,7 @@
 #include "pdfocrmodelmanager.h"
 #include "pdfocrlanguagesdialog.h"
 #include "ui_pdfviewersettingsdialog.h"
+#include "pdftoolbarssettingswidget.h"
 
 #include "pdfglobal.h"
 #include "pdfutils.h"
@@ -41,6 +42,7 @@
 #include <QListWidgetItem>
 #include <QDomDocument>
 #include <QStyledItemDelegate>
+#include <QVBoxLayout>
 
 #include "pdfdbgheap.h"
 
@@ -104,7 +106,9 @@ PDFViewerSettingsDialog::PDFViewerSettingsDialog(const PDFViewerSettings::Settin
     m_isLoadingData(false),
     m_certificateStore(certificateStore),
     m_enabledPlugins(enabledPlugins),
-    m_plugins(plugins)
+    m_plugins(plugins),
+    m_toolBarsPage(nullptr),
+    m_toolBarsWidget(nullptr)
 {
     ui->setupUi(this);
 
@@ -116,7 +120,7 @@ PDFViewerSettingsDialog::PDFViewerSettingsDialog(const PDFViewerSettings::Settin
     new QListWidgetItem(QIcon(":/resources/cms.svg"), tr("Colors | CMS"), ui->optionsPagesWidget, ColorManagementSystemSettings);
     new QListWidgetItem(QIcon(":/resources/cms.svg"), tr("Colors | Postprocessing"), ui->optionsPagesWidget, ColorPostprocessingSettings);
     new QListWidgetItem(QIcon(":/resources/security.svg"), tr("Security"), ui->optionsPagesWidget, SecuritySettings);
-    new QListWidgetItem(QIcon(":/resources/ui.svg"), tr("UI"), ui->optionsPagesWidget, UISettings);
+    new QListWidgetItem(QIcon(":/resources/ui.svg"), tr("UI - General"), ui->optionsPagesWidget, UISettings);
     new QListWidgetItem(QIcon(":/resources/form-settings.svg"), tr("Forms"), ui->optionsPagesWidget, FormSettings);
     new QListWidgetItem(QIcon(":/resources/signature.svg"), tr("Signature"), ui->optionsPagesWidget, SignatureSettings);
     new QListWidgetItem(QIcon(":/resources/plugins.svg"), tr("Plugins"), ui->optionsPagesWidget, PluginsSettings);
@@ -332,6 +336,10 @@ void PDFViewerSettingsDialog::on_optionsPagesWidget_currentItemChanged(QListWidg
 
         case OCRSettings:
             ui->stackedWidget->setCurrentWidget(ui->ocrPage);
+            break;
+
+        case ToolBarSettings:
+            ui->stackedWidget->setCurrentWidget(m_toolBarsPage);
             break;
 
         default:
@@ -932,8 +940,41 @@ void PDFViewerSettingsDialog::accept()
     if (saveActionShortcutsTable())
     {
         savePluginsTable();
+        if (m_toolBarsWidget)
+        {
+            m_toolBarsWidget->apply();
+        }
         QDialog::accept();
     }
+}
+
+void PDFViewerSettingsDialog::setToolBarManager(PDFToolBarManager* manager, const QMenuBar* menuBar)
+{
+    Q_ASSERT(!m_toolBarsWidget);
+    if (!manager)
+    {
+        return;
+    }
+
+    m_toolBarsPage = new QWidget(ui->stackedWidget);
+    m_toolBarsPage->setObjectName("toolBarsPage");
+    m_toolBarsWidget = new PDFToolBarsSettingsWidget(manager, menuBar, m_toolBarsPage);
+    QVBoxLayout* layout = new QVBoxLayout(m_toolBarsPage);
+    layout->addWidget(m_toolBarsWidget);
+    ui->stackedWidget->addWidget(m_toolBarsPage);
+
+    // After the general UI settings, with the same icon
+    int row = ui->optionsPagesWidget->count();
+    for (int i = 0; i < ui->optionsPagesWidget->count(); ++i)
+    {
+        if (ui->optionsPagesWidget->item(i)->type() == UISettings)
+        {
+            row = i + 1;
+            break;
+        }
+    }
+    QListWidgetItem* item = new QListWidgetItem(QIcon(":/resources/ui.svg"), tr("UI - Toolbars"), nullptr, ToolBarSettings);
+    ui->optionsPagesWidget->insertItem(row, item);
 }
 
 void PDFViewerSettingsDialog::reject()

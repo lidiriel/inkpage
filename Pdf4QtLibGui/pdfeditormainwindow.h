@@ -85,7 +85,7 @@ public:
     virtual void showEvent(QShowEvent* event) override;
 
     PDFProgramController* getProgramController() const { return m_programController; }
-    PDFToolBarManager* getToolBarManager() const { return m_toolBarManager; }
+    virtual PDFToolBarManager* getToolBarManager() const override final { return m_toolBarManager; }
 
     virtual void updateUI(bool fullUpdate) override;
     virtual QMenu* addToolMenu(QString name, pdf::PDFPlugin::PluginMenuLocation location) override;
