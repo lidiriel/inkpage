@@ -22,6 +22,7 @@
 
 #include "pdfeditormainwindow.h"
 #include "pdfannotationstyletoolbar.h"
+#include "pdftoolbarmanager.h"
 #include "ui_pdfeditormainwindow.h"
 
 #include "pdfaboutdialog.h"
@@ -72,6 +73,7 @@
 #include <QToolButton>
 #include <QActionGroup>
 #include <QToolBar>
+#include <QWidgetAction>
 #include <QSettings>
 #include <QStatusBar>
 #include <QStyle>
@@ -95,6 +97,7 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     m_sidebarWidget(nullptr),
     m_pagesMenu(nullptr),
     m_styleToolBar(nullptr),
+    m_toolBarManager(nullptr),
     m_sidebarDockWidget(nullptr),
     m_advancedFindWidget(nullptr),
     m_advancedFindDockWidget(nullptr),
@@ -116,6 +119,9 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     ui->setupUi(this);
 
     setAcceptDrops(true);
+
+    // Content of the toolbars, customizable in the options
+    m_toolBarManager = new PDFToolBarManager(this);
 
     // Initialize toolbar icon size
     adjustToolbar(ui->mainToolBar);
@@ -268,8 +274,8 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     adjustToolbar(navigationToolBar);
     navigationToolBar->addAction(ui->actionGoToDocumentStart);
     navigationToolBar->addAction(ui->actionGoToPreviousPage);
-    navigationToolBar->addWidget(m_pageNumberSpinBox);
-    navigationToolBar->addWidget(m_pageNumberLabel);
+    navigationToolBar->addAction(m_toolBarManager->createWidgetItem("widgetPageNumber", tr("Page Number"), QIcon(), m_pageNumberSpinBox));
+    navigationToolBar->addAction(m_toolBarManager->createWidgetItem("widgetPageCount", tr("Page Count"), QIcon(), m_pageNumberLabel));
     navigationToolBar->addAction(ui->actionGoToNextPage);
     navigationToolBar->addAction(ui->actionGoToDocumentEnd);
     addToolBar(Qt::TopToolBarArea, navigationToolBar);
@@ -307,6 +313,21 @@ PDFEditorMainWindow::PDFEditorMainWindow(QWidget* parent) :
     setFocusProxy(m_programController->getPdfWidget());
 
     m_styleToolBar->setAnnotationManager(m_programController->getPdfWidget()->getDrawWidgetProxy()->getAnnotationManager());
+
+    // The toolbars are complete (their content is the default content), the content
+    // chosen by the user is applied after the plugins are loaded, so their actions
+    // can be put in the toolbars. The Style toolbar is not customizable (own logic).
+    m_toolBarManager->setActionProvider([this]() { return m_actionManager->getActions(); });
+    for (const char* toolBarName : { "mainToolBar", "NavigationToolBar", "PagesToolBar", "InsertToolBar" })
+    {
+        QToolBar* toolBar = findChild<QToolBar*>(toolBarName, Qt::FindDirectChildrenOnly);
+        Q_ASSERT(toolBar);
+        m_toolBarManager->registerToolBar(toolBar);
+    }
+    {
+        QSettings settings(QSettings::IniFormat, QSettings::UserScope, QCoreApplication::organizationName(), QCoreApplication::applicationName());
+        m_toolBarManager->readSettings(settings);
+    }
 
     m_sidebarWidget = new PDFSidebarWidget(m_programController->getPdfWidget()->getDrawWidgetProxy(), m_programController->getCertificateStore(), m_programController->getBookmarkManager(), m_programController->getSettings(), true, this);
     m_sidebarDockWidget = new QDockWidget(tr("&Sidebar"), this);
@@ -739,7 +760,8 @@ QToolBar* PDFEditorMainWindow::createInsertToolBar()
     if (QToolButton* insertStickyNoteButton = m_actionManager->createToolButtonForActionGroup(PDFActionManager::CreateStickyNoteGroup, insertToolBar))
     {
         insertStickyNoteButton->setObjectName("insertStickyNoteButton");
-        insertToolBar->addWidget(insertStickyNoteButton);
+        const QIcon icon = insertStickyNoteButton->defaultAction() ? insertStickyNoteButton->defaultAction()->icon() : QIcon();
+        insertToolBar->addAction(m_toolBarManager->createWidgetItem("widgetStickyNotes", tr("Sticky Notes"), icon, insertStickyNoteButton));
     }
     insertToolBar->addSeparator();
     insertToolBar->addAction(ui->actionCreateStraightLine);

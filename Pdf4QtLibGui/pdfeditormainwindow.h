@@ -71,6 +71,7 @@ namespace pdfviewer
 class PDFSidebarWidget;
 class PDFAdvancedFindWidget;
 class PDFAnnotationStyleToolBar;
+class PDFToolBarManager;
 
 class PDF4QTLIBGUILIBSHARED_EXPORT PDFEditorMainWindow : public QMainWindow, public IMainWindow
 {
@@ -84,6 +85,7 @@ public:
     virtual void showEvent(QShowEvent* event) override;
 
     PDFProgramController* getProgramController() const { return m_programController; }
+    PDFToolBarManager* getToolBarManager() const { return m_toolBarManager; }
 
     virtual void updateUI(bool fullUpdate) override;
     virtual QMenu* addToolMenu(QString name, pdf::PDFPlugin::PluginMenuLocation location) override;
@@ -164,6 +166,7 @@ private:
     PDFSidebarWidget* m_sidebarWidget;
     QMenu* m_pagesMenu;
     PDFAnnotationStyleToolBar* m_styleToolBar;
+    PDFToolBarManager* m_toolBarManager;
     QDockWidget* m_sidebarDockWidget;
     PDFAdvancedFindWidget* m_advancedFindWidget;
     QDockWidget* m_advancedFindDockWidget;

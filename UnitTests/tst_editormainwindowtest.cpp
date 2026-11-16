@@ -23,6 +23,7 @@
 #include "pdfdrawwidget.h"
 #include "pdfdrawspacecontroller.h"
 #include "pdfoptionalcontent.h"
+#include "pdftoolbarmanager.h"
 
 #include <QtTest>
 #include <QAction>
@@ -31,6 +32,7 @@
 #include <QTemporaryDir>
 #include <QToolBar>
 #include <QToolButton>
+#include <QWidgetAction>
 #include <QDoubleSpinBox>
 #include <QMenu>
 #include <QLabel>
@@ -65,6 +67,7 @@ private slots:
     void navigationToolBar();
     void sidebarTitleBarHasNavigation();
     void stickyNoteIsInInsertToolBar();
+    void customizedToolBarsAreRestored();
     void pageBackgrounds();
     void layersPage();
     void openFromMenu();
@@ -294,6 +297,51 @@ void EditorMainWindowTest::stickyNoteIsInInsertToolBar()
     QVERIFY(optimizeImages);
     QVERIFY(!mainToolBar->actions().contains(optimizeImages));
     QVERIFY(!optimizeImages->associatedObjects().isEmpty());
+}
+
+void EditorMainWindowTest::customizedToolBarsAreRestored()
+{
+    // The page number and the background button moved to the Navigation toolbar,
+    // the Pages toolbar is empty, the Insert toolbar has no sticky notes button
+    {
+        QSettings toolBarSettings = settings();
+        toolBarSettings.setValue("ToolBars/NavigationToolBar", "actionGoToNextPage;separator;widgetPageNumber;actionPageBackground");
+        toolBarSettings.setValue("ToolBars/PagesToolBar", "");
+        toolBarSettings.setValue("ToolBars/InsertToolBar", "actionInlineText;actionEraser");
+    }
+
+    {
+        PDFEditorMainWindow window;
+        PDFToolBarManager* manager = window.getToolBarManager();
+        QVERIFY(manager);
+        QCOMPARE(manager->getToolBars().size(), size_t(4));
+
+        QToolBar* navigationToolBar = window.findChild<QToolBar*>("NavigationToolBar");
+        QCOMPARE(PDFToolBarManager::getLayout(navigationToolBar), (QStringList{ "actionGoToNextPage", "separator", "widgetPageNumber", "actionPageBackground" }));
+        QCOMPARE(navigationToolBar->widgetForAction(manager->findItem("widgetPageNumber")), window.findChild<QSpinBox*>("pageNumberSpinBox"));
+        QToolButton* backgroundButton = qobject_cast<QToolButton*>(navigationToolBar->widgetForAction(window.findChild<QAction*>("actionPageBackground")));
+        QVERIFY(backgroundButton);
+        QCOMPARE(backgroundButton->popupMode(), QToolButton::InstantPopup);
+
+        QVERIFY(window.findChild<QToolBar*>("PagesToolBar")->actions().isEmpty());
+        QCOMPARE(PDFToolBarManager::getLayout(window.findChild<QToolBar*>("InsertToolBar")), (QStringList{ "actionInlineText", "actionEraser" }));
+
+        // The widgets which are not in a toolbar still exist (owned by their items)
+        QWidgetAction* pageCountItem = qobject_cast<QWidgetAction*>(manager->findItem("widgetPageCount"));
+        QWidgetAction* stickyNotesItem = qobject_cast<QWidgetAction*>(manager->findItem("widgetStickyNotes"));
+        QVERIFY(pageCountItem && stickyNotesItem);
+        QCOMPARE(pageCountItem->defaultWidget()->objectName(), QString("pageNumberLabel"));
+        QCOMPARE(stickyNotesItem->defaultWidget()->objectName(), QString("insertStickyNoteButton"));
+        QVERIFY(!pageCountItem->defaultWidget()->isVisible());
+
+        // Default content of the Standard toolbar, the Style toolbar is not managed
+        QToolBar* mainToolBar = window.findChild<QToolBar*>("mainToolBar");
+        QCOMPARE(PDFToolBarManager::getLayout(mainToolBar), manager->getDefaultLayout(mainToolBar));
+        QVERIFY(manager->getDefaultLayout(window.findChild<QToolBar*>("InsertToolBar")).contains("widgetStickyNotes"));
+    }
+
+    QSettings toolBarSettings = settings();
+    toolBarSettings.remove("ToolBars");
 }
 
 void EditorMainWindowTest::pageBackgrounds()
