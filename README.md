@@ -103,6 +103,8 @@ New in inkpage:
       drawn under the page content
 - [x] toolbars on the top or on the right side of the window
       (View > Toolbar Position)
+- [x] customizable toolbars (Tools > Options > UI - Toolbars): add actions
+      of any menu, remove, reorder, separators, reset to the default content
 
 From PDF4QT (the list is not complete):
 

@@ -14,7 +14,7 @@
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfsettings.cpp" line="38"/>
         <source>Use custom directory for user settings.</source>
-        <translation>Utiliser un dossier personnalisé pour les réglages de l'utilisateur.</translation>
+        <translation>Utiliser un dossier personnalisé pour les réglages de l&apos;utilisateur.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfsettings.cpp" line="39"/>
@@ -159,7 +159,7 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfaboutdialog.ui" line="26"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;PdfForQtViewer&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Copyright (C) 2026 Ludovic Mercier. Based on PDF4QT, copyright (c) 2018-2026 Jakub Melka and Contributors.&lt;/p&gt;&lt;p&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;PdfForQtViewer&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Copyright (C) 2026 Ludovic Mercier. Basé sur PDF4QT, copyright (c) 2018-2026 Jakub Melka et contributeurs.&lt;/p&gt;&lt;p&gt;Ce programme est un logiciel libre : vous pouvez le redistribuer et/ou le modifier selon les termes de la licence publique générale GNU (GNU General Public License) telle que publiée par la Free Software Foundation, soit la version 3 de la licence, soit (à votre choix) toute version ultérieure. Ce programme est distribué dans l'espoir qu'il sera utile, mais SANS AUCUNE GARANTIE, sans même la garantie implicite de QUALITÉ MARCHANDE ou d'ADÉQUATION À UN USAGE PARTICULIER.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;PdfForQtViewer&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Copyright (C) 2026 Ludovic Mercier. Basé sur PDF4QT, copyright (c) 2018-2026 Jakub Melka et contributeurs.&lt;/p&gt;&lt;p&gt;Ce programme est un logiciel libre : vous pouvez le redistribuer et/ou le modifier selon les termes de la licence publique générale GNU (GNU General Public License) telle que publiée par la Free Software Foundation, soit la version 3 de la licence, soit (à votre choix) toute version ultérieure. Ce programme est distribué dans l&apos;espoir qu&apos;il sera utile, mais SANS AUCUNE GARANTIE, sans même la garantie implicite de QUALITÉ MARCHANDE ou d&apos;ADÉQUATION À UN USAGE PARTICULIER.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfaboutdialog.ui" line="46"/>
@@ -169,7 +169,7 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfaboutdialog.ui" line="56"/>
         <source>Double-click a library to open its license text distributed with the application, or its web page.</source>
-        <translation>Double-cliquez sur une bibliothèque pour ouvrir le texte de sa licence distribué avec l'application, ou sa page web.</translation>
+        <translation>Double-cliquez sur une bibliothèque pour ouvrir le texte de sa licence distribué avec l&apos;application, ou sa page web.</translation>
     </message>
 </context>
 <context>
@@ -1122,7 +1122,7 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="938"/>
         <source>Insert an image: drag a rectangle on the page, then select the image file</source>
-        <translation>Insérer une image : tracez un rectangle sur la page, puis choisissez le fichier de l'image</translation>
+        <translation>Insérer une image : tracez un rectangle sur la page, puis choisissez le fichier de l&apos;image</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="950"/>
@@ -1347,7 +1347,7 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1291"/>
         <source>Crop the scanned pages, split the spreads of a book and straighten the skewed pages before the recognition. The images are not re-encoded.</source>
-        <translation>Recadrer les pages numérisées, séparer les doubles pages d'un livre et redresser les pages inclinées avant la reconnaissance. Les images ne sont pas réencodées.</translation>
+        <translation>Recadrer les pages numérisées, séparer les doubles pages d&apos;un livre et redresser les pages inclinées avant la reconnaissance. Les images ne sont pas réencodées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1296"/>
@@ -1367,12 +1367,12 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1307"/>
         <source>Manage OCR &amp;Languages...</source>
-        <translation>Gérer les &amp;langues de l'OCR...</translation>
+        <translation>Gérer les &amp;langues de l&apos;OCR...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1310"/>
         <source>Manage OCR Languages</source>
-        <translation>Gérer les langues de l'OCR</translation>
+        <translation>Gérer les langues de l&apos;OCR</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfeditormainwindow.ui" line="1313"/>
@@ -1598,7 +1598,7 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="14"/>
         <source>Recognize Text (OCR)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Reconnaître le texte (OCR)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="47"/>
@@ -2073,7 +2073,7 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="878"/>
         <source>Manage OCR Languages</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gérer les langues de l&apos;OCR</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="905"/>
@@ -2360,7 +2360,7 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="1981"/>
         <source>Mode:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mode :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="1991"/>
@@ -2425,7 +2425,7 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="2121"/>
         <source>JPEG quality</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Qualité JPEG</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="2137"/>
@@ -2913,7 +2913,7 @@
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="1659"/>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="1665"/>
         <source>Move Up</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Monter</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="1662"/>
@@ -2924,7 +2924,7 @@
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="1672"/>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="1678"/>
         <source>Move Down</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Descendre</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="1675"/>
@@ -3143,7 +3143,7 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="14"/>
         <source>Manage OCR Languages</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gérer les langues de l&apos;OCR</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="22"/>
@@ -3375,7 +3375,7 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="27"/>
         <source>Tip: hold Ctrl or Shift while clicking to select multiple images (Ctrl+A selects all). Global Defaults already apply to every image without an override.</source>
-        <translation>Astuce : maintenez Ctrl ou Maj en cliquant pour sélectionner plusieurs images (Ctrl+A les sélectionne toutes). Les réglages globaux s'appliquent déjà à chaque image sans réglage particulier.</translation>
+        <translation>Astuce : maintenez Ctrl ou Maj en cliquant pour sélectionner plusieurs images (Ctrl+A les sélectionne toutes). Les réglages globaux s&apos;appliquent déjà à chaque image sans réglage particulier.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="41"/>
@@ -3400,7 +3400,7 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="77"/>
         <source>Keep original if larger</source>
-        <translation>Garder l'original s'il est plus petit</translation>
+        <translation>Garder l&apos;original s&apos;il est plus petit</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.ui" line="84"/>
@@ -4091,14 +4091,14 @@
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfsecurityhandler.cpp" line="1417"/>
         <source>Permissions entry in the Encryption dictionary is invalid.</source>
-        <translation>L'entrée des permissions du dictionnaire de chiffrement n'est pas valide.</translation>
+        <translation>L&apos;entrée des permissions du dictionnaire de chiffrement n&apos;est pas valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfsecurityhandler.cpp" line="1424"/>
         <location filename="../Pdf4QtLibCore/sources/pdfsecurityhandler.cpp" line="1430"/>
         <location filename="../Pdf4QtLibCore/sources/pdfsecurityhandler.cpp" line="1434"/>
         <source>Security permissions are manipulated. Can&apos;t open the document.</source>
-        <translation>Les permissions de sécurité ont été manipulées. Impossible d'ouvrir le document.</translation>
+        <translation>Les permissions de sécurité ont été manipulées. Impossible d&apos;ouvrir le document.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfsecurityhandler.cpp" line="1543"/>
@@ -4111,7 +4111,7 @@
         <location filename="../Pdf4QtLibCore/sources/pdfsecurityhandler.cpp" line="1645"/>
         <location filename="../Pdf4QtLibCore/sources/pdfsecurityhandler.cpp" line="1718"/>
         <source>Revision %1 of standard security handler is not supported.</source>
-        <translation>La révision %1 du gestionnaire de sécurité standard n'est pas prise en charge.</translation>
+        <translation>La révision %1 du gestionnaire de sécurité standard n&apos;est pas prise en charge.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfutils.cpp" line="525"/>
@@ -4123,7 +4123,7 @@
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfutils.cpp" line="537"/>
         <source>Closed interval [%1, %2] is invalid.</source>
-        <translation>L'intervalle fermé [%1, %2] n'est pas valide.</translation>
+        <translation>L&apos;intervalle fermé [%1, %2] n&apos;est pas valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfcompiler.cpp" line="417"/>
@@ -4298,7 +4298,7 @@ li.checked::marker { contenu&#xa0;: &quot;\2612&quot;&#xa0;; }
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="251"/>
         <source>Uses substitute fonts and may look different from the embedded font. Only affects printing and exporting to devices which preserve text (such as SVG), it has no effect on the on-screen page view.</source>
-        <translation>Utilise des polices de substitution et peut être différent de la police intégrée. Ne concerne que l'impression et l'export vers des formats qui conservent le texte (comme SVG), sans effet sur l'affichage de la page à l'écran.</translation>
+        <translation>Utilise des polices de substitution et peut être différent de la police intégrée. Ne concerne que l&apos;impression et l&apos;export vers des formats qui conservent le texte (comme SVG), sans effet sur l&apos;affichage de la page à l&apos;écran.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="261"/>
@@ -4308,7 +4308,7 @@ li.checked::marker { contenu&#xa0;: &quot;\2612&quot;&#xa0;; }
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="268"/>
         <source>Applies the active color adjustment (inverted colors, grayscale, high contrast, bitonal or custom colors) also to annotations, so they match the adjusted page content. It affects the screen only, printing and exporting of the document are not changed.</source>
-        <translation>Applique aussi aux annotations l'ajustement des couleurs actif (couleurs inversées, niveaux de gris, contraste élevé, bitonal ou couleurs personnalisées), pour qu'elles correspondent au contenu ajusté de la page. Ne concerne que l'écran, l'impression et l'export du document ne changent pas.</translation>
+        <translation>Applique aussi aux annotations l&apos;ajustement des couleurs actif (couleurs inversées, niveaux de gris, contraste élevé, bitonal ou couleurs personnalisées), pour qu&apos;elles correspondent au contenu ajusté de la page. Ne concerne que l&apos;écran, l&apos;impression et l&apos;export du document ne changent pas.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="280"/>
@@ -4323,17 +4323,17 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Smooth pictures&lt;/span&gt; option enables pictures to be transformed into device space coordinates using a high-quality image transformation method. This generally results in better image quality. When disabled, a default fast transformation is used, potentially reducing image quality if the source DPI and device DPI differ. &lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ignore optional content &lt;/span&gt;ignores all optional content settings and renders everything in the content stream. &lt;span style=&quot; font-weight:600;&quot;&gt;Clip to crop box&lt;/span&gt; restricts the rendering area to the page&apos;s crop box, which is usually smaller than the whole page. Graphics outside the crop box aren&apos;t drawn, which can be useful for removing printer marks and similar elements. &lt;span style=&quot; font-weight:600;&quot;&gt;Display page compile/draw time&lt;/span&gt; can be handy for debugging, showing the time taken to compile a page (stored in the cache) and the time taken to render the compiled page contents onto the output device. &lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Using the &lt;span style=&quot; font-weight:600;&quot;&gt;Display annotations&lt;/span&gt; setting, you can enable or disable the display of annotations. If annotations are disabled, the user will not be able to interact with them. &lt;span style=&quot; font-weight:600;&quot;&gt;Adjust colors of annotations&lt;/span&gt; controls whether the active color adjustment, such as inverted colors, is applied to annotations as well, or whether annotations keep their original colors above the adjusted page content. It affects the screen only, printing and exporting of the document are never color adjusted. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;meta charset="utf-8" /&gt;&lt;style type="text/css"&gt;
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: "\2610"; }
-li.checked::marker { content: "\2612"; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Les réglages du rendu déterminent comment le moteur de rendu traite le contenu des pages et l'apparence des graphiques affichés. L'&lt;span style=" font-weight:600;"&gt;anticrénelage&lt;/span&gt; adoucit l'apparence des formes dessinées, comme les rectangles, les graphiques vectoriels et les lignes, mais ne concerne pas le texte. L'&lt;span style=" font-weight:600;"&gt;anticrénelage du texte&lt;/span&gt;, lui, affine l'apparence des caractères du texte sans toucher aux autres éléments. L'&lt;span style=" font-weight:600;"&gt;anticrénelage &lt;/span&gt;et l'&lt;span style=" font-weight:600;"&gt;anticrénelage du texte &lt;/span&gt;ne concernent que le rendu logiciel. Avec un moteur de rendu matériel comme OpenGL, ces réglages n'ont pas d'effet, car OpenGL rend les images avec l'anticrénelage MSAA (s'il est activé). &lt;/p&gt;
-&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;L'option &lt;span style=" font-weight:600;"&gt;Images lissées&lt;/span&gt; transforme les images dans les coordonnées du périphérique avec une méthode de haute qualité, ce qui donne en général une meilleure qualité d'image. Désactivée, une transformation rapide par défaut est utilisée, qui peut réduire la qualité si le DPI de la source et celui du périphérique sont différents. &lt;/p&gt;
-&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Ignorer le contenu optionnel &lt;/span&gt;ignore tous les réglages du contenu optionnel (calques) et rend tout le contenu. &lt;span style=" font-weight:600;"&gt;Limiter à la zone de recadrage&lt;/span&gt; réduit la zone de rendu à la zone de recadrage de la page, en général plus petite que la page entière. Les graphiques hors de cette zone ne sont pas dessinés, ce qui peut servir à enlever les repères d'impression et autres éléments semblables. &lt;span style=" font-weight:600;"&gt;Afficher le temps de compilation/dessin des pages&lt;/span&gt; peut servir au débogage : il montre le temps de compilation d'une page (gardée dans le cache) et le temps de rendu du contenu compilé sur le périphérique de sortie. &lt;/p&gt;
-&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Le réglage &lt;span style=" font-weight:600;"&gt;Afficher les annotations&lt;/span&gt; active ou désactive l'affichage des annotations. Si elles sont désactivées, l'utilisateur ne peut pas agir sur elles. &lt;span style=" font-weight:600;"&gt;Ajuster les couleurs des annotations&lt;/span&gt; détermine si l'ajustement des couleurs actif, comme les couleurs inversées, s'applique aussi aux annotations, ou si elles gardent leurs couleurs d'origine au-dessus du contenu ajusté de la page. Ne concerne que l'écran, l'impression et l'export du document ne sont jamais ajustés. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Segoe UI&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Les réglages du rendu déterminent comment le moteur de rendu traite le contenu des pages et l&apos;apparence des graphiques affichés. L&apos;&lt;span style=&quot; font-weight:600;&quot;&gt;anticrénelage&lt;/span&gt; adoucit l&apos;apparence des formes dessinées, comme les rectangles, les graphiques vectoriels et les lignes, mais ne concerne pas le texte. L&apos;&lt;span style=&quot; font-weight:600;&quot;&gt;anticrénelage du texte&lt;/span&gt;, lui, affine l&apos;apparence des caractères du texte sans toucher aux autres éléments. L&apos;&lt;span style=&quot; font-weight:600;&quot;&gt;anticrénelage &lt;/span&gt;et l&apos;&lt;span style=&quot; font-weight:600;&quot;&gt;anticrénelage du texte &lt;/span&gt;ne concernent que le rendu logiciel. Avec un moteur de rendu matériel comme OpenGL, ces réglages n&apos;ont pas d&apos;effet, car OpenGL rend les images avec l&apos;anticrénelage MSAA (s&apos;il est activé). &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;L&apos;option &lt;span style=&quot; font-weight:600;&quot;&gt;Images lissées&lt;/span&gt; transforme les images dans les coordonnées du périphérique avec une méthode de haute qualité, ce qui donne en général une meilleure qualité d&apos;image. Désactivée, une transformation rapide par défaut est utilisée, qui peut réduire la qualité si le DPI de la source et celui du périphérique sont différents. &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ignorer le contenu optionnel &lt;/span&gt;ignore tous les réglages du contenu optionnel (calques) et rend tout le contenu. &lt;span style=&quot; font-weight:600;&quot;&gt;Limiter à la zone de recadrage&lt;/span&gt; réduit la zone de rendu à la zone de recadrage de la page, en général plus petite que la page entière. Les graphiques hors de cette zone ne sont pas dessinés, ce qui peut servir à enlever les repères d&apos;impression et autres éléments semblables. &lt;span style=&quot; font-weight:600;&quot;&gt;Afficher le temps de compilation/dessin des pages&lt;/span&gt; peut servir au débogage : il montre le temps de compilation d&apos;une page (gardée dans le cache) et le temps de rendu du contenu compilé sur le périphérique de sortie. &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Le réglage &lt;span style=&quot; font-weight:600;&quot;&gt;Afficher les annotations&lt;/span&gt; active ou désactive l&apos;affichage des annotations. Si elles sont désactivées, l&apos;utilisateur ne peut pas agir sur elles. &lt;span style=&quot; font-weight:600;&quot;&gt;Ajuster les couleurs des annotations&lt;/span&gt; détermine si l&apos;ajustement des couleurs actif, comme les couleurs inversées, s&apos;applique aussi aux annotations, ou si elles gardent leurs couleurs d&apos;origine au-dessus du contenu ajusté de la page. Ne concerne que l&apos;écran, l&apos;impression et l&apos;export du document ne sont jamais ajustés. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="316"/>
@@ -4621,7 +4621,7 @@ li.checked::marker { contenu&#xa0;: &quot;\2612&quot;&#xa0;; }
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="944"/>
         <source>Author Identity</source>
-        <translation>Identité de l'auteur</translation>
+        <translation>Identité de l&apos;auteur</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="950"/>
@@ -4631,12 +4631,12 @@ li.checked::marker { contenu&#xa0;: &quot;\2612&quot;&#xa0;; }
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="960"/>
         <source>Custom author name</source>
-        <translation>Nom d'auteur personnalisé</translation>
+        <translation>Nom d&apos;auteur personnalisé</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="970"/>
         <source>The author name is stored in the document and is visible to anyone who opens it. To protect your privacy, the name of the system user is used only when you explicitly select it.</source>
-        <translation>Le nom de l'auteur est enregistré dans le document et visible par toute personne qui l'ouvre. Pour protéger votre vie privée, le nom de l'utilisateur du système n'est utilisé que si vous le choisissez explicitement.</translation>
+        <translation>Le nom de l&apos;auteur est enregistré dans le document et visible par toute personne qui l&apos;ouvre. Pour protéger votre vie privée, le nom de l&apos;utilisateur du système n&apos;est utilisé que si vous le choisissez explicitement.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="999"/>
@@ -4681,7 +4681,7 @@ li.checked::marker { contenu&#xa0;: &quot;\2612&quot;&#xa0;; }
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1099"/>
         <source>Show sidebar when opening documents</source>
-        <translation>Afficher la barre latérale à l'ouverture des documents</translation>
+        <translation>Afficher la barre latérale à l&apos;ouverture des documents</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1113"/>
@@ -4772,14 +4772,14 @@ li.unchecked::marker { content: &quot;\2610&quot;; }
 li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Segoe UI&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can customize the appearance of form fields using the provided settings, including the option to highlight editable fields. You can separately highlight required form fields in red, while other fields can be emphasized in blue. &lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Scripts of forms are not executed. Read-only fields, whose values are calculated by a script, are therefore unlocked, so you can enter their values manually (except in signed documents). You can also allow editing of all read-only fields, for example, when a script locks or unlocks fields depending on entered values. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;meta charset="utf-8" /&gt;&lt;style type="text/css"&gt;
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: "\2610"; }
-li.checked::marker { content: "\2612"; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Vous pouvez personnaliser l'apparence des champs de formulaire avec ces réglages, notamment mettre en évidence les champs modifiables. Les champs obligatoires peuvent être mis en évidence séparément en rouge, et les autres champs en bleu. &lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Les scripts des formulaires ne sont pas exécutés. Les champs en lecture seule dont la valeur est calculée par un script sont donc déverrouillés, pour que vous puissiez saisir leur valeur à la main (sauf dans les documents signés). Vous pouvez aussi permettre la modification de tous les champs en lecture seule, par exemple quand un script verrouille ou déverrouille des champs selon les valeurs saisies. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Segoe UI&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Vous pouvez personnaliser l&apos;apparence des champs de formulaire avec ces réglages, notamment mettre en évidence les champs modifiables. Les champs obligatoires peuvent être mis en évidence séparément en rouge, et les autres champs en bleu. &lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Les scripts des formulaires ne sont pas exécutés. Les champs en lecture seule dont la valeur est calculée par un script sont donc déverrouillés, pour que vous puissiez saisir leur valeur à la main (sauf dans les documents signés). Vous pouvez aussi permettre la modification de tous les champs en lecture seule, par exemple quand un script verrouille ou déverrouille des champs selon les valeurs saisies. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1507"/>
@@ -4789,7 +4789,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1526"/>
         <source>Manage OCR Languages...</source>
-        <translation>Gérer les langues de l'OCR...</translation>
+        <translation>Gérer les langues de l&apos;OCR...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.ui" line="1308"/>
@@ -4955,7 +4955,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signdialog.ui" line="73"/>
         <source>Timestamp Authority</source>
-        <translation>Autorité d'horodatage</translation>
+        <translation>Autorité d&apos;horodatage</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signdialog.ui" line="90"/>
@@ -5054,7 +5054,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfannotationgeometrydialog.cpp" line="59"/>
         <source>Geometry of Annotation</source>
-        <translation>Géométrie de l'annotation</translation>
+        <translation>Géométrie de l&apos;annotation</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfannotationgeometrydialog.cpp" line="66"/>
@@ -5129,7 +5129,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfannotationgeometrydialog.cpp" line="98"/>
         <source>The reference point stays at its place, when the size is changed, and the annotation is rotated around it.</source>
-        <translation>Le point de référence reste à sa place quand la taille change, et l'annotation tourne autour de lui.</translation>
+        <translation>Le point de référence reste à sa place quand la taille change, et l&apos;annotation tourne autour de lui.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfannotationgeometrydialog.cpp" line="103"/>
@@ -5204,7 +5204,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfannotationgeometrydialog.cpp" line="164"/>
         <source>Angle of the segment, counterclockwise from the direction of the x axis.</source>
-        <translation>Angle du segment, dans le sens antihoraire à partir de la direction de l'axe x.</translation>
+        <translation>Angle du segment, dans le sens antihoraire à partir de la direction de l&apos;axe x.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfannotationgeometrydialog.cpp" line="165"/>
@@ -5495,7 +5495,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="500"/>
         <source>Automatically expand annotation to fit text</source>
-        <translation>Agrandir automatiquement l'annotation pour contenir le texte</translation>
+        <translation>Agrandir automatiquement l&apos;annotation pour contenir le texte</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="503"/>
@@ -5556,7 +5556,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="623"/>
         <source>Cannot read the image &apos;%1&apos;: %2</source>
-        <translation>Impossible de lire l'image « %1 » : %2</translation>
+        <translation>Impossible de lire l&apos;image « %1 » : %2</translation>
     </message>
 </context>
 <context>
@@ -5631,7 +5631,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfadvancedtools.cpp" line="2684"/>
         <source>Click on an annotation to delete it. Drag a rectangle to delete all annotations inside it.</source>
-        <translation>Cliquez sur une annotation pour la supprimer. Tracez un rectangle pour supprimer toutes les annotations qu'il contient.</translation>
+        <translation>Cliquez sur une annotation pour la supprimer. Tracez un rectangle pour supprimer toutes les annotations qu&apos;il contient.</translation>
     </message>
 </context>
 <context>
@@ -5981,27 +5981,27 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentsigner.cpp" line="377"/>
         <source>Failed to write the signed document.</source>
-        <translation>L'écriture du document signé a échoué.</translation>
+        <translation>L&apos;écriture du document signé a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentsigner.cpp" line="380"/>
         <source>Failed to find the space reserved for the digital signature in the written document.</source>
-        <translation>L'espace réservé à la signature numérique n'a pas été trouvé dans le document écrit.</translation>
+        <translation>L&apos;espace réservé à la signature numérique n&apos;a pas été trouvé dans le document écrit.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentsigner.cpp" line="383"/>
         <source>Digital signature does not fit into the space reserved for it.</source>
-        <translation>La signature numérique ne tient pas dans l'espace qui lui est réservé.</translation>
+        <translation>La signature numérique ne tient pas dans l&apos;espace qui lui est réservé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentsigner.cpp" line="386"/>
         <source>Digital signature of the created document could not be verified, the document was not saved.</source>
-        <translation>La signature numérique du document créé n'a pas pu être vérifiée, le document n'a pas été enregistré.</translation>
+        <translation>La signature numérique du document créé n&apos;a pas pu être vérifiée, le document n&apos;a pas été enregistré.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentsigner.cpp" line="389"/>
         <source>The document already contains digital signatures, which cannot be preserved, so the document was not signed.</source>
-        <translation>Le document contient déjà des signatures numériques qui ne peuvent pas être conservées, le document n'a donc pas été signé.</translation>
+        <translation>Le document contient déjà des signatures numériques qui ne peuvent pas être conservées, le document n&apos;a donc pas été signé.</translation>
     </message>
 </context>
 <context>
@@ -6083,12 +6083,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentwriter.cpp" line="449"/>
         <source>Original document cannot be read, so it cannot be updated incrementally.</source>
-        <translation>Le document d'origine ne peut pas être lu, il ne peut donc pas être mis à jour de façon incrémentale.</translation>
+        <translation>Le document d&apos;origine ne peut pas être lu, il ne peut donc pas être mis à jour de façon incrémentale.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumentwriter.cpp" line="456"/>
         <source>Cross-reference section of the original document was not found, so it cannot be updated incrementally.</source>
-        <translation>La table des références croisées du document d'origine est introuvable, il ne peut donc pas être mis à jour de façon incrémentale.</translation>
+        <translation>La table des références croisées du document d&apos;origine est introuvable, il ne peut donc pas être mis à jour de façon incrémentale.</translation>
     </message>
 </context>
 <context>
@@ -6745,7 +6745,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfobjecteditormodel.cpp" line="635"/>
         <source>Leader line length (negative for the other side)</source>
-        <translation>Longueur de la ligne d'attache (négative pour l'autre côté)</translation>
+        <translation>Longueur de la ligne d&apos;attache (négative pour l&apos;autre côté)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfobjecteditormodel.cpp" line="639"/>
@@ -7486,7 +7486,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="194"/>
         <source>Scale content</source>
-        <translation>Mettre le contenu à l'échelle</translation>
+        <translation>Mettre le contenu à l&apos;échelle</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="195"/>
@@ -7496,7 +7496,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="196"/>
         <source>Scale comments and form fields</source>
-        <translation>Mettre à l'échelle les commentaires et les champs de formulaire</translation>
+        <translation>Mettre à l&apos;échelle les commentaires et les champs de formulaire</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="200"/>
@@ -7516,7 +7516,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="211"/>
         <source>Tip: if content scaling is disabled, page geometry is adjusted only by page boxes (non-destructive).</source>
-        <translation>Astuce : si la mise à l'échelle du contenu est désactivée, la géométrie de la page est modifiée seulement par les zones de la page (sans modifier le contenu).</translation>
+        <translation>Astuce : si la mise à l&apos;échelle du contenu est désactivée, la géométrie de la page est modifiée seulement par les zones de la page (sans modifier le contenu).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfpagegeometrydialog.cpp" line="229"/>
@@ -7805,22 +7805,22 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="361"/>
         <source>Url &apos;%1&apos; of the timestamp authority is not valid.</source>
-        <translation>L'URL « %1 » de l'autorité d'horodatage n'est pas valide.</translation>
+        <translation>L&apos;URL « %1 » de l&apos;autorité d&apos;horodatage n&apos;est pas valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="403"/>
         <source>Timestamp authority &apos;%1&apos; cannot be contacted. %2</source>
-        <translation>L'autorité d'horodatage « %1 » ne peut pas être contactée. %2</translation>
+        <translation>L&apos;autorité d&apos;horodatage « %1 » ne peut pas être contactée. %2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="409"/>
         <source>Timestamp authority &apos;%1&apos; answered with the http status code %2.</source>
-        <translation>L'autorité d'horodatage « %1 » a répondu avec le code d'état HTTP %2.</translation>
+        <translation>L&apos;autorité d&apos;horodatage « %1 » a répondu avec le code d&apos;état HTTP %2.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="415"/>
         <source>Timestamp authority &apos;%1&apos; answered with an empty response.</source>
-        <translation>L'autorité d'horodatage « %1 » a envoyé une réponse vide.</translation>
+        <translation>L&apos;autorité d&apos;horodatage « %1 » a envoyé une réponse vide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="459"/>
@@ -7830,12 +7830,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="468"/>
         <source>Signature to be timestamped has no signer.</source>
-        <translation>La signature à horodater n'a pas de signataire.</translation>
+        <translation>La signature à horodater n&apos;a pas de signataire.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="483"/>
         <source>Timestamp cannot be added to the signature.</source>
-        <translation>L'horodatage ne peut pas être ajouté à la signature.</translation>
+        <translation>L&apos;horodatage ne peut pas être ajouté à la signature.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="490"/>
@@ -7846,53 +7846,53 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="517"/>
         <source>Url of the timestamp authority is not set.</source>
-        <translation>L'URL de l'autorité d'horodatage n'est pas définie.</translation>
+        <translation>L&apos;URL de l&apos;autorité d&apos;horodatage n&apos;est pas définie.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="526"/>
         <source>Digest of the timestamped data cannot be calculated.</source>
-        <translation>L'empreinte des données horodatées ne peut pas être calculée.</translation>
+        <translation>L&apos;empreinte des données horodatées ne peut pas être calculée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="538"/>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="555"/>
         <source>Timestamp request cannot be created.</source>
-        <translation>La demande d'horodatage ne peut pas être créée.</translation>
+        <translation>La demande d&apos;horodatage ne peut pas être créée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="561"/>
         <source>Timestamp request cannot be encoded.</source>
-        <translation>La demande d'horodatage ne peut pas être encodée.</translation>
+        <translation>La demande d&apos;horodatage ne peut pas être encodée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="579"/>
         <source>Answer of the timestamp authority &apos;%1&apos; is not a timestamp response.</source>
-        <translation>La réponse de l'autorité d'horodatage « %1 » n'est pas une réponse d'horodatage.</translation>
+        <translation>La réponse de l&apos;autorité d&apos;horodatage « %1 » n&apos;est pas une réponse d&apos;horodatage.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="588"/>
         <source>Timestamp authority &apos;%1&apos; rejected the timestamp request, status is %2.</source>
-        <translation>L'autorité d'horodatage « %1 » a refusé la demande d'horodatage, l'état est %2.</translation>
+        <translation>L&apos;autorité d&apos;horodatage « %1 » a refusé la demande d&apos;horodatage, l&apos;état est %2.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="596"/>
         <source>Timestamp authority &apos;%1&apos; did not answer with a timestamp token.</source>
-        <translation>L'autorité d'horodatage « %1 » n'a pas répondu avec un jeton d'horodatage.</translation>
+        <translation>L&apos;autorité d&apos;horodatage « %1 » n&apos;a pas répondu avec un jeton d&apos;horodatage.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="625"/>
         <source>Timestamp token of the authority &apos;%1&apos; does not belong to the timestamp request.</source>
-        <translation>Le jeton d'horodatage de l'autorité « %1 » ne correspond pas à la demande d'horodatage.</translation>
+        <translation>Le jeton d&apos;horodatage de l&apos;autorité « %1 » ne correspond pas à la demande d&apos;horodatage.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="632"/>
         <source>Timestamp token of the authority &apos;%1&apos; cannot be encoded.</source>
-        <translation>Le jeton d'horodatage de l'autorité « %1 » ne peut pas être encodé.</translation>
+        <translation>Le jeton d&apos;horodatage de l&apos;autorité « %1 » ne peut pas être encodé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfcertificatemanager.cpp" line="642"/>
         <source>Timestamp token of the authority &apos;%1&apos; does not match the timestamped data.</source>
-        <translation>Le jeton d'horodatage de l'autorité « %1 » ne correspond pas aux données horodatées.</translation>
+        <translation>Le jeton d&apos;horodatage de l&apos;autorité « %1 » ne correspond pas aux données horodatées.</translation>
     </message>
 </context>
 <context>
@@ -8281,7 +8281,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfccittfaxdecoder.cpp" line="47"/>
         <source>Invalid number of columns (%1) of the CCITT image.</source>
-        <translation>Nombre de colonnes (%1) de l'image CCITT non valide.</translation>
+        <translation>Nombre de colonnes (%1) de l&apos;image CCITT non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfccittfaxdecoder.cpp" line="154"/>
@@ -8371,8 +8371,8 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumenttextflow.cpp" line="715"/>
         <location filename="../Pdf4QtLibCore/sources/pdfdocumenttextflow.cpp" line="773"/>
-        <location filename="../Pdf4QtLibCore/sources/pdfocrexport.cpp" line="134"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrproject.cpp" line="992"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfocrexport.cpp" line="134"/>
         <source>Page %1</source>
         <translation>Page %1</translation>
     </message>
@@ -8600,12 +8600,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="48"/>
         <source>JBIG2 invalid refinement data length %1.</source>
-        <translation>JBIG2 : longueur %1 des données d'affinage non valide.</translation>
+        <translation>JBIG2 : longueur %1 des données d&apos;affinage non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="780"/>
         <source>JBIG2 invalid symbol ID bit count %1.</source>
-        <translation>JBIG2 : nombre de bits %1 de l'identifiant de symbole non valide.</translation>
+        <translation>JBIG2 : nombre de bits %1 de l&apos;identifiant de symbole non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="928"/>
@@ -8640,12 +8640,12 @@ li.checked::marker { content: "\2612"; }
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1178"/>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1219"/>
         <source>JBIG2 input size limit exceeded.</source>
-        <translation>JBIG2 : limite de taille des données d'entrée dépassée.</translation>
+        <translation>JBIG2 : limite de taille des données d&apos;entrée dépassée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1242"/>
         <source>Unsupported JBIG2 file header flags (extended templates are not supported).</source>
-        <translation>Indicateurs d'en-tête de fichier JBIG2 non pris en charge (les gabarits étendus ne sont pas pris en charge).</translation>
+        <translation>Indicateurs d&apos;en-tête de fichier JBIG2 non pris en charge (les gabarits étendus ne sont pas pris en charge).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1251"/>
@@ -8660,7 +8660,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1303"/>
         <source>JBIG2 extra data after random-access file segments.</source>
-        <translation>JBIG2 : données supplémentaires après les segments d'un fichier à accès aléatoire.</translation>
+        <translation>JBIG2 : données supplémentaires après les segments d&apos;un fichier à accès aléatoire.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1317"/>
@@ -8670,7 +8670,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1333"/>
         <source>JBIG2 unknown data length of the segment %1 - it is allowed for an immediate generic region only.</source>
-        <translation>JBIG2 : longueur de données inconnue du segment %1 - elle n'est permise que pour une région générique immédiate.</translation>
+        <translation>JBIG2 : longueur de données inconnue du segment %1 - elle n&apos;est permise que pour une région générique immédiate.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1346"/>
@@ -8705,12 +8705,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1481"/>
         <source>JBIG2 intermediate region on a page which does not announce auxiliary buffers; the page flag is ignored.</source>
-        <translation>JBIG2 : région intermédiaire sur une page qui n'annonce pas de tampons auxiliaires ; l'indicateur de la page est ignoré.</translation>
+        <translation>JBIG2 : région intermédiaire sur une page qui n&apos;annonce pas de tampons auxiliaires ; l&apos;indicateur de la page est ignoré.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1486"/>
         <source>JBIG2 refinement region on a page which does not announce refinements; the page flag is ignored.</source>
-        <translation>JBIG2 : région d'affinage sur une page qui n'annonce pas d'affinages ; l'indicateur de la page est ignoré.</translation>
+        <translation>JBIG2 : région d&apos;affinage sur une page qui n&apos;annonce pas d&apos;affinages ; l&apos;indicateur de la page est ignoré.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1495"/>
@@ -8720,7 +8720,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1502"/>
         <source>JBIG2 invalid extension reference.</source>
-        <translation>JBIG2 : référence d'extension non valide.</translation>
+        <translation>JBIG2 : référence d&apos;extension non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1511"/>
@@ -8730,7 +8730,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1515"/>
         <source>JBIG2 reuses a non-retained segment; kept under the decoding memory limit for compatibility.</source>
-        <translation>JBIG2 : réutilisation d'un segment non conservé ; gardé sous la limite de mémoire du décodage pour la compatibilité.</translation>
+        <translation>JBIG2 : réutilisation d&apos;un segment non conservé ; gardé sous la limite de mémoire du décodage pour la compatibilité.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1538"/>
@@ -8745,7 +8745,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1631"/>
         <source>JBIG2 region combination operator contradicts the page flags; the operator of the region is used.</source>
-        <translation>JBIG2 : l'opérateur de combinaison de la région contredit les indicateurs de la page ; l'opérateur de la région est utilisé.</translation>
+        <translation>JBIG2 : l&apos;opérateur de combinaison de la région contredit les indicateurs de la page ; l&apos;opérateur de la région est utilisé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1639"/>
@@ -8755,7 +8755,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1691"/>
         <source>JBIG2 symbol dictionary uses the text region decoding procedure for a single symbol instance aggregation.</source>
-        <translation>JBIG2 : le dictionnaire de symboles utilise la procédure de décodage de région de texte pour une agrégation d'une seule instance de symbole.</translation>
+        <translation>JBIG2 : le dictionnaire de symboles utilise la procédure de décodage de région de texte pour une agrégation d&apos;une seule instance de symbole.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="1721"/>
@@ -8790,7 +8790,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="2010"/>
         <source>JBIG2 invalid number of symbol instances in the aggregation (%1).</source>
-        <translation>JBIG2 : nombre d'instances de symbole dans l'agrégation non valide (%1).</translation>
+        <translation>JBIG2 : nombre d&apos;instances de symbole dans l&apos;agrégation non valide (%1).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="2123"/>
@@ -8805,7 +8805,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="2185"/>
         <source>JBIG2 excessive export flag runs.</source>
-        <translation>JBIG2 : séries d'indicateurs d'exportation excessives.</translation>
+        <translation>JBIG2 : séries d&apos;indicateurs d&apos;exportation excessives.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="2206"/>
@@ -8845,7 +8845,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3083"/>
         <source>JBIG2 refinement reference region metadata mismatch.</source>
-        <translation>JBIG2 : métadonnées de la région de référence d'affinage incohérentes.</translation>
+        <translation>JBIG2 : métadonnées de la région de référence d&apos;affinage incohérentes.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3150"/>
@@ -8900,12 +8900,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3783"/>
         <source>JBIG2 maximum symbol instance count exceeded.</source>
-        <translation>JBIG2 : nombre maximal d'instances de symbole dépassé.</translation>
+        <translation>JBIG2 : nombre maximal d&apos;instances de symbole dépassé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3840"/>
         <source>JBIG2 text region has more symbol instances, than defined in its header (%1).</source>
-        <translation>JBIG2 : la région de texte a plus d'instances de symbole que celles définies dans son en-tête (%1).</translation>
+        <translation>JBIG2 : la région de texte a plus d&apos;instances de symbole que celles définies dans son en-tête (%1).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3852"/>
@@ -8915,12 +8915,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3871"/>
         <source>JBIG2 invalid refinement indicator.</source>
-        <translation>JBIG2 : indicateur d'affinage non valide.</translation>
+        <translation>JBIG2 : indicateur d&apos;affinage non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="3910"/>
         <source>JBIG2 invalid size (%1 x %2) of a refined symbol instance bitmap.</source>
-        <translation>JBIG2 : taille (%1 x %2) non valide de la bitmap d'une instance de symbole affinée.</translation>
+        <translation>JBIG2 : taille (%1 x %2) non valide de la bitmap d&apos;une instance de symbole affinée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.cpp" line="4052"/>
@@ -9148,10 +9148,10 @@ li.checked::marker { content: "\2612"; }
         <translation>modèle de mosaïque non valide&#xa0;: les étapes ne sont pas valides.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibCore/sources/pdfpagecontentprocessor.cpp" line="1002"/>
-        <location filename="../Pdf4QtLibCore/sources/pdfpagecontentprocessor.cpp" line="1117"/>
         <location filename="../Pdf4QtLibCore/sources/pdfpattern.cpp" line="153"/>
         <location filename="../Pdf4QtLibCore/sources/pdfpattern.cpp" line="157"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfpagecontentprocessor.cpp" line="1002"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfpagecontentprocessor.cpp" line="1117"/>
         <source>Invalid pattern.</source>
         <translation>Modèle non valide.</translation>
     </message>
@@ -9452,7 +9452,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfsignaturehandler.cpp" line="371"/>
         <source>Timestamp of the signature could not be verified, the time of the signing is not attested by a timestamp authority.</source>
-        <translation>L'horodatage de la signature n'a pas pu être vérifié, l'heure de la signature n'est pas attestée par une autorité d'horodatage.</translation>
+        <translation>L&apos;horodatage de la signature n&apos;a pas pu être vérifié, l&apos;heure de la signature n&apos;est pas attestée par une autorité d&apos;horodatage.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfsignaturehandler.cpp" line="380"/>
@@ -9480,9 +9480,9 @@ li.checked::marker { content: "\2612"; }
         <translation>Warning</translation>
     </message>
     <message>
+        <location filename="../Pdf4QtLibCore/sources/pdfsignaturehandler.cpp" line="499"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrdocumentrunner.cpp" line="1183"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrmodelmanager.cpp" line="185"/>
-        <location filename="../Pdf4QtLibCore/sources/pdfsignaturehandler.cpp" line="499"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
@@ -9509,17 +9509,17 @@ li.checked::marker { content: "\2612"; }
         <translation>la transformation de la couleur d&apos;accompagnement pour mélanger l&apos;espace colorimétrique a échoué.</translation>
     </message>
     <message>
+        <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1505"/>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="1443"/>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="1636"/>
-        <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1505"/>
         <source>Invalid number bits of image mask (should be 1 bit instead of %1 bits).</source>
         <translation>nombre de bits du masque d&apos;image non valide (doit être 1 bit au lieu de %1 bits).</translation>
     </message>
     <message>
+        <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1510"/>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="1426"/>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="1451"/>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="1641"/>
-        <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1510"/>
         <source>Invalid size of image (%1x%2)</source>
         <translation>taille d&apos;image non valide (%1x%2)</translation>
     </message>
@@ -9534,9 +9534,9 @@ li.checked::marker { content: "\2612"; }
         <translation>espace colorimétrique de base non valide de l&apos;espace colorimétrique indexé.</translation>
     </message>
     <message>
+        <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1661"/>
         <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="2346"/>
         <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="2389"/>
-        <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1661"/>
         <source>Invalid colors for indexed color space. Color space has %1 colors. Provided color count is %4.</source>
         <translation>couleurs non valides pour l&apos;espace colorimétrique indexé. L&apos;espace colorimétrique a %1 couleurs. Le nombre de couleurs fourni est %4.</translation>
     </message>
@@ -9546,31 +9546,31 @@ li.checked::marker { content: "\2612"; }
         <translation>la conversion de l&apos;image indexée vers l&apos;espace colorimétrique de base a échoué.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="677"/>
-        <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="2507"/>
         <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1751"/>
         <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1995"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="677"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="2507"/>
         <source>Image masking not implemented!</source>
         <translation>Masquage d&apos;image non implémenté&#xa0;!</translation>
     </message>
     <message>
+        <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1766"/>
+        <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1828"/>
+        <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1921"/>
         <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="365"/>
         <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="456"/>
         <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="568"/>
         <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="2446"/>
-        <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1766"/>
-        <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1828"/>
-        <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1921"/>
         <source>Invalid colors for color space. Color space has %1 colors. Provided color count is %4.</source>
         <translation>couleurs non valides pour l&apos;espace colorimétrique. L&apos;espace colorimétrique a %1 couleurs. Le nombre de couleurs fourni est %4.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="371"/>
-        <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="462"/>
-        <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="746"/>
         <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1772"/>
         <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1834"/>
         <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="2027"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="371"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="462"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="746"/>
         <source>Invalid size of the decode array. Expected %1, actual %2.</source>
         <translation>taille non valide du tableau de décodage. %1 attendu, %2 réel.</translation>
     </message>
@@ -9580,34 +9580,34 @@ li.checked::marker { content: "\2612"; }
         <translation>Couleur mate non valide.</translation>
     </message>
     <message>
+        <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1928"/>
         <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="575"/>
         <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="2453"/>
-        <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1928"/>
         <source>Invalid number of color components in color key mask. Expected %1, provided %2.</source>
         <translation>nombre non valide de composants de couleur dans le masque de clé de couleur. %1 attendu, fourni %2.</translation>
     </message>
     <message>
+        <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1934"/>
         <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="581"/>
         <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="2459"/>
-        <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="1934"/>
         <source>Invalid size of the decoded array. Expected %1, actual %2.</source>
         <translation>taille non valide du tableau décodé. %1 attendu, %2 réel.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="727"/>
         <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="2008"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="727"/>
         <source>Soft mask can&apos;t have masking.</source>
         <translation>le masque logiciel ne peut pas avoir de masquage.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="732"/>
         <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="2013"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="732"/>
         <source>Invalid size of soft mask.</source>
         <translation>taille du masque logiciel non valide.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="740"/>
         <location filename="../Pdf4QtLibCore/sources/pdftransparencyrenderer.cpp" line="2021"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfcolorspaces.cpp" line="740"/>
         <source>Soft mask should have only 1 color component (alpha) instead of %1.</source>
         <translation>le masque logiciel ne doit avoir qu&apos;un seul composant de couleur (alpha) au lieu de %1.</translation>
     </message>
@@ -10213,7 +10213,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontentprocessor.cpp" line="1213"/>
         <source>Tiling pattern is too complex (%1 tiles) and it was not painted.</source>
-        <translation>Le motif de pavage est trop complexe (%1 pavés) et il n'a pas été dessiné.</translation>
+        <translation>Le motif de pavage est trop complexe (%1 pavés) et il n&apos;a pas été dessiné.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontentprocessor.cpp" line="1724"/>
@@ -10945,7 +10945,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdffont.cpp" line="3513"/>
         <source>Font &apos;%1&apos; is not embedded, using substitute font for real text drawing.</source>
-        <translation>La police « %1 » n'est pas intégrée, une police de substitution est utilisée pour dessiner le vrai texte.</translation>
+        <translation>La police « %1 » n&apos;est pas intégrée, une police de substitution est utilisée pour dessiner le vrai texte.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdffont.cpp" line="3665"/>
@@ -10980,27 +10980,27 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="94"/>
         <source>Failed to normalize image for monochrome conversion.</source>
-        <translation>La normalisation de l'image pour la conversion monochrome a échoué.</translation>
+        <translation>La normalisation de l&apos;image pour la conversion monochrome a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="100"/>
         <source>Failed to allocate intermediate image buffer.</source>
-        <translation>L'allocation du tampon d'image intermédiaire a échoué.</translation>
+        <translation>L&apos;allocation du tampon d&apos;image intermédiaire a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="146"/>
         <source>Cannot encode empty image.</source>
-        <translation>Impossible d'encoder une image vide.</translation>
+        <translation>Impossible d&apos;encoder une image vide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="157"/>
         <source>Invalid target size for image encoding.</source>
-        <translation>Taille cible non valide pour l'encodage de l'image.</translation>
+        <translation>Taille cible non valide pour l&apos;encodage de l&apos;image.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="193"/>
         <source>Selected compression supports only 1-bit monochrome images; the image is converted to monochrome.</source>
-        <translation>La compression choisie ne prend en charge que les images monochromes à 1 bit ; l'image est convertie en monochrome.</translation>
+        <translation>La compression choisie ne prend en charge que les images monochromes à 1 bit ; l&apos;image est convertie en monochrome.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="209"/>
@@ -11010,7 +11010,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="284"/>
         <source>Failed to convert image to monochrome.</source>
-        <translation>La conversion de l'image en monochrome a échoué.</translation>
+        <translation>La conversion de l&apos;image en monochrome a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="290"/>
@@ -11020,42 +11020,42 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="304"/>
         <source>Unsupported image color mode.</source>
-        <translation>Mode de couleur d'image non pris en charge.</translation>
+        <translation>Mode de couleur d&apos;image non pris en charge.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="310"/>
         <source>Image alpha channel was composited onto white background during encoding.</source>
-        <translation>Le canal alpha de l'image a été composé sur un fond blanc pendant l'encodage.</translation>
+        <translation>Le canal alpha de l&apos;image a été composé sur un fond blanc pendant l&apos;encodage.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="448"/>
         <source>JPEG encoder supports only 8-bit grayscale or RGB images.</source>
-        <translation>L'encodeur JPEG ne prend en charge que les images 8 bits en niveaux de gris ou RVB.</translation>
+        <translation>L&apos;encodeur JPEG ne prend en charge que les images 8 bits en niveaux de gris ou RVB.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="460"/>
         <source>Error writing JPEG image: %1.</source>
-        <translation>Erreur d'écriture de l'image JPEG : %1.</translation>
+        <translation>Erreur d&apos;écriture de l&apos;image JPEG : %1.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="606"/>
         <source>JPEG 2000 encoder supports only 8-bit grayscale or RGB images.</source>
-        <translation>L'encodeur JPEG 2000 ne prend en charge que les images 8 bits en niveaux de gris ou RVB.</translation>
+        <translation>L&apos;encodeur JPEG 2000 ne prend en charge que les images 8 bits en niveaux de gris ou RVB.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="634"/>
         <source>Failed to allocate JPEG 2000 image structure.</source>
-        <translation>L'allocation de la structure d'image JPEG 2000 a échoué.</translation>
+        <translation>L&apos;allocation de la structure d&apos;image JPEG 2000 a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="674"/>
         <source>Failed to create JPEG 2000 encoder.</source>
-        <translation>La création de l'encodeur JPEG 2000 a échoué.</translation>
+        <translation>La création de l&apos;encodeur JPEG 2000 a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="685"/>
         <source>Failed to setup JPEG 2000 encoder.</source>
-        <translation>La configuration de l'encodeur JPEG 2000 a échoué.</translation>
+        <translation>La configuration de l&apos;encodeur JPEG 2000 a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="698"/>
@@ -11065,12 +11065,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="725"/>
         <source>JPEG 2000 encoder error: %1</source>
-        <translation>Erreur de l'encodeur JPEG 2000 : %1</translation>
+        <translation>Erreur de l&apos;encodeur JPEG 2000 : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="730"/>
         <source>JPEG 2000 encoder failed to write image.</source>
-        <translation>L'encodeur JPEG 2000 n'a pas pu écrire l'image.</translation>
+        <translation>L&apos;encodeur JPEG 2000 n&apos;a pas pu écrire l&apos;image.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="738"/>
@@ -11155,12 +11155,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="1484"/>
         <source>Image of the size %1 x %2 is too large for the JBIG2 coding; the CCITT fax coding is used instead.</source>
-        <translation>L'image de taille %1 x %2 est trop grande pour le codage JBIG2 ; le codage fax CCITT est utilisé à la place.</translation>
+        <translation>L&apos;image de taille %1 x %2 est trop grande pour le codage JBIG2 ; le codage fax CCITT est utilisé à la place.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfimage.cpp" line="1537"/>
         <source>Encoded image stream is empty.</source>
-        <translation>Le flux de l'image encodée est vide.</translation>
+        <translation>Le flux de l&apos;image encodée est vide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontenteditorcontentstreambuilder.cpp" line="1114"/>
@@ -11197,17 +11197,17 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontenteditorcontentstreambuilder.cpp" line="1308"/>
         <source>Color command requires attribute gray, attributes r, g, b, or attributes c, m, y, k.</source>
-        <translation>La commande de couleur exige l'attribut gray, les attributs r, g, b, ou les attributs c, m, y, k.</translation>
+        <translation>La commande de couleur exige l&apos;attribut gray, les attributs r, g, b, ou les attributs c, m, y, k.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontenteditorcontentstreambuilder.cpp" line="1348"/>
         <source>Space command requires one attribute - advance.</source>
-        <translation>La commande d'espace exige un attribut : advance.</translation>
+        <translation>La commande d&apos;espace exige un attribut : advance.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontenteditorcontentstreambuilder.cpp" line="1381"/>
         <source>Cannot encode character with cid &apos;%1&apos; using the current font.</source>
-        <translation>Impossible d'encoder le caractère de cid « %1 » avec la police actuelle.</translation>
+        <translation>Impossible d&apos;encoder le caractère de cid « %1 » avec la police actuelle.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontenteditorcontentstreambuilder.cpp" line="1390"/>
@@ -11242,7 +11242,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontenteditorcontentstreambuilder.cpp" line="1672"/>
         <source>Font &apos;%1&apos; is invalid: %2</source>
-        <translation>La police « %1 » n'est pas valide : %2</translation>
+        <translation>La police « %1 » n&apos;est pas valide : %2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagecontenteditorcontentstreambuilder.cpp" line="1721"/>
@@ -11292,7 +11292,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfccittfaxencoder.cpp" line="96"/>
         <source>Invalid bitonal image for the CCITT fax encoding.</source>
-        <translation>Image bitonale non valide pour l'encodage fax CCITT.</translation>
+        <translation>Image bitonale non valide pour l&apos;encodage fax CCITT.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagegeometry.cpp" line="385"/>
@@ -11305,17 +11305,17 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagegeometry.cpp" line="501"/>
         <source>No target page box selected.</source>
-        <translation>Aucune zone de page cible n'est choisie.</translation>
+        <translation>Aucune zone de page cible n&apos;est choisie.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagegeometry.cpp" line="536"/>
         <source>Reference box on page %1 is invalid.</source>
-        <translation>La zone de référence de la page %1 n'est pas valide.</translation>
+        <translation>La zone de référence de la page %1 n&apos;est pas valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagegeometry.cpp" line="555"/>
         <source>Target page size for page %1 is invalid.</source>
-        <translation>La taille de page cible de la page %1 n'est pas valide.</translation>
+        <translation>La taille de page cible de la page %1 n&apos;est pas valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagegeometry.cpp" line="565"/>
@@ -11325,7 +11325,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpagegeometry.cpp" line="585"/>
         <source>Content scale for page %1 is invalid.</source>
-        <translation>L'échelle du contenu de la page %1 n'est pas valide.</translation>
+        <translation>L&apos;échelle du contenu de la page %1 n&apos;est pas valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2decoder.h" line="92"/>
@@ -11348,7 +11348,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="108"/>
         <source>Invalid JBIG2 arithmetic encoder state or bit.</source>
-        <translation>État ou bit de l'encodeur arithmétique JBIG2 non valide.</translation>
+        <translation>État ou bit de l&apos;encodeur arithmétique JBIG2 non valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="116"/>
@@ -11358,7 +11358,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="176"/>
         <source>JBIG2 arithmetic encoder has already finished.</source>
-        <translation>L'encodeur arithmétique JBIG2 a déjà terminé.</translation>
+        <translation>L&apos;encodeur arithmétique JBIG2 a déjà terminé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="275"/>
@@ -11368,17 +11368,17 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="366"/>
         <source>Invalid bitonal image for the JBIG2 encoding.</source>
-        <translation>Image bitonale non valide pour l'encodage JBIG2.</translation>
+        <translation>Image bitonale non valide pour l&apos;encodage JBIG2.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="373"/>
         <source>Image of the size %1 x %2 is too large for the JBIG2 encoding, the maximum size is %3 x %3.</source>
-        <translation>L'image de taille %1 x %2 est trop grande pour l'encodage JBIG2, la taille maximale est %3 x %3.</translation>
+        <translation>L&apos;image de taille %1 x %2 est trop grande pour l&apos;encodage JBIG2, la taille maximale est %3 x %3.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="381"/>
         <source>Image exceeds the JBIG2 encoding resource limit.</source>
-        <translation>L'image dépasse la limite de ressources de l'encodage JBIG2.</translation>
+        <translation>L&apos;image dépasse la limite de ressources de l&apos;encodage JBIG2.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="391"/>
@@ -11398,7 +11398,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="456"/>
         <source>Invalid size (%1 x %2) of the JBIG2 skip bitmap, the image size is %3 x %4.</source>
-        <translation>Taille (%1 x %2) de la bitmap de saut JBIG2 non valide, la taille de l'image est %3 x %4.</translation>
+        <translation>Taille (%1 x %2) de la bitmap de saut JBIG2 non valide, la taille de l&apos;image est %3 x %4.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfjbig2encoder.cpp" line="664"/>
@@ -11423,7 +11423,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfeditorfallbackfont.cpp" line="144"/>
         <source>Character &apos;%1&apos; (U+%2) is not available in any substitute font, an empty glyph is used.</source>
-        <translation>Le caractère « %1 » (U+%2) n'existe dans aucune police de substitution, un glyphe vide est utilisé.</translation>
+        <translation>Le caractère « %1 » (U+%2) n&apos;existe dans aucune police de substitution, un glyphe vide est utilisé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrconfiguration.cpp" line="100"/>
@@ -11860,9 +11860,9 @@ li.checked::marker { content: "\2612"; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibCore/sources/pdfocrjobcontroller.cpp" line="659"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrpagepreparer.cpp" line="1030"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrtextlayerwriter.cpp" line="1535"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfocrjobcontroller.cpp" line="659"/>
         <source>Page %1 does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11894,12 +11894,12 @@ li.checked::marker { content: "\2612"; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibCore/sources/pdfocrapplyprocessor.cpp" line="426"/>
-        <location filename="../Pdf4QtLibCore/sources/pdfocrapplyprocessor.cpp" line="466"/>
-        <location filename="../Pdf4QtLibCore/sources/pdfocrapplyprocessor.cpp" line="579"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrpagepreparer.cpp" line="1075"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrpagepreparer.cpp" line="1088"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrpagepreparer.cpp" line="1170"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfocrapplyprocessor.cpp" line="426"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfocrapplyprocessor.cpp" line="466"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfocrapplyprocessor.cpp" line="579"/>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="676"/>
         <source>Operation was cancelled.</source>
         <translation type="unfinished"></translation>
@@ -11920,14 +11920,14 @@ li.checked::marker { content: "\2612"; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibCore/sources/pdfocrjobcontroller.cpp" line="773"/>
-        <location filename="../Pdf4QtLibCore/sources/pdfocrjobcontroller.cpp" line="785"/>
-        <location filename="../Pdf4QtLibCore/sources/pdfocrjobcontroller.cpp" line="790"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrpagepreparer.cpp" line="1170"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrpagepreparer.cpp" line="1217"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrpagepreparer.cpp" line="1260"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrpagepreparer.cpp" line="1267"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrpagepreparer.cpp" line="1327"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfocrjobcontroller.cpp" line="773"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfocrjobcontroller.cpp" line="785"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfocrjobcontroller.cpp" line="790"/>
         <source>Preprocessing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12002,16 +12002,16 @@ li.checked::marker { content: "\2612"; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibCore/sources/pdfocrexport.cpp" line="937"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrproject.cpp" line="783"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrproject.cpp" line="1073"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfocrexport.cpp" line="937"/>
         <source>Cannot open file &apos;%1&apos; for writing: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibCore/sources/pdfocrexport.cpp" line="946"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrproject.cpp" line="794"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrproject.cpp" line="1084"/>
+        <location filename="../Pdf4QtLibCore/sources/pdfocrexport.cpp" line="946"/>
         <source>Cannot write file &apos;%1&apos;: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12300,12 +12300,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrmodelmanager.cpp" line="1436"/>
         <source>The runtime set &apos;%1&apos; is incomplete and it is used by another recognition. Try it again, when the recognition finishes.</source>
-        <translation>L'ensemble d'exécution « %1 » est incomplet et il est utilisé par une autre reconnaissance. Réessayez quand la reconnaissance sera terminée.</translation>
+        <translation>L&apos;ensemble d&apos;exécution « %1 » est incomplet et il est utilisé par une autre reconnaissance. Réessayez quand la reconnaissance sera terminée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrmodelmanager.cpp" line="1441"/>
         <source>Cannot remove the incomplete runtime set directory &apos;%1&apos;.</source>
-        <translation>Impossible de supprimer le dossier de l'ensemble d'exécution incomplet « %1 ».</translation>
+        <translation>Impossible de supprimer le dossier de l&apos;ensemble d&apos;exécution incomplet « %1 ».</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrmodelmanager.cpp" line="1455"/>
@@ -12325,7 +12325,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrmodelmanager.cpp" line="1505"/>
         <source>Cannot acquire the lease of the runtime set &apos;%1&apos;.</source>
-        <translation>Impossible de réserver l'ensemble d'exécution « %1 ».</translation>
+        <translation>Impossible de réserver l&apos;ensemble d&apos;exécution « %1 ».</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrmodelmanager.cpp" line="1641"/>
@@ -12416,12 +12416,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrmodelmanager.cpp" line="1969"/>
         <source>Cannot write the checksum of the model &apos;%1&apos;. Check the free space and the permissions of the directory.</source>
-        <translation>Impossible d'écrire la somme de contrôle du modèle « %1 ». Vérifiez l'espace libre et les permissions du dossier.</translation>
+        <translation>Impossible d&apos;écrire la somme de contrôle du modèle « %1 ». Vérifiez l&apos;espace libre et les permissions du dossier.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrmodelmanager.cpp" line="1990"/>
         <source>Cannot write the installation data of the model &apos;%1&apos;. Check the free space and the permissions of the directory.</source>
-        <translation>Impossible d'écrire les données d'installation du modèle « %1 ». Vérifiez l'espace libre et les permissions du dossier.</translation>
+        <translation>Impossible d&apos;écrire les données d&apos;installation du modèle « %1 ». Vérifiez l&apos;espace libre et les permissions du dossier.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrmodelmanager.cpp" line="2013"/>
@@ -12575,7 +12575,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrjobcontroller.cpp" line="153"/>
         <source>The language model set is not leased, it could be removed during the recognition. Prepare the recognition again.</source>
-        <translation>L'ensemble de modèles de langue n'est pas réservé, il pourrait être supprimé pendant la reconnaissance. Préparez de nouveau la reconnaissance.</translation>
+        <translation>L&apos;ensemble de modèles de langue n&apos;est pas réservé, il pourrait être supprimé pendant la reconnaissance. Préparez de nouveau la reconnaissance.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrjobcontroller.cpp" line="270"/>
@@ -12611,6 +12611,7 @@ li.checked::marker { content: "\2612"; }
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../Pdf4QtLibCore/sources/pdfocrpagepreparer.cpp" line="1127"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrjobcontroller.cpp" line="271"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrjobcontroller.cpp" line="282"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrjobcontroller.cpp" line="292"/>
@@ -12619,7 +12620,6 @@ li.checked::marker { content: "\2612"; }
         <location filename="../Pdf4QtLibCore/sources/pdfocrjobcontroller.cpp" line="670"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrjobcontroller.cpp" line="725"/>
         <location filename="../Pdf4QtLibCore/sources/pdfocrjobcontroller.cpp" line="730"/>
-        <location filename="../Pdf4QtLibCore/sources/pdfocrpagepreparer.cpp" line="1127"/>
         <source>Rendering</source>
         <translation type="unfinished">Rendering</translation>
     </message>
@@ -12946,7 +12946,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrcompression.cpp" line="160"/>
         <source>Flate</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Flate</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrcompression.cpp" line="170"/>
@@ -12961,7 +12961,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrcompression.cpp" line="174"/>
         <source>Manual</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Manuel</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrcompression.cpp" line="188"/>
@@ -13016,7 +13016,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrcompression.cpp" line="254"/>
         <source>%1 MB</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 Mo</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrcompression.cpp" line="256"/>
@@ -13557,7 +13557,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="298"/>
         <source>The page cannot be rendered for the analysis.</source>
-        <translation>La page ne peut pas être rendue pour l'analyse.</translation>
+        <translation>La page ne peut pas être rendue pour l&apos;analyse.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="524"/>
@@ -13587,7 +13587,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="535"/>
         <source>%1 page(s) with an OCR layer were not changed.</source>
-        <translation>%1 page(s) avec une couche OCR n'ont pas été modifiées.</translation>
+        <translation>%1 page(s) avec une couche OCR n&apos;ont pas été modifiées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="563"/>
@@ -13597,12 +13597,12 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="570"/>
         <source>The plan changes the order of the pages; the preparation of the scan keeps the order.</source>
-        <translation>Le plan change l'ordre des pages ; la préparation des numérisations garde l'ordre.</translation>
+        <translation>Le plan change l&apos;ordre des pages ; la préparation des numérisations garde l&apos;ordre.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="577"/>
         <source>The angle of the deskew of the page %1 is out of the range +-%2 degrees.</source>
-        <translation>L'angle de redressement de la page %1 est hors de la plage de +-%2 degrés.</translation>
+        <translation>L&apos;angle de redressement de la page %1 est hors de la plage de +-%2 degrés.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="585"/>
@@ -13612,17 +13612,17 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="620"/>
         <source>Page %1: the OCR layer cannot be removed (it was changed by another tool), the page is not changed.</source>
-        <translation>Page %1 : la couche OCR ne peut pas être supprimée (elle a été modifiée par un autre outil), la page n'est pas modifiée.</translation>
+        <translation>Page %1 : la couche OCR ne peut pas être supprimée (elle a été modifiée par un autre outil), la page n&apos;est pas modifiée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="630"/>
         <source>Page %1 is a part of the structure tree of a tagged document, it cannot be split.</source>
-        <translation>La page %1 fait partie de l'arbre de structure d'un document balisé, elle ne peut pas être séparée.</translation>
+        <translation>La page %1 fait partie de l&apos;arbre de structure d&apos;un document balisé, elle ne peut pas être séparée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="652"/>
         <source>Page %1: the content has a closing operator without its opening operator, the page is not straightened.</source>
-        <translation>Page %1 : le contenu a un opérateur de fermeture sans son opérateur d'ouverture, la page n'est pas redressée.</translation>
+        <translation>Page %1 : le contenu a un opérateur de fermeture sans son opérateur d&apos;ouverture, la page n&apos;est pas redressée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfscanpreparation.cpp" line="720"/>
@@ -13677,7 +13677,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfobject.cpp" line="311"/>
         <source>Invalid type of the object, %1 was expected.</source>
-        <translation>Type d'objet non valide, %1 était attendu.</translation>
+        <translation>Type d&apos;objet non valide, %1 était attendu.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpageorganizer.cpp" line="64"/>
@@ -13688,7 +13688,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpageorganizer.cpp" line="74"/>
         <source>Page tree of the document is invalid.</source>
-        <translation>L'arbre des pages du document n'est pas valide.</translation>
+        <translation>L&apos;arbre des pages du document n&apos;est pas valide.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfpageorganizer.cpp" line="775"/>
@@ -13780,7 +13780,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfwidgetannotation.cpp" line="2561"/>
         <source>Paste at Original Position</source>
-        <translation>Coller à la position d'origine</translation>
+        <translation>Coller à la position d&apos;origine</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfwidgetannotation.cpp" line="2567"/>
@@ -13945,7 +13945,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfwidgetannotation.cpp" line="2745"/>
         <source>Draw the new stroke by the mouse. Escape cancels it.</source>
-        <translation>Tracez le nouveau trait avec la souris. Échap l'annule.</translation>
+        <translation>Tracez le nouveau trait avec la souris. Échap l&apos;annule.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfwidgetannotation.cpp" line="2750"/>
@@ -13955,7 +13955,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfwidgetannotation.cpp" line="2751"/>
         <source>Drag the mouse over the text (or over an area without a text), which should be marked too. Escape cancels it.</source>
-        <translation>Faites glisser la souris sur le texte (ou sur une zone sans texte) qui doit aussi être marqué. Échap l'annule.</translation>
+        <translation>Faites glisser la souris sur le texte (ou sur une zone sans texte) qui doit aussi être marqué. Échap l&apos;annule.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfwidgetannotation.cpp" line="2754"/>
@@ -13965,7 +13965,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfwidgetannotation.cpp" line="2755"/>
         <source>Drag the mouse over the text (or over an area without a text), which should be marked instead of the text, which is marked now. Escape cancels it.</source>
-        <translation>Faites glisser la souris sur le texte (ou sur une zone sans texte) qui doit être marqué à la place du texte marqué maintenant. Échap l'annule.</translation>
+        <translation>Faites glisser la souris sur le texte (ou sur une zone sans texte) qui doit être marqué à la place du texte marqué maintenant. Échap l&apos;annule.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfwidgetannotation.cpp" line="2763"/>
@@ -13990,7 +13990,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfwidgetannotation.cpp" line="2821"/>
         <source>Select Next Annotation at This Place</source>
-        <translation>Sélectionner l'annotation suivante à cet endroit</translation>
+        <translation>Sélectionner l&apos;annotation suivante à cet endroit</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfwidgetannotation.cpp" line="2833"/>
@@ -14025,7 +14025,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfwidgetannotation.cpp" line="3587"/>
         <source>Drag to rotate in steps of 90°. This annotation cannot be rotated by an arbitrary angle.</source>
-        <translation>Faites glisser pour tourner par pas de 90°. Cette annotation ne peut pas être tournée d'un angle quelconque.</translation>
+        <translation>Faites glisser pour tourner par pas de 90°. Cette annotation ne peut pas être tournée d&apos;un angle quelconque.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfwidgetannotation.cpp" line="3594"/>
@@ -14040,7 +14040,7 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfwidgetannotation.cpp" line="3618"/>
         <source>Drag the text box to move it, the callout line stays at its target. Drag the callout line (or hold Alt) to move the whole annotation.</source>
-        <translation>Faites glisser la zone de texte pour la déplacer, la ligne de rappel reste sur sa cible. Faites glisser la ligne de rappel (ou maintenez Alt) pour déplacer toute l'annotation.</translation>
+        <translation>Faites glisser la zone de texte pour la déplacer, la ligne de rappel reste sur sa cible. Faites glisser la ligne de rappel (ou maintenez Alt) pour déplacer toute l&apos;annotation.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibWidgets/sources/pdfwidgetannotation.cpp" line="5279"/>
@@ -14204,7 +14204,7 @@ li.checked::marker { content: "\2612"; }
 The creation tool stays active after an element has been created and the size of the last created element is reused, so a single click creates the next element of the same size. Hold Shift to define a different size.</source>
         <translation>Créer plusieurs éléments
 
-L'outil de création reste actif après la création d'un élément et la taille du dernier élément créé est réutilisée : un seul clic crée l'élément suivant de la même taille. Maintenez Maj pour définir une autre taille.</translation>
+L&apos;outil de création reste actif après la création d&apos;un élément et la taille du dernier élément créé est réutilisée : un seul clic crée l&apos;élément suivant de la même taille. Maintenez Maj pour définir une autre taille.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/EditorPlugin/editorplugin.cpp" line="254"/>
@@ -14628,7 +14628,7 @@ L'outil de création reste actif après la création d'un élément et la taille
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signdialog.cpp" line="167"/>
         <source>Address of the timestamp authority is not valid.</source>
-        <translation>L'adresse de l'autorité d'horodatage n'est pas valide.</translation>
+        <translation>L&apos;adresse de l&apos;autorité d&apos;horodatage n&apos;est pas valide.</translation>
     </message>
 </context>
 <context>
@@ -14733,7 +14733,7 @@ L'outil de création reste actif après la création d'un élément et la taille
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signatureplugin.cpp" line="353"/>
         <source>No signature graphics were created, the signature will have no visible appearance. Continue?</source>
-        <translation>Aucun graphisme de signature n'a été créé, la signature n'aura pas d'apparence visible. Continuer ?</translation>
+        <translation>Aucun graphisme de signature n&apos;a été créé, la signature n&apos;aura pas d&apos;apparence visible. Continuer ?</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signatureplugin.cpp" line="363"/>
@@ -14750,7 +14750,7 @@ L'outil de création reste actif après la création d'un élément et la taille
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signatureplugin.cpp" line="373"/>
         <source>The document has no page for a signature widget.</source>
-        <translation>Le document n'a pas de page pour le widget de signature.</translation>
+        <translation>Le document n&apos;a pas de page pour le widget de signature.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signatureplugin.cpp" line="532"/>
@@ -14765,7 +14765,7 @@ L'outil de création reste actif après la création d'un élément et la taille
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signatureplugin.cpp" line="543"/>
         <source>Failed to save the signed document.</source>
-        <translation>L'enregistrement du document signé a échoué.</translation>
+        <translation>L&apos;enregistrement du document signé a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtEditorPlugins/SignaturePlugin/signatureplugin.cpp" line="713"/>
@@ -14850,7 +14850,7 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfaboutdialog.cpp" line="168"/>
         <source>The license text %1 is not distributed with this installation.</source>
-        <translation>Le texte de licence %1 n'est pas distribué avec cette installation.</translation>
+        <translation>Le texte de licence %1 n&apos;est pas distribué avec cette installation.</translation>
     </message>
 </context>
 <context>
@@ -14977,52 +14977,52 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
         <translation>Choisir une autre couleur</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="73"/>
+        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="74"/>
         <source>Fill</source>
         <translation>Remplissage</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="76"/>
+        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="77"/>
         <source>Fill the shapes with a light tint of the color</source>
-        <translation>Remplir les formes d'une teinte claire de la couleur</translation>
+        <translation>Remplir les formes d&apos;une teinte claire de la couleur</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="81"/>
-        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="291"/>
+        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="82"/>
+        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="305"/>
         <source>Fine</source>
         <translation>Fin</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="81"/>
-        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="291"/>
+        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="82"/>
+        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="305"/>
         <source>Medium</source>
         <translation>Moyen</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="81"/>
-        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="291"/>
+        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="82"/>
+        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="305"/>
         <source>Thick</source>
         <translation>Épais</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="89"/>
-        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="298"/>
+        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="90"/>
+        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="312"/>
         <source>Pen width: %1 (%2 pt)</source>
         <translation>Épaisseur du trait : %1 (%2 pt)</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="98"/>
-        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="306"/>
+        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="99"/>
+        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="320"/>
         <source>Font</source>
         <translation>Police</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="100"/>
+        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="101"/>
         <source>Font of the inline text</source>
         <translation>Police du texte en ligne</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="315"/>
+        <location filename="../Pdf4QtLibGui/pdfannotationstyletoolbar.cpp" line="329"/>
         <source>Select Color</source>
         <translation>Choisir une couleur</translation>
     </message>
@@ -15075,12 +15075,12 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="227"/>
         <source>Automatic (Otsu&apos;s 1D method)</source>
-        <translation>Automatique (méthode 1D d'Otsu)</translation>
+        <translation>Automatique (méthode 1D d&apos;Otsu)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="228"/>
         <source>User-defined threshold</source>
-        <translation>Seuil défini par l'utilisateur</translation>
+        <translation>Seuil défini par l&apos;utilisateur</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="229"/>
@@ -15133,7 +15133,7 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="436"/>
         <source>Blank page detection could not examine all pages. No page modes have been changed.</source>
-        <translation>La détection des pages blanches n'a pas pu examiner toutes les pages. Aucun mode de page n'a été modifié.</translation>
+        <translation>La détection des pages blanches n&apos;a pas pu examiner toutes les pages. Aucun mode de page n&apos;a été modifié.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="470"/>
@@ -15150,12 +15150,12 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="487"/>
         <source>The bitonal document has not been created. No item of the document could be converted.</source>
-        <translation>Le document bitonal n'a pas été créé. Aucun élément du document n'a pu être converti.</translation>
+        <translation>Le document bitonal n&apos;a pas été créé. Aucun élément du document n&apos;a pu être converti.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="498"/>
         <source>%1 of %2 items could not be converted and they are left unchanged. Do you want to use the partially converted document?</source>
-        <translation>%1 éléments sur %2 n'ont pas pu être convertis et restent inchangés. Voulez-vous utiliser le document converti en partie ?</translation>
+        <translation>%1 éléments sur %2 n&apos;ont pas pu être convertis et restent inchangés. Voulez-vous utiliser le document converti en partie ?</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="601"/>
@@ -15213,7 +15213,7 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1146"/>
         <source>No blank page has been found in the document.</source>
-        <translation>Aucune page blanche n'a été trouvée dans le document.</translation>
+        <translation>Aucune page blanche n&apos;a été trouvée dans le document.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfcreatebitonaldocumentdialog.cpp" line="1150"/>
@@ -15704,264 +15704,279 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
 <context>
     <name>pdfviewer::PDFEditorMainWindow</name>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="122"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="128"/>
         <source>Standard</source>
         <translation>Standard</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="266"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="272"/>
         <source>Navigation</source>
         <translation>Navigation</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="285"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="277"/>
+        <source>Page Number</source>
+        <translation>Numéro de page</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="278"/>
+        <source>Page Count</source>
+        <translation>Nombre de pages</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="291"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="312"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="333"/>
         <source>&amp;Sidebar</source>
         <translation>&amp;Barre latérale</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="337"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="358"/>
         <source>Advanced find</source>
         <translation>Recherche avancée</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="345"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="366"/>
         <source>Ad&amp;vanced Find...</source>
         <translation>&amp;Recherche avancée...</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="499"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="520"/>
         <source> / %1</source>
         <translation> / %1</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="601"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="622"/>
         <source>&amp;Add Blank Page After</source>
         <translation>&amp;Ajouter une page blanche après</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="601"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="622"/>
         <source>Add a blank page after the current page, with the same size and background</source>
         <translation>Ajouter une page blanche après la page courante, avec la même taille et le même fond</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="602"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="623"/>
         <source>&amp;Insert Blank Page Before</source>
         <translation>&amp;Insérer une page blanche avant</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="602"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="623"/>
         <source>Insert a blank page before the current page, with the same size and background</source>
         <translation>Insérer une page blanche avant la page courante, avec la même taille et le même fond</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="603"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="624"/>
         <source>&amp;Duplicate Page</source>
         <translation>&amp;Dupliquer la page</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="603"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="624"/>
         <source>Insert a copy of the current page after it, including its annotations</source>
         <translation>Insérer une copie de la page courante après elle, avec ses annotations</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="604"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="625"/>
         <source>D&amp;elete Page</source>
         <translation>Su&amp;pprimer la page</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="604"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="625"/>
         <source>Delete the current page</source>
         <translation>Supprimer la page courante</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="605"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="626"/>
         <source>Move Page &amp;Up</source>
         <translation>Déplacer la page vers le &amp;haut</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="605"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="626"/>
         <source>Move the current page before the previous page</source>
         <translation>Déplacer la page courante avant la page précédente</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="606"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="627"/>
         <source>Move Page Do&amp;wn</source>
         <translation>Déplacer la page vers le &amp;bas</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="606"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="627"/>
         <source>Move the current page after the next page</source>
         <translation>Déplacer la page courante après la page suivante</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="611"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="632"/>
         <source>&amp;Background</source>
         <translation>&amp;Fond</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="613"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="634"/>
         <source>&amp;All Pages</source>
         <translation>&amp;Toutes les pages</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="630"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="651"/>
         <source>Remove the background of the current page</source>
         <translation>Supprimer le fond de la page courante</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="631"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="652"/>
         <source>Remove the background of all pages</source>
         <translation>Supprimer le fond de toutes les pages</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="635"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="656"/>
         <source>Set a ruled background on the current page</source>
         <translation>Mettre un fond réglé sur la page courante</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="636"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="657"/>
         <source>Set a ruled background on all pages</source>
         <translation>Mettre un fond réglé sur toutes les pages</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="642"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="663"/>
         <source>Set the background &quot;%1&quot; on the current page</source>
         <translation>Mettre le fond « %1 » sur la page courante</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="646"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="667"/>
         <source>Set the background &quot;%1&quot; on all pages</source>
         <translation>Mettre le fond « %1 » sur toutes les pages</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="661"/>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="662"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="682"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="683"/>
         <source>Xournal++</source>
         <translation>Xournal++</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="684"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="705"/>
         <source>Background of the page</source>
         <translation>Fond de la page</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="688"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="709"/>
         <source>&amp;Pages</source>
         <translation>&amp;Pages</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="703"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="724"/>
         <source>Pages</source>
         <translation>Pages</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="734"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="755"/>
         <source>Insert</source>
         <translation>Insérer</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="763"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="764"/>
+        <source>Sticky Notes</source>
+        <translation>Pense-bêtes</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="785"/>
         <source>&amp;Plain</source>
         <translation>&amp;Uni</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="765"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="787"/>
         <source>&amp;Ruled</source>
         <translation>&amp;Réglé</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="767"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="789"/>
         <source>&amp;Lines</source>
         <translation>&amp;Lignes</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="769"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="791"/>
         <source>Lines with &amp;Margin</source>
         <translation>Lignes avec &amp;marge</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="771"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="793"/>
         <source>Lines with Margin on the Righ&amp;t</source>
         <translation>Lignes avec marge à droi&amp;te</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="773"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="795"/>
         <source>&amp;Graph</source>
         <translation>&amp;Quadrillage</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="775"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="797"/>
         <source>Graph with &amp;Border</source>
         <translation>Quadrillage avec &amp;bordure</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="777"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="799"/>
         <source>Graph with Border, Every 5th Line B&amp;old</source>
         <translation>Quadrillage avec bordure, une ligne sur 5 en gr&amp;as</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="779"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="801"/>
         <source>&amp;Dotted</source>
         <translation>&amp;Pointillé</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="781"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="803"/>
         <source>&amp;Isometric Dotted</source>
         <translation>Pointillé &amp;isométrique</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="783"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="805"/>
         <source>Isometric Grap&amp;h</source>
         <translation>Quadrillage isométri&amp;que</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="785"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="807"/>
         <source>&amp;Staves</source>
         <translation>P&amp;ortées</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="872"/>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="875"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="894"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="897"/>
         <source>Detach the sidebar</source>
         <translation>Détacher la barre latérale</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="875"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="897"/>
         <source>Attach the sidebar</source>
         <translation>Attacher la barre latérale</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="877"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="899"/>
         <source>Close the sidebar</source>
         <translation>Fermer la barre latérale</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="907"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="929"/>
         <source>Status &amp;Bar</source>
-        <translation>&amp;Barre d'état</translation>
+        <translation>&amp;Barre d&apos;état</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="911"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="933"/>
         <source>Show or hide the status bar</source>
-        <translation>Afficher ou masquer la barre d'état</translation>
+        <translation>Afficher ou masquer la barre d&apos;état</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="925"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="947"/>
         <source>&amp;Toolbar Position</source>
-        <translation>&amp;Position des barres d'outils</translation>
+        <translation>&amp;Position des barres d&apos;outils</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="927"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="949"/>
         <source>&amp;Top</source>
         <translation>En &amp;haut</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="931"/>
+        <location filename="../Pdf4QtLibGui/pdfeditormainwindow.cpp" line="953"/>
         <source>&amp;Right</source>
         <translation>À &amp;droite</translation>
     </message>
@@ -16070,7 +16085,7 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="70"/>
         <source>Batch Recognize Text</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Reconnaître le texte par lots</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="100"/>
@@ -17654,7 +17669,7 @@ Do you want to replace the current text?</source>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="3665"/>
         <source>no</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">non</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="3669"/>
@@ -18030,7 +18045,7 @@ Do you want to replace the current text?</source>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="5118"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Appliquer</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="5128"/>
@@ -18786,7 +18801,7 @@ Pages with a different content can be loaded for review and export only; they ca
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="133"/>
         <source>Manage OCR Languages</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gérer les langues de l&apos;OCR</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="133"/>
@@ -18796,7 +18811,7 @@ Pages with a different content can be loaded for review and export only; they ca
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="149"/>
         <source>%1 MB</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 Mo</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="184"/>
@@ -18927,7 +18942,7 @@ If a built-in version of the language exists, it will be used again. OCR project
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="557"/>
         <source>%1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 : %2</translation>
     </message>
 </context>
 <context>
@@ -19087,12 +19102,12 @@ If a built-in version of the language exists, it will be used again. OCR project
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="237"/>
         <source>&lt;b&gt;Mode&lt;/b&gt;&lt;br/&gt;Auto uses image analysis to pick color mode and compression.&lt;br/&gt;Custom respects the selected color mode and profiles.</source>
-        <translation>&lt;b&gt;Mode&lt;/b&gt;&lt;br/&gt;Auto analyse l'image pour choisir le mode de couleur et la compression.&lt;br/&gt;Personnalisé respecte le mode de couleur et les profils choisis.</translation>
+        <translation>&lt;b&gt;Mode&lt;/b&gt;&lt;br/&gt;Auto analyse l&apos;image pour choisir le mode de couleur et la compression.&lt;br/&gt;Personnalisé respecte le mode de couleur et les profils choisis.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="238"/>
         <source>&lt;b&gt;Color mode&lt;/b&gt;&lt;br/&gt;Choose output color space or let the optimizer decide.</source>
-        <translation>&lt;b&gt;Mode de couleur&lt;/b&gt;&lt;br/&gt;Choisissez l'espace colorimétrique de sortie ou laissez l'optimiseur décider.</translation>
+        <translation>&lt;b&gt;Mode de couleur&lt;/b&gt;&lt;br/&gt;Choisissez l&apos;espace colorimétrique de sortie ou laissez l&apos;optimiseur décider.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="239"/>
@@ -19102,7 +19117,7 @@ If a built-in version of the language exists, it will be used again. OCR project
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="240"/>
         <source>&lt;b&gt;Keep original if larger&lt;/b&gt;&lt;br/&gt;Leaves the original image if re-encoding does not shrink it.</source>
-        <translation>&lt;b&gt;Garder l'original s'il est plus petit&lt;/b&gt;&lt;br/&gt;Laisse l'image d'origine si le réencodage ne la réduit pas.</translation>
+        <translation>&lt;b&gt;Garder l&apos;original s&apos;il est plus petit&lt;/b&gt;&lt;br/&gt;Laisse l&apos;image d&apos;origine si le réencodage ne la réduit pas.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="241"/>
@@ -19127,17 +19142,17 @@ If a built-in version of the language exists, it will be used again. OCR project
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="247"/>
         <source>&lt;b&gt;Target DPI&lt;/b&gt;&lt;br/&gt;Downsample color images to this DPI (0 keeps original).</source>
-        <translation>&lt;b&gt;DPI cible&lt;/b&gt;&lt;br/&gt;Réduit la résolution des images en couleur à ce DPI (0 garde l'original).</translation>
+        <translation>&lt;b&gt;DPI cible&lt;/b&gt;&lt;br/&gt;Réduit la résolution des images en couleur à ce DPI (0 garde l&apos;original).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="248"/>
         <source>&lt;b&gt;Target DPI&lt;/b&gt;&lt;br/&gt;Downsample grayscale images to this DPI (0 keeps original).</source>
-        <translation>&lt;b&gt;DPI cible&lt;/b&gt;&lt;br/&gt;Réduit la résolution des images en niveaux de gris à ce DPI (0 garde l'original).</translation>
+        <translation>&lt;b&gt;DPI cible&lt;/b&gt;&lt;br/&gt;Réduit la résolution des images en niveaux de gris à ce DPI (0 garde l&apos;original).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="249"/>
         <source>&lt;b&gt;Target DPI&lt;/b&gt;&lt;br/&gt;Downsample bitonal images to this DPI (0 keeps original).</source>
-        <translation>&lt;b&gt;DPI cible&lt;/b&gt;&lt;br/&gt;Réduit la résolution des images bitonales à ce DPI (0 garde l'original).</translation>
+        <translation>&lt;b&gt;DPI cible&lt;/b&gt;&lt;br/&gt;Réduit la résolution des images bitonales à ce DPI (0 garde l&apos;original).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="251"/>
@@ -19177,12 +19192,12 @@ If a built-in version of the language exists, it will be used again. OCR project
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="266"/>
         <source>&lt;b&gt;Auto threshold&lt;/b&gt;&lt;br/&gt;Let the optimizer pick an automatic threshold.</source>
-        <translation>&lt;b&gt;Seuil automatique&lt;/b&gt;&lt;br/&gt;Laisser l'optimiseur choisir un seuil automatique.</translation>
+        <translation>&lt;b&gt;Seuil automatique&lt;/b&gt;&lt;br/&gt;Laisser l&apos;optimiseur choisir un seuil automatique.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="268"/>
         <source>&lt;b&gt;Enable compression&lt;/b&gt;&lt;br/&gt;Exclude the selected images from optimization when unchecked.</source>
-        <translation>&lt;b&gt;Activer la compression&lt;/b&gt;&lt;br/&gt;Décoché, exclut les images sélectionnées de l'optimisation.</translation>
+        <translation>&lt;b&gt;Activer la compression&lt;/b&gt;&lt;br/&gt;Décoché, exclut les images sélectionnées de l&apos;optimisation.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="269"/>
@@ -19192,12 +19207,12 @@ If a built-in version of the language exists, it will be used again. OCR project
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="270"/>
         <source>&lt;b&gt;Images&lt;/b&gt;&lt;br/&gt;Hold Ctrl or Shift while clicking to select multiple images, or press Ctrl+A to select all of them. The settings editor and the check boxes below then apply to the whole selection.</source>
-        <translation>&lt;b&gt;Images&lt;/b&gt;&lt;br/&gt;Maintenez Ctrl ou Maj en cliquant pour sélectionner plusieurs images, ou appuyez sur Ctrl+A pour toutes les sélectionner. L'éditeur de réglages et les cases à cocher ci-dessous s'appliquent alors à toute la sélection.</translation>
+        <translation>&lt;b&gt;Images&lt;/b&gt;&lt;br/&gt;Maintenez Ctrl ou Maj en cliquant pour sélectionner plusieurs images, ou appuyez sur Ctrl+A pour toutes les sélectionner. L&apos;éditeur de réglages et les cases à cocher ci-dessous s&apos;appliquent alors à toute la sélection.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="272"/>
         <source>&lt;b&gt;Optimize&lt;/b&gt;&lt;br/&gt;Run image optimization with the current settings.</source>
-        <translation>&lt;b&gt;Optimiser&lt;/b&gt;&lt;br/&gt;Lancer l'optimisation des images avec les réglages actuels.</translation>
+        <translation>&lt;b&gt;Optimiser&lt;/b&gt;&lt;br/&gt;Lancer l&apos;optimisation des images avec les réglages actuels.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="405"/>
@@ -19222,7 +19237,7 @@ If a built-in version of the language exists, it will be used again. OCR project
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="431"/>
         <source>will keep original</source>
-        <translation>gardera l'original</translation>
+        <translation>gardera l&apos;original</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="437"/>
@@ -19257,7 +19272,7 @@ If a built-in version of the language exists, it will be used again. OCR project
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="502"/>
         <source>Original images size: %1</source>
-        <translation>Taille d'origine des images : %1</translation>
+        <translation>Taille d&apos;origine des images : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="503"/>
@@ -19277,17 +19292,17 @@ If a built-in version of the language exists, it will be used again. OCR project
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="580"/>
         <source>Edits on the right apply to the overrides of %1 selected images. Each override started as a copy of the global settings.</source>
-        <translation>Les modifications à droite s'appliquent aux réglages particuliers de %1 images sélectionnées. Chaque réglage particulier a commencé comme une copie des réglages globaux.</translation>
+        <translation>Les modifications à droite s&apos;appliquent aux réglages particuliers de %1 images sélectionnées. Chaque réglage particulier a commencé comme une copie des réglages globaux.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="585"/>
         <source>Edits on the right currently apply only to this image. The override started as a copy of the global settings.</source>
-        <translation>Les modifications à droite s'appliquent pour l'instant à cette image seulement. Son réglage particulier a commencé comme une copie des réglages globaux.</translation>
+        <translation>Les modifications à droite s&apos;appliquent pour l&apos;instant à cette image seulement. Son réglage particulier a commencé comme une copie des réglages globaux.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="591"/>
         <source>Edits on the right currently change the global settings used by images without an override.</source>
-        <translation>Les modifications à droite changent pour l'instant les réglages globaux utilisés par les images sans réglage particulier.</translation>
+        <translation>Les modifications à droite changent pour l&apos;instant les réglages globaux utilisés par les images sans réglage particulier.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="595"/>
@@ -19302,12 +19317,12 @@ If a built-in version of the language exists, it will be used again. OCR project
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="604"/>
         <source>Enabled for optimization: %1</source>
-        <translation>Activées pour l'optimisation : %1</translation>
+        <translation>Activées pour l&apos;optimisation : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="605"/>
         <source>Original size of selection: %1</source>
-        <translation>Taille d'origine de la sélection : %1</translation>
+        <translation>Taille d&apos;origine de la sélection : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="610"/>
@@ -19347,7 +19362,7 @@ If a built-in version of the language exists, it will be used again. OCR project
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="665"/>
         <source>These settings currently modify the global defaults used by images without an override.</source>
-        <translation>Ces réglages modifient pour l'instant les réglages globaux utilisés par les images sans réglage particulier.</translation>
+        <translation>Ces réglages modifient pour l&apos;instant les réglages globaux utilisés par les images sans réglage particulier.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="669"/>
@@ -19357,22 +19372,22 @@ If a built-in version of the language exists, it will be used again. OCR project
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="670"/>
         <source>These settings currently modify the overrides of all selected images.</source>
-        <translation>Ces réglages modifient pour l'instant les réglages particuliers de toutes les images sélectionnées.</translation>
+        <translation>Ces réglages modifient pour l&apos;instant les réglages particuliers de toutes les images sélectionnées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="674"/>
         <source>Settings Editor - Selected Image Override</source>
-        <translation>Éditeur de réglages - réglage particulier de l'image sélectionnée</translation>
+        <translation>Éditeur de réglages - réglage particulier de l&apos;image sélectionnée</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="675"/>
         <source>These settings currently modify only the selected image override.</source>
-        <translation>Ces réglages modifient pour l'instant seulement le réglage particulier de l'image sélectionnée.</translation>
+        <translation>Ces réglages modifient pour l&apos;instant seulement le réglage particulier de l&apos;image sélectionnée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="1040"/>
         <source>Optimization is disabled for the selected image. The original image will be kept.</source>
-        <translation>L'optimisation est désactivée pour l'image sélectionnée. L'image d'origine sera gardée.</translation>
+        <translation>L&apos;optimisation est désactivée pour l&apos;image sélectionnée. L&apos;image d&apos;origine sera gardée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="1054"/>
@@ -19382,211 +19397,211 @@ If a built-in version of the language exists, it will be used again. OCR project
     <message>
         <location filename="../Pdf4QtLibGui/pdfoptimizeimagesdialog.cpp" line="1058"/>
         <source> (will keep original)</source>
-        <translation> (gardera l'original)</translation>
+        <translation> (gardera l&apos;original)</translation>
     </message>
 </context>
 <context>
     <name>pdfviewer::PDFProgramController</name>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="876"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="881"/>
         <source>Printing document</source>
         <translation>Impression du document</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="937"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="942"/>
         <source>Go to action</source>
         <translation>Accéder à l&apos;action</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="937"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="942"/>
         <source>Failed to go to destination &apos;%1&apos;. Destination wasn&apos;t found.</source>
         <translation>échec de l&apos;accès à la destination « %1 ». La destination n&apos;a pas été trouvée.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="963"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="968"/>
         <source>Would you like to launch application &apos;%1&apos; in working directory &apos;%2&apos; with parameters &apos;%3&apos;?</source>
         <translation>Souhaitez-vous lancer l&apos;application &apos;%1&apos; dans le répertoire de travail &apos;%2&apos; avec les paramètres &apos;%3&apos;&#xa0;?</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="964"/>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="979"/>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="992"/>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="998"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="969"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="984"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="997"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1003"/>
         <source>Launch application</source>
         <translation>Lancer l&apos;application</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="979"/>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="998"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="984"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1003"/>
         <source>Executing application failed. Error code is %1.</source>
         <translation>échec de l&apos;exécution de l&apos;application. Le code d&apos;erreur est %1.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="991"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="996"/>
         <source>Would you like to launch application &apos;%1&apos;?</source>
         <translation>Souhaitez-vous lancer l&apos;application «&#xa0;%1&#xa0;»&#xa0;?</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1020"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1025"/>
         <source>Would you like to open URL &apos;%1&apos;?</source>
         <translation>souhaitez-vous ouvrir l&apos;URL «&#xa0;%1&#xa0;»&#xa0;?</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1021"/>
         <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1026"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1031"/>
         <source>Open URL</source>
         <translation>Ouvrir l&apos;URL</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1026"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1031"/>
         <source>Opening url &apos;%1&apos; failed.</source>
         <translation>échec de l&apos;ouverture de l&apos;URL « %1 ».</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1311"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1316"/>
         <source>Save As</source>
         <translation>Enregistrer sous</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1311"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1316"/>
         <source>Portable Document (*.pdf);;All files (*.*)</source>
         <translation>Document portable (*.pdf);&#xa0;Tous les fichiers (*.*)</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1392"/>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1659"/>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1702"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1397"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1664"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1707"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1339"/>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1440"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1344"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1445"/>
         <source>Save Document</source>
         <translation>Enregistrer le document</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1340"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1345"/>
         <source>Changes made by the plugin &apos;%1&apos; have not been written to the document yet and they will not be saved. Do you wish to write them to the document before it is saved?</source>
-        <translation>Les modifications faites par le module « %1 » n'ont pas encore été écrites dans le document et elles ne seront pas enregistrées. Voulez-vous les écrire dans le document avant de l'enregistrer ?</translation>
+        <translation>Les modifications faites par le module « %1 » n&apos;ont pas encore été écrites dans le document et elles ne seront pas enregistrées. Voulez-vous les écrire dans le document avant de l&apos;enregistrer ?</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1441"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1446"/>
         <source>Do you wish to save modified document before it is closed?</source>
         <translation>Souhaitez-vous enregistrer le document modifié avant sa fermeture&#xa0;?</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1612"/>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1613"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1617"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1618"/>
         <source>No external link annotations found.</source>
         <translation>aucune annotation de lien externe trouvée.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1630"/>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1631"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1635"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1636"/>
         <source>External link annotations removed: %1.</source>
         <translation>annotations de lien externe supprimées&#xa0;: %1.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1847"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1852"/>
         <source>Permission to change document security is denied.</source>
         <translation>l&apos;autorisation de modifier la sécurité du document est refusée.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1866"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1871"/>
         <source>Failed to create security handler.</source>
         <translation>échec de la création du gestionnaire de sécurité.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1879"/>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1890"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1884"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1895"/>
         <source>Reauthorization is required to change document encryption.</source>
         <translation>une nouvelle autorisation est requise pour modifier le cryptage des documents.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1979"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1984"/>
         <source>Encrypted document</source>
         <translation>Document chiffré</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1979"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="1984"/>
         <source>Enter password to access document content</source>
         <translation>saisissez le mot de passe pour accéder au contenu du document</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2414"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2419"/>
         <source>The form contains fields, whose values are calculated by scripts. Scripts are not executed, so these fields were unlocked and you have to fill in their values manually.</source>
         <translation>Le formulaire contient des champs dont les valeurs sont calculées par des scripts. Les scripts ne sont pas exécutés : ces champs ont été déverrouillés et vous devez saisir leurs valeurs à la main.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2428"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2433"/>
         <source>Document &apos;%1&apos; was successfully loaded!</source>
         <translation>le document &apos;%1&apos; a été chargé avec succès&#xa0;!</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2434"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2439"/>
         <source>Document read error: %1</source>
         <translation>Erreur de lecture du document&#xa0;: %1</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2640"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2645"/>
         <source>%1 - %2</source>
         <translation>%1 - %2</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2918"/>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2925"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2923"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2930"/>
         <source>Reset Settings</source>
         <translation>Réinitialiser les paramètres</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2918"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2923"/>
         <source>Do you wish to restore the default factory settings of the program? All settings changed by the user will be deleted. Application will be closed.</source>
         <translation>Souhaitez-vous restaurer les paramètres d&apos;usine par défaut du programme&#xa0;? Tous les paramètres modifiés par l&apos;utilisateur seront supprimés. La candidature sera close.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2925"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2930"/>
         <source>Default factory settings were restored. Application will be now closed.</source>
         <translation>les paramètres d&apos;usine par défaut ont été restaurés. La candidature sera désormais close.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2966"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2972"/>
         <source>Plugins</source>
         <translation>Plugins</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2966"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2972"/>
         <source>Plugin on/off state has been changed. Please restart application to apply settings.</source>
         <translation>l&apos;état d&apos;activation/désactivation du plug-in a été modifié. Veuillez redémarrer l&apos;application pour appliquer les paramètres.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2993"/>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3060"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2999"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3066"/>
         <source>Select PDF document</source>
         <translation>Sélectionnez le document PDF</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2993"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2999"/>
         <source>PDF document (*.pdf)</source>
         <translation>Document PDF (*.pdf)</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3045"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3051"/>
         <source>Export Bookmarks As</source>
         <translation>Exporter les signets sous</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3045"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3051"/>
         <source>JSON (*.json);;All files (*.*)</source>
         <translation>JSON (*.json);;Tous les fichiers (*.*)</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3060"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3066"/>
         <source>JSON (*.json)</source>
         <translation>JSON (*.json)</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3079"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3085"/>
         <source>Rendering of page %1: %2 errors occured.</source>
         <translation>rendu de la page %1&#xa0;: des erreurs %2 se sont produites.</translation>
     </message>
@@ -19873,7 +19888,7 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="653"/>
         <source>Detect the skew, the content and the spine of the checked pages. The detected values are proposals; edited values are not overwritten.</source>
-        <translation>Détecter l'inclinaison, le contenu et la reliure des pages cochées. Les valeurs détectées sont des propositions ; les valeurs modifiées ne sont pas remplacées.</translation>
+        <translation>Détecter l&apos;inclinaison, le contenu et la reliure des pages cochées. Les valeurs détectées sont des propositions ; les valeurs modifiées ne sont pas remplacées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="657"/>
@@ -19898,7 +19913,7 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="678"/>
         <source>Skew of the content (positive = the lines descend to the right); the page is rotated by the opposite angle</source>
-        <translation>Inclinaison du contenu (positive = les lignes descendent vers la droite) ; la page est tournée de l'angle opposé</translation>
+        <translation>Inclinaison du contenu (positive = les lignes descendent vers la droite) ; la page est tournée de l&apos;angle opposé</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="682"/>
@@ -19938,7 +19953,7 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="707"/>
         <source>Two pages one above another</source>
-        <translation>Deux pages l'une au-dessus de l'autre</translation>
+        <translation>Deux pages l&apos;une au-dessus de l&apos;autre</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="710"/>
@@ -20076,7 +20091,7 @@ Page %2&#xa0;: %3</translation>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1081"/>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1687"/>
         <source>The content of the page is not balanced, it cannot be straightened.</source>
-        <translation>Le contenu de la page n'est pas équilibré, il ne peut pas être redressé.</translation>
+        <translation>Le contenu de la page n&apos;est pas équilibré, il ne peut pas être redressé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1085"/>
@@ -20106,7 +20121,7 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1683"/>
         <source>The page is not a scan; it is not straightened by default.</source>
-        <translation>La page n'est pas une numérisation ; elle n'est pas redressée par défaut.</translation>
+        <translation>La page n&apos;est pas une numérisation ; elle n&apos;est pas redressée par défaut.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1696"/>
@@ -20116,7 +20131,7 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1697"/>
         <source>No spine was detected.</source>
-        <translation>Aucune reliure n'a été détectée.</translation>
+        <translation>Aucune reliure n&apos;a été détectée.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1701"/>
@@ -20136,7 +20151,7 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1706"/>
         <source>No spine was detected, the split line is in the middle.</source>
-        <translation>Aucune reliure n'a été détectée, la ligne de séparation est au milieu.</translation>
+        <translation>Aucune reliure n&apos;a été détectée, la ligne de séparation est au milieu.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1711"/>
@@ -20151,12 +20166,12 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1731"/>
         <source>The manual crop is used only for pages, which are not split.</source>
-        <translation>Le recadrage manuel n'est utilisé que pour les pages qui ne sont pas séparées.</translation>
+        <translation>Le recadrage manuel n&apos;est utilisé que pour les pages qui ne sont pas séparées.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1916"/>
         <source>The document has no page.</source>
-        <translation>Le document n'a pas de page.</translation>
+        <translation>Le document n&apos;a pas de page.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1923"/>
@@ -20206,12 +20221,12 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2014"/>
         <source>one above another</source>
-        <translation>l'une au-dessus de l'autre</translation>
+        <translation>l&apos;une au-dessus de l&apos;autre</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2077"/>
         <source>%1 page(s) straightened, %2 split (the document will have %3 pages), %4 cropped. The content is not re-encoded.</source>
-        <translation>%1 page(s) redressée(s), %2 séparée(s) (le document aura %3 pages), %4 recadrée(s). Le contenu n'est pas réencodé.</translation>
+        <translation>%1 page(s) redressée(s), %2 séparée(s) (le document aura %3 pages), %4 recadrée(s). Le contenu n&apos;est pas réencodé.</translation>
     </message>
     <message numerus="yes">
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2084"/>
@@ -20230,7 +20245,7 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2114"/>
         <source>The following changed pages have a text layer created by the OCR of PDF4QT: %1.</source>
-        <translation>Les pages modifiées suivantes ont une couche de texte créée par l'OCR de PDF4QT : %1.</translation>
+        <translation>Les pages modifiées suivantes ont une couche de texte créée par l&apos;OCR de PDF4QT : %1.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2116"/>
@@ -20265,7 +20280,7 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2169"/>
         <source>The content of the pages is not re-encoded; the change is one step of the undo history.</source>
-        <translation>Le contenu des pages n'est pas réencodé ; la modification est une étape de l'historique d'annulation.</translation>
+        <translation>Le contenu des pages n&apos;est pas réencodé ; la modification est une étape de l&apos;historique d&apos;annulation.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2174"/>
@@ -20295,7 +20310,7 @@ Page %2&#xa0;: %3</translation>
         <source>The pages were not prepared, the document was not changed.
 
 %1</source>
-        <translation>Les pages n'ont pas été préparées, le document n'a pas été modifié.
+        <translation>Les pages n&apos;ont pas été préparées, le document n&apos;a pas été modifié.
 
 %1</translation>
     </message>
@@ -20304,7 +20319,7 @@ Page %2&#xa0;: %3</translation>
         <source>Nothing was changed.
 
 %1</source>
-        <translation>Rien n'a été modifié.
+        <translation>Rien n&apos;a été modifié.
 
 %1</translation>
     </message>
@@ -20766,7 +20781,7 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1037"/>
         <source>Opening attachments is disabled by application launch security settings.</source>
-        <translation>L'ouverture des pièces jointes est désactivée par les réglages de sécurité du lancement d'applications.</translation>
+        <translation>L&apos;ouverture des pièces jointes est désactivée par les réglages de sécurité du lancement d&apos;applications.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1044"/>
@@ -20776,7 +20791,7 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1047"/>
         <source>Would you like to open attachment &apos;%1&apos; using the associated application?</source>
-        <translation>Voulez-vous ouvrir la pièce jointe « %1 » avec l'application associée ?</translation>
+        <translation>Voulez-vous ouvrir la pièce jointe « %1 » avec l&apos;application associée ?</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1063"/>
@@ -20786,7 +20801,7 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1076"/>
         <source>Opening attachment &apos;%1&apos; failed.</source>
-        <translation>L'ouverture de la pièce jointe « %1 » a échoué.</translation>
+        <translation>L&apos;ouverture de la pièce jointe « %1 » a échoué.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1150"/>
@@ -20821,7 +20836,7 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1183"/>
         <source>Move the item one level up in the outline hierarchy.</source>
-        <translation>Remonter l'élément d'un niveau dans la hiérarchie du plan.</translation>
+        <translation>Remonter l&apos;élément d&apos;un niveau dans la hiérarchie du plan.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1184"/>
@@ -20831,7 +20846,7 @@ Page %2&#xa0;: %3</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1186"/>
         <source>Make the item a child of the preceding item.</source>
-        <translation>Faire de l'élément un enfant de l'élément précédent.</translation>
+        <translation>Faire de l&apos;élément un enfant de l&apos;élément précédent.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfsidebarwidget.cpp" line="1201"/>
@@ -20895,365 +20910,463 @@ Voulez-vous effectuer cette action&#xa0;?</translation>
     </message>
 </context>
 <context>
+    <name>pdfviewer::PDFToolBarsSettingsWidget</name>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="53"/>
+        <source>&amp;Add</source>
+        <translation>&amp;Ajouter</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="54"/>
+        <source>&amp;Remove</source>
+        <translation>&amp;Retirer</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="55"/>
+        <source>Move &amp;Up</source>
+        <translation>&amp;Monter</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="56"/>
+        <source>Move &amp;Down</source>
+        <translation>&amp;Descendre</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="57"/>
+        <source>&amp;Separator</source>
+        <translation>&amp;Séparateur</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="58"/>
+        <source>Rese&amp;t</source>
+        <translation>Ré&amp;initialiser</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="75"/>
+        <source>Add the selected actions to the toolbar</source>
+        <translation>Ajouter les actions sélectionnées à la barre d&apos;outils</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="76"/>
+        <source>Remove the selected item from the toolbar</source>
+        <translation>Retirer l&apos;élément sélectionné de la barre d&apos;outils</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="77"/>
+        <source>Insert a separator after the selected item</source>
+        <translation>Insérer un séparateur après l&apos;élément sélectionné</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="78"/>
+        <source>Restore the default content of the toolbar</source>
+        <translation>Rétablir le contenu par défaut de la barre d&apos;outils</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="79"/>
+        <source>Search</source>
+        <translation>Rechercher</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="90"/>
+        <source>All</source>
+        <translation>Tout</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="102"/>
+        <source>Other Items</source>
+        <translation>Autres éléments</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="149"/>
+        <source>A&amp;ctions</source>
+        <translation>A&amp;ctions</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="163"/>
+        <source>Tool&amp;bar</source>
+        <translation>&amp;Barre d&apos;outils</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="287"/>
+        <source>— Separator —</source>
+        <translation>— Séparateur —</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="370"/>
+        <source>Already in the toolbar</source>
+        <translation>Déjà dans la barre d&apos;outils</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdftoolbarssettingswidget.cpp" line="377"/>
+        <source>Already in the toolbar &quot;%1&quot;</source>
+        <translation>Déjà dans la barre d&apos;outils « %1 »</translation>
+    </message>
+</context>
+<context>
     <name>pdfviewer::PDFViewerSettingsDialog</name>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="66"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="68"/>
         <source>%1: %2</source>
         <translation>%1 : %2</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="111"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="115"/>
         <source>Engine</source>
         <translation>Engine</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="112"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="116"/>
         <source>Rendering</source>
         <translation>Rendering</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="113"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="117"/>
         <source>Shading</source>
         <translation>Shading</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="114"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="118"/>
         <source>Cache</source>
         <translation>Cache</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="115"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="119"/>
         <source>Shortcuts</source>
         <translation>Shortcuts</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="116"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="120"/>
         <source>Colors | CMS</source>
         <translation>Couleurs | CMS</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="117"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="121"/>
         <source>Colors | Postprocessing</source>
         <translation>Couleurs | Post-traitement</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="118"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="122"/>
         <source>Security</source>
         <translation>Security</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="119"/>
-        <source>UI</source>
-        <translation>UI</translation>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="123"/>
+        <source>UI - General</source>
+        <translation>Interface - Général</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="120"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="124"/>
         <source>Forms</source>
         <translation>Forms</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="121"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="125"/>
         <source>Signature</source>
         <translation>Signature</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="122"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="126"/>
         <source>Plugins</source>
         <translation>Plugins</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="123"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="127"/>
         <source>OCR</source>
         <translation>OCR</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="133"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="137"/>
         <source>Engine: %1 %2 (license %3)</source>
         <translation>Moteur : %1 %2 (licence %3)</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="138"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="142"/>
         <source>No OCR engine is available in this build.</source>
-        <translation>Aucun moteur d'OCR n'est disponible dans cette version.</translation>
+        <translation>Aucun moteur d&apos;OCR n&apos;est disponible dans cette version.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="140"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="144"/>
         <source>Built-in language models: %1</source>
         <translation>Modèles de langue intégrés : %1</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="141"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="145"/>
         <source>Downloaded and imported language models: %1</source>
         <translation>Modèles de langue téléchargés et importés : %1</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="142"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="146"/>
         <source>The recognition works locally. The network is used only for an explicitly requested download of language models; documents and recognized text are never sent anywhere.</source>
-        <translation>La reconnaissance se fait en local. Le réseau n'est utilisé que pour un téléchargement de modèles de langue demandé explicitement ; les documents et le texte reconnu ne sont jamais envoyés nulle part.</translation>
+        <translation>La reconnaissance se fait en local. Le réseau n&apos;est utilisé que pour un téléchargement de modèles de langue demandé explicitement ; les documents et le texte reconnu ne sont jamais envoyés nulle part.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="160"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="164"/>
         <source>Software | QPainter</source>
         <translation>Logiciel | QPainter</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="161"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="165"/>
         <source>Software | Blend2D | Parallel</source>
         <translation>Logiciel | Mélange2D | Parallèle</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="162"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="166"/>
         <source>Software | Blend2D | Sequential</source>
         <translation>Logiciel | Mélange2D | Séquentiel</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="164"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="168"/>
         <source>Single thread</source>
         <translation>Thread unique</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="165"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="169"/>
         <source>Multithreading (load balanced)</source>
         <translation>Multithreading (charge équilibrée)</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="166"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="170"/>
         <source>Multithreading (maximum threads)</source>
         <translation>Multithreading (threads maximum)</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="177"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="181"/>
         <source>Auto</source>
         <translation>Auto</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="178"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="182"/>
         <source>Perceptual</source>
         <translation>Perceptual</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="179"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="183"/>
         <source>Relative colorimetric</source>
         <translation>Colorimétrie relative</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="180"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="184"/>
         <source>Absolute colorimetric</source>
         <translation>Colorimétrie absolue</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="181"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="185"/>
         <source>Saturation</source>
         <translation>Saturation</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="183"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="187"/>
         <source>Low</source>
         <translation>Low</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="184"/>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="199"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="188"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="203"/>
         <source>Medium</source>
         <translation>Moyen</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="185"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="189"/>
         <source>High</source>
         <translation>High</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="187"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="191"/>
         <source>None</source>
         <translation>Aucun</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="188"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="192"/>
         <source>XYZ scaling</source>
         <translation>Mise à l&apos;échelle XYZ</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="189"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="193"/>
         <source>CAT97 matrix</source>
         <translation>Matrice CAT97</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="190"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="194"/>
         <source>CAT02 matrix</source>
         <translation>Matrice CAT02</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="191"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="195"/>
         <source>Bradford method</source>
         <translation>Méthode Bradford</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="194"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="198"/>
         <source>Anonymous (do not disclose the user name)</source>
-        <translation>Anonyme (ne pas divulguer le nom de l'utilisateur)</translation>
+        <translation>Anonyme (ne pas divulguer le nom de l&apos;utilisateur)</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="195"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="199"/>
         <source>System user name</source>
-        <translation>Nom de l'utilisateur du système</translation>
+        <translation>Nom de l&apos;utilisateur du système</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="196"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="200"/>
         <source>Custom name</source>
         <translation>Nom personnalisé</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="198"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="202"/>
         <source>Small</source>
         <translation>Small</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="200"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="204"/>
         <source>Large</source>
         <translation>Large</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="201"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="205"/>
         <source>Very Large</source>
         <translation>Très grand</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="206"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="210"/>
         <source>Automatic detection</source>
         <translation>Détection automatique</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="207"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="211"/>
         <source>English</source>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="208"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="212"/>
         <source>German</source>
         <translation>German</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="209"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="213"/>
         <source>Korean</source>
         <translation>Coréen</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="210"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="214"/>
         <source>Spanish</source>
         <translation>Spanish</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="211"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="215"/>
         <source>Czech</source>
         <translation>Czech</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="212"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="216"/>
         <source>Chinese (Simplified)</source>
         <translation>Chinois (simplifié)</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="213"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="217"/>
         <source>Chinese (Traditional)</source>
         <translation>Chinois (traditionnel)</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="214"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="218"/>
         <source>French</source>
         <translation>French</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="215"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="219"/>
         <source>Turkish</source>
         <translation>Turkish</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="216"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="220"/>
         <source>Russian</source>
         <translation>Russian</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="746"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="754"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="746"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="754"/>
         <source>Certificate</source>
         <translation>Certificate</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="746"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="754"/>
         <source>Organization</source>
         <translation>Organization</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="746"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="754"/>
         <source>Valid from</source>
         <translation>Valable à partir du</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="746"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="754"/>
         <source>Valid to</source>
         <translation>Valable jusqu&apos;à</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="754"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="762"/>
         <source>User</source>
         <translation>User</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="758"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="766"/>
         <source>System</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="798"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="806"/>
         <source>Action</source>
         <translation>Action</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="798"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="806"/>
         <source>Shortcut</source>
         <translation>Raccourci</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="827"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="835"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="827"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="835"/>
         <source>Shortcut &apos;%1&apos; is invalid for action %2.</source>
         <translation>le raccourci « %1 » n&apos;est pas valide pour l&apos;action %2.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="850"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="858"/>
         <source>Active</source>
         <translation>Active</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="850"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="858"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="850"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="858"/>
         <source>Author</source>
         <translation>Author</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="850"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="858"/>
         <source>Version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="850"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="858"/>
         <source>License</source>
         <translation>License</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="949"/>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="976"/>
+        <source>UI - Toolbars</source>
+        <translation>Interface - Barres d&apos;outils</translation>
+    </message>
+    <message>
+        <location filename="../Pdf4QtLibGui/pdfviewersettingsdialog.cpp" line="990"/>
         <source>Select color profile directory</source>
         <translation>Sélectionnez le répertoire du profil de couleur</translation>
     </message>
