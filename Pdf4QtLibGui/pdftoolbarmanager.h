@@ -88,6 +88,10 @@ public:
     /// toolbar and widget items used in another toolbar are skipped.
     void setLayout(QToolBar* toolBar, const QStringList& layout);
 
+    /// Replaces the content of several toolbars, a widget item can move from
+    /// one of them to another one. Toolbars with an unchanged content are not rebuilt.
+    void setLayouts(const std::map<QToolBar*, QStringList>& layouts);
+
     /// Restores the default content of the toolbar
     void resetLayout(QToolBar* toolBar);
 

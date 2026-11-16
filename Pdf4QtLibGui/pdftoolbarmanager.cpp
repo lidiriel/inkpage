@@ -190,6 +190,25 @@ void PDFToolBarManager::setLayout(QToolBar* toolBar, const QStringList& layout)
     }
 }
 
+void PDFToolBarManager::setLayouts(const std::map<QToolBar*, QStringList>& layouts)
+{
+    // The changed toolbars are emptied first, so their widget items are free
+    std::vector<std::pair<QToolBar*, QStringList>> changedLayouts;
+    for (const auto& [toolBar, layout] : layouts)
+    {
+        if (toolBar && getLayout(toolBar) != layout)
+        {
+            setLayout(toolBar, QStringList());
+            changedLayouts.emplace_back(toolBar, layout);
+        }
+    }
+
+    for (const auto& [toolBar, layout] : changedLayouts)
+    {
+        setLayout(toolBar, layout);
+    }
+}
+
 void PDFToolBarManager::resetLayout(QToolBar* toolBar)
 {
     if (const ToolBarInfo* info = getToolBarInfo(toolBar))

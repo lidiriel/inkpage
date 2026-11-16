@@ -15,9 +15,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "pdftoolbarmanager.h"
+#include "pdftoolbarssettingswidget.h"
 
 #include <QtTest>
 #include <QAction>
+#include <QComboBox>
+#include <QLineEdit>
+#include <QListWidget>
+#include <QMenuBar>
+#include <QPushButton>
 #include <QMainWindow>
 #include <QMenu>
 #include <QPointer>
@@ -77,20 +83,62 @@ class ToolBarManagerTest : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase();
     void defaultLayout();
     void setLayoutReordersAndSkips();
     void widgetItemIsKeptWhenRemoved();
     void widgetItemOnlyInOneToolBar();
     void separatorsAreDeleted();
+    void setLayoutsMovesWidgetItem();
     void submenuOpensAtOnce();
     void resetLayout();
     void settingsStoreOnlyChangedToolBars();
     void settingsRestoreEmptyToolBar();
     void settingsIgnoreUnknownIds();
+    void settingsWidgetCategories();
+    void settingsWidgetAddRemove();
+    void settingsWidgetMoveSeparatorReset();
+    void settingsWidgetMovesWidgetItem();
+    void settingsWidgetFilter();
 
 private:
     static QStringList ids(std::initializer_list<const char*> list);
+    static QStringList listIds(const QListWidget* list);
+    static QListWidgetItem* findItem(const QListWidget* list, const QString& id);
+
+    QTemporaryDir m_settingsDirectory;
 };
+
+void ToolBarManagerTest::initTestCase()
+{
+    // Separate settings, the settings of the user are not touched (written by the settings widget)
+    QVERIFY(m_settingsDirectory.isValid());
+    QCoreApplication::setOrganizationName("inkpage-unittests");
+    QCoreApplication::setApplicationName("UnitTestsToolBarManager");
+    QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, m_settingsDirectory.path());
+}
+
+QStringList ToolBarManagerTest::listIds(const QListWidget* list)
+{
+    QStringList result;
+    for (int i = 0; i < list->count(); ++i)
+    {
+        result << list->item(i)->data(Qt::UserRole).toString();
+    }
+    return result;
+}
+
+QListWidgetItem* ToolBarManagerTest::findItem(const QListWidget* list, const QString& id)
+{
+    for (int i = 0; i < list->count(); ++i)
+    {
+        if (list->item(i)->data(Qt::UserRole).toString() == id)
+        {
+            return list->item(i);
+        }
+    }
+    return nullptr;
+}
 
 QStringList ToolBarManagerTest::ids(std::initializer_list<const char*> list)
 {
@@ -157,6 +205,30 @@ void ToolBarManagerTest::widgetItemOnlyInOneToolBar()
     fixture.manager.setLayout(fixture.second, ids({ "actionC", "widgetSpinBox" }));
     QCOMPARE(PDFToolBarManager::getLayout(fixture.second), ids({ "actionC" }));
     QCOMPARE(fixture.first->widgetForAction(fixture.manager.findItem("widgetSpinBox")), fixture.spinBox);
+}
+
+void ToolBarManagerTest::setLayoutsMovesWidgetItem()
+{
+    ToolBarFixture fixture;
+
+    // The second toolbar comes first in the map order or not: the widget moves anyway
+    std::map<QToolBar*, QStringList> layouts;
+    layouts[fixture.first] = ids({ "actionA" });
+    layouts[fixture.second] = ids({ "widgetSpinBox", "actionC" });
+    fixture.manager.setLayouts(layouts);
+    QCOMPARE(PDFToolBarManager::getLayout(fixture.first), ids({ "actionA" }));
+    QCOMPARE(PDFToolBarManager::getLayout(fixture.second), ids({ "widgetSpinBox", "actionC" }));
+    QCOMPARE(fixture.second->widgetForAction(fixture.manager.findItem("widgetSpinBox")), fixture.spinBox);
+
+    // An unchanged toolbar is not rebuilt (its separator action is the same)
+    fixture.manager.setLayout(fixture.first, ids({ "actionA", "separator" }));
+    QAction* separator = fixture.first->actions().back();
+    layouts.clear();
+    layouts[fixture.first] = ids({ "actionA", "separator" });
+    layouts[fixture.second] = ids({ "actionC" });
+    fixture.manager.setLayouts(layouts);
+    QCOMPARE(fixture.first->actions().back(), separator);
+    QCOMPARE(PDFToolBarManager::getLayout(fixture.second), ids({ "actionC" }));
 }
 
 void ToolBarManagerTest::separatorsAreDeleted()
@@ -259,6 +331,182 @@ void ToolBarManagerTest::settingsIgnoreUnknownIds()
     ToolBarFixture fixture;
     fixture.manager.readSettings(settings);
     QCOMPARE(PDFToolBarManager::getLayout(fixture.second), ids({ "actionB" }));
+}
+
+/// Menu bar: "&File" (A, B, submenu "&More" with D), "&Edit" (C)
+static void createMenus(ToolBarFixture& fixture)
+{
+    QMenuBar* menuBar = fixture.window.menuBar();
+    QMenu* fileMenu = menuBar->addMenu("&File");
+    fileMenu->addAction(fixture.actions[0]);
+    fileMenu->addAction(fixture.actions[1]);
+    fileMenu->addSeparator();
+    QMenu* moreMenu = fileMenu->addMenu("&More");
+    moreMenu->addAction(fixture.actions[3]);
+    QMenu* editMenu = menuBar->addMenu("&Edit");
+    editMenu->addAction(fixture.actions[2]);
+
+    // An action without object name cannot be stored in a toolbar
+    editMenu->addAction("Unnamed");
+}
+
+void ToolBarManagerTest::settingsWidgetCategories()
+{
+    ToolBarFixture fixture;
+    createMenus(fixture);
+    PDFToolBarsSettingsWidget widget(&fixture.manager, fixture.window.menuBar(), nullptr);
+
+    QComboBox* categories = widget.findChild<QComboBox*>("toolBarsCategoryComboBox");
+    QStringList names;
+    for (int i = 0; i < categories->count(); ++i)
+    {
+        names << categories->itemText(i);
+    }
+    QCOMPARE(names, (QStringList{ "All", "File", "File > More", "Edit", "Other Items" }));
+
+    QListWidget* available = widget.findChild<QListWidget*>("toolBarsAvailableList");
+    QCOMPARE(listIds(available), ids({ "actionA", "actionB", "actionD", "actionC", "widgetSpinBox" }));
+    categories->setCurrentIndex(2);
+    QCOMPARE(listIds(available), ids({ "actionD" }));
+    QCOMPARE(available->item(0)->text(), QString("actionD"));
+
+    // The toolbars and the content of the first one, the actions in it are greyed
+    QComboBox* toolBars = widget.findChild<QComboBox*>("toolBarsToolBarComboBox");
+    QCOMPARE(toolBars->count(), 2);
+    QCOMPARE(toolBars->itemText(0), QString("First"));
+    QListWidget* toolBarList = widget.findChild<QListWidget*>("toolBarsToolBarList");
+    QCOMPARE(listIds(toolBarList), ids({ "actionA", "actionB", "separator", "widgetSpinBox" }));
+    categories->setCurrentIndex(0);
+    QVERIFY(!(findItem(available, "actionA")->flags() & Qt::ItemIsEnabled));
+    QVERIFY(findItem(available, "actionC")->flags() & Qt::ItemIsEnabled);
+}
+
+void ToolBarManagerTest::settingsWidgetAddRemove()
+{
+    ToolBarFixture fixture;
+    createMenus(fixture);
+    PDFToolBarsSettingsWidget widget(&fixture.manager, fixture.window.menuBar(), nullptr);
+    QListWidget* available = widget.findChild<QListWidget*>("toolBarsAvailableList");
+    QListWidget* toolBarList = widget.findChild<QListWidget*>("toolBarsToolBarList");
+    QPushButton* addButton = widget.findChild<QPushButton*>("toolBarsAddButton");
+    QPushButton* removeButton = widget.findChild<QPushButton*>("toolBarsRemoveButton");
+
+    // Second toolbar: A and D added after C
+    widget.findChild<QComboBox*>("toolBarsToolBarComboBox")->setCurrentIndex(1);
+    QCOMPARE(listIds(toolBarList), ids({ "actionC" }));
+    QVERIFY(!addButton->isEnabled());
+    findItem(available, "actionD")->setSelected(true);
+    findItem(available, "actionA")->setSelected(true);
+    QVERIFY(addButton->isEnabled());
+    addButton->click();
+    QCOMPARE(listIds(toolBarList), ids({ "actionC", "actionA", "actionD" }));
+    QVERIFY(!(findItem(available, "actionD")->flags() & Qt::ItemIsEnabled));
+
+    // Inserted after the selected item
+    toolBarList->setCurrentRow(0);
+    findItem(available, "actionB")->setSelected(true);
+    addButton->click();
+    QCOMPARE(listIds(toolBarList), ids({ "actionC", "actionB", "actionA", "actionD" }));
+
+    // Removed: the item is available again
+    toolBarList->setCurrentRow(2);
+    QVERIFY(removeButton->isEnabled());
+    removeButton->click();
+    QCOMPARE(listIds(toolBarList), ids({ "actionC", "actionB", "actionD" }));
+    QVERIFY(findItem(available, "actionA")->flags() & Qt::ItemIsEnabled);
+
+    // Nothing is changed before apply
+    QCOMPARE(PDFToolBarManager::getLayout(fixture.second), ids({ "actionC" }));
+    widget.apply();
+    QCOMPARE(PDFToolBarManager::getLayout(fixture.second), ids({ "actionC", "actionB", "actionD" }));
+    QCOMPARE(PDFToolBarManager::getLayout(fixture.first), fixture.manager.getDefaultLayout(fixture.first));
+
+    // Stored in the settings
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QCoreApplication::organizationName(), QCoreApplication::applicationName());
+    QCOMPARE(settings.value("ToolBars/SecondToolBar").toString(), QString("actionC;actionB;actionD"));
+    QVERIFY(!settings.contains("ToolBars/FirstToolBar"));
+    settings.remove("ToolBars");
+}
+
+void ToolBarManagerTest::settingsWidgetMoveSeparatorReset()
+{
+    ToolBarFixture fixture;
+    PDFToolBarsSettingsWidget widget(&fixture.manager, fixture.window.menuBar(), nullptr);
+    QListWidget* toolBarList = widget.findChild<QListWidget*>("toolBarsToolBarList");
+    QPushButton* upButton = widget.findChild<QPushButton*>("toolBarsMoveUpButton");
+    QPushButton* downButton = widget.findChild<QPushButton*>("toolBarsMoveDownButton");
+    QPushButton* resetButton = widget.findChild<QPushButton*>("toolBarsResetButton");
+    QVERIFY(!resetButton->isEnabled());
+
+    toolBarList->setCurrentRow(0);
+    QVERIFY(!upButton->isEnabled());
+    downButton->click();
+    QCOMPARE(listIds(toolBarList), ids({ "actionB", "actionA", "separator", "widgetSpinBox" }));
+    QCOMPARE(toolBarList->currentRow(), 1);
+    upButton->click();
+    QCOMPARE(listIds(toolBarList), ids({ "actionA", "actionB", "separator", "widgetSpinBox" }));
+
+    toolBarList->setCurrentRow(3);
+    QVERIFY(!downButton->isEnabled());
+    widget.findChild<QPushButton*>("toolBarsSeparatorButton")->click();
+    QCOMPARE(listIds(toolBarList), ids({ "actionA", "actionB", "separator", "widgetSpinBox", "separator" }));
+    QCOMPARE(toolBarList->item(4)->text(), QString("— Separator —"));
+
+    QVERIFY(resetButton->isEnabled());
+    resetButton->click();
+    QCOMPARE(listIds(toolBarList), fixture.manager.getDefaultLayout(fixture.first));
+    QVERIFY(!resetButton->isEnabled());
+}
+
+void ToolBarManagerTest::settingsWidgetMovesWidgetItem()
+{
+    ToolBarFixture fixture;
+    PDFToolBarsSettingsWidget widget(&fixture.manager, fixture.window.menuBar(), nullptr);
+    QListWidget* available = widget.findChild<QListWidget*>("toolBarsAvailableList");
+    QListWidget* toolBarList = widget.findChild<QListWidget*>("toolBarsToolBarList");
+    QComboBox* toolBars = widget.findChild<QComboBox*>("toolBarsToolBarComboBox");
+
+    // In the first toolbar: greyed in the second one
+    toolBars->setCurrentIndex(1);
+    QListWidgetItem* spinBoxItem = findItem(available, "widgetSpinBox");
+    QVERIFY(!(spinBoxItem->flags() & Qt::ItemIsEnabled));
+    QVERIFY(spinBoxItem->toolTip().contains("First"));
+
+    // Removed from the first toolbar (double click), added to the second one (double click)
+    toolBars->setCurrentIndex(0);
+    Q_EMIT toolBarList->itemDoubleClicked(toolBarList->item(3));
+    QCOMPARE(listIds(toolBarList), ids({ "actionA", "actionB", "separator" }));
+    toolBars->setCurrentIndex(1);
+    Q_EMIT available->itemDoubleClicked(findItem(available, "widgetSpinBox"));
+    QCOMPARE(listIds(toolBarList), ids({ "actionC", "widgetSpinBox" }));
+
+    widget.apply();
+    QCOMPARE(fixture.second->widgetForAction(fixture.manager.findItem("widgetSpinBox")), fixture.spinBox);
+
+    // Reset of the first toolbar takes the widget back
+    toolBars->setCurrentIndex(0);
+    widget.findChild<QPushButton*>("toolBarsResetButton")->click();
+    QCOMPARE(widget.getLayouts().at(fixture.second), ids({ "actionC" }));
+    widget.apply();
+    QCOMPARE(fixture.first->widgetForAction(fixture.manager.findItem("widgetSpinBox")), fixture.spinBox);
+
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QCoreApplication::organizationName(), QCoreApplication::applicationName());
+    settings.remove("ToolBars");
+}
+
+void ToolBarManagerTest::settingsWidgetFilter()
+{
+    ToolBarFixture fixture;
+    createMenus(fixture);
+    fixture.actions[3]->setText("&Delete Page");
+    PDFToolBarsSettingsWidget widget(&fixture.manager, fixture.window.menuBar(), nullptr);
+    QListWidget* available = widget.findChild<QListWidget*>("toolBarsAvailableList");
+
+    widget.findChild<QLineEdit*>("toolBarsFilterEdit")->setText("page");
+    QCOMPARE(listIds(available), ids({ "actionD" }));
+    QCOMPARE(available->item(0)->text(), QString("Delete Page"));
+    widget.findChild<QLineEdit*>("toolBarsFilterEdit")->clear();
+    QCOMPARE(available->count(), 5);
 }
 
 QTEST_MAIN(ToolBarManagerTest)
