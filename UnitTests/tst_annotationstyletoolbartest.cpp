@@ -37,6 +37,7 @@ private slots:
     void cleanup();
     void disabledWithoutToolOrSelection();
     void colorChangesStyleOfActiveTool();
+    void otherColorButtonIsCheckedForOtherColor();
     void fillAndPenWidth();
     void itemsOfTheToolEnableActions();
     void deactivatedToolDisablesActions();
@@ -103,6 +104,40 @@ void AnnotationStyleToolBarTest::colorChangesStyleOfActiveTool()
 
     // The style is stored, another tool with the same style id gets it
     QCOMPARE(PDFAnnotationStyleSettings::getStyle(STYLE_ID, defaultStyle()).strokeColor, QColor(255, 0, 0));
+
+    manager.deactivateStyle();
+}
+
+void AnnotationStyleToolBarTest::otherColorButtonIsCheckedForOtherColor()
+{
+    PDFAnnotationStyleToolBar toolBar(nullptr);
+    PDFAnnotationStyle style = defaultStyle();
+    style.strokeColor = PDFAnnotationStyleToolBar::getPredefinedColors()[0];
+    PDFAnnotationStyleManager manager(nullptr, PDFAnnotationStyleManager::StrokeColor, style, STYLE_ID);
+    manager.activateStyle();
+
+    // Black is a predefined color, there is no other color yet
+    QAction* otherColor = action(toolBar, "actionStyleOtherColor");
+    QVERIFY(otherColor->isCheckable());
+    QVERIFY(!otherColor->isChecked());
+    const QImage defaultIcon = otherColor->icon().pixmap(32, 32).toImage();
+
+    // Another color checks the button and shows the color
+    toolBar.applyColor(QColor(12, 34, 56));
+    QVERIFY(otherColor->isChecked());
+    const QImage otherColorIcon = otherColor->icon().pixmap(32, 32).toImage();
+    QVERIFY(otherColorIcon != defaultIcon);
+    for (int i = 0; i < PDFAnnotationStyleToolBar::COLOR_COUNT; ++i)
+    {
+        QVERIFY(!action(toolBar, QString("actionStyleColor%1").arg(i))->isChecked());
+    }
+
+    // A predefined color unchecks the button, which keeps the other color
+    QAction* red = action(toolBar, "actionStyleColor6");
+    red->trigger();
+    QVERIFY(red->isChecked());
+    QVERIFY(!otherColor->isChecked());
+    QCOMPARE(otherColor->icon().pixmap(32, 32).toImage(), otherColorIcon);
 
     manager.deactivateStyle();
 }

@@ -66,6 +66,7 @@ PDFAnnotationStyleToolBar::PDFAnnotationStyleToolBar(QWidget* parent) :
     m_otherColorAction = addAction(QIcon(":/resources/cms.svg"), tr("Other Color..."));
     m_otherColorAction->setObjectName("actionStyleOtherColor");
     m_otherColorAction->setToolTip(tr("Choose another color"));
+    m_otherColorAction->setCheckable(true);
     connect(m_otherColorAction, &QAction::triggered, this, &PDFAnnotationStyleToolBar::onOtherColorTriggered);
 
     addSeparator();
@@ -276,13 +277,26 @@ void PDFAnnotationStyleToolBar::updateActions()
     // can have different styles, so nothing is checked for them.
     const pdf::PDFAnnotationStyle style = manager ? manager->getStyle() : pdf::PDFAnnotationStyle();
 
+    bool isPredefinedColor = false;
     for (QAction* action : m_colorActions)
     {
+        const bool isChecked = manager && canSetColor && action->data().value<QColor>().rgb() == style.strokeColor.rgb();
         action->setEnabled(canSetColor);
-        action->setChecked(manager && canSetColor && action->data().value<QColor>().rgb() == style.strokeColor.rgb());
+        action->setChecked(isChecked);
+        isPredefinedColor = isPredefinedColor || isChecked;
+    }
+
+    // The "other color" button is checked when the color of the tool is not
+    // a predefined color. It keeps showing the last other color, also when
+    // a predefined color is selected afterwards.
+    const bool isOtherColor = manager && canSetColor && style.strokeColor.isValid() && !isPredefinedColor;
+    if (isOtherColor)
+    {
+        m_otherColor = style.strokeColor;
     }
     m_otherColorAction->setEnabled(canSetColor);
-    m_otherColorAction->setIcon(manager && canSetColor ? createOtherColorIcon(style.strokeColor) : QIcon(":/resources/cms.svg"));
+    m_otherColorAction->setChecked(isOtherColor);
+    m_otherColorAction->setIcon(canSetColor && m_otherColor.isValid() ? createOtherColorIcon(m_otherColor) : QIcon(":/resources/cms.svg"));
 
     m_fillAction->setEnabled(canSetFill);
     m_fillAction->setChecked(canSetFill && style.fillColor.isValid());
@@ -319,6 +333,9 @@ void PDFAnnotationStyleToolBar::onOtherColorTriggered()
     {
         applyColor(dialog.selectedColor());
     }
+
+    // Clicking toggled the button: restore its state when the dialog was cancelled
+    updateActions();
 }
 
 QIcon PDFAnnotationStyleToolBar::createColorIcon(const QColor& color) const

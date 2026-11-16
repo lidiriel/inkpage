@@ -102,6 +102,7 @@ private:
     QActionGroup* m_widthGroup;
     std::array<QAction*, COLOR_COUNT> m_colorActions;
     QAction* m_otherColorAction;
+    QColor m_otherColor; ///< Last color which is not a predefined color, shown by m_otherColorAction
     QAction* m_fillAction;
     std::array<QAction*, PEN_WIDTHS.size()> m_widthActions;
     QAction* m_fontAction;
