@@ -94,6 +94,7 @@ private:
     void onFontTriggered();
 
     QIcon createColorIcon(const QColor& color) const;
+    QIcon createOtherColorIcon(const QColor& color) const;
     bool hasSelection() const;
 
     QPointer<pdf::PDFWidgetAnnotationManager> m_annotationManager;

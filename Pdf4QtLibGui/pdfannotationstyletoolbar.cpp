@@ -282,7 +282,7 @@ void PDFAnnotationStyleToolBar::updateActions()
         action->setChecked(manager && canSetColor && action->data().value<QColor>().rgb() == style.strokeColor.rgb());
     }
     m_otherColorAction->setEnabled(canSetColor);
-    m_otherColorAction->setIcon(manager && canSetColor ? createColorIcon(style.strokeColor) : QIcon(":/resources/cms.svg"));
+    m_otherColorAction->setIcon(manager && canSetColor ? createOtherColorIcon(style.strokeColor) : QIcon(":/resources/cms.svg"));
 
     m_fillAction->setEnabled(canSetFill);
     m_fillAction->setChecked(canSetFill && style.fillColor.isValid());
@@ -332,6 +332,25 @@ QIcon PDFAnnotationStyleToolBar::createColorIcon(const QColor& color) const
     painter.setPen(QPen(QColor(90, 90, 90), 3.0));
     painter.setBrush(color);
     painter.drawEllipse(QRectF(8, 8, size - 16, size - 16));
+    painter.end();
+
+    return QIcon(pixmap);
+}
+
+QIcon PDFAnnotationStyleToolBar::createOtherColorIcon(const QColor& color) const
+{
+    // A color picker pen above a bar of the current color, so the button
+    // cannot be mistaken for one of the predefined (round) color swatches.
+    const int size = 64;
+    QPixmap pixmap(size, size);
+    pixmap.fill(Qt::transparent);
+
+    QPainter painter(&pixmap);
+    painter.setRenderHint(QPainter::Antialiasing);
+    QIcon(":/resources/style-other-color.svg").paint(&painter, QRect(14, 0, 44, 44));
+    painter.setPen(QPen(QColor(90, 90, 90), 3.0));
+    painter.setBrush(color);
+    painter.drawRoundedRect(QRectF(4, 48, size - 8, 13), 3.0, 3.0);
     painter.end();
 
     return QIcon(pixmap);
