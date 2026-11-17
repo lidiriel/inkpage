@@ -619,10 +619,11 @@ void EditorMainWindowTest::layersPage()
 void EditorMainWindowTest::openFromMenu()
 {
     // File > Open (the file dialog) opens the document; the action was also connected
-    // to empty functions and it crashed with std::bad_function_call
+    // to empty functions and it crashed with std::bad_function_call. The extension
+    // in capitals (scanners, cameras) is accepted by the filter of the dialog.
     QTemporaryDir directory;
     QVERIFY(directory.isValid());
-    const QString fileName = directory.filePath("open.pdf");
+    const QString fileName = directory.filePath("SCAN.PDF");
     {
         pdf::PDFDocumentBuilder builder;
         builder.appendPage(QRectF(0, 0, 595, 842));
@@ -632,10 +633,15 @@ void EditorMainWindowTest::openFromMenu()
     }
     PDFEditorMainWindow window;
     window.show();
+    QStringList nameFilters;
     QTimer::singleShot(500, [&]()
     {
         QFileDialog* dialog = qobject_cast<QFileDialog*>(QApplication::activeModalWidget());
         QLineEdit* fileNameEdit = dialog ? dialog->findChild<QLineEdit*>("fileNameEdit") : nullptr;
+        if (dialog)
+        {
+            nameFilters = dialog->nameFilters();
+        }
         if (fileNameEdit)
         {
             // The path is typed in the dialog and confirmed by Enter
@@ -650,6 +656,7 @@ void EditorMainWindowTest::openFromMenu()
     window.findChild<QAction*>("actionOpen")->trigger();
     QTRY_VERIFY(window.getProgramController()->getDocument());
     QCOMPARE(window.getProgramController()->getDocument()->getCatalog()->getPageCount(), size_t(1));
+    QCOMPARE(nameFilters, QStringList{ "PDF document (*.pdf *.PDF)" });
 }
 
 QTEST_MAIN(EditorMainWindowTest)

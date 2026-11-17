@@ -16304,7 +16304,7 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="104"/>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="911"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="912"/>
         <source>Failed</source>
         <translation>En échec</translation>
     </message>
@@ -16648,33 +16648,33 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="592"/>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="774"/>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="950"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="775"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="951"/>
         <source>Waiting</source>
         <translation>En attente</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="664"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="665"/>
         <source>Add Files</source>
         <translation>Ajouter des fichiers</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="664"/>
-        <source>Portable Document (*.pdf)</source>
-        <translation>Document PDF (*.pdf)</translation>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="665"/>
+        <source>Portable Document (*.pdf *.PDF)</source>
+        <translation>Document PDF (*.pdf *.PDF)</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="670"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="671"/>
         <source>Add Folder</source>
         <translation>Ajouter un dossier</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="696"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="697"/>
         <source>Output Folder</source>
         <translation>Dossier de sortie</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="721"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="722"/>
         <source>The batch cannot be started:
 
 %1</source>
@@ -16683,12 +16683,12 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
 %1</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="730"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="731"/>
         <source>The output folder &apos;%1&apos; cannot be created.</source>
         <translation>Le dossier de sortie « %1 » ne peut pas être créé.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="746"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="747"/>
         <source>The outputs of %n file(s) already exist. Do you want to overwrite them?</source>
         <translation>
             <numerusform>Les résultats de %n fichier existent déjà. Voulez-vous les écraser ?</numerusform>
@@ -16696,23 +16696,23 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="770"/>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="907"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="771"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="908"/>
         <source>Skipped</source>
         <translation>Ignoré</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="770"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="771"/>
         <source>The outputs already exist.</source>
         <translation>Les résultats existent déjà.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="788"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="789"/>
         <source>All files were skipped, their outputs already exist.</source>
         <translation>Tous les fichiers ont été ignorés, leurs résultats existent déjà.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="850"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="851"/>
         <source>Recognition of %n file(s) started.</source>
         <translation>
             <numerusform>Reconnaissance de %n fichier démarrée.</numerusform>
@@ -16720,53 +16720,53 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="860"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="861"/>
         <source>Stopping...</source>
         <translation>Arrêt en cours...</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="884"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="885"/>
         <source>Recognizing</source>
         <translation>Reconnaissance</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="886"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="887"/>
         <source>File %1 of %2: %3</source>
         <translation>Fichier %1 sur %2 : %3</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="891"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="892"/>
         <source>Recognizing (%1/%2)</source>
         <translation>Reconnaissance (%1/%2)</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="903"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="904"/>
         <source>Done</source>
         <translation>Terminé</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="911"/>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="952"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="912"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="953"/>
         <source>Stopped</source>
         <translation>Arrêté</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="952"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="953"/>
         <source>The batch was stopped before the file.</source>
         <translation>Le traitement par lot a été arrêté avant ce fichier.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="956"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="957"/>
         <source>Finished: %1 succeeded, %2 skipped, %3 failed.</source>
         <translation>Terminé : %1 réussi(s), %2 ignoré(s), %3 en échec.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="959"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="960"/>
         <source>Stopped. </source>
         <translation>Arrêté. </translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="976"/>
+        <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="977"/>
         <source>The batch is running. Do you want to stop it? The file being recognized is not written.</source>
         <translation>Le traitement par lot est en cours. Voulez-vous l&apos;arrêter ? Le fichier en cours de reconnaissance n&apos;est pas écrit.</translation>
     </message>
@@ -19839,33 +19839,33 @@ S&apos;il existe une version intégrée de la langue, elle sera de nouveau utili
         <translation>l&apos;état d&apos;activation/désactivation du plug-in a été modifié. Veuillez redémarrer l&apos;application pour appliquer les paramètres.</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2999"/>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3066"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3000"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3067"/>
         <source>Select PDF document</source>
         <translation>Sélectionnez le document PDF</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="2999"/>
-        <source>PDF document (*.pdf)</source>
-        <translation>Document PDF (*.pdf)</translation>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3000"/>
+        <source>PDF document (*.pdf *.PDF)</source>
+        <translation>Document PDF (*.pdf *.PDF)</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3051"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3052"/>
         <source>Export Bookmarks As</source>
         <translation>Exporter les signets sous</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3051"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3052"/>
         <source>JSON (*.json);;All files (*.*)</source>
         <translation>JSON (*.json);;Tous les fichiers (*.*)</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3066"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3067"/>
         <source>JSON (*.json)</source>
         <translation>JSON (*.json)</translation>
     </message>
     <message>
-        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3085"/>
+        <location filename="../Pdf4QtLibGui/pdfprogramcontroller.cpp" line="3086"/>
         <source>Rendering of page %1: %2 errors occured.</source>
         <translation>rendu de la page %1&#xa0;: des erreurs %2 se sont produites.</translation>
     </message>

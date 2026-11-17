@@ -661,7 +661,8 @@ void PDFOCRBatchDialog::updateUi()
 
 void PDFOCRBatchDialog::onAddFiles()
 {
-    const QStringList files = QFileDialog::getOpenFileNames(this, tr("Add Files"), QString(), tr("Portable Document (*.pdf)"));
+    // The patterns of the GTK file dialog are case sensitive: scanners and cameras write "*.PDF"
+    const QStringList files = QFileDialog::getOpenFileNames(this, tr("Add Files"), QString(), tr("Portable Document (*.pdf *.PDF)"));
     addFiles(files);
 }
 
