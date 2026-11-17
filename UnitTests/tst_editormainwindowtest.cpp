@@ -75,6 +75,7 @@ private slots:
     void stickyNoteIsInInsertToolBar();
     void customizedToolBarsAreRestored();
     void toolBarsPageOfOptions();
+    void ocrActionsInEditMenu();
     void pageBackgrounds();
     void layersPage();
     void openFromMenu();
@@ -422,6 +423,35 @@ void EditorMainWindowTest::toolBarsPageOfOptions()
     toolBarSettings.remove("ToolBars");
 
     window.close();
+}
+
+void EditorMainWindowTest::ocrActionsInEditMenu()
+{
+    // The OCR actions follow Prepare Scanned Pages at the end of the Edit menu
+    PDFEditorMainWindow window;
+    QMenu* editMenu = window.findChild<QMenu*>("menuEdit");
+    QVERIFY(editMenu);
+
+    QStringList names;
+    for (QAction* action : editMenu->actions())
+    {
+        names << action->objectName();
+    }
+    const QStringList ocrActions{ "actionPrepareScannedPages", "actionRecognizeText", "actionBatchRecognizeText", "actionManageOCRLanguages" };
+    const qsizetype index = names.indexOf(ocrActions.front());
+    QVERIFY(index >= 0);
+    QCOMPARE(names.mid(index, ocrActions.size()), ocrActions);
+
+    for (const QString& name : ocrActions)
+    {
+        QAction* action = window.findChild<QAction*>(name);
+        QVERIFY2(action->isVisible(), qPrintable(name));
+    }
+
+    // Without a document, only the languages and the batch recognition can be used
+    QVERIFY(!window.findChild<QAction*>("actionRecognizeText")->isEnabled());
+    QVERIFY(window.findChild<QAction*>("actionBatchRecognizeText")->isEnabled());
+    QVERIFY(window.findChild<QAction*>("actionManageOCRLanguages")->isEnabled());
 }
 
 void EditorMainWindowTest::pageBackgrounds()

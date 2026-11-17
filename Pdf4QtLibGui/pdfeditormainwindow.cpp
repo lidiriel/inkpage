@@ -814,9 +814,6 @@ QString PDFEditorMainWindow::getBackgroundText(pdf::PDFPageOrganizer::Background
 void PDFEditorMainWindow::initializeHiddenActions()
 {
     QList<QAction*> hiddenActions = {
-        ui->actionRecognizeText,
-        ui->actionBatchRecognizeText,
-        ui->actionManageOCRLanguages,
         ui->actionScreenshot,
         ui->menuStamp->menuAction(),
     };

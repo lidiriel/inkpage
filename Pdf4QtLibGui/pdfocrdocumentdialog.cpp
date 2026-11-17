@@ -369,7 +369,7 @@ void PDFOCRDocumentDialog::initializeUi()
         }
     }
 
-    ui->profileComboBox->addItem(tr("Fast (built-in models)"), int(pdf::PDFOCRModelProfile::Fast));
+    ui->profileComboBox->addItem(tr("Fast (smallest models, from the system packages)"), int(pdf::PDFOCRModelProfile::Fast));
     ui->profileComboBox->addItem(tr("Standard (larger models, download needed)"), int(pdf::PDFOCRModelProfile::Standard));
     ui->profileComboBox->addItem(tr("Quality (largest models, download needed)"), int(pdf::PDFOCRModelProfile::Best));
 
