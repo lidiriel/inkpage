@@ -1070,7 +1070,7 @@ void PDFScanPreparationDialog::updatePageItem(pdf::PDFInteger pageIndex)
         const pdf::PDFScanPreparation::PageAnalysis& analysis = it->second;
         if (analysis.hasOwnOCRLayer)
         {
-            warnings << tr("The page has an OCR layer of PDF4QT.");
+            warnings << tr("The page has an OCR layer of inkpage.");
         }
         if (analysis.isTagged && settings.splitMode != SplitMode::None)
         {
@@ -2081,7 +2081,7 @@ void PDFScanPreparationDialog::updateSummary()
     const std::vector<pdf::PDFInteger> layers = pdf::PDFScanPreparation::getChangedPagesWithOCRLayer(m_context.document, plan);
     if (!layers.empty())
     {
-        warnings << tr("%n changed page(s) have an OCR layer of PDF4QT; you will be asked what to do with them.", nullptr, int(layers.size()));
+        warnings << tr("%n changed page(s) have an OCR layer of inkpage; you will be asked what to do with them.", nullptr, int(layers.size()));
     }
     if (m_context.hasSignatures && (straightened + split + cropped) > 0)
     {
@@ -2111,7 +2111,7 @@ void PDFScanPreparationDialog::onApply()
         }
 
         QMessageBox messageBox(QMessageBox::Question, windowTitle(),
-                               tr("The following changed pages have a text layer created by the OCR of PDF4QT: %1.").arg(pageNumbers.join(QStringLiteral(", "))),
+                               tr("The following changed pages have a text layer created by the OCR of inkpage: %1.").arg(pageNumbers.join(QStringLiteral(", "))),
                                QMessageBox::NoButton, this);
         messageBox.setInformativeText(tr("The layer would not fit the changed page (text outside of the visible area, a duplicated layer of the split pages). "
                                          "Skip these pages, or remove their OCR layer and recognize them again after the preparation. Corrections saved in an OCR project are not loaded for the changed pages."));

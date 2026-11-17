@@ -2316,8 +2316,8 @@
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="1965"/>
-        <source>Removes the OCR text layer created by PDF4QT including its private data. Other content is never removed.</source>
-        <translation>Supprime la couche de texte OCR créée par PDF4QT, y compris ses données privées. Les autres contenus ne sont jamais supprimés.</translation>
+        <source>Removes the OCR text layer created by inkpage including its private data. Other content is never removed.</source>
+        <translation>Supprime la couche de texte OCR créée par inkpage, y compris ses données privées. Les autres contenus ne sont jamais supprimés.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="1968"/>
@@ -12002,8 +12002,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrproject.cpp" line="712"/>
-        <source>File is not a PDF4QT OCR project.</source>
-        <translation>Le fichier n&apos;est pas un projet OCR de PDF4QT.</translation>
+        <source>File is not an inkpage OCR project.</source>
+        <translation>Le fichier n&apos;est pas un projet OCR d&apos;inkpage.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibCore/sources/pdfocrproject.cpp" line="722"/>
@@ -16405,8 +16405,8 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="163"/>
-        <source>Replace OCR created by PDF4QT</source>
-        <translation>Remplacer l&apos;OCR créé par PDF4QT</translation>
+        <source>Replace OCR created by inkpage</source>
+        <translation>Remplacer l&apos;OCR créé par inkpage</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="164"/>
@@ -17043,8 +17043,8 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="378"/>
-        <source>Replace OCR created by PDF4QT</source>
-        <translation>Remplacer l&apos;OCR créé par PDF4QT</translation>
+        <source>Replace OCR created by inkpage</source>
+        <translation>Remplacer l&apos;OCR créé par inkpage</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="379"/>
@@ -17096,8 +17096,8 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="400"/>
-        <source>Otsu (PDF4QT)</source>
-        <translation>Otsu (PDF4QT)</translation>
+        <source>Otsu (inkpage)</source>
+        <translation>Otsu (inkpage)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="401"/>
@@ -18568,13 +18568,13 @@ Voulez-vous remplacer le texte de la zone ?</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="5186"/>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="5278"/>
-        <source>No checked page contains an OCR layer created by PDF4QT.</source>
-        <translation>Aucune page cochée ne contient une couche OCR créée par PDF4QT.</translation>
+        <source>No checked page contains an OCR layer created by inkpage.</source>
+        <translation>Aucune page cochée ne contient une couche OCR créée par inkpage.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="5190"/>
-        <source>Do you want to remove the OCR text layer created by PDF4QT from the pages %1, including its private data? The original content and the text of other tools are not removed.</source>
-        <translation>Voulez-vous supprimer la couche de texte OCR créée par PDF4QT des pages %1, y compris ses données privées ? Le contenu d&apos;origine et le texte des autres outils ne sont pas supprimés.</translation>
+        <source>Do you want to remove the OCR text layer created by inkpage from the pages %1, including its private data? The original content and the text of other tools are not removed.</source>
+        <translation>Voulez-vous supprimer la couche de texte OCR créée par inkpage des pages %1, y compris ses données privées ? Le contenu d&apos;origine et le texte des autres outils ne sont pas supprimés.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="5193"/>
@@ -18808,8 +18808,8 @@ Vous pouvez décocher les pages en échec et recommencer.</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="5565"/>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="5618"/>
-        <source>PDF4QT OCR project (*.%1)</source>
-        <translation>Projet OCR de PDF4QT (*.%1)</translation>
+        <source>inkpage OCR project (*.%1)</source>
+        <translation>Projet OCR d&apos;inkpage (*.%1)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="5597"/>
@@ -18940,8 +18940,8 @@ Les pages au contenu différent peuvent être chargées uniquement pour la relec
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="5802"/>
-        <source>Removes the OCR text layer created by PDF4QT including its private data. Other content is never removed.</source>
-        <translation>Supprime la couche de texte OCR créée par PDF4QT, y compris ses données privées. Les autres contenus ne sont jamais supprimés.</translation>
+        <source>Removes the OCR text layer created by inkpage including its private data. Other content is never removed.</source>
+        <translation>Supprime la couche de texte OCR créée par inkpage, y compris ses données privées. Les autres contenus ne sont jamais supprimés.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.cpp" line="5810"/>
@@ -20343,8 +20343,8 @@ Page %2&#xa0;: %3</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1073"/>
-        <source>The page has an OCR layer of PDF4QT.</source>
-        <translation>La page a une couche OCR de PDF4QT.</translation>
+        <source>The page has an OCR layer of inkpage.</source>
+        <translation>La page a une couche OCR d&apos;inkpage.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="1077"/>
@@ -20494,10 +20494,10 @@ Page %2&#xa0;: %3</translation>
     </message>
     <message numerus="yes">
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2084"/>
-        <source>%n changed page(s) have an OCR layer of PDF4QT; you will be asked what to do with them.</source>
+        <source>%n changed page(s) have an OCR layer of inkpage; you will be asked what to do with them.</source>
         <translation>
-            <numerusform>%n page modifiée a une couche OCR de PDF4QT ; il vous sera demandé quoi en faire.</numerusform>
-            <numerusform>%n pages modifiées ont une couche OCR de PDF4QT ; il vous sera demandé quoi en faire.</numerusform>
+            <numerusform>%n page modifiée a une couche OCR d&apos;inkpage ; il vous sera demandé quoi en faire.</numerusform>
+            <numerusform>%n pages modifiées ont une couche OCR d&apos;inkpage ; il vous sera demandé quoi en faire.</numerusform>
         </translation>
     </message>
     <message>
@@ -20508,8 +20508,8 @@ Page %2&#xa0;: %3</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2114"/>
-        <source>The following changed pages have a text layer created by the OCR of PDF4QT: %1.</source>
-        <translation>Les pages modifiées suivantes ont une couche de texte créée par l&apos;OCR de PDF4QT : %1.</translation>
+        <source>The following changed pages have a text layer created by the OCR of inkpage: %1.</source>
+        <translation>Les pages modifiées suivantes ont une couche de texte créée par l&apos;OCR d&apos;inkpage : %1.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfscanpreparationdialog.cpp" line="2116"/>

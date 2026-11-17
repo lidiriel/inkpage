@@ -1903,7 +1903,7 @@ void OCRDialogTest::scanPreparationDialog()
     applyButton->click();
     QTRY_VERIFY2_WITH_TIMEOUT(dialog.hasResultDocument(), qPrintable(responder.messages.join(QChar('|'))), 30000);
     const QString messages = responder.messages.join(QChar('|'));
-    QVERIFY2(messages.contains(QStringLiteral("OCR of PDF4QT")), qPrintable(messages));
+    QVERIFY2(messages.contains(QStringLiteral("OCR of inkpage")), qPrintable(messages));
     QVERIFY2(messages.contains(QStringLiteral("Pages split: 1")), qPrintable(messages));
 
     PDFDocumentPointer result = dialog.takeResultDocument();

@@ -375,7 +375,7 @@ void PDFOCRDocumentDialog::initializeUi()
 
     ui->existingTextPolicyComboBox->addItem(tr("Only pages without text"), int(pdf::PDFOCRExistingTextPolicy::OnlyPagesWithoutText));
     ui->existingTextPolicyComboBox->addItem(tr("Add text in the drawn regions"), int(pdf::PDFOCRExistingTextPolicy::AddInRegions));
-    ui->existingTextPolicyComboBox->addItem(tr("Replace OCR created by PDF4QT"), int(pdf::PDFOCRExistingTextPolicy::ReplaceOwnLayer));
+    ui->existingTextPolicyComboBox->addItem(tr("Replace OCR created by inkpage"), int(pdf::PDFOCRExistingTextPolicy::ReplaceOwnLayer));
     ui->existingTextPolicyComboBox->addItem(tr("Recognize for review/export only"), int(pdf::PDFOCRExistingTextPolicy::ReviewOnly));
 
     for (int resolution : pdf::PDFOCRConfiguration::getStandardResolutions())
@@ -397,7 +397,7 @@ void PDFOCRDocumentDialog::initializeUi()
     }
 
     ui->binarizationComboBox->addItem(tr("Automatic (engine)"), int(pdf::PDFOCRBinarization::Automatic));
-    ui->binarizationComboBox->addItem(tr("Otsu (PDF4QT)"), int(pdf::PDFOCRBinarization::Otsu));
+    ui->binarizationComboBox->addItem(tr("Otsu (inkpage)"), int(pdf::PDFOCRBinarization::Otsu));
     ui->binarizationComboBox->addItem(tr("Adaptive Otsu (engine)"), int(pdf::PDFOCRBinarization::AdaptiveOtsu));
     ui->binarizationComboBox->addItem(tr("Sauvola (engine)"), int(pdf::PDFOCRBinarization::Sauvola));
 
@@ -5183,11 +5183,11 @@ void PDFOCRDocumentDialog::onRemoveLayerClicked()
 
     if (pages.empty())
     {
-        QMessageBox::information(this, windowTitle(), tr("No checked page contains an OCR layer created by PDF4QT."));
+        QMessageBox::information(this, windowTitle(), tr("No checked page contains an OCR layer created by inkpage."));
         return;
     }
 
-    QString question = tr("Do you want to remove the OCR text layer created by PDF4QT from the pages %1, including its private data? The original content and the text of other tools are not removed.").arg(pdf::PDFOCRPageSelection::describe(pages));
+    QString question = tr("Do you want to remove the OCR text layer created by inkpage from the pages %1, including its private data? The original content and the text of other tools are not removed.").arg(pdf::PDFOCRPageSelection::describe(pages));
     if (m_context.hasSignatures)
     {
         question += QStringLiteral("\n\n") + tr("The document is signed; the change of the content may invalidate the state of the signatures.");
@@ -5275,7 +5275,7 @@ void PDFOCRDocumentDialog::onApplyFinished(int generation, ApplyResult result)
     {
         ui->progressLabel->setText(tr("Nothing was removed."));
         updateUi();
-        QMessageBox::information(this, windowTitle(), tr("No checked page contains an OCR layer created by PDF4QT."));
+        QMessageBox::information(this, windowTitle(), tr("No checked page contains an OCR layer created by inkpage."));
         return;
     }
 
@@ -5562,7 +5562,7 @@ bool PDFOCRDocumentDialog::saveProject()
         fileName = fileInfo.absolutePath() + QStringLiteral("/") + fileInfo.completeBaseName() + QStringLiteral(".") + QLatin1String(pdf::PDFOCRProject::FILE_EXTENSION);
     }
 
-    fileName = QFileDialog::getSaveFileName(this, tr("Save OCR Project"), fileName, tr("PDF4QT OCR project (*.%1)").arg(QLatin1String(pdf::PDFOCRProject::FILE_EXTENSION)));
+    fileName = QFileDialog::getSaveFileName(this, tr("Save OCR Project"), fileName, tr("inkpage OCR project (*.%1)").arg(QLatin1String(pdf::PDFOCRProject::FILE_EXTENSION)));
     if (fileName.isEmpty())
     {
         return false;
@@ -5615,7 +5615,7 @@ void PDFOCRDocumentDialog::onOpenProject()
         return;
     }
 
-    const QString fileName = QFileDialog::getOpenFileName(this, tr("Open OCR Project"), QFileInfo(m_context.fileName).absolutePath(), tr("PDF4QT OCR project (*.%1)").arg(QLatin1String(pdf::PDFOCRProject::FILE_EXTENSION)));
+    const QString fileName = QFileDialog::getOpenFileName(this, tr("Open OCR Project"), QFileInfo(m_context.fileName).absolutePath(), tr("inkpage OCR project (*.%1)").arg(QLatin1String(pdf::PDFOCRProject::FILE_EXTENSION)));
     if (fileName.isEmpty())
     {
         return;
@@ -5799,7 +5799,7 @@ void PDFOCRDocumentDialog::updateUi()
                                                                       : tr("Write the invisible text layer into the document")));
     ui->compressionPreviewButton->setEnabled(hasResults && !m_applyInProgress);
     ui->removeLayerButton->setEnabled(!busy && hasChecked && m_context.canModify && !m_context.isCertified() && !exportOnly);
-    ui->removeLayerButton->setToolTip(exportOnly ? exportOnlyToolTip : tr("Removes the OCR text layer created by PDF4QT including its private data. Other content is never removed."));
+    ui->removeLayerButton->setToolTip(exportOnly ? exportOnlyToolTip : tr("Removes the OCR text layer created by inkpage including its private data. Other content is never removed."));
     ui->exportButton->setEnabled(hasResults && !m_applyInProgress);
     ui->saveProjectButton->setEnabled(!m_applyInProgress && (hasResults || m_session->isDirty()));
     ui->openProjectButton->setEnabled(!busy);

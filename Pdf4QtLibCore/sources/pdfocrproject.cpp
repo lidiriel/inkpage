@@ -709,7 +709,7 @@ bool PDFOCRProjectSerializer::projectFromJson(const QJsonObject& object, PDFOCRP
     {
         if (errorMessage)
         {
-            *errorMessage = PDFTranslationContext::tr("File is not a PDF4QT OCR project.");
+            *errorMessage = PDFTranslationContext::tr("File is not an inkpage OCR project.");
         }
         return false;
     }

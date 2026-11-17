@@ -1962,7 +1962,7 @@
                 <string>Remove OCR Layer from Checked Pages...</string>
                </property>
                <property name="toolTip">
-                <string>Removes the OCR text layer created by PDF4QT including its private data. Other content is never removed.</string>
+                <string>Removes the OCR text layer created by inkpage including its private data. Other content is never removed.</string>
                </property>
                <property name="accessibleName">
                 <string>Remove OCR Layer from Checked Pages</string>

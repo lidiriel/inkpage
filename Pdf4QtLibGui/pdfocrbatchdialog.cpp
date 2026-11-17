@@ -160,7 +160,7 @@ void PDFOCRBatchDialog::createUi()
     m_existingTextComboBox = new QComboBox(recognitionGroupBox);
     m_existingTextComboBox->setObjectName(QStringLiteral("existingTextComboBox"));
     m_existingTextComboBox->addItem(tr("Only pages without text"), int(pdf::PDFOCRExistingTextPolicy::OnlyPagesWithoutText));
-    m_existingTextComboBox->addItem(tr("Replace OCR created by PDF4QT"), int(pdf::PDFOCRExistingTextPolicy::ReplaceOwnLayer));
+    m_existingTextComboBox->addItem(tr("Replace OCR created by inkpage"), int(pdf::PDFOCRExistingTextPolicy::ReplaceOwnLayer));
     m_existingTextComboBox->addItem(tr("Recognize for export only"), int(pdf::PDFOCRExistingTextPolicy::ReviewOnly));
     recognitionLayout->addRow(tr("Existing text:"), m_existingTextComboBox);
 
