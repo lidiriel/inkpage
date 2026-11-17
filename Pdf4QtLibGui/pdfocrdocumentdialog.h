@@ -116,6 +116,9 @@ public:
     /// named profiles), which is shared with the batch recognition
     static QString getSettingsGroup();
 
+    /// Returns the language suggested by the language of the user interface (LANG-03)
+    static QString getLanguageSuggestion();
+
     /// Returns true, if the dialog produced a modified document, which
     /// should replace the current document of the editor (single undo step).
     bool hasModifiedDocument() const { return !m_modifiedDocument.isNull(); }
@@ -256,9 +259,6 @@ private:
     const pdf::PDFOCRPageAnalysis* getAnalysis(pdf::PDFInteger pageIndex);
     static QString getPageStateName(pdf::PDFOCRPageState state);
     static QString getContentClassName(pdf::PDFOCRPageContentClass contentClass);
-
-    /// Returns the language suggested by the language of the user interface (LANG-03)
-    static QString getLanguageSuggestion();
 
     // Recognition
     void onRecognizeClicked();

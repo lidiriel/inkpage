@@ -310,6 +310,7 @@ private slots:
     void perspectiveInDialog();
     void pageOverrideInDialog();
     void batchDialog();
+    void batchDialogLanguageSuggestion();
 
 private:
     static PDFDocument createScanDocument(const QStringList& pageTexts, const QByteArray& digitalText = QByteArray());
@@ -1989,6 +1990,26 @@ void OCRDialogTest::pageOverrideInDialog()
 
     responder.setPreferredButtons({ QStringLiteral("Discard"), QStringLiteral("OK") });
     dialog.reject();
+}
+
+void OCRDialogTest::batchDialogLanguageSuggestion()
+{
+    // Without saved settings, the language of the user interface is suggested (LANG-03)
+    {
+        QSettings settings(QSettings::IniFormat, QSettings::UserScope, QCoreApplication::organizationName(), QCoreApplication::applicationName());
+        settings.remove(QStringLiteral("OCRDialog"));
+        settings.remove(QStringLiteral("OCRBatchDialog"));
+    }
+
+    const QLocale previousLocale;
+    QLocale::setDefault(QLocale(QLocale::German, QLocale::Germany));
+    {
+        pdfviewer::PDFOCRBatchDialog dialog(nullptr);
+        QLineEdit* languagesEdit = dialog.findChild<QLineEdit*>(QStringLiteral("languagesEdit"));
+        QVERIFY(languagesEdit);
+        QCOMPARE(languagesEdit->text(), QStringLiteral("deu"));
+    }
+    QLocale::setDefault(previousLocale);
 }
 
 void OCRDialogTest::batchDialog()

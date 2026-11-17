@@ -378,7 +378,7 @@ void PDFOCRBatchDialog::onSettingsSourceChanged()
     }
     if (configuration.languages.isEmpty())
     {
-        configuration.languages << QStringLiteral("eng");
+        configuration.languages << PDFOCRDocumentDialog::getLanguageSuggestion();
     }
 
     m_languagesEdit->setText(configuration.getLanguageString());
