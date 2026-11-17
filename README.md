@@ -123,7 +123,8 @@ From PDF4QT (the list is not complete):
 - [x] static XFA support (readonly, simple XFA only)
 - [x] electronically/digitally sign documents
 - [x] public key security encryption
-- [ ] OCR - text recognition of scanned documents (Tesseract), not built yet
+- [x] OCR - text recognition of scanned documents (Tesseract), with the
+      language models of the system (`tesseract-ocr-*` packages)
 
 ## 5. THIRD PARTY LIBRARIES
 
@@ -230,7 +231,9 @@ creates `build-deb/inkpage_<version>_amd64.deb` with `cpack`. The package
 installs inkpage in `/usr`; its private libraries, and Blend2D and Clipper2
 (not packaged by Debian), go to `/usr/lib/<triplet>/inkpage`. The other
 dependencies are Debian packages, computed by `dpkg-shlibdeps` (package
-`dpkg-dev`). Install it with `sudo apt install ./build-deb/inkpage_*.deb`.
+`dpkg-dev`). The OCR is built in (the configuration fails without Tesseract);
+the package ships no language model, it recommends `tesseract-ocr-eng`,
+`tesseract-ocr-osd` and `tesseract-ocr-fra`. Install it with `sudo apt install ./build-deb/inkpage_*.deb`.
 
 ### Version and releases
 
@@ -270,6 +273,7 @@ changelog or in the metainfo.
 | `INKPAGE_BUILD_DEV_TOOLS`    | Build the developer tools (CodeGenerator), OFF by default|
 | `INKPAGE_BUILD_DISABLED_PLUGINS` | Build the deactivated plugins (AudioBook, Redact, Scanner, SoftProofing), OFF by default |
 | `INKPAGE_BUNDLE_DEPS`        | Install Blend2D and Clipper2 with the private libraries (Debian package), OFF by default |
+| `INKPAGE_INSTALL_OCR_MODELS` | Install the built-in OCR language models of `ocr/tesseract`, ON by default (OFF for the Debian package) |
 
 ## 7. DISCLAIMER
 

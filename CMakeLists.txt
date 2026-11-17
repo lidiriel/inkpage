@@ -52,6 +52,7 @@ option(INKPAGE_BUILD_DISABLED_PLUGINS "Build the deactivated plugins (AudioBook,
 option(PDF4QT_BUILD_TESTS "Build UnitTests" ON)
 option(PDF4QT_ENABLE_COVERAGE "Instrument the code for the source based code coverage of clang (llvm-cov)" OFF)
 option(PDF4QT_ENABLE_OCR "Build the OCR support with the Tesseract engine (requires Tesseract and Leptonica)" ON)
+option(INKPAGE_INSTALL_OCR_MODELS "Install the built-in OCR language models of ocr/tesseract (the Debian package uses the models of the tesseract-ocr-* packages instead)" ON)
 option(PDF4QT_OCR_REQUIRED "Release gate of the OCR support: fail the configuration instead of disabling OCR silently when the Tesseract engine is not found, when a built-in language model declared by a manifest (ocr/tesseract/<profile>/manifest.json) has no archive or is not extracted, or when a runtime library of the engine is missing in the installer. Turn it on for the distributed builds, which must ship the OCR engine and the declared built-in model set (OPS-01, LANG-01, LANG-02)" OFF)
 
 
@@ -387,7 +388,9 @@ if(PDF4QT_ENABLE_OCR)
         message(${PDF4QT_OCR_PROBLEM_SEVERITY} "Distributed OCR data files declared by the manifests are missing in ${PDF4QT_OCR_BUILD_DATA_DIR}:\n  ${PDF4QT_OCR_MISSING_FILES_TEXT}")
     endif()
 
-    install(DIRECTORY ${PDF4QT_OCR_BUILD_DATA_DIR}/tesseract DESTINATION ${PDF4QT_INSTALL_OCR_DIR})
+    if(INKPAGE_INSTALL_OCR_MODELS)
+        install(DIRECTORY ${PDF4QT_OCR_BUILD_DATA_DIR}/tesseract DESTINATION ${PDF4QT_INSTALL_OCR_DIR})
+    endif()
     install(DIRECTORY ${PDF4QT_OCR_BUILD_DATA_DIR}/licenses DESTINATION ${PDF4QT_INSTALL_OCR_DIR})
 endif()
 

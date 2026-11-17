@@ -145,6 +145,10 @@ set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "inkpage edits PDF documents: annotations (
 freehand drawing, highlighter, sticky notes), page content and pages
 (add, insert, duplicate, delete, move, ruled backgrounds).
 
+The text of scanned documents is recognized with Tesseract (OCR): the
+recognized text is reviewed and written as an invisible, searchable text
+layer. The language models are the tesseract-ocr-* packages.
+
 It is based on PDF4QT by Jakub Melka.")
 
 # The dependencies are found from the libraries used by the binaries. The private
@@ -155,6 +159,14 @@ set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS_PRIVATE_DIRS
 # The Qt plugins loaded at run time are not seen by dpkg-shlibdeps
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "qt6-svg-plugins, qt6-qpa-plugins")
 set(CPACK_DEBIAN_PACKAGE_RECOMMENDS "qt6-image-formats-plugins")
+
+# Language models of the OCR (the engine libraries are found by dpkg-shlibdeps).
+# OCR is optional, so the models are recommended: English, the orientation data,
+# and French; the other languages are the other tesseract-ocr-* packages.
+if(PDF4QT_ENABLE_OCR)
+    string(APPEND CPACK_DEBIAN_PACKAGE_RECOMMENDS ", tesseract-ocr-eng, tesseract-ocr-osd, tesseract-ocr-fra")
+    set(CPACK_DEBIAN_PACKAGE_SUGGESTS "tesseract-ocr-all")
+endif()
 
 # Directories are owned by the package with the usual permissions
 set(CPACK_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS

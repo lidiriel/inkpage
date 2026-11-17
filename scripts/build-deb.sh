@@ -25,6 +25,10 @@
 #            install/ directory must contain Blend2D and Clipper2
 # BUILD_DIR  (default: build-deb) the build tree, the package is written there
 #
+# The OCR feature is built with the Tesseract and Leptonica packages of Debian
+# (the configuration fails without them); the package ships no language model,
+# it recommends the tesseract-ocr-* packages.
+#
 # Required Debian packages: the build dependencies listed in README.md, and
 # dpkg-dev (dpkg-shlibdeps computes the dependencies of the package).
 set -euo pipefail
@@ -43,7 +47,9 @@ cmake -S "$REPO" -B "$BUILD" -G Ninja \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_PREFIX_PATH="$DEPS/install" \
       -DPDF4QT_BUILD_TESTS=OFF \
-      -DPDF4QT_ENABLE_OCR=OFF \
+      -DPDF4QT_ENABLE_OCR=ON \
+      -DPDF4QT_OCR_REQUIRED=ON \
+      -DINKPAGE_INSTALL_OCR_MODELS=OFF \
       -DINKPAGE_BUNDLE_DEPS=ON
 cmake --build "$BUILD"
 (cd "$BUILD" && cpack -G DEB)

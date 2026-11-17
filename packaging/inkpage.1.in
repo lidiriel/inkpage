@@ -12,6 +12,8 @@ inkpage \- simple PDF editor
 edits PDF documents: annotations (inline text, images, shapes, freehand
 drawing, highlighter, sticky notes), page content and pages (add, insert,
 duplicate, delete, move, ruled backgrounds).
+The text of scanned documents is recognized with Tesseract (Edit > Recognize
+Text) and written as an invisible, searchable text layer.
 It is based on PDF4QT by Jakub Melka.
 .PP
 If \fIFILE\fR is given, the PDF document is opened.
@@ -36,5 +38,12 @@ The standard options of Qt applications are also accepted (for example
 .TP
 .I ~/.config/inkpage/inkpage.ini
 User settings (shortcuts, toolbars, styles of the annotations).
+.TP
+.I /usr/share/tesseract\-ocr/5/tessdata
+Language models of the OCR (packages
+.BR tesseract\-ocr\-* ).
+.TP
+.I ~/.local/share/inkpage/ocr
+Language models downloaded or imported in inkpage, cache of the OCR.
 .SH SEE ALSO
 https://github.com/lidiriel/inkpage

@@ -10,6 +10,10 @@
       inkpage is a simple PDF editor for Linux, based on PDF4QT by Jakub Melka.
       It edits annotations, page content and pages of PDF documents.
     </p>
+    <p>
+      The text of scanned documents is recognized with Tesseract (OCR) and
+      written as an invisible, searchable text layer.
+    </p>
   </description>
   <url type="homepage">https://github.com/lidiriel/inkpage</url>
   <developer id="io.github.lidiriel">
