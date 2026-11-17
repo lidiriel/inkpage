@@ -16275,498 +16275,500 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="70"/>
         <source>Batch Recognize Text</source>
-        <translation type="unfinished">Reconnaître le texte par lots</translation>
+        <translation>Reconnaissance du texte par lot</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="100"/>
         <source>Files</source>
-        <translation type="unfinished">Fichiers</translation>
+        <translation>Fichiers</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="104"/>
         <source>File</source>
-        <translation type="unfinished">Fichier</translation>
+        <translation>Fichier</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="104"/>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>État</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="104"/>
         <source>Pages</source>
-        <translation type="unfinished">Pages</translation>
+        <translation>Pages</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="104"/>
         <source>Recognized</source>
-        <translation type="unfinished"></translation>
+        <translation>Reconnues</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="104"/>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="911"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>En échec</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="104"/>
         <source>Words</source>
-        <translation type="unfinished"></translation>
+        <translation>Mots</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="104"/>
         <source>To Review</source>
-        <translation type="unfinished"></translation>
+        <translation>À vérifier</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="104"/>
         <source>Time [s]</source>
-        <translation type="unfinished"></translation>
+        <translation>Durée [s]</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="104"/>
         <source>Message</source>
-        <translation type="unfinished">Message</translation>
+        <translation>Message</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="111"/>
         <source>PDF files to recognize. Files and folders can be dropped here.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichiers PDF à reconnaître. Des fichiers et des dossiers peuvent être déposés ici.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="115"/>
         <source>Add Files...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter des fichiers...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="117"/>
         <source>Add Folder...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un dossier...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="119"/>
         <source>Remove</source>
-        <translation type="unfinished">Supprimer</translation>
+        <translation>Retirer</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="121"/>
         <source>Clear</source>
-        <translation type="unfinished">Effacer</translation>
+        <translation>Vider</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="134"/>
         <source>Recognition</source>
-        <translation type="unfinished"></translation>
+        <translation>Reconnaissance</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="138"/>
         <source>Settings of the recognition: the last settings of the dialog Recognize Text, or a profile saved there (resolution, layout, preprocessing, restrictions of the characters, user words).</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres de la reconnaissance : les derniers paramètres de la boîte de dialogue Reconnaître le texte, ou un profil qui y a été enregistré (résolution, mise en page, prétraitement, restrictions de caractères, mots de l&apos;utilisateur).</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="139"/>
         <source>Settings:</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="144"/>
         <source>for example ces+eng</source>
-        <translation type="unfinished"></translation>
+        <translation>par exemple ces+eng</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="145"/>
         <source>Languages of the text in the order of their importance, joined by &apos;+&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Langues du texte par ordre d&apos;importance, reliées par « + ».</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="146"/>
         <source>Manage...</source>
-        <translation type="unfinished"></translation>
+        <translation>Gérer...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="147"/>
         <source>Download, import or remove the language models.</source>
-        <translation type="unfinished"></translation>
+        <translation>Télécharger, importer ou supprimer les modèles de langue.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="150"/>
         <source>Languages:</source>
-        <translation type="unfinished"></translation>
+        <translation>Langues :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="158"/>
         <source>Models:</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèles :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="162"/>
         <source>Only pages without text</source>
-        <translation type="unfinished"></translation>
+        <translation>Uniquement les pages sans texte</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="163"/>
         <source>Replace OCR created by PDF4QT</source>
-        <translation type="unfinished"></translation>
+        <translation>Remplacer l&apos;OCR créé par PDF4QT</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="164"/>
         <source>Recognize for export only</source>
-        <translation type="unfinished"></translation>
+        <translation>Reconnaître pour l&apos;export uniquement</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="165"/>
         <source>Existing text:</source>
-        <translation type="unfinished"></translation>
+        <translation>Texte existant :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="169"/>
         <source>Skip them</source>
-        <translation type="unfinished"></translation>
+        <translation>Les ignorer</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="170"/>
         <source>Recognize scans with a small text masked</source>
-        <translation type="unfinished"></translation>
+        <translation>Reconnaître les numérisations avec un petit texte masqué</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="171"/>
         <source>Recognize them for export only</source>
-        <translation type="unfinished"></translation>
+        <translation>Les reconnaître pour l&apos;export uniquement</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="172"/>
         <source>Pages with both text and images, or with an ambiguous content, need a decision. The dialog Recognize Text asks for it, the batch uses this choice.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les pages avec du texte et des images, ou au contenu ambigu, nécessitent une décision. La boîte de dialogue Reconnaître le texte la demande, le traitement par lot utilise ce choix.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="173"/>
         <source>Text and images:</source>
-        <translation type="unfinished"></translation>
+        <translation>Texte et images :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="175"/>
         <source>Write the results even if some pages fail</source>
-        <translation type="unfinished"></translation>
+        <translation>Écrire les résultats même si certaines pages échouent</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="177"/>
         <source>Without it, a file with a failed page is not written at all.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sans cette option, un fichier avec une page en échec n&apos;est pas écrit du tout.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="179"/>
         <source>Reduce the resolution of too large pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Réduire la résolution des pages trop grandes</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="181"/>
         <source>Without it, a page too large for the resolution is an error of the page.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sans cette option, une page trop grande pour la résolution est une erreur de la page.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="190"/>
         <source>Output</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortie</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="192"/>
         <source>Next to the original file</source>
-        <translation type="unfinished"></translation>
+        <translation>À côté du fichier d&apos;origine</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="194"/>
         <source>Into the folder:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dans le dossier :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="200"/>
         <source>Browse...</source>
-        <translation type="unfinished"></translation>
+        <translation>Parcourir...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="207"/>
         <source>Suffix of the names of the output files, the original files are never overwritten.</source>
-        <translation type="unfinished"></translation>
+        <translation>Suffixe des noms des fichiers produits, les fichiers d&apos;origine ne sont jamais écrasés.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="208"/>
         <source>Suffix:</source>
-        <translation type="unfinished"></translation>
+        <translation>Suffixe :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="210"/>
         <source>Write the PDF with the text layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Écrire le PDF avec la couche de texte</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="216"/>
         <source>Do not change the images</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne pas modifier les images</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="217"/>
         <source>Lossless (JBIG2 generic region, CCITT G4, Flate)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sans perte (région générique JBIG2, CCITT G4, Flate)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="218"/>
         <source>Compression of the scanned images of the written pages. The lossy conversion to black and white is offered only in the dialog Recognize Text, where its result can be checked in the preview.</source>
-        <translation type="unfinished"></translation>
+        <translation>Compression des images numérisées des pages écrites. La conversion avec perte en noir et blanc est proposée uniquement dans la boîte de dialogue Reconnaître le texte, où son résultat peut être vérifié dans l&apos;aperçu.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="219"/>
         <source>Compression:</source>
-        <translation type="unfinished"></translation>
+        <translation>Compression :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="222"/>
         <source>Text</source>
-        <translation type="unfinished">Text</translation>
+        <translation>Texte</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="224"/>
         <source>hOCR</source>
-        <translation type="unfinished"></translation>
+        <translation>hOCR</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="226"/>
         <source>ALTO</source>
-        <translation type="unfinished"></translation>
+        <translation>ALTO</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="228"/>
         <source>TSV</source>
-        <translation type="unfinished"></translation>
+        <translation>TSV</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="235"/>
         <source>Export:</source>
-        <translation type="unfinished"></translation>
+        <translation>Export :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="237"/>
         <source>Skip the files, whose outputs already exist</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorer les fichiers dont les résultats existent déjà</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="249"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Démarrer</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="251"/>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>Arrêter</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="253"/>
         <source>Open Result</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir le résultat</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="255"/>
         <source>Close the dialog and open the result of the selected file in the editor.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer la boîte de dialogue et ouvrir le résultat du fichier sélectionné dans l&apos;éditeur.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="296"/>
         <source>Last settings of the dialog Recognize Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Derniers paramètres de la boîte de dialogue Reconnaître le texte</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="300"/>
         <source>Profile: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Profil : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="390"/>
         <source>Engine: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Moteur : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="391"/>
         <source>%1 DPI</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 PPP</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="395"/>
         <source>deskew</source>
-        <translation type="unfinished"></translation>
+        <translation>redressement</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="399"/>
         <source>automatic orientation</source>
-        <translation type="unfinished"></translation>
+        <translation>orientation automatique</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="403"/>
         <source>noise removal</source>
-        <translation type="unfinished"></translation>
+        <translation>suppression du bruit</translation>
     </message>
     <message numerus="yes">
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="407"/>
         <source>%n user word(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n mot de l&apos;utilisateur</numerusform>
+            <numerusform>%n mots de l&apos;utilisateur</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="497"/>
         <source>Add the files to recognize.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajoutez les fichiers à reconnaître.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="502"/>
         <source>Select the languages of the text.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionnez les langues du texte.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="510"/>
         <source>OCR engine &apos;%1&apos; is not available. %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Le moteur OCR « %1 » n&apos;est pas disponible. %2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="517"/>
         <source>The language models are not installed: %1. Use the button &apos;Manage...&apos; to install them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les modèles de langue ne sont pas installés : %1. Utilisez le bouton « Gérer... » pour les installer.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="525"/>
         <source>Select the PDF with the text layer or at least one export.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionnez le PDF avec la couche de texte ou au moins un export.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="530"/>
         <source>Select the output folder.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionnez le dossier de sortie.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="541"/>
         <source>The output would overwrite the file &apos;%1&apos;, change the suffix.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le résultat écraserait le fichier « %1 », modifiez le suffixe.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="592"/>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="774"/>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="950"/>
         <source>Waiting</source>
-        <translation type="unfinished"></translation>
+        <translation>En attente</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="664"/>
         <source>Add Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter des fichiers</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="664"/>
         <source>Portable Document (*.pdf)</source>
-        <translation type="unfinished"></translation>
+        <translation>Document PDF (*.pdf)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="670"/>
         <source>Add Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un dossier</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="696"/>
         <source>Output Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier de sortie</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="721"/>
         <source>The batch cannot be started:
 
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Le traitement par lot ne peut pas être démarré :
+
+%1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="730"/>
         <source>The output folder &apos;%1&apos; cannot be created.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le dossier de sortie « %1 » ne peut pas être créé.</translation>
     </message>
     <message numerus="yes">
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="746"/>
         <source>The outputs of %n file(s) already exist. Do you want to overwrite them?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Les résultats de %n fichier existent déjà. Voulez-vous les écraser ?</numerusform>
+            <numerusform>Les résultats de %n fichiers existent déjà. Voulez-vous les écraser ?</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="770"/>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="907"/>
         <source>Skipped</source>
-        <translation type="unfinished">Skipped</translation>
+        <translation>Ignoré</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="770"/>
         <source>The outputs already exist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les résultats existent déjà.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="788"/>
         <source>All files were skipped, their outputs already exist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les fichiers ont été ignorés, leurs résultats existent déjà.</translation>
     </message>
     <message numerus="yes">
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="850"/>
         <source>Recognition of %n file(s) started.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Reconnaissance de %n fichier démarrée.</numerusform>
+            <numerusform>Reconnaissance de %n fichiers démarrée.</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="860"/>
         <source>Stopping...</source>
-        <translation type="unfinished"></translation>
+        <translation>Arrêt en cours...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="884"/>
         <source>Recognizing</source>
-        <translation type="unfinished"></translation>
+        <translation>Reconnaissance</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="886"/>
         <source>File %1 of %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier %1 sur %2 : %3</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="891"/>
         <source>Recognizing (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Reconnaissance (%1/%2)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="903"/>
         <source>Done</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminé</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="911"/>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="952"/>
         <source>Stopped</source>
-        <translation type="unfinished"></translation>
+        <translation>Arrêté</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="952"/>
         <source>The batch was stopped before the file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le traitement par lot a été arrêté avant ce fichier.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="956"/>
         <source>Finished: %1 succeeded, %2 skipped, %3 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminé : %1 réussi(s), %2 ignoré(s), %3 en échec.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="959"/>
         <source>Stopped. </source>
-        <translation type="unfinished"></translation>
+        <translation>Arrêté. </translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrbatchdialog.cpp" line="976"/>
         <source>The batch is running. Do you want to stop it? The file being recognized is not written.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le traitement par lot est en cours. Voulez-vous l&apos;arrêter ? Le fichier en cours de reconnaissance n&apos;est pas écrit.</translation>
     </message>
 </context>
 <context>
