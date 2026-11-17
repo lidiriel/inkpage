@@ -96,7 +96,8 @@ enum class PDFOCRModelState
     Downloading,
     Verifying,
     Error,
-    Incompatible
+    Incompatible,
+    System      ///< Read-only model of the system (Tesseract package of the distribution)
 };
 
 /// Origin of the model
@@ -105,7 +106,8 @@ enum class PDFOCRModelOrigin
     None,
     BuiltIn,
     Downloaded,
-    Imported
+    Imported,
+    System      ///< Model of the system (Tesseract package of the distribution)
 };
 
 /// Information about the model (LANG-08)
@@ -137,7 +139,7 @@ struct PDF4QTLIBCORESHARED_EXPORT PDFOCRModelInfo
     int downloadProgress = 0;
 
     bool isOrientationData() const { return family == QStringLiteral("osd") || language == QStringLiteral("osd"); }
-    bool isUsable() const { return state == PDFOCRModelState::BuiltIn || state == PDFOCRModelState::Installed || state == PDFOCRModelState::UpdateAvailable; }
+    bool isUsable() const { return state == PDFOCRModelState::BuiltIn || state == PDFOCRModelState::System || state == PDFOCRModelState::Installed || state == PDFOCRModelState::UpdateAvailable; }
 
     /// Returns translated name of the state
     static QString getStateName(PDFOCRModelState state);
@@ -181,6 +183,19 @@ public:
 
     void setBuiltInDirectory(const QString& directory);
     QString getBuiltInDirectory() const { return m_builtInDirectory; }
+
+    /// Returns the default directories of the system models (the tessdata directories
+    /// of the Tesseract packages of the distribution, and $TESSDATA_PREFIX). The list
+    /// can be replaced by the environment variable PDF4QT_OCR_SYSTEM_DIRECTORIES
+    /// (directories separated by the path list separator, empty for none).
+    static QStringList getDefaultSystemDirectories();
+
+    /// Sets the directories of the system models (read-only). A system model is
+    /// identified by its checksum in the catalog (profile, name, verification);
+    /// a model unknown to the catalog is taken as a model of the profile Fast.
+    /// A language found in several directories is taken from the first one.
+    void setSystemDirectories(const QStringList& directories);
+    QStringList getSystemDirectories() const { return m_systemDirectories; }
 
     /// Loads the catalog bundled with the application
     void loadBundledCatalog();
@@ -355,6 +370,7 @@ private:
     };
 
     void scanBuiltIn(std::vector<InstalledFile>& files) const;
+    void scanSystem(std::vector<InstalledFile>& files) const;
     void scanUser(std::vector<InstalledFile>& files) const;
     void loadState();
     void saveState() const;
@@ -411,6 +427,17 @@ private:
     mutable QMutex m_mutex;
     QString m_userDirectory;
     QString m_builtInDirectory;
+    QStringList m_systemDirectories;
+
+    /// Checksums of the system models by path, valid while the size and the time of
+    /// the file are the same (the system models are hashed to be found in the catalog)
+    struct SystemChecksum
+    {
+        qint64 size = 0;
+        QDateTime lastModified;
+        QString sha256;
+    };
+    mutable std::map<QString, SystemChecksum> m_systemChecksums;
     PDFOCRCatalog m_catalog;
     std::vector<PDFOCRModelInfo> m_models;
     QStringList m_hiddenModels;

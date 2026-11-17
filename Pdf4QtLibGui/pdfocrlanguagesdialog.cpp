@@ -83,7 +83,7 @@ PDFOCRLanguagesDialog::PDFOCRLanguagesDialog(pdf::PDFOCRModelManager* manager, Q
 
     ui->stateFilterComboBox->addItem(tr("All states"), -1);
     ui->stateFilterComboBox->addItem(tr("Installed and built-in"), -2);
-    for (pdf::PDFOCRModelState state : { pdf::PDFOCRModelState::BuiltIn, pdf::PDFOCRModelState::Installed, pdf::PDFOCRModelState::Available,
+    for (pdf::PDFOCRModelState state : { pdf::PDFOCRModelState::BuiltIn, pdf::PDFOCRModelState::System, pdf::PDFOCRModelState::Installed, pdf::PDFOCRModelState::Available,
                                          pdf::PDFOCRModelState::UpdateAvailable, pdf::PDFOCRModelState::Downloading, pdf::PDFOCRModelState::Error })
     {
         ui->stateFilterComboBox->addItem(pdf::PDFOCRModelInfo::getStateName(state), int(state));
@@ -355,6 +355,11 @@ void PDFOCRLanguagesDialog::updateUi()
         if (model.origin == pdf::PDFOCRModelOrigin::Imported)
         {
             details << tr("The origin of the imported model is not verified by the catalog.");
+        }
+        if (model.origin == pdf::PDFOCRModelOrigin::System)
+        {
+            details << (model.catalogVerified ? tr("Provided by a package of the system.")
+                                              : tr("Provided by a package of the system, unknown to the catalog (used as a model of the profile Fast)."));
         }
     }
     else if (!models.empty())

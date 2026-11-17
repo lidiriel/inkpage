@@ -336,6 +336,7 @@ private slots:
     void genericAdapter();
     void invalidEngineOutput();
     void modelManagerBuiltIn();
+    void modelManagerSystem();
     void modelDownload();
     void tesseractRecognition();
     // [tests: writer and preparer]
@@ -419,6 +420,10 @@ private:
 
 void OCRTest::initTestCase()
 {
+    // The models installed in the system are not used by the tests (a test of the
+    // system models sets its own directories)
+    qputenv("PDF4QT_OCR_SYSTEM_DIRECTORIES", QByteArray());
+
     m_testEngine = std::make_shared<PDFOCRTestEngineFactory>();
     PDFOCREngineRegistry::getInstance()->registerFactory(m_testEngine);
 
@@ -2776,6 +2781,98 @@ QString OCRTestHelper::getSourceOcrDirectory()
 #else
     return QString();
 #endif
+}
+
+void OCRTest::modelManagerSystem()
+{
+    const QString builtInDirectory = OCRTestHelper::getSourceOcrDirectory();
+    const QString builtInTessdata = builtInDirectory + QStringLiteral("/tesseract/fast/tessdata");
+    if (builtInDirectory.isEmpty() || !QFile::exists(builtInTessdata + QStringLiteral("/eng.traineddata")))
+    {
+        PDF4QT_OCR_SKIP("Built-in OCR language models are not available (ocr/tesseract/fast/tessdata).");
+    }
+
+    // Like the tessdata directories of the Tesseract packages: English and the orientation
+    // data of tessdata_fast (known to the catalog), and a model unknown to the catalog
+    QTemporaryDir firstSystemDirectory;
+    QTemporaryDir secondSystemDirectory;
+    QTemporaryDir userDirectory;
+    QVERIFY(firstSystemDirectory.isValid() && secondSystemDirectory.isValid() && userDirectory.isValid());
+    QVERIFY(QFile::copy(builtInTessdata + QStringLiteral("/eng.traineddata"), firstSystemDirectory.filePath(QStringLiteral("eng.traineddata"))));
+    QVERIFY(QFile::copy(builtInTessdata + QStringLiteral("/osd.traineddata"), firstSystemDirectory.filePath(QStringLiteral("osd.traineddata"))));
+    auto writeFile = [](const QString& fileName, const QByteArray& data)
+    {
+        QFile file(fileName);
+        return file.open(QFile::WriteOnly) && file.write(data) == data.size();
+    };
+    QVERIFY(writeFile(firstSystemDirectory.filePath(QStringLiteral("xyz.traineddata")), QByteArray("unknown model")));
+    QVERIFY(writeFile(secondSystemDirectory.filePath(QStringLiteral("xyz.traineddata")), QByteArray("another unknown model")));
+
+    PDFOCRModelManager manager(nullptr);
+    QVERIFY(manager.getSystemDirectories().isEmpty());
+    manager.setModelValidator([](const QString&, const QString&, const QString&) { return PDFOCRError::none(); });
+    manager.setBuiltInDirectory(userDirectory.filePath(QStringLiteral("no-builtin")));
+    manager.setUserDirectory(userDirectory.path());
+    manager.setSystemDirectories({ firstSystemDirectory.path(), secondSystemDirectory.path(), firstSystemDirectory.path(), userDirectory.filePath(QStringLiteral("missing")) });
+    manager.loadBundledCatalog();
+
+    // A model of the catalog: its identifier, profile and name come from the catalog
+    std::optional<PDFOCRModelInfo> english = manager.getModel(QStringLiteral("tesseract/fast/eng"));
+    QVERIFY(english.has_value());
+    QCOMPARE(english->origin, PDFOCRModelOrigin::System);
+    QCOMPARE(english->state, PDFOCRModelState::System);
+    QCOMPARE(english->profile, PDFOCRModelProfile::Fast);
+    QCOMPARE(english->name, QStringLiteral("English"));
+    QVERIFY(english->catalogVerified);
+    QVERIFY(english->isUsable());
+    QCOMPARE(QFileInfo(english->path).absolutePath(), QFileInfo(firstSystemDirectory.path()).absoluteFilePath());
+    QVERIFY(manager.isLanguageUsable(QStringLiteral("tesseract"), QStringLiteral("eng"), PDFOCRModelProfile::Fast));
+    QVERIFY(!manager.isLanguageUsable(QStringLiteral("tesseract"), QStringLiteral("eng"), PDFOCRModelProfile::Best));
+    QVERIFY(PDFOCRModelManager::getModelDisplayText(*english).contains(QStringLiteral("system")));
+
+    // The orientation data of the system are used by all profiles, like the built-in ones
+    QVERIFY(manager.isOrientationDataUsable(QStringLiteral("tesseract"), PDFOCRModelProfile::Fast));
+    QVERIFY(manager.isOrientationDataUsable(QStringLiteral("tesseract"), PDFOCRModelProfile::Best));
+
+    // A model unknown to the catalog is a model of the profile Fast, taken from the first directory
+    std::optional<PDFOCRModelInfo> unknown = manager.getModel(QStringLiteral("tesseract/fast/xyz"));
+    QVERIFY(unknown.has_value());
+    QCOMPARE(unknown->origin, PDFOCRModelOrigin::System);
+    QVERIFY(!unknown->catalogVerified);
+    QCOMPARE(QFileInfo(unknown->path).absolutePath(), QFileInfo(firstSystemDirectory.path()).absoluteFilePath());
+    const QString unknownChecksum = unknown->installedSha256;
+    QVERIFY(!unknownChecksum.isEmpty());
+
+    // A changed file (package update) is hashed again
+    QVERIFY(writeFile(firstSystemDirectory.filePath(QStringLiteral("xyz.traineddata")), QByteArray("updated unknown model")));
+    manager.refresh();
+    QVERIFY(manager.getModel(QStringLiteral("tesseract/fast/xyz"))->installedSha256 != unknownChecksum);
+
+    // The system models are read-only
+    const PDFOCRError removeError = manager.removeUserModel(QStringLiteral("tesseract/fast/eng"));
+    QCOMPARE(removeError.code, PDFOCRErrorCode::InsufficientPermissions);
+    QVERIFY(QFile::exists(english->path));
+
+    // The recognition uses the system model
+    PDFOCRError resolveError;
+    const PDFOCRResolvedModelSet set = manager.resolveModelSet(QStringLiteral("tesseract"), { QStringLiteral("eng") }, PDFOCRModelProfile::Fast, &resolveError);
+    QVERIFY2(set.isValid(), qPrintable(resolveError.message));
+
+    // A built-in model wins over the system model with the same identifier
+    manager.setBuiltInDirectory(builtInDirectory);
+    manager.refresh();
+    QCOMPARE(manager.getModel(QStringLiteral("tesseract/fast/eng"))->origin, PDFOCRModelOrigin::BuiltIn);
+    QCOMPARE(manager.getModel(QStringLiteral("tesseract/fast/xyz"))->origin, PDFOCRModelOrigin::System);
+
+    // Directories of the environment variable (empty: no system directory)
+    const QByteArray previousDirectories = qgetenv("PDF4QT_OCR_SYSTEM_DIRECTORIES");
+    qputenv("PDF4QT_OCR_SYSTEM_DIRECTORIES", (firstSystemDirectory.path() + QDir::listSeparator() + secondSystemDirectory.path()).toLocal8Bit());
+    QCOMPARE(PDFOCRModelManager::getDefaultSystemDirectories(), (QStringList{ firstSystemDirectory.path(), secondSystemDirectory.path() }));
+    qputenv("PDF4QT_OCR_SYSTEM_DIRECTORIES", QByteArray());
+    QVERIFY(PDFOCRModelManager::getDefaultSystemDirectories().isEmpty());
+    qunsetenv("PDF4QT_OCR_SYSTEM_DIRECTORIES");
+    QVERIFY(PDFOCRModelManager::getDefaultSystemDirectories().contains(QStringLiteral("/usr/share/tesseract-ocr/5/tessdata")));
+    qputenv("PDF4QT_OCR_SYSTEM_DIRECTORIES", previousDirectories);
 }
 
 void OCRTest::modelManagerBuiltIn()

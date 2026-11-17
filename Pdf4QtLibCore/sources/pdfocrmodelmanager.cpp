@@ -31,6 +31,7 @@
 #include <QDateTime>
 #include <QFileInfo>
 #include <QDirIterator>
+#include <QSet>
 #include <QSaveFile>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -185,6 +186,8 @@ QString PDFOCRModelInfo::getStateName(PDFOCRModelState state)
             return PDFTranslationContext::tr("Error");
         case PDFOCRModelState::Incompatible:
             return PDFTranslationContext::tr("Incompatible");
+        case PDFOCRModelState::System:
+            return PDFTranslationContext::tr("Installed in the system");
     }
 
     return QString();
@@ -202,6 +205,8 @@ QString PDFOCRModelInfo::getOriginName(PDFOCRModelOrigin origin)
             return PDFTranslationContext::tr("Downloaded");
         case PDFOCRModelOrigin::Imported:
             return PDFTranslationContext::tr("Imported (origin not verified)");
+        case PDFOCRModelOrigin::System:
+            return PDFTranslationContext::tr("System package");
     }
 
     return QString();
@@ -214,7 +219,8 @@ QString PDFOCRModelInfo::getOriginName(PDFOCRModelOrigin origin)
 PDFOCRModelManager::PDFOCRModelManager(QObject* parent) :
     QObject(parent),
     m_userDirectory(getDefaultUserDirectory()),
-    m_builtInDirectory(getDefaultBuiltInDirectory())
+    m_builtInDirectory(getDefaultBuiltInDirectory()),
+    m_systemDirectories(getDefaultSystemDirectories())
 {
     // Installations are serialized by the lock of the data directory anyway
     m_verificationPool.setMaxThreadCount(1);
@@ -287,6 +293,35 @@ QString PDFOCRModelManager::getDefaultBuiltInDirectory()
         return QDir(QCoreApplication::applicationDirPath() + QStringLiteral("/") + QString::fromLatin1(PDF4QT_OCR_DATA_RELATIVE_PATH)).absolutePath();
     }
     return applicationDirectory.absolutePath();
+}
+
+QStringList PDFOCRModelManager::getDefaultSystemDirectories()
+{
+    if (qEnvironmentVariableIsSet("PDF4QT_OCR_SYSTEM_DIRECTORIES"))
+    {
+        return qEnvironmentVariable("PDF4QT_OCR_SYSTEM_DIRECTORIES").split(QDir::listSeparator(), Qt::SkipEmptyParts);
+    }
+
+    QStringList directories;
+
+    // TESSDATA_PREFIX is the tessdata directory itself (Tesseract 5), or its parent (older versions)
+    const QString prefix = qEnvironmentVariable("TESSDATA_PREFIX");
+    if (!prefix.isEmpty())
+    {
+        directories << prefix << QDir(prefix).filePath(QStringLiteral("tessdata"));
+    }
+
+    // Debian/Ubuntu (tesseract-ocr-*), Fedora, Arch Linux
+    directories << QStringLiteral("/usr/share/tesseract-ocr/5/tessdata")
+                << QStringLiteral("/usr/share/tesseract-ocr/4.00/tessdata")
+                << QStringLiteral("/usr/share/tessdata")
+                << QStringLiteral("/usr/local/share/tessdata");
+    return directories;
+}
+
+void PDFOCRModelManager::setSystemDirectories(const QStringList& directories)
+{
+    m_systemDirectories = directories;
 }
 
 void PDFOCRModelManager::setUserDirectory(const QString& directory)
@@ -443,6 +478,77 @@ void PDFOCRModelManager::scanBuiltIn(std::vector<InstalledFile>& files) const
                 file.license = it->second.value(QStringLiteral("license")).toString();
                 file.version = it->second.value(QStringLiteral("version")).toString();
                 file.verified = true;
+            }
+
+            files.push_back(std::move(file));
+        }
+    }
+}
+
+void PDFOCRModelManager::scanSystem(std::vector<InstalledFile>& files) const
+{
+    QSet<QString> scannedDirectories;
+    QSet<QString> languages;
+    for (const QString& directoryPath : m_systemDirectories)
+    {
+        QDir directory(directoryPath);
+        const QString canonicalPath = directory.canonicalPath();
+        if (canonicalPath.isEmpty() || scannedDirectories.contains(canonicalPath))
+        {
+            continue;
+        }
+        scannedDirectories.insert(canonicalPath);
+
+        const QFileInfoList entries = directory.entryInfoList(QStringList() << QStringLiteral("*") + QLatin1String(TRAINEDDATA_SUFFIX), QDir::Files | QDir::Readable, QDir::Name);
+        for (const QFileInfo& fileInfo : entries)
+        {
+            const QString language = fileInfo.completeBaseName();
+            if (!isValidLanguageCode(language) || languages.contains(language))
+            {
+                continue;
+            }
+            languages.insert(language);
+
+            // The checksum is computed again only when the file has changed (package update)
+            SystemChecksum& checksum = m_systemChecksums[fileInfo.absoluteFilePath()];
+            if (checksum.sha256.isEmpty() || checksum.size != fileInfo.size() || checksum.lastModified != fileInfo.lastModified())
+            {
+                checksum.size = fileInfo.size();
+                checksum.lastModified = fileInfo.lastModified();
+                checksum.sha256 = computeSha256(fileInfo.absoluteFilePath()).toLower();
+            }
+
+            InstalledFile file;
+            file.language = language;
+            file.origin = PDFOCRModelOrigin::System;
+            file.path = fileInfo.absoluteFilePath();
+            file.size = fileInfo.size();
+            file.sha256 = checksum.sha256;
+
+            // The profile is known from the catalog (Debian packages the models of tessdata_fast)
+            const PDFOCRCatalogEntry* catalogEntry = nullptr;
+            for (const PDFOCRCatalogEntry& entry : m_catalog.entries)
+            {
+                if (entry.language == language && !file.sha256.isEmpty() && entry.sha256.compare(file.sha256, Qt::CaseInsensitive) == 0)
+                {
+                    catalogEntry = &entry;
+                    break;
+                }
+            }
+
+            if (catalogEntry)
+            {
+                file.id = catalogEntry->id;
+                file.profile = catalogEntry->profile;
+                file.name = catalogEntry->name;
+                file.license = catalogEntry->license;
+                file.version = catalogEntry->version;
+                file.verified = true;
+            }
+            else
+            {
+                file.profile = PDFOCRModelProfile::Fast;
+                file.id = QStringLiteral("tesseract/%1/%2").arg(getProfileDirectoryName(file.profile), language);
             }
 
             files.push_back(std::move(file));
@@ -750,6 +856,7 @@ void PDFOCRModelManager::refresh()
 
     std::vector<InstalledFile> installedFiles;
     scanBuiltIn(installedFiles);
+    scanSystem(installedFiles);
     scanUser(installedFiles);
 
     std::vector<PDFOCRModelInfo> models;
@@ -795,9 +902,11 @@ void PDFOCRModelManager::refresh()
 
         // Built-in file wins over downloaded file with the same identifier only
         // if the downloaded file is not verified (LANG-05: verified user variant
-        // of the same profile has priority over the built-in variant).
+        // of the same profile has priority over the built-in variant). The system
+        // models are like the built-in ones; the built-in file wins over the system file.
+        const bool isReadOnlyModel = info.origin == PDFOCRModelOrigin::BuiltIn || info.origin == PDFOCRModelOrigin::System;
         const bool replace = info.origin == PDFOCRModelOrigin::None ||
-                             (info.origin == PDFOCRModelOrigin::BuiltIn && file.origin == PDFOCRModelOrigin::Downloaded && file.verified) ||
+                             (isReadOnlyModel && file.origin == PDFOCRModelOrigin::Downloaded && file.verified) ||
                              (info.origin == PDFOCRModelOrigin::Downloaded && file.origin == PDFOCRModelOrigin::Downloaded && file.verified && !info.catalogVerified);
         if (!replace)
         {
@@ -826,6 +935,10 @@ void PDFOCRModelManager::refresh()
         {
             case PDFOCRModelOrigin::BuiltIn:
                 info.state = PDFOCRModelState::BuiltIn;
+                break;
+
+            case PDFOCRModelOrigin::System:
+                info.state = PDFOCRModelState::System;
                 break;
 
             case PDFOCRModelOrigin::Downloaded:
@@ -955,7 +1068,7 @@ bool PDFOCRModelManager::isOrientationDataUsable(const QString& engineId, PDFOCR
 {
     for (const PDFOCRModelInfo& model : getModels())
     {
-        if (model.engineId == engineId && model.isOrientationData() && model.isUsable() && (model.profile == profile || model.origin == PDFOCRModelOrigin::BuiltIn))
+        if (model.engineId == engineId && model.isOrientationData() && model.isUsable() && (model.profile == profile || model.origin == PDFOCRModelOrigin::BuiltIn || model.origin == PDFOCRModelOrigin::System))
         {
             return true;
         }
@@ -979,6 +1092,9 @@ QString PDFOCRModelManager::getModelDisplayText(const PDFOCRModelInfo& model)
             break;
         case PDFOCRModelOrigin::Imported:
             origin = PDFTranslationContext::tr("imported");
+            break;
+        case PDFOCRModelOrigin::System:
+            origin = PDFTranslationContext::tr("system");
             break;
     }
 
@@ -2304,6 +2420,11 @@ PDFOCRError PDFOCRModelManager::removeUserModel(const QString& modelId)
     if (model->origin == PDFOCRModelOrigin::BuiltIn || model->origin == PDFOCRModelOrigin::None)
     {
         return PDFOCRError::create(PDFOCRErrorCode::InsufficientPermissions, PDFTranslationContext::tr("Built-in model '%1' cannot be removed. It can be hidden in the language selection.").arg(model->name), PDFTranslationContext::tr("Model removal"));
+    }
+
+    if (model->origin == PDFOCRModelOrigin::System)
+    {
+        return PDFOCRError::create(PDFOCRErrorCode::InsufficientPermissions, PDFTranslationContext::tr("Model '%1' is installed in the system, it is removed with its package. It can be hidden in the language selection.").arg(model->name), PDFTranslationContext::tr("Model removal"));
     }
 
     if (model->state == PDFOCRModelState::Downloading || model->state == PDFOCRModelState::Verifying)

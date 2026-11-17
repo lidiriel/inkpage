@@ -334,6 +334,9 @@ void OCRDialogTest::initTestCase()
 {
     // Neither the settings nor the application data of the user are touched by the test
     QStandardPaths::setTestModeEnabled(true);
+
+    // The models installed in the system are not used
+    qputenv("PDF4QT_OCR_SYSTEM_DIRECTORIES", QByteArray());
     QCoreApplication::setOrganizationName(QStringLiteral("PDF4QT-UnitTests"));
     QCoreApplication::setApplicationName(QStringLiteral("UnitTestsOCRDialog"));
     QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, m_settingsDirectory.path());
