@@ -2422,7 +2422,7 @@ void PDFOCRDocumentDialog::onCurrentPageChanged()
         }
         if (skew && std::abs(*skew) >= 0.5)
         {
-            info << tr("The page is skewed by %1°. Straightening in OCR does not change the visible page; use Tools > Prepare Scanned Pages before the recognition to straighten it permanently.").arg(*skew, 0, 'f', 1);
+            info << tr("The page is skewed by %1°. Straightening in OCR does not change the visible page; use Edit > Prepare Scanned Pages before the recognition to straighten it permanently.").arg(*skew, 0, 'f', 1);
         }
     }
     ui->pageInfoLabel->setText(info.join(QChar(' ')));
