@@ -3143,213 +3143,213 @@
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="14"/>
         <source>Manage OCR Languages</source>
-        <translation type="unfinished">Gérer les langues de l&apos;OCR</translation>
+        <translation>Gérer les langues OCR</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="22"/>
         <source>&amp;Search:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rechercher :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="32"/>
         <source>Search by name or code</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechercher par nom ou code</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="35"/>
         <source>Name or code, for example Czech or ces</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom ou code, par exemple Français ou fra</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="45"/>
         <source>Profile:</source>
-        <translation type="unfinished"></translation>
+        <translation>Profil :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="55"/>
         <source>Profile filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtre des profils</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="68"/>
         <source>State:</source>
-        <translation type="unfinished"></translation>
+        <translation>État :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="78"/>
         <source>State filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtre des états</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="93"/>
         <source>OCR language models</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèles de langue OCR</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="109"/>
         <source>Language</source>
-        <translation type="unfinished">Language</translation>
+        <translation>Langue</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="114"/>
         <source>Code</source>
-        <translation type="unfinished">Code</translation>
+        <translation>Code</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="119"/>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Profil</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="124"/>
         <source>Origin</source>
-        <translation type="unfinished"></translation>
+        <translation>Origine</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="129"/>
         <source>Version</source>
-        <translation type="unfinished">Version</translation>
+        <translation>Version</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="134"/>
         <source>Size</source>
-        <translation type="unfinished">Taille</translation>
+        <translation>Taille</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="139"/>
         <source>State</source>
-        <translation type="unfinished">State</translation>
+        <translation>État</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="159"/>
         <source>Download progress</source>
-        <translation type="unfinished"></translation>
+        <translation>Progression du téléchargement</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="180"/>
         <source>&amp;Download</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Télécharger</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="183"/>
         <source>Download the selected models</source>
-        <translation type="unfinished"></translation>
+        <translation>Télécharger les modèles sélectionnés</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="186"/>
         <source>Download</source>
-        <translation type="unfinished"></translation>
+        <translation>Télécharger</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="193"/>
         <source>&amp;Update</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Mettre à jour</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="196"/>
         <source>Update the selected models</source>
-        <translation type="unfinished"></translation>
+        <translation>Mettre à jour les modèles sélectionnés</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="199"/>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Mettre à jour</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="206"/>
         <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Annuler</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="209"/>
         <source>Cancel the download of the selected models</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler le téléchargement des modèles sélectionnés</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="212"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="219"/>
         <source>&amp;Retry</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Réessayer</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="222"/>
         <source>Retry the failed download</source>
-        <translation type="unfinished"></translation>
+        <translation>Réessayer le téléchargement en échec</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="225"/>
         <source>Retry</source>
-        <translation type="unfinished"></translation>
+        <translation>Réessayer</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="232"/>
         <source>&amp;Import from File...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Importer depuis un fichier...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="235"/>
         <source>Import a model file (.traineddata) from the disk</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer un fichier de modèle (.traineddata) depuis le disque</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="238"/>
         <source>Import from File</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer depuis un fichier</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="245"/>
         <source>Re&amp;move User Model</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Supprimer le modèle de l&apos;utilisateur</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="248"/>
         <source>Remove the downloaded or imported model. Built-in models cannot be removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le modèle téléchargé ou importé. Les modèles intégrés ne peuvent pas être supprimés.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="251"/>
         <source>Remove User Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le modèle de l&apos;utilisateur</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="258"/>
         <source>&amp;Hide / Show</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Masquer / Afficher</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="261"/>
         <source>Hide or show the model in the language selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Masquer ou afficher le modèle dans la sélection des langues</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="264"/>
         <source>Hide / Show</source>
-        <translation type="unfinished"></translation>
+        <translation>Masquer / Afficher</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="271"/>
         <source>&amp;Open Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ouvrir le dossier</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="274"/>
         <source>Open the folder of the user models</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir le dossier des modèles de l&apos;utilisateur</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="277"/>
         <source>Open Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir le dossier</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="297"/>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.ui" line="300"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -19024,57 +19024,57 @@ Les pages au contenu différent peuvent être chargées uniquement pour la relec
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="78"/>
         <source>All profiles</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les profils</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="84"/>
         <source>All states</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les états</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="85"/>
         <source>Installed and built-in</source>
-        <translation type="unfinished"></translation>
+        <translation>Installés et intégrés</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="114"/>
-        <source>Built-in models are part of the application and work without an internet connection. Other models are downloaded from the official Tesseract repositories (tessdata_fast, tessdata_best) according to the catalog shipped with the application; every file is verified by its size and SHA-256 checksum. Documents and recognized text are never sent to any server. User models are stored in: %1</source>
-        <translation type="unfinished"></translation>
+        <source>Built-in models and the models of the system packages (tesseract-ocr-*) work without an internet connection. Other models are downloaded from the official Tesseract repositories (tessdata_fast, tessdata_best) according to the catalog shipped with the application; every file is verified by its size and SHA-256 checksum. Documents and recognized text are never sent to any server. User models are stored in: %1</source>
+        <translation>Les modèles intégrés et les modèles des paquets du système (tesseract-ocr-*) fonctionnent sans connexion à Internet. Les autres modèles sont téléchargés depuis les dépôts officiels de Tesseract (tessdata_fast, tessdata_best) selon le catalogue fourni avec l&apos;application ; chaque fichier est vérifié par sa taille et sa somme de contrôle SHA-256. Les documents et le texte reconnu ne sont jamais envoyés à un serveur. Les modèles de l&apos;utilisateur sont enregistrés dans : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="133"/>
         <source>Manage OCR Languages</source>
-        <translation type="unfinished">Gérer les langues de l&apos;OCR</translation>
+        <translation>Gérer les langues OCR</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="133"/>
         <source>Downloads are in progress. Do you want to cancel them and close the dialog?</source>
-        <translation type="unfinished"></translation>
+        <translation>Des téléchargements sont en cours. Voulez-vous les annuler et fermer la boîte de dialogue ?</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="149"/>
         <source>%1 MB</source>
-        <translation type="unfinished">%1 Mo</translation>
+        <translation>%1 Mo</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="184"/>
         <source>%1 (not a document language)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (pas une langue de document)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="188"/>
         <source>%1 [hidden]</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 [masqué]</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="194"/>
         <source>%1 (%2 %)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2 %)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="198"/>
         <source>%1 - %2</source>
-        <translation type="unfinished">%1 - %2</translation>
+        <translation>%1 - %2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="230"/>
@@ -19094,42 +19094,42 @@ Les pages au contenu différent peuvent être chargées uniquement pour la relec
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="349"/>
         <source>License: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Licence : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="353"/>
         <source>File: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="357"/>
         <source>The origin of the imported model is not verified by the catalog.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;origine du modèle importé n&apos;est pas vérifiée par le catalogue.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="361"/>
         <source>Provided by a package of the system.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fourni par un paquet du système.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="362"/>
         <source>Provided by a package of the system, unknown to the catalog (used as a model of the profile Fast).</source>
-        <translation type="unfinished"></translation>
+        <translation>Fourni par un paquet du système, inconnu du catalogue (utilisé comme modèle du profil Rapide).</translation>
     </message>
     <message numerus="yes">
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="372"/>
         <source>%n model(s) selected, %1</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n modèle sélectionné, %1</numerusform>
+            <numerusform>%n modèles sélectionnés, %1</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="403"/>
         <source>Downloading %n model(s)...</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Téléchargement de %n modèle...</numerusform>
+            <numerusform>Téléchargement de %n modèles...</numerusform>
         </translation>
     </message>
     <message>
@@ -19142,12 +19142,19 @@ Total size: %2
 Target folder: %3
 
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>Les modèles suivants seront téléchargés depuis Internet :
+
+%1
+
+Taille totale : %2
+Dossier de destination : %3
+
+Voulez-vous continuer ?</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="433"/>
         <source>Download OCR Languages</source>
-        <translation type="unfinished"></translation>
+        <translation>Télécharger des langues OCR</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="454"/>
@@ -19155,28 +19162,28 @@ Do you want to continue?</source>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="503"/>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="507"/>
         <source>Import OCR Language Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer un modèle de langue OCR</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="454"/>
         <source>Tesseract models (*.traineddata)</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèles Tesseract (*.traineddata)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="467"/>
         <source>Profile, in which the model will be offered:</source>
-        <translation type="unfinished"></translation>
+        <translation>Profil dans lequel le modèle sera proposé :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="507"/>
         <source>The model was imported. Its origin is not verified by the catalog; it is offered as a separate language and never replaces a built-in model.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le modèle a été importé. Son origine n&apos;est pas vérifiée par le catalogue ; il est proposé comme une langue distincte et ne remplace jamais un modèle intégré.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="528"/>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="538"/>
         <source>Remove User Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le modèle de l&apos;utilisateur</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="528"/>
@@ -19185,17 +19192,21 @@ Do you want to continue?</source>
 %1
 
 If a built-in version of the language exists, it will be used again. OCR projects are not affected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Voulez-vous supprimer les modèles de l&apos;utilisateur suivants ?
+
+%1
+
+S&apos;il existe une version intégrée de la langue, elle sera de nouveau utilisée. Les projets OCR ne sont pas concernés.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="562"/>
         <source>%1: installed.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 : installé.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrlanguagesdialog.cpp" line="562"/>
         <source>%1: %2</source>
-        <translation type="unfinished">%1 : %2</translation>
+        <translation>%1 : %2</translation>
     </message>
 </context>
 <context>

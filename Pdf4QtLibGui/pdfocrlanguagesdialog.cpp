@@ -111,7 +111,7 @@ PDFOCRLanguagesDialog::PDFOCRLanguagesDialog(pdf::PDFOCRModelManager* manager, Q
     connect(m_manager, &pdf::PDFOCRModelManager::downloadFinished, this, &PDFOCRLanguagesDialog::onDownloadFinished);
     connect(m_manager, &pdf::PDFOCRModelManager::downloadQueueChanged, this, &PDFOCRLanguagesDialog::updateUi);
 
-    ui->infoLabel->setText(tr("Built-in models are part of the application and work without an internet connection. Other models are downloaded from the official "
+    ui->infoLabel->setText(tr("Built-in models and the models of the system packages (tesseract-ocr-*) work without an internet connection. Other models are downloaded from the official "
                               "Tesseract repositories (tessdata_fast, tessdata_best) according to the catalog shipped with the application; every file is verified "
                               "by its size and SHA-256 checksum. Documents and recognized text are never sent to any server. User models are stored in: %1")
                            .arg(QDir::toNativeSeparators(m_manager->getUserDirectory())));
