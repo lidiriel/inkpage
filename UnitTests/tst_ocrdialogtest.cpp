@@ -51,6 +51,7 @@
 #endif
 
 #include <QtTest>
+#include <QScopeGuard>
 #include <QTimer>
 #include <QComboBox>
 #include <QLineEdit>
@@ -298,6 +299,7 @@ private slots:
     void workflowWithTestEngine();
     void stoppedRerunKeepsResults();
     void workflowWithTesseract();
+    void workflowWithSystemFrench();
     void reviewOnlySurvivesProject();
     void existingTextMasked();
     void certifiedDocument();
@@ -880,6 +882,88 @@ void OCRDialogTest::workflowWithTesseract()
     }
 
     runWorkflow(QStringLiteral("tesseract"), QStringLiteral("Hello"));
+#endif
+}
+
+void OCRDialogTest::workflowWithSystemFrench()
+{
+    // The French model of the Tesseract package of the distribution (tesseract-ocr-fra)
+    // recognizes a scanned page; the text layer is written, saved and searchable
+#ifndef PDF4QT_OCR_TESSERACT
+    PDF4QT_OCR_SKIP("Tesseract engine is not compiled in.");
+#else
+    const QString systemDirectory = QStringLiteral("/usr/share/tesseract-ocr/5/tessdata");
+    if (!QFile::exists(systemDirectory + QStringLiteral("/fra.traineddata")))
+    {
+        QSKIP("The French model of the system is not installed (tesseract-ocr-fra).");
+    }
+
+    // Only the system models: the built-in models have no French model
+    const QByteArray previousSystemDirectories = qgetenv("PDF4QT_OCR_SYSTEM_DIRECTORIES");
+    qputenv("PDF4QT_OCR_SYSTEM_DIRECTORIES", systemDirectory.toLocal8Bit());
+    auto restoreEnvironment = qScopeGuard([&previousSystemDirectories]() { qputenv("PDF4QT_OCR_SYSTEM_DIRECTORIES", previousSystemDirectories); });
+
+    WidgetFixture fixture(createScanDocument({ QStringLiteral("Bonjour château") }));
+    const pdfviewer::PDFOCRDocumentDialog::Context context = fixture.createContext();
+    ModalResponder responder({ QStringLiteral("Apply"), QStringLiteral("No"), QStringLiteral("Discard"), QStringLiteral("Continue"), QStringLiteral("OK") });
+
+    pdfviewer::PDFOCRDocumentDialog dialog(context, nullptr);
+    dialog.show();
+
+    auto* languagesListWidget = dialog.findChild<QListWidget*>(QStringLiteral("languagesListWidget"));
+    auto* recognizeButton = dialog.findChild<QPushButton*>(QStringLiteral("recognizeButton"));
+    auto* stopButton = dialog.findChild<QPushButton*>(QStringLiteral("stopButton"));
+    auto* applyButton = dialog.findChild<QPushButton*>(QStringLiteral("applyButton"));
+    auto* resultsTreeWidget = dialog.findChild<QTreeWidget*>(QStringLiteral("resultsTreeWidget"));
+    QVERIFY(languagesListWidget && recognizeButton && stopButton && applyButton && resultsTreeWidget);
+    selectComboData(dialog, "engineComboBox", QStringLiteral("tesseract"));
+    selectComboData(dialog, "profileComboBox", int(PDFOCRModelProfile::Fast));
+
+    // French is offered without download, it is the only selected language
+    bool hasFrench = false;
+    for (int i = 0; i < languagesListWidget->count(); ++i)
+    {
+        QListWidgetItem* item = languagesListWidget->item(i);
+        const bool isFrench = item->data(Qt::UserRole + 3).toString() == QStringLiteral("fra");
+        hasFrench = hasFrench || isFrench;
+        item->setCheckState(isFrench ? Qt::Checked : Qt::Unchecked);
+    }
+    QVERIFY(hasFrench);
+
+    recognizeButton->click();
+    QVERIFY2(stopButton->isEnabled(), qPrintable(responder.messages.join(QChar('|'))));
+    QTRY_VERIFY_WITH_TIMEOUT(!stopButton->isEnabled() && recognizeButton->isEnabled(), 180000);
+    QVERIFY2(applyButton->isEnabled(), qPrintable(responder.messages.join(QChar('|'))));
+
+    // Review: the words with the accent are recognized
+    QStringList words;
+    for (QTreeWidgetItemIterator it(resultsTreeWidget); *it; ++it)
+    {
+        if ((*it)->data(0, Qt::UserRole + 1).toInt() == 2)
+        {
+            words << (*it)->text(0);
+        }
+    }
+    QVERIFY2(words.contains(QStringLiteral("Bonjour")) && words.contains(QStringLiteral("château")), qPrintable(words.join(QChar(' '))));
+
+    // Text layer, saved and read again: the text can be searched
+    applyButton->click();
+    QTRY_VERIFY_WITH_TIMEOUT(dialog.result() == QDialog::Accepted && !dialog.isVisible(), 60000);
+    PDFDocumentPointer modified = dialog.takeModifiedDocument();
+    QVERIFY(modified);
+
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    const QString fileName = directory.filePath(QStringLiteral("scan_ocr.pdf"));
+    PDFDocumentWriter writer(nullptr);
+    QVERIFY(writer.write(fileName, modified.data(), true));
+
+    PDFDocumentReader reader(nullptr, nullptr, false, false);
+    const PDFDocument saved = reader.readFromFile(fileName);
+    QCOMPARE(reader.getReadingResult(), PDFDocumentReader::Result::OK);
+    QVERIFY(PDFOCRTextLayerWriter::readLayerInfo(&saved, 0).isPresent);
+    const QString text = extractText(saved, 0);
+    QVERIFY2(text.contains(QStringLiteral("château")), qPrintable(text));
 #endif
 }
 
