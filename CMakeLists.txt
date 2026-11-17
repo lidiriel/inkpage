@@ -84,12 +84,28 @@ find_package(blend2d CONFIG REQUIRED)
 find_package(Clipper2 CONFIG REQUIRED)
 
 if(PDF4QT_ENABLE_OCR)
-    find_package(Tesseract CONFIG)
+    find_package(Tesseract CONFIG QUIET)
+
+    # Debian packages Tesseract and Leptonica with pkg-config files only (no CMake
+    # config file): the imported target of the CMake config file is created from them.
+    # The adapter uses the Leptonica API directly, both libraries are linked.
+    if(NOT Tesseract_FOUND)
+        find_package(PkgConfig QUIET)
+        if(PkgConfig_FOUND)
+            pkg_check_modules(INKPAGE_TESSERACT QUIET IMPORTED_TARGET tesseract>=5 lept)
+            if(INKPAGE_TESSERACT_FOUND)
+                add_library(Tesseract::libtesseract ALIAS PkgConfig::INKPAGE_TESSERACT)
+                set(Tesseract_FOUND TRUE)
+                message(STATUS "Tesseract ${INKPAGE_TESSERACT_tesseract_VERSION} and Leptonica ${INKPAGE_TESSERACT_lept_VERSION} found by pkg-config")
+            endif()
+        endif()
+    endif()
+
     if(NOT Tesseract_FOUND)
         if(PDF4QT_OCR_REQUIRED)
-            message(FATAL_ERROR "Tesseract was not found, but PDF4QT_OCR_REQUIRED is ON: the OCR support must be built. Install the tesseract package (vcpkg, the versions are pinned in vcpkg.json) or set PDF4QT_OCR_REQUIRED=OFF.")
+            message(FATAL_ERROR "Tesseract was not found, but PDF4QT_OCR_REQUIRED is ON: the OCR support must be built. Install libtesseract-dev and libleptonica-dev or set PDF4QT_OCR_REQUIRED=OFF.")
         endif()
-        message(WARNING "Tesseract was not found, OCR support is disabled. Install the tesseract package (vcpkg) or set PDF4QT_ENABLE_OCR=OFF.")
+        message(WARNING "Tesseract was not found, OCR support is disabled. Install libtesseract-dev and libleptonica-dev or set PDF4QT_ENABLE_OCR=OFF.")
         set(PDF4QT_ENABLE_OCR OFF)
     endif()
 elseif(PDF4QT_OCR_REQUIRED)

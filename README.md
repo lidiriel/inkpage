@@ -141,7 +141,7 @@ Several third-party libraries are used.
 10. Blend2D, https://blend2d.com/, zlib license (with AsmJit, https://asmjit.com/, zlib license)
 11. Clipper2, https://github.com/AngusJohnson/Clipper2, Boost Software License 1.0
 
-Optional, for the OCR feature (`PDF4QT_ENABLE_OCR`, currently off):
+Optional, for the OCR feature (`PDF4QT_ENABLE_OCR`):
 
 12. Tesseract OCR, https://github.com/tesseract-ocr/tesseract, Apache 2.0 license
 13. Leptonica, http://www.leptonica.org/, BSD 2-clause license (dependency of Tesseract)
@@ -159,7 +159,14 @@ Install the development packages (Debian names):
     sudo apt install build-essential cmake ninja-build git \
         qt6-base-dev qt6-svg-dev qt6-tools-dev qt6-l10n-tools \
         liblcms2-dev libopenjp2-7-dev libtbb-dev libssl-dev \
-        libfreetype-dev libjpeg-dev libpng-dev zlib1g-dev
+        libfreetype-dev libjpeg-dev libpng-dev zlib1g-dev \
+        libtesseract-dev libleptonica-dev pkg-config
+
+Tesseract and Leptonica (OCR) are found with pkg-config, Debian does not
+install their CMake configuration files. Without them, the OCR feature is
+disabled with a warning (or set `PDF4QT_ENABLE_OCR=OFF`). The language
+models are the `tesseract-ocr-*` packages (e.g. `tesseract-ocr-eng`,
+`tesseract-ocr-fra`, `tesseract-ocr-osd`).
 
 Blend2D and Clipper2 are not packaged by Debian. Their sources are on
 GitHub; inkpage is tested with these versions (the ones used by PDF4QT
@@ -207,8 +214,7 @@ run time, since the libraries are loaded from `$DEPS/install/lib`.
 
     cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_PREFIX_PATH=$DEPS/install \
-          -DCMAKE_BUILD_RPATH=$DEPS/install/lib \
-          -DPDF4QT_ENABLE_OCR=OFF
+          -DCMAKE_BUILD_RPATH=$DEPS/install/lib
     cmake --build build
 
 The application is `build/bin/inkpage`, its private libraries are in
@@ -260,7 +266,7 @@ changelog or in the metainfo.
 | `CMAKE_BUILD_TYPE`           | Release or Debug                                         |
 | `CMAKE_PREFIX_PATH`          | Prefix where Blend2D and Clipper2 are installed          |
 | `PDF4QT_BUILD_TESTS`         | Build the unit tests, ON by default                      |
-| `PDF4QT_ENABLE_OCR`          | Build the OCR feature (Tesseract), set it to OFF for now |
+| `PDF4QT_ENABLE_OCR`          | Build the OCR feature (Tesseract), ON by default         |
 | `INKPAGE_BUILD_DEV_TOOLS`    | Build the developer tools (CodeGenerator), OFF by default|
 | `INKPAGE_BUILD_DISABLED_PLUGINS` | Build the deactivated plugins (AudioBook, Redact, Scanner, SoftProofing), OFF by default |
 | `INKPAGE_BUNDLE_DEPS`        | Install Blend2D and Clipper2 with the private libraries (Debian package), OFF by default |
