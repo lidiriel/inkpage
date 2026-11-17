@@ -747,7 +747,7 @@
                   <number>8</number>
                  </property>
                  <property name="toolTip">
-                  <string>Fast models are built-in. Quality models are larger and slower; they are not always better.</string>
+                  <string>Fast models come from the system packages (tesseract-ocr-*) and need no download. Quality models are larger and slower; they are not always better.</string>
                  </property>
                 </widget>
                </item>

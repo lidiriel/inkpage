@@ -2000,8 +2000,8 @@
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="750"/>
-        <source>Fast models are built-in. Quality models are larger and slower; they are not always better.</source>
-        <translation>Les modèles rapides sont intégrés. Les modèles de qualité sont plus grands et plus lents ; ils ne sont pas toujours meilleurs.</translation>
+        <source>Fast models come from the system packages (tesseract-ocr-*) and need no download. Quality models are larger and slower; they are not always better.</source>
+        <translation>Les modèles rapides proviennent des paquets du système (tesseract-ocr-*) et ne nécessitent aucun téléchargement. Les modèles de qualité sont plus grands et plus lents ; ils ne sont pas toujours meilleurs.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrdocumentdialog.ui" line="757"/>
