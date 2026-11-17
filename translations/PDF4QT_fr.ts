@@ -16776,27 +16776,27 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="54"/>
         <source>Comparison of the original and of the compressed image</source>
-        <translation type="unfinished"></translation>
+        <translation>Comparaison de l&apos;image d&apos;origine et de l&apos;image compressée</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="112"/>
         <source>No image on this page.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune image sur cette page.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="147"/>
         <source>Original</source>
-        <translation type="unfinished"></translation>
+        <translation>Original</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="148"/>
         <source>Not compressed</source>
-        <translation type="unfinished"></translation>
+        <translation>Non compressée</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="148"/>
         <source>Compressed</source>
-        <translation type="unfinished"></translation>
+        <translation>Compressée</translation>
     </message>
 </context>
 <context>
@@ -16804,157 +16804,157 @@ Double-cliquez sur la ligne pour ouvrir le texte de la licence.</translation>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="249"/>
         <source>Preview of the Compression</source>
-        <translation type="unfinished"></translation>
+        <translation>Aperçu de la compression</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="259"/>
         <source>Previous page (Page Up)</source>
-        <translation type="unfinished"></translation>
+        <translation>Page précédente (Page préc.)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="264"/>
         <source>Next page (Page Down)</source>
-        <translation type="unfinished"></translation>
+        <translation>Page suivante (Page suiv.)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="268"/>
         <source>Page</source>
-        <translation type="unfinished">Page</translation>
+        <translation>Page</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="271"/>
         <source>Page %1</source>
-        <translation type="unfinished">Page %1</translation>
+        <translation>Page %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="275"/>
         <source>Image of the page</source>
-        <translation type="unfinished"></translation>
+        <translation>Image de la page</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="278"/>
         <source>Zoom</source>
-        <translation type="unfinished">Zoom</translation>
+        <translation>Zoom</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="279"/>
         <source>Fit</source>
-        <translation type="unfinished">Fit</translation>
+        <translation>Ajuster</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="280"/>
         <source>50 %</source>
-        <translation type="unfinished"></translation>
+        <translation>50 %</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="281"/>
         <source>100 % (1:1)</source>
-        <translation type="unfinished"></translation>
+        <translation>100 % (1:1)</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="282"/>
         <source>200 %</source>
-        <translation type="unfinished"></translation>
+        <translation>200 %</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="283"/>
         <source>400 %</source>
-        <translation type="unfinished"></translation>
+        <translation>400 %</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="289"/>
         <source>Image:</source>
-        <translation type="unfinished"></translation>
+        <translation>Image :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="292"/>
         <source>Zoom:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoom :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="310"/>
         <source>Method of the conversion to black and white</source>
-        <translation type="unfinished"></translation>
+        <translation>Méthode de conversion en noir et blanc</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="317"/>
         <source>Manual threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>Seuil manuel</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="319"/>
         <source>Exclude this image from the compression</source>
-        <translation type="unfinished"></translation>
+        <translation>Exclure cette image de la compression</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="321"/>
         <source>Threshold:</source>
-        <translation type="unfinished"></translation>
+        <translation>Seuil :</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="333"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmer</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="334"/>
         <source>Confirm the compression with these settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmer la compression avec ces paramètres</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="454"/>
         <source>There is no page to preview.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune page à prévisualiser.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="461"/>
         <source>Compressing the images of the page %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Compression des images de la page %1...</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="500"/>
         <source>%1 x %2 px, %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 x %2 px, %3</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="514"/>
         <source>The page has no image, which could be compressed.</source>
-        <translation type="unfinished"></translation>
+        <translation>La page n&apos;a aucune image à compresser.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="515"/>
         <source>Images of the page: %1 -&gt; %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Images de la page : %1 -&gt; %2.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="524"/>
         <source>No image on this page.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune image sur cette page.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="541"/>
         <source>Class: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Classe : %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="542"/>
         <source>Original: %1, %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Original : %1, %2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="542"/>
         <source>uncompressed</source>
-        <translation type="unfinished"></translation>
+        <translation>non compressée</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="545"/>
         <source>New: %1, %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouvelle : %1, %2</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrcompressionpreviewdialog.cpp" line="547"/>
         <source>Result: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Résultat : %1</translation>
     </message>
 </context>
 <context>
@@ -19214,32 +19214,32 @@ S&apos;il existe une version intégrée de la langue, elle sera de nouveau utili
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrpageview.cpp" line="589"/>
         <source>Excluded %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Exclue %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrpageview.cpp" line="589"/>
         <source>Region %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Zone %1</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrpageview.cpp" line="711"/>
         <source>Drag the corners of the document. Enter confirms, Escape cancels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Faites glisser les coins du document. Entrée confirme, Échap annule.</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrpageview.cpp" line="1011"/>
         <source>confidence not available</source>
-        <translation type="unfinished"></translation>
+        <translation>confiance non disponible</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrpageview.cpp" line="1014"/>
         <source>confidence %1/100</source>
-        <translation type="unfinished"></translation>
+        <translation>confiance %1/100</translation>
     </message>
     <message>
         <location filename="../Pdf4QtLibGui/pdfocrpageview.cpp" line="1019"/>
         <source>not found in the dictionary of the language model</source>
-        <translation type="unfinished"></translation>
+        <translation>absent du dictionnaire du modèle de langue</translation>
     </message>
 </context>
 <context>
